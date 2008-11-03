@@ -1,0 +1,32 @@
+
+JGF - Java Game Framework
+$Id$
+
+jgf
+Java Game Framework JGF: Java game development framework
+
+JGF is a game development framework written for Java. It provides
+a configuration service and provides several components that 
+handle the common tasks related to game development, in order
+to ease and speed up game development and provide default services
+from the beginning.
+
+Some of JGF features are: settings and settings storage, console
+system, menu system, logic and view states management, 
+loading facilities, menu system, entity management, scene management.
+
+JGF also includes bindings for JMonkeyEngine (JME) and JMEPhysics. This
+includes components that help 3D game development with JME. 
+
+
+jgf
+game
+framework
+java
+3d
+opengl
+jmonkeyengine
+jme
+
+ 
+ 
