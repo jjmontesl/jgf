@@ -1,0 +1,12 @@
+#summary Instructions to install and use JGF.
+#labels Featured,Phase-Deploy
+
+= Getting Started =
+
+In order to get started with JGF, you download the framework and start coding your game!
+
+It is asumed that you have some experience writing Java programs and possibly using the underlying game engine [http://www.jmonkeyengine.com JMonkeyEngine].
+
+  * [DownloadingJGF]
+  * [JGFBasics]
+  * [FirstExample]
