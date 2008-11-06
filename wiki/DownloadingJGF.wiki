@@ -1,0 +1,15 @@
+#summary How to get JGF.
+
+= Downloading JGF =
+
+Currently JGF is in a very early stage of development.
+
+It can only be downloaded as source from:
+
+[http://code.google.com/p/jgf/source/checkout http://code.google.com/p/jgf/source/checkout]
+
+= Dependencies =
+
+In order to use JGF, you will need to add libraries or a project dependencie to [http://www.jmonkeyengine.com JMonkeyEngine] (the underlying game engine). 
+
+All other dependencies are included.
