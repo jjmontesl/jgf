@@ -88,8 +88,8 @@ public abstract class BaseState extends BaseComponent implements State {
 
 		super.readConfig(config, configPath);
 
-		this.autoLoad = config.getBoolean(configPath + "/autoLoad", this.autoLoad);
-		this.autoActivate = config.getBoolean(configPath + "/autoActivate", this.autoActivate);
+		this.autoLoad = config.getBoolean(configPath + "/@autoLoad", this.autoLoad);
+		this.autoActivate = config.getBoolean(configPath + "/@autoActivate", this.autoActivate);
 
 	}
 

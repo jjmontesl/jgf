@@ -56,16 +56,14 @@
 	
 		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
 			
-			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley3.logic.NewGameLogic" >
-				<autoLoad>true</autoLoad>
-				<autoActivate>true</autoActivate>
+			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley3.logic.NewGameLogic" 
+				autoLoad="true" autoActivate="true" >
 			</logic>
 			
 			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
 
-				<logic id="logic/root/ingame/ingame" class="net.jgf.example.mudvolley1.logic.InGameLogic" >
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.mudvolley1.logic.InGameLogic" 
+					autoLoad="true" autoActivate="true" >
 				</logic>
 			
 			</logic>
@@ -126,55 +124,59 @@
 
 			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
 			
-				<view id="view/root/level/match" class="net.jgf.view.ViewStateNode">
+				<view id="view/root/level/match" class="net.jgf.view.ViewStateNode"
+					autoLoad="true" autoActivate="true" >
 					
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
-					
-								
-					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley1.view.InputView">
-						<autoLoad>true</autoLoad>
-						<autoActivate>true</autoActivate>
+					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley1.view.InputView"
+						autoLoad="true" autoActivate="true" >
 					</view>
 					
-					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView">
-						<autoLoad>true</autoLoad>
-						<autoActivate>true</autoActivate>
+					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView"
+						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 						<camera ref="scene/cameras/match" />		
 					</view>
 					
-					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView">
-						<autoLoad>true</autoLoad>
-						<autoActivate>true</autoActivate>
+					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+						autoLoad="true" autoActivate="true" >
 						<hasSky ref="scene" />		
 						<camera ref="scene/cameras/match" />	
 					</view>
 				
 				</view>
 				
-				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView" context="debug">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView"
+					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
 				
-				<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" context="debug">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
-					<camera ref="scene/cameras/match" />
-					<drawBehind>false</drawBehind>
-					<gridCenter>0.0 0.5 0.0</gridCenter>
+				<view id="view/root/level/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+					autoLoad="true" autoActivate="true" >
+
+					<key>KEY_F10</key>
+
+					<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" context="debug"
+						autoLoad="true" autoActivate="true" >
+
+						<camera ref="scene/cameras/match" />
+						<drawBehind>false</drawBehind>
+						<gridCenter>0.0 0.5 0.0</gridCenter>
+					</view>
+
 				</view>
 				
-				<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView" context="debug">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<view id="view/root/level/ui/stats/switch" class="net.jgf.jme.view.ToggleInputView" 
+					autoLoad="true" autoActivate="true" >
 					
-					<activationKey>KEY_F11</activationKey>
-					<graphWidth>1.0</graphWidth>
-					<graphHeight>0.20</graphHeight>
-					<graphAlpha>0.5</graphAlpha>
+					<key>KEY_F11</key>
+				
+					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView" context="debug"
+						autoLoad="true">
+						<graphWidth>1.0</graphWidth>
+						<graphHeight>0.20</graphHeight>
+						<graphAlpha>0.5</graphAlpha>
+					</view>
+				
 				</view>
 				
 			</view>				

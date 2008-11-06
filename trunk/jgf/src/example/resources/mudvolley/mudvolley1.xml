@@ -86,16 +86,14 @@
 	
 		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
 			
-			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley1.logic.NewGameLogic" >
-				<autoLoad>true</autoLoad>
-				<autoActivate>true</autoActivate>
+			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley1.logic.NewGameLogic" 
+				autoLoad="true" autoActivate="true" >
 			</logic>
 			
 			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
 			
-				<logic id="logic/root/ingame/ingame" class="net.jgf.example.mudvolley1.logic.InGameLogic" >
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.mudvolley1.logic.InGameLogic" 
+					autoLoad="true" autoActivate="true" >
 				</logic>
 			
 			</logic>
@@ -113,21 +111,18 @@
 			
 			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
 				
-				<view id="view/root/level/input" class="net.jgf.example.mudvolley1.view.InputView">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<view id="view/root/level/input" class="net.jgf.example.mudvolley1.view.InputView"
+					autoLoad="true" autoActivate="true" >
 				</view>
 
-				<view id="view/root/level/scene" class="net.jgf.jme.view.SceneRenderView">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<view id="view/root/level/scene" class="net.jgf.jme.view.SceneRenderView"
+					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />		
 					<camera ref="scene/cameras/overview" />	
 				</view>
 				
-				<view id="view/root/level/skybox" class="net.jgf.jme.view.SkyboxRenderView">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<view id="view/root/level/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+					autoLoad="true" autoActivate="true" >
 					<hasSky ref="scene" />		
 					<camera ref="scene/cameras/overview" />	
 				</view>
