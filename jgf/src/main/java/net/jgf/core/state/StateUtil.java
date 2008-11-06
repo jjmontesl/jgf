@@ -1,5 +1,5 @@
 /**
- * $Id: ClientState.java,v 1.2 2008/01/28 21:25:52 jjmontes Exp $
+ * $Id$
  * Java Game Framework
  */
 

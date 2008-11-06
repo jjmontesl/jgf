@@ -134,10 +134,10 @@ public final class ConfigurableFactory {
 		if (classType.isAnnotationPresent(Configurable.class)) {
 
 			try {
-				Method factoryMethod = classType.getMethod(Configurable.FACTORY_METHOD_NAME, Config.class, String.class);
+				Method factoryMethod = classType.getMethod(Configurable.READCONFIG_METHOD_NAME, Config.class, String.class);
 				factoryMethod.invoke(newInstance, config, configPath);
 			} catch (NoSuchMethodException e) {
-				throw new ConfigException ("Element " + configPath + " is marked as @Configurable but doesn't provide a configuration method '" + Configurable.FACTORY_METHOD_NAME + "'", e);
+				throw new ConfigException ("Element " + configPath + " is marked as @Configurable but doesn't provide a configuration method '" + Configurable.READCONFIG_METHOD_NAME + "'", e);
 			} catch (IllegalAccessException e) {
 				throw new ConfigException ("Element " + configPath + " could not be instantiated from config (tip: check it has a public void constructor)", e);
 			} catch (InvocationTargetException e) {
