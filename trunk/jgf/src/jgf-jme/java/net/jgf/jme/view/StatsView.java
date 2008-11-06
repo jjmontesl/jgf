@@ -2,12 +2,10 @@ package net.jgf.jme.view;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.jme.config.JmeConfigHelper;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
 
-import com.jme.input.KeyBindingManager;
 import com.jmex.game.state.GameState;
 import com.jmex.game.state.StatisticsGameState;
 
@@ -25,11 +23,6 @@ public final class StatsView extends BaseViewState {
 	 * The associated GameState, once it is loaded.
 	 */
 	private StatisticsGameState gameState;
-
-	/**
-	 * The KeyInput to bind, if any, in order to activate and deactivate the statistics.
-	 */
-	private int activationKey;
 
 	/**
 	 * The graph width scale factor.
@@ -63,19 +56,7 @@ public final class StatsView extends BaseViewState {
 	@Override
 	public void update(float tpf) {
 
-		if (this.isActive() && this.isLoaded()) {
-
-	    if (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle_stats", false)) {
-	    		if (gameState.isActive())  {
-	    			logger.debug("Hiding render statistics");
-	    		} else  {
-	    			logger.debug("Showing render statistics");
-	    		}
-	        gameState.setActive(!gameState.isActive());
-	    }
-
-	    if (gameState.isActive()) gameState.update(tpf);
-		}
+		if (gameState.isActive()) gameState.update(tpf);
 
 	}
 
@@ -101,16 +82,13 @@ public final class StatsView extends BaseViewState {
 
 		// TODO: Parameterize StatisticsGameState from config
 		gameState = new StatisticsGameState(this.id + "-sgs", graphWidth, graphHeight, graphAlpha, true);
-
-		// KeyBindings
-		if (activationKey != 0)  KeyBindingManager.getKeyBindingManager().set("toggle_stats", activationKey);
-
+		gameState.setActive(true);
 
 	}
 
 	/**
 	 * Returns the GameState wrapped by this GameStateWrapperView.
-	 * @return the gameState (may be null if this state hasn't been loaded yet)
+	 * @return the view (may be null if this state hasn't been loaded yet)
 	 */
 	public GameState getGameState() {
 		return gameState;
@@ -126,7 +104,6 @@ public final class StatsView extends BaseViewState {
 
 		super.readConfig(config, configPath);
 
-		activationKey = JmeConfigHelper.getKeyInput(config, configPath + "/activationKey", 0);
 		graphWidth = config.getFloat(configPath + "/graphWidth", graphWidth);
 		graphHeight = config.getFloat(configPath + "/graphHeight", graphHeight);
 		graphAlpha = config.getFloat(configPath + "/graphAlpha", graphAlpha);

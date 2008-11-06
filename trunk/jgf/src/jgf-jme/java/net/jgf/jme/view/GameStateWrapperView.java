@@ -103,7 +103,7 @@ public final class GameStateWrapperView extends BaseViewState {
 
 	/**
 	 * Returns the GameState wrapped by this GameStateWrapperView.
-	 * @return the gameState (may be null if this state hasn't been loaded yet)
+	 * @return the view (may be null if this state hasn't been loaded yet)
 	 */
 	public GameState getGameState() {
 		return gameState;
