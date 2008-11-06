@@ -57,6 +57,6 @@ public @interface Configurable {
 	/**
 	 * Name of the method that configures a component from configuration.
 	 */
-	public static final String FACTORY_METHOD_NAME = "readConfig";
+	public static final String READCONFIG_METHOD_NAME = "readConfig";
 
 }

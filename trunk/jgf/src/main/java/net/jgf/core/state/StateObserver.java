@@ -1,5 +1,5 @@
 /**
- * $Id: Scene.java,v 1.3 2008/02/09 22:21:20 jjmontes Exp $
+ * $Id$
  * Java Game Framework
  */
 
