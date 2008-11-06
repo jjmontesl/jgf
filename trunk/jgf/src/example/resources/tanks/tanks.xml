@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework Global Configuration File
+ --> 	
+
+<jgf>
+
+	<!-- Application configuration -->
+	<application>
+	
+		<name>Tanks</name>
+		<version>1.0</version>
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+		<debug>true</debug>
+		
+		<description>
+			Java Game Framework: Tanks Example Game
+		</description>
+		
+		<engine ref="engine" />
+		
+	</application>
+	
+	<!-- 
+		Engine service
+	 -->
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<timerCap>0.05</timerCap>
+		<collectStats>${application/debug}</collectStats>
+		
+		<logicManager ref="logic" />
+		<viewManager ref="view" />
+		
+	</service>
+	
+	
+	<!-- 
+		Entity Manager: Just create the groups as entities are 
+		added dynamically or by loaders.
+	 -->
+	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
+		
+		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
+
+			<entity id="entity/root/players" class="net.jgf.entity.EntityGroup">
+			</entity>
+			
+			<entity id="entity/root/enemies" class="net.jgf.entity.EntityGroup">
+			</entity>
+			
+			<entity id="entity/root/bullets" class="net.jgf.entity.EntityGroup">
+			</entity>
+			
+			<entity id="entity/root/mines" class="net.jgf.entity.EntityGroup">
+			</entity>
+
+		</entity>
+			
+	</service> 
+		
+	
+	<!--
+		Scene Manager: Default Scene Manager. Don't define the scene as it will be loaded
+		during runtime.
+	 -->
+	<service id="scene/manager" class="net.jgf.scene.SceneManager">
+			
+	</service>
+	
+	<!--
+		Model Loading: Model loader system configuration.
+	 -->
+	<service id="loader" class="net.jgf.loader.DefaultLoaderManager">
+		
+		<!-- This chain provides model loading and caching and also rotates the
+		loaded nodes to correct the orientation used in blender to design models for this game -->
+		<loader id="loader/model/tanks" class="net.jgf.loader.ChainLoader" >
+			
+			<loader id="loader/model/converter" class="net.jgf.jme.loader.model.ConverterLoader" />
+		
+			<loader id="loader/model/transformer" class="net.jgf.jme.loader.model.SpatialTransformerLoader" >
+				<property name="SpatialTransformerLoader.rotatePi" value="-0.5 0.0 0.0" />
+			</loader>
+			
+		</loader>
+		
+		<!-- The scene loader is a FileChain loader: loads a chain of loaders from a file (which
+		defines the level). See the level configuration to see the each level's loading chain -->
+		<loader id="loader/scene" class="net.jgf.loader.FileChainLoader">
+			<property name="TanksSceneLoader.sceneManager" value="scene/manager" />
+			<property name="TanksEntitiesFromReferencesLoader.entityLoader" value="loader/entity" />
+			<property name="TanksEntitiesFromReferencesLoader.entityManager" value="entity/manager" />
+		</loader>
+		
+		<!--  The first part of scene loading: creates a scene and adds some default states -->
+		<loader id="loader/scene/preprocessor" class="net.jgf.loader.ChainLoader">
+			
+			<loader id="loader/scene/preprocessor/scene" class="net.jgf.loader.scene.SceneCreatorLoader" >
+				<property name="SceneCreatorLoader.id" value="scene" />
+				<property name="SceneCreatorLoader.sceneClass" value="net.jgf.jme.scene.DefaultJmeScene" />	
+			</loader>
+					
+			<loader id="loader/scene/preprocessor/jmeinitializer" class="net.jgf.jme.loader.scene.DefaultJmeSceneLoader" >
+			</loader>
+
+		</loader>
+
+		<!--   -->
+		<loader id="loader/scene/postprocessor" class="net.jgf.loader.ChainLoader">
+
+			<loader class="ReferencesFromSceneLoader">
+			</loader>
+			
+			<loader class="EntitiesFromReferencesLoader">
+			</loader>
+			
+			<loader class="CamerasFromReferencesLoader">
+			</loader>		
+		
+		</loader>
+		
+		<!--  The EntityLoader used is a FileChainLoader: reads a chain of loaders from a file -->
+		<loader id="loader/entity" class="net.jgf.loader.FileChainLoader">
+			<property name="EntityModelLoader.loader" value="loader/model/tanks" />
+		</loader>
+		
+		<!-- This entity loader is an alternative entity loader that pools entities: it wraps
+		 the non-pooled entity loader for this game -->
+		<loader id="loader/entity/pool" class="net.jgf.loader.entity.pool.EntityPoolLoader">
+			
+			<loader ref="loader/entity" />
+			
+			<pool id="loader/entity/pool/bullet" class="net.jgf.loader.entity.pool.EntityPool">
+				<key>FileChainLoader.resourceUrl</key>
+				<value>tanks/entity/bullet.xml</value>
+				<maxInstances>200</maxInstances>
+ 			</pool>
+			
+		</loader>		
+				
+	</service>
+	
+	<!-- 
+		Logic Manager: contains the logic state tree.
+	 -->
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+	
+		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
+			
+			<logic id="logic/root/newgame" class="net.jgf.example.tanks.logic.NewGameLogic" >
+				<autoLoad>true</autoLoad>
+				<autoActivate>true</autoActivate>
+			</logic>
+			
+			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
+			
+				<logic id="logic/root/spawn" class="net.jgf.example.tanks.logic.SpawnLogic" >
+					<autoLoad>false</autoLoad>
+					<autoActivate>false</autoActivate>
+				</logic>
+			
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic" >
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+				</logic>
+			
+			</logic>
+			
+		</logic>
+		
+	</service>
+	
+	<!-- 
+		View Manager: contains the view state tree.
+	 -->
+	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
+
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
+
+			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
+			
+				<view id="view/root/level/fight" class="net.jgf.view.ViewStateNode">
+					
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					
+					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView">
+						<autoLoad>true</autoLoad>
+						<autoActivate>true</autoActivate>
+						<sceneManager ref="scene/manager" />		
+					</view>
+					
+					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView">
+						<autoLoad>true</autoLoad>
+						<autoActivate>true</autoActivate>
+					</view>
+				
+				</view>
+				
+				
+				<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" context="debug">
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					<camera ref="scene/camera/test" />
+					<drawBehind>false</drawBehind>
+					<gridCenter>0.0 0.5 0.0</gridCenter>
+				</view>
+				
+				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView" context="debug">
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					<sceneManager ref="scene/manager" />
+				</view>
+				
+				<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView" context="debug">
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					
+					<activationKey>KEY_F11</activationKey>
+					<graphWidth>1.0</graphWidth>
+					<graphHeight>0.20</graphHeight>
+					<graphAlpha>0.5</graphAlpha>
+				</view>
+				
+				
+				
+			</view>				
+					
+			<view id="view/root/cursor" class="net.jgf.jme.view.CursorRenderView">
+				<autoLoad>true</autoLoad>
+				<autoActivate>true</autoActivate>
+				
+				<textureUrl>tanks/texture/cursor.png</textureUrl>
+			</view>	
+					
+		</view>
+			
+	</service>
+	
+	<!-- 
+		Sound Jukebox Service
+	 -->
+	<service id="audio" class="net.jgf.jme.audio.SimpleSoundService">
+		
+		<audio id="audio/shot" class="net.jgf.jme.audio.AudioItem">
+			<resourceUrl>tanks/audio/mgun.ogg</resourceUrl>
+		</audio>
+		
+	</service>
+	
+	<!-- 
+		Menu System
+	 -->
+	<service id="menu" class="net.jgf.menu.DefaultMenuSystem">
+
+		<lastMenu ref="menu/main" />
+
+		<menu id="menu/main" class="net.jgf.menu.DefaultMenu">
+			<item id="menu/main/newgame" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>New Game</text>
+				<target ref="menu/newgame" />
+			</item>
+			<item id="menu/main/settings" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>Settings</text>
+				<target ref="menu/settings" />
+			</item>
+			<item id="menu/main/quit" class="net.jgf.menu.items.ActionMenuItem">
+				<text>Quit</text>
+				<action></action>
+			</item>
+		</menu>
+
+		<menu id="menu/newgame" class="net.jgf.menu.DefaultMenu">
+			
+			<cancelItem>menu/newgame/back</cancelItem>
+		
+			<item id="menu/newgame/1player" class="net.jgf.menu.items.ActionMenuItem">
+				<text>1 Player</text>
+				<action></action>
+			</item>
+			<item id="menu/newgame/2player" class="net.jgf.menu.items.ActionMenuItem">
+				<text>2 Player</text>
+				<action></action>
+			</item>
+			<item id="menu/newgame/network" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>Network</text>
+				<target ref="menu/newgame/network" />
+			</item>
+			<item id="menu/newgame/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
+			<item id="menu/newgame/back" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>Back</text>
+				<target ref="menu/back" />
+			</item>			
+		</menu>
+		
+	</service>	
+	
+	<!-- 
+		System Information Service
+	 -->
+	<service id="systemInfo" class="net.jgf.util.system.SystemInfoService" context="debug">
+		<reportInterval>20000</reportInterval>
+	</service>
+	
+</jgf>
+ 
+
+

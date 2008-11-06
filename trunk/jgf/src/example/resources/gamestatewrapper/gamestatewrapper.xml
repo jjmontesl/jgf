@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework Global Configuration File
+ --> 	
+
+<jgf>
+
+	<!-- Application configuration -->
+	<application>
+	
+		<!-- Name of the application. Will appear in the Window Title and messages. -->
+		<name>Java Game Framework: GameStateWrapper Test</name>
+		
+		<!-- Application version -->
+		<version>1.0</version>
+		
+		<!-- Network protool -->
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+		
+		<!-- Debug mode -->
+		<debug>true</debug>
+		
+		<!-- Engine reference -->
+		<engine ref="engine" />
+		
+	</application>
+	
+	<!-- 
+		Engine Component
+	 -->
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<!-- Enable jME collection of rendering statistics -->
+		<collectStats>${application/debug}</collectStats>
+
+		<!-- Service reference to the Logic Manager -->
+		<logicManager ref="logic" />
+		
+		<!-- Service reference to the State Manager -->
+		<viewManager ref="view" />
+		
+	</service>
+	
+	<!-- 
+		Logic Manager
+	 -->
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+	
+		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
+		</logic>
+		
+	</service>
+	
+	<!-- 
+		State Manager
+	 -->
+	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
+	
+		<!-- GameStateWrapper wraps a jME GameState into JGF -->
+		<view id="view/box" class="net.jgf.jme.view.GameStateWrapperView">
+		
+			<autoActive>true</autoActive>
+			<autoLoad>true</autoLoad>
+			
+			<!-- Wrapped GameState class name --> 
+			<gamestate>net.jgf.example.gamestatewrapper.BoxState</gamestate>
+
+		</view>
+			
+	</service>
+	
+</jgf>
+ 
+
+
