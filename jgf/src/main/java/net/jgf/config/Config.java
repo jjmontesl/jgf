@@ -63,7 +63,7 @@ import com.jme.util.resource.ResourceLocatorTool;
  * use expressions like <tt>${application/debug}</tt> to make a reference to a value
  * contained in a different configuration element (this variable interpolation is
  * provided by Commons Configuration).</p>
- * <p>This class is thread safe: Commons Config XMLConfiguration is thread
+ * <p>This class is thread safe: Commons Configuration XMLConfiguration is thread
  * safe only for read only operations. As Config doesn't allow writing, it is thread safe.</p>
  *
  * @author jjmontes
