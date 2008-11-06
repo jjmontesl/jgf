@@ -149,21 +149,18 @@
 	
 		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
 			
-			<logic id="logic/root/newgame" class="net.jgf.example.tanks.logic.NewGameLogic" >
-				<autoLoad>true</autoLoad>
-				<autoActivate>true</autoActivate>
+			<logic id="logic/root/newgame" class="net.jgf.example.tanks.logic.NewGameLogic"
+				autoLoad="true" autoActivate="true" >
 			</logic>
 			
 			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
 			
-				<logic id="logic/root/spawn" class="net.jgf.example.tanks.logic.SpawnLogic" >
-					<autoLoad>false</autoLoad>
-					<autoActivate>false</autoActivate>
+				<logic id="logic/root/spawn" class="net.jgf.example.tanks.logic.SpawnLogic"
+					autoLoad="true" autoActivate="true" >
 				</logic>
 			
-				<logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic" >
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic" 
+					autoLoad="true" autoActivate="true" >
 				</logic>
 			
 			</logic>
@@ -181,57 +178,51 @@
 
 			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
 			
-				<view id="view/root/level/fight" class="net.jgf.view.ViewStateNode">
+				<view id="view/root/level/fight" class="net.jgf.view.ViewStateNode"
+					autoLoad="true" autoActivate="true" >
 					
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
-					
-					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView">
-						<autoLoad>true</autoLoad>
-						<autoActivate>true</autoActivate>
+					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView"
+						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
 					
-					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView">
-						<autoLoad>true</autoLoad>
-						<autoActivate>true</autoActivate>
+					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView"
+						autoLoad="true" autoActivate="true" >
 					</view>
 				
 				</view>
 				
 				
-				<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" context="debug">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" 
+					autoLoad="true" autoActivate="true" >
 					<camera ref="scene/camera/test" />
 					<drawBehind>false</drawBehind>
 					<gridCenter>0.0 0.5 0.0</gridCenter>
 				</view>
 				
-				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView" context="debug">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
+				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView" 
+					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
 				
-				<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView" context="debug">
-					<autoLoad>true</autoLoad>
-					<autoActivate>true</autoActivate>
-					
-					<activationKey>KEY_F11</activationKey>
-					<graphWidth>1.0</graphWidth>
-					<graphHeight>0.20</graphHeight>
-					<graphAlpha>0.5</graphAlpha>
+				<view id="view/root/level/ui/stats/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+					autoLoad="true" autoActivate="true" >
+
+					<key>KEY_F11</key>
+				
+					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView"
+						autoLoad="true" autoActivate="false" >
+						<graphWidth>1.0</graphWidth>
+						<graphHeight>0.20</graphHeight>
+						<graphAlpha>0.5</graphAlpha>
+					</view>
+				
 				</view>
-				
-				
 				
 			</view>				
 					
-			<view id="view/root/cursor" class="net.jgf.jme.view.CursorRenderView">
-				<autoLoad>true</autoLoad>
-				<autoActivate>true</autoActivate>
-				
+			<view id="view/root/cursor" class="net.jgf.jme.view.CursorRenderView"
+				autoLoad="true" autoActivate="true" >
 				<textureUrl>tanks/texture/cursor.png</textureUrl>
 			</view>	
 					
