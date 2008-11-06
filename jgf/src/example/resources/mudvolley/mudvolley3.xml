@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework Global Configuration File
+	$Id$
+ --> 	
+
+<jgf>
+
+	<!-- Application configuration -->
+	<application>
+	
+		<name>MudVolley JGF Example 3: Introducing Loaders</name>
+		<version>1.0</version>
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+		<debug>true</debug>
+		
+		<description>
+			MudVolley is a Slime Volley clone that shows some features of
+			the Java Game Framework (JGF).
+		</description>
+		
+		<engine ref="engine" />
+		
+	</application>
+	
+	<!-- 
+		Engine service
+	 -->
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<collectStats>${application/debug}</collectStats>
+		
+		<logicManager ref="logic" />
+		<viewManager ref="view" />
+		
+	</service>
+	
+	
+	<!-- 
+		Entity Manager
+	 -->
+	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
+		
+		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
+
+		</entity>
+			
+	</service> 
+
+	
+	<!-- 
+		Logic Manager
+	 -->
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+	
+		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
+			
+			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley3.logic.NewGameLogic" >
+				<autoLoad>true</autoLoad>
+				<autoActivate>true</autoActivate>
+			</logic>
+			
+			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
+
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.mudvolley1.logic.InGameLogic" >
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+				</logic>
+			
+			</logic>
+			
+		</logic>
+		
+	</service>
+	
+	<!--
+		Scene 
+	 -->
+	<service id="scene/manager" class="net.jgf.scene.SceneManager" depends="engine">
+			
+			<scene id="scene" class="net.jgf.jme.scene.DefaultJmeScene">
+			
+				<camera id="scene/cameras/match" class="net.jgf.example.mudvolley3.camera.MudVolleyCamera" />
+			
+				<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
+					<target>0.0 4.0 0.0</target>
+					<location>17.0 4.0 24.0</location>
+				</camera>
+					
+			</scene>
+			
+	</service>
+	
+	<!--
+		Model Loading
+	 -->
+	<service id="loader" class="net.jgf.loader.DefaultLoaderManager">
+				
+		<loader id="loader/model/mudvolley" class="net.jgf.loader.ChainLoader" >
+			
+			<loader id="loader/model/mudvolley/converter" class="net.jgf.jme.loader.model.ConverterLoader" />
+			
+			<loader id="loader/model/mudvolley/transformer" class="net.jgf.jme.loader.model.SpatialTransformerLoader" >
+				<property name="SpatialTransformerLoader.rotatePi" value="-0.5 0.0 0.0" />
+			</loader>
+			
+		</loader>
+		
+		<loader id="loader/scene" class="net.jgf.example.mudvolley1.loader.MudVolleySceneLoader" depends="engine">
+		
+		</loader>
+		
+		<loader id="loader/entity" class="net.jgf.example.mudvolley3.entity.MudVolleyEntityLoader">
+						
+		</loader> 	
+				
+	</service>
+	
+	<!-- 
+		View Manager
+	 -->
+	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
+
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
+
+			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
+			
+				<view id="view/root/level/match" class="net.jgf.view.ViewStateNode">
+					
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					
+								
+					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley1.view.InputView">
+						<autoLoad>true</autoLoad>
+						<autoActivate>true</autoActivate>
+					</view>
+					
+					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView">
+						<autoLoad>true</autoLoad>
+						<autoActivate>true</autoActivate>
+						<sceneManager ref="scene/manager" />		
+						<camera ref="scene/cameras/match" />		
+					</view>
+					
+					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView">
+						<autoLoad>true</autoLoad>
+						<autoActivate>true</autoActivate>
+						<hasSky ref="scene" />		
+						<camera ref="scene/cameras/match" />	
+					</view>
+				
+				</view>
+				
+				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView" context="debug">
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					<sceneManager ref="scene/manager" />
+				</view>
+				
+				<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" context="debug">
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					<camera ref="scene/cameras/match" />
+					<drawBehind>false</drawBehind>
+					<gridCenter>0.0 0.5 0.0</gridCenter>
+				</view>
+				
+				<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView" context="debug">
+					<autoLoad>true</autoLoad>
+					<autoActivate>true</autoActivate>
+					
+					<activationKey>KEY_F11</activationKey>
+					<graphWidth>1.0</graphWidth>
+					<graphHeight>0.20</graphHeight>
+					<graphAlpha>0.5</graphAlpha>
+				</view>
+				
+			</view>				
+			
+		</view>
+			
+	</service>
+	
+	<!-- 
+		System Information Service
+	 -->
+	<service id="systemInfo" class="net.jgf.util.system.SystemInfoService" context="debug">
+		<reportInterval>20000</reportInterval>
+	</service>
+	
+</jgf>
+ 
+
+
