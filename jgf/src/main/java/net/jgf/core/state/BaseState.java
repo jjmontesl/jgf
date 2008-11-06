@@ -8,8 +8,10 @@ package net.jgf.core.state;
 import java.util.ArrayList;
 
 import net.jgf.config.Config;
+import net.jgf.config.ConfigException;
 import net.jgf.core.component.BaseComponent;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -81,6 +83,7 @@ public abstract class BaseState extends BaseComponent implements State {
 	/**
 	 * Configures this object from Config.
 	 */
+	@Override
 	public void readConfig(Config config, String configPath) {
 
 		super.readConfig(config, configPath);
@@ -104,6 +107,9 @@ public abstract class BaseState extends BaseComponent implements State {
 	@Override
 	public void load() {
 		BaseState.logger.debug("Loading " + this);
+		if (StringUtils.isBlank(this.getId())) {
+			throw new ConfigException("Illegal blank id in state " + this + " (detected at State.load())");
+		}
 		this.loaded = true;
 	}
 

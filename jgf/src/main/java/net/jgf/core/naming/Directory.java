@@ -90,6 +90,12 @@ public final class Directory {
 	 * if the object doesn't exist in the directory.
 	 */
 	public synchronized Object removeObject (String id) {
+
+		if (StringUtils.isBlank(id)) {
+			throw new ConfigException("Cannot remove object with a blank name: '" + id + "'");
+		}
+		if (id.charAt(0) == '!') return null;
+
 		WeakReference<Object> reference = objects.remove(id);
 		if (reference == null) {
 			throw new ConfigException("Tried to remove a non existent object named '" + id + "' from " + this);
