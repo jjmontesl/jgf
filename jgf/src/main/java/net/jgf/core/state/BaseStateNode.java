@@ -57,7 +57,6 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	/* (non-Javadoc)
 	 * @see net.jgf.view.ViewState#setActive(boolean)
 	 */
-	// TODO: Where to check autoactivation
 	@Override
 	public void activate() {
 		super.activate();
@@ -69,7 +68,6 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	/* (non-Javadoc)
 	 * @see net.jgf.view.ViewState#load()
 	 */
-	// TODO: Where to check autoloading
 	@Override
 	public void load() {
 		super.load();

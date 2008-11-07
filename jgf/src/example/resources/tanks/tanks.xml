@@ -155,7 +155,7 @@
 			
 			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
 			
-				<logic id="logic/root/spawn" class="net.jgf.example.tanks.logic.SpawnLogic"
+				<logic id="logic/root/ingame/spawn" class="net.jgf.example.tanks.logic.SpawnLogic"
 					autoLoad="true" autoActivate="true" >
 				</logic>
 			

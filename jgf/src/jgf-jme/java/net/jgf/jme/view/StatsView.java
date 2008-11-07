@@ -46,7 +46,7 @@ public final class StatsView extends BaseViewState {
 	 */
 	@Override
 	public void render(float tpf) {
-		if (this.isActive() && this.isLoaded() && gameState.isActive()) gameState.render(tpf);
+		gameState.render(tpf);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public final class StatsView extends BaseViewState {
 	@Override
 	public void update(float tpf) {
 
-		if (gameState.isActive()) gameState.update(tpf);
+		gameState.update(tpf);
 
 	}
 

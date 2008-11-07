@@ -8,9 +8,11 @@ import net.jgf.config.Configurable;
 import net.jgf.jme.camera.StaticCamera;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
+import net.jgf.loader.BaseLoader;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.scene.SceneCreatorLoader;
 import net.jgf.scene.Scene;
+import net.jgf.system.System;
 
 import org.apache.log4j.Logger;
 
@@ -89,7 +91,7 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 
 			// Walls
 			if ((data.charAt(0) >= '0') && (data.charAt(0) <= '9')) {
-				height = Integer.parseInt(data);
+				height = Integer.parseInt(String.valueOf(data.charAt(0)));
 			}
 
 			// Holes
@@ -118,8 +120,17 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 		    if (height > 0.1f) {
 		    	obstaclesNode.attachChild(floor);
 		    } else {
+		    	floorNode.setModelBound(null);
 		    	floorNode.attachChild(floor);
 		    }
+			}
+
+			// Load extra models
+			if ((data.length() > 1) && (data.charAt(1) == 'L')) {
+				BaseLoader<Node> modelLoader = System.getDirectory().getObjectAs("loader/model/tanks", BaseLoader.class);
+				Node model = modelLoader.load("ConverterLoader.resourceUrl=tanks/model/lamppost/lamppost.dae");
+				model.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * height, 0.5f + row));
+				obstaclesNode.attachChild(model);
 			}
 
 	    col++;
@@ -138,6 +149,7 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
     // TODO: Study how collisisions and rendering are affected by the hierarchy of boundings
     fieldNode.updateGeometricState(0, true);
     fieldNode.lock();
+    fieldNode.lockMeshes();
 
     scene.getRootNode().attachChild(fieldNode);
 

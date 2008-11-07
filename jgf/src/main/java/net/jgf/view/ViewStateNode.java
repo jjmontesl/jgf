@@ -24,30 +24,23 @@ public class ViewStateNode extends BaseStateNode<ViewState> implements ViewState
 
 	@Override
 	public void render(float tpf) {
-		if (this.isActive() && this.isLoaded()) {
-			for (ViewState viewState : children) {
-				viewState.render(tpf);
-			}
+		for (ViewState viewState : children) {
+			if (viewState.isActive()) viewState.render(tpf);
 		}
-
 	}
 
 
 	@Override
 	public void update(float tpf) {
-		if (this.isActive() && this.isLoaded()) {
-			for (ViewState viewState : children) {
-				viewState.update(tpf);
-			}
+		for (ViewState viewState : children) {
+			if (viewState.isActive()) viewState.update(tpf);
 		}
 	}
 
 	@Override
 	public void input(float tpf) {
-		if (this.isActive() && this.isLoaded()) {
-			for (ViewState viewState : children) {
-				viewState.input(tpf);
-			}
+		for (ViewState viewState : children) {
+			if (viewState.isActive()) viewState.input(tpf);
 		}
 	}
 

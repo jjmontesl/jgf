@@ -16,10 +16,8 @@ public class LogicStateNode extends BaseStateNode<LogicState> implements LogicSt
 
 	@Override
 	public void update(float tpf) {
-		if (this.isActive()) {
-			for (LogicState logicState : children) {
-				logicState.update(tpf);
-			}
+		for (LogicState logicState : children) {
+			if (logicState.isActive()) logicState.update(tpf);
 		}
 	}
 
