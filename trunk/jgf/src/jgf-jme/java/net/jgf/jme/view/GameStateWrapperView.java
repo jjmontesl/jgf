@@ -47,7 +47,7 @@ public final class GameStateWrapperView extends BaseViewState {
 	 */
 	@Override
 	public void render(float tpf) {
-		if (this.isActive() && this.isLoaded()) gameState.render(tpf);
+		gameState.render(tpf);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public final class GameStateWrapperView extends BaseViewState {
 	 */
 	@Override
 	public void update(float tpf) {
-		if (this.isActive() && this.isLoaded()) gameState.update(tpf);
+		gameState.update(tpf);
 	}
 
 	/**

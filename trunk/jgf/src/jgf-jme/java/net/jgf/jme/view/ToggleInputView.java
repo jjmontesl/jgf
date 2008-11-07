@@ -41,7 +41,7 @@ public final class ToggleInputView extends BaseViewState {
 	 */
 	@Override
 	public void render(float tpf) {
-		if (this.isActive() && this.isLoaded()) view.render(tpf);
+		if (view.isActive()) view.render(tpf);
 	}
 
 	/**
@@ -50,23 +50,19 @@ public final class ToggleInputView extends BaseViewState {
 	 */
 	@Override
 	public void update(float tpf) {
-		if (this.isActive() && this.isLoaded()) view.update(tpf);
+		if (view.isActive()) view.update(tpf);
 	}
 
 	@Override
 	public void input(float tpf) {
 
-		if (this.isActive() && this.isLoaded()) {
-
-	    if (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.id + "]", false)) {
-	    		if (view.isActive())  {
-	    			view.deactivate();
-	    		} else  {
-	    			view.activate();
-	    		}
-	    }
-
-		}
+    if (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.id + "]", false)) {
+    		if (view.isActive())  {
+    			view.deactivate();
+    		} else  {
+    			view.activate();
+    		}
+    }
 
 	}
 

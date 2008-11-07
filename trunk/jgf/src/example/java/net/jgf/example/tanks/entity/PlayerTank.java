@@ -75,7 +75,7 @@ public class PlayerTank extends SceneEntity {
 	public void load() {
 		// TODO Auto-generated method stub
 		super.load();
-		spawnLogic = System.getDirectory().getObjectAs("logic/root/spawn", SpawnLogic.class);
+		spawnLogic = System.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
 		cursorView = System.getDirectory().getObjectAs("view/root/cursor", CursorRenderView.class);
 		audioItem = System.getDirectory().getObjectAs("audio/shot", AudioItem.class);
 		scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);

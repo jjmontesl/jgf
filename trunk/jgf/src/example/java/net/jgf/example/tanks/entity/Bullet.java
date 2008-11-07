@@ -63,10 +63,9 @@ public class Bullet extends SceneEntity {
 	 */
 	@Override
 	public void load() {
-		// TODO Auto-generated method stub
 		super.load();
 		scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		spawnLogic = System.getDirectory().getObjectAs("logic/root/spawn", SpawnLogic.class);
+		spawnLogic = System.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
 		numBounces = 0;
 		ttl = BULLET_TTL;
 	}
