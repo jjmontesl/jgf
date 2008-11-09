@@ -28,7 +28,6 @@ public class JmeScene extends BaseScene implements Scene {
 	 * Default constructor.
 	 */
 	public JmeScene() {
-		rootNode = new Node();
 
 		// Geometric space
 		rootNode = new Node("sceneRoot");
@@ -79,15 +78,6 @@ public class JmeScene extends BaseScene implements Scene {
 	 * result in the next level state)
 	 */
 	public void update(float tpf) {
-
-
-		// Update
-		// TODO: Where to cap the timer (reviewed once, seems ok) -> Move to the engine??!
-    if ( tpf > 0.05 || Float.isNaN( tpf ) ) {
-    		// TODO: Count with counter (total count, last minute, last 5 minutes)
-        //System.getConsole().addLine( "Maximum physics update interval is 0.05 seconds (capped)" );
-        tpf = 0.05f;
-    }
 
     rootNode.updateGeometricState( tpf, true );
 

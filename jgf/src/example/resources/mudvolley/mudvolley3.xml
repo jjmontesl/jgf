@@ -5,7 +5,9 @@
 	$Id$
  --> 	
 
-<jgf>
+<jgf xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<xi:include href="patata.xml"/>
 
 	<!-- Application configuration -->
 	<application>
@@ -54,7 +56,7 @@
 	 -->
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
-		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
+		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
 			
 			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley3.logic.NewGameLogic" 
 				autoLoad="true" autoActivate="true" >
@@ -131,21 +133,33 @@
 						autoLoad="true" autoActivate="true" >
 					</view>
 					
-					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView"
-						autoLoad="true" autoActivate="true" >
-						<sceneManager ref="scene/manager" />		
-						<camera ref="scene/cameras/match" />		
+					
+					<view id="view/root/level/match/scene" class="net.jgf.jme.view.FaderViewNode" 
+						autoLoad="true" autoActivate="true">
+				
+						<fadeInTime>3.0</fadeInTime>
+						<fadeOutTime>3.0</fadeOutTime>
+						<autoFadeOutTime>-1.0</autoFadeOutTime>
+						<allowKeyToSkip>false</allowKeyToSkip>
+						<color>0.0 0.0 0.0</color>
+					
+						<view id="view/root/level/match/scene/faded" class="net.jgf.jme.view.SceneRenderView"
+							autoLoad="true" autoActivate="true" >
+							<sceneManager ref="scene/manager" />		
+							<camera ref="scene/cameras/match" />		
+						</view>
+						
+						<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+							autoLoad="true" autoActivate="true" >
+							<hasSky ref="scene" />		
+							<camera ref="scene/cameras/match" />	
+						</view>
+						
 					</view>
 					
-					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
-						autoLoad="true" autoActivate="true" >
-						<hasSky ref="scene" />		
-						<camera ref="scene/cameras/match" />	
-					</view>
-				
 				</view>
 				
-				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView"
+				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView"
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
@@ -155,8 +169,8 @@
 
 					<key>KEY_F10</key>
 
-					<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" context="debug"
-						autoLoad="true" autoActivate="true" >
+					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridRenderView" context="debug"
+						autoLoad="true" autoActivate="false" >
 
 						<camera ref="scene/cameras/match" />
 						<drawBehind>false</drawBehind>
@@ -170,7 +184,7 @@
 					
 					<key>KEY_F11</key>
 				
-					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView" context="debug"
+					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.devel.StatsView" context="debug"
 						autoLoad="true">
 						<graphWidth>1.0</graphWidth>
 						<graphHeight>0.20</graphHeight>

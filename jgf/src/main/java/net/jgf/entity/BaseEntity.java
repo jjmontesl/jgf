@@ -17,6 +17,9 @@ public abstract class BaseEntity extends BaseState implements Entity {
 		this.autoLoad = true;
 	}
 
+	@Override
+	public void update(float tpf) {
 
+	}
 
 }

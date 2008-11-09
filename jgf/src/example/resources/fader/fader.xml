@@ -2,6 +2,7 @@
 
 <!--
 	Java Game Framework Global Configuration File
+	$Id$
  --> 	
 
 <jgf>
@@ -10,7 +11,7 @@
 	<application>
 	
 		<!-- Name of the application. Will appear in the Window Title and messages. -->
-		<name>Java Game Framework: GameStateWrapper Test</name>
+		<name>Java Game Framework: Fader Test</name>
 		
 		<!-- Application version -->
 		<version>1.0</version>
@@ -48,6 +49,7 @@
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
 		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
+			
 		</logic>
 		
 	</service>
@@ -56,18 +58,37 @@
 		State Manager
 	 -->
 	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
-	
-		<!-- GameStateWrapper wraps a jME GameState into JGF -->
-		<view id="view/box" class="net.jgf.jme.view.GameStateWrapperView">
+			
+			
+		<!-- Using 2 nested faders to create a two-color fader effect -->
 		
-			<autoActive>true</autoActive>
-			<autoLoad>true</autoLoad>
+		<view id="view/root/fader1" class="net.jgf.jme.view.FaderViewNode" 
+			autoLoad="true" autoActivate="true">		
 			
-			<!-- Wrapped GameState class name --> 
-			<gamestate>net.jgf.example.gamestatewrapper.BoxGameState</gamestate>
-
+			<fadeInTime>4.0</fadeInTime>
+			<fadeOutTime>5.0</fadeOutTime>
+			<autoFadeOutTime>20</autoFadeOutTime>
+			<allowKeyToSkip>false</allowKeyToSkip>
+			<color>0.0 0.0 0.0</color>
+			
+			<view id="view/root/fader1/fader2" class="net.jgf.jme.view.FaderViewNode" 
+				autoLoad="true" autoActivate="true">
+		
+					<fadeInTime>10.0</fadeInTime>
+					<fadeOutTime>5.0</fadeOutTime>
+					<autoFadeOutTime>10.0</autoFadeOutTime>
+					<allowKeyToSkip>false</allowKeyToSkip>
+					<color>0.5 0.5 0.0</color>
+					
+					<!-- Background sample scene -->
+					<view id="view/root/box" class="net.jgf.example.fader.BoxView"
+						autoLoad="true" autoActivate="true" >
+					</view>
+				
+			</view>
+			
 		</view>
-			
+	
 	</service>
 	
 </jgf>

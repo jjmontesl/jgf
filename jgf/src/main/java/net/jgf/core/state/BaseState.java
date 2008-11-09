@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.core.component.BaseComponent;
+import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -58,7 +59,7 @@ public abstract class BaseState extends BaseComponent implements State {
 
 		// Notify observers
 		for (StateObserver observer : stateObservers) {
-			observer.onActivated(this);
+			observer.onStateLifecycle(new StateLifecycleEvent(LifecycleEventType.Activate, this));
 		}
 
 	}
@@ -76,7 +77,7 @@ public abstract class BaseState extends BaseComponent implements State {
 
 		// Notify observers
 		for (StateObserver observer : stateObservers) {
-			observer.onDeactivated(this);
+			observer.onStateLifecycle(new StateLifecycleEvent(LifecycleEventType.Deactivate, this));
 		}
 	}
 

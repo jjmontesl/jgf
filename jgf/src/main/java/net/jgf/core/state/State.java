@@ -11,7 +11,7 @@ import net.jgf.view.ViewState;
  * along with other states that are also active. States are attached to a parent
  * state, forming a tree structure.</p>
  * <p>States are the core functionality for the state machines in JGF, which are
- * the LogicStates and the ViewStates. Also, Entities are also considered states.</p>
+ * the LogicStates and the ViewStates. Entities are also states.</p>
  * <p>A <b>LogicStates</b> contain logic that is executed per frame...
  * (TODO: check about LogicStates after reviewing messaging)</p>
  * <p>A <b>ViewState</b> deals with the presentation part of the application.
@@ -26,11 +26,12 @@ import net.jgf.view.ViewState;
  *
  * <h3>Autoload and Autoactivate</h3>
  *
- * <h3>Activaton and Loading Awareness</h3>
- * <p>States are responsible for managing their state (active and loaded) and
- * act accordingly. When the state tree is walked, the state methods must be called
- * regardless of whether the state is active or inactive. It is up to the state to
- * ignore the call if it is inactive.</p>
+ * <h3>Repeated calls to methods</h3>
+ *
+ * <h3>Activation and Loading evaluation</h3>
+ * <p>State methods are not called from the container if the state is not active. If you implement a
+ * state that contains other states, you need to ensure you check if a state is active before calling
+ * its update methods. Failure to do so may result in states performing tasks while inactive.</p>
  *
  * @see ViewState
  * @see LogicState

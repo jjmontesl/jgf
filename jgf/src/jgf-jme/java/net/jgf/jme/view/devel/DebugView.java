@@ -1,5 +1,5 @@
 
-package net.jgf.jme.view;
+package net.jgf.jme.view.devel;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;

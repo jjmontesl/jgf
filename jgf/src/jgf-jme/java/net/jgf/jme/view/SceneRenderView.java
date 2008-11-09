@@ -6,10 +6,11 @@ package net.jgf.jme.view;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.IllegalStateException;
+import net.jgf.core.naming.DirectoryInjector;
+import net.jgf.core.naming.DirectoryRef;
 import net.jgf.jme.camera.CameraController;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
-import net.jgf.system.System;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -57,12 +58,17 @@ public class SceneRenderView extends BaseViewState {
 		super.load();
 
 		// Initialize objects from references if needed
+		DirectoryInjector.inject(this);
+
+		/*
 		if ((sceneManager == null) && (sceneManagerRef != null)) {
 			sceneManager = System.getDirectory().getObjectAs(sceneManagerRef, SceneManager.class);
 		}
 		if ((camera == null) && (cameraRef != null)) {
 			camera = System.getDirectory().getObjectAs(cameraRef, CameraController.class);
 		}
+		*/
+
 	}
 
 	/**
@@ -114,26 +120,20 @@ public class SceneRenderView extends BaseViewState {
 	}
 
 	/**
-	 * @return the cameraController
-	 */
-	public CameraController getCameraController() {
-		return camera;
-	}
-
-	/**
 	 * @param cameraController the cameraController to set
 	 */
-	public void setCameraController(CameraController cameraController) {
+	@DirectoryRef (field="cameraRef")
+	public void setCamera(CameraController cameraController) {
 
 		this.camera = cameraController;
 
 		// Set up default camera (only if not dedicated)
 		// TODO: Delegate this to the camera
+		// TODO: Should this be done in this setter? NO!
 		DisplaySystem display = DisplaySystem.getDisplaySystem();
 		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
 		display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
 		display.getRenderer().getCamera().update();
-
 
 	}
 
@@ -163,6 +163,44 @@ public class SceneRenderView extends BaseViewState {
 	// TODO: If loaded, try to resolve the reference??
 	public void setSceneManagerRef(String sceneManagerRef) {
 		this.sceneManagerRef = sceneManagerRef;
+	}
+
+	/**
+	 * @return the camera
+	 */
+	public CameraController getCamera() {
+		return camera;
+	}
+
+
+
+	/**
+	 * @return the cameraRef
+	 */
+	public String getCameraRef() {
+		return cameraRef;
+	}
+
+	/**
+	 * @param cameraRef the cameraRef to set
+	 */
+	public void setCameraRef(String cameraRef) {
+		this.cameraRef = cameraRef;
+	}
+
+	/**
+	 * @return the sceneManager
+	 */
+	public SceneManager getSceneManager() {
+		return sceneManager;
+	}
+
+	/**
+	 * @param sceneManager the sceneManager to set
+	 */
+	@DirectoryRef (field="sceneManagerRef")
+	public void setSceneManager(SceneManager sceneManager) {
+		this.sceneManager = sceneManager;
 	}
 
 

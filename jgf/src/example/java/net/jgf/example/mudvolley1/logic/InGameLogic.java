@@ -54,6 +54,8 @@ public class InGameLogic extends BaseLogicState {
 	@Override
 	public void update(float tpf) {
 
+		super.update(tpf);
+
 		sceneManager.update(tpf);
 		entityManager.update(tpf);
 

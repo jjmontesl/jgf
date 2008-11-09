@@ -65,12 +65,17 @@ public final class Directory {
 	/**
 	 * Initial default estimated directory size. This is the initial capacity of the underlying map.
 	 */
-	private static final int DEFAULT_DIRECTORY_SIZE = 60;
+	private static final int DEFAULT_DIRECTORY_SIZE = 256;
 
 	/**
 	 * Number of objects that were retrieved from this directory.
 	 */
 	private int retrievalCount;
+
+	/**
+	 * Max number of objects stored during the Directory life.
+	 */
+	private int peakSize;
 
 	/**
 	 * Map of objects stored in the directory. They are stored as {@link WeakReference} references.
@@ -81,8 +86,9 @@ public final class Directory {
 	 * Constructor.
 	 */
 	public Directory() {
+		peakSize = 0;
 		retrievalCount = 0;
-		objects = new Hashtable<String, WeakReference<Object>>(DEFAULT_DIRECTORY_SIZE);
+		objects = new Hashtable<String, WeakReference<Object>>(DEFAULT_DIRECTORY_SIZE, 0.6f);
 	}
 
 	/**
@@ -101,6 +107,7 @@ public final class Directory {
 			throw new ConfigException("Tried to remove a non existent object named '" + id + "' from " + this);
 		}
 		return reference.get();
+
 	}
 
 	/**
@@ -133,6 +140,8 @@ public final class Directory {
 		}
 
 		objects.put(id, ref);
+
+		if (objects.size() > peakSize) peakSize = objects.size();
 
 	}
 
@@ -181,5 +190,14 @@ public final class Directory {
 	public synchronized int getRetrievalCount() {
 		return retrievalCount;
 	}
+
+	/**
+	 * @return the peakSize
+	 */
+	public int getPeakSize() {
+		return peakSize;
+	}
+
+
 
 }

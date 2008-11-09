@@ -147,10 +147,9 @@
 	 -->
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
-		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
+		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
 			
-			<logic id="logic/root/newgame" class="net.jgf.example.tanks.logic.NewGameLogic"
-				autoLoad="true" autoActivate="true" >
+			<logic id="logic/root/newgame" class="net.jgf.example.tanks.logic.NewGameLogic" >
 			</logic>
 			
 			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
@@ -176,6 +175,35 @@
 
 		<view id="view/root" class="net.jgf.view.ViewStateNode">
 
+			<view id="view/root/sequencer" class="net.jgf.view.ViewSequencerNode" 
+				autoLoad="true" autoActivate="true" >
+				
+				<unloadAfterLast>true</unloadAfterLast>
+				
+				<view id="view/root/intro/fader" class="net.jgf.jme.view.FaderViewNode" >
+				
+					<fadeInTime>2.0</fadeInTime>
+					<fadeOutTime>2.0</fadeOutTime>
+					<autoFadeOutTime>2.0</autoFadeOutTime>
+					<allowKeyToSkip>true</allowKeyToSkip>
+					<color>0.0 0.0 0.0</color>
+					
+					<view id="view/root/intro" class="net.jgf.jme.view.display.DisplayItemsView" >
+						<item id="view/root/intro/logo" class="net.jgf.jme.view.display.ImageItem">
+							<center>0.0 0.0 0.0</center>
+							<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
+							<size>0.5</size>
+						</item>
+					</view>
+					
+				</view>
+				
+				<view id="view/root/intro/startlogic" class="net.jgf.view.ControllerView" >
+					<action type="RunAction" target="actions/newgame" />
+				</view>
+				
+			</view>
+
 			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
 			
 				<view id="view/root/level/fight" class="net.jgf.view.ViewStateNode"
@@ -193,14 +221,14 @@
 				</view>
 				
 				
-				<view id="view/root/level/axis" class="net.jgf.jme.view.AxisGridRenderView" 
+				<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridRenderView" 
 					autoLoad="true" autoActivate="true" >
 					<camera ref="scene/camera/test" />
 					<drawBehind>false</drawBehind>
 					<gridCenter>0.0 0.5 0.0</gridCenter>
 				</view>
 				
-				<view id="view/root/level/debug" class="net.jgf.jme.view.DebugView" 
+				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView" 
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
@@ -210,7 +238,7 @@
 
 					<key>KEY_F11</key>
 				
-					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.StatsView"
+					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.devel.StatsView"
 						autoLoad="true" autoActivate="false" >
 						<graphWidth>1.0</graphWidth>
 						<graphHeight>0.20</graphHeight>
@@ -218,14 +246,14 @@
 					</view>
 				
 				</view>
+						
+				<view id="view/root/level/cursor" class="net.jgf.jme.view.CursorRenderView"
+					autoLoad="true" autoActivate="true" >
+					<textureUrl>tanks/texture/cursor.png</textureUrl>
+				</view>	
 				
 			</view>				
-					
-			<view id="view/root/cursor" class="net.jgf.jme.view.CursorRenderView"
-				autoLoad="true" autoActivate="true" >
-				<textureUrl>tanks/texture/cursor.png</textureUrl>
-			</view>	
-					
+			
 		</view>
 			
 	</service>
