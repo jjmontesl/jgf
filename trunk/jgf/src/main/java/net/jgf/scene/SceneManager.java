@@ -44,6 +44,8 @@ public class SceneManager extends BaseService {
 		super.readConfig(config, configPath);
 
 		if (config.containsKey(configPath + "/scene/@id")) {
+			// TODO: Is not advisable to initialize scenes at reading time because they can be engine
+			// dependent. Scene initialization should be done at runtime??
 			scene = ConfigurableFactory.newFromConfig(config, configPath + "/scene", Scene.class);
 			System.getDirectory().addObject(scene.getId(), scene);
 		}

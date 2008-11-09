@@ -11,6 +11,7 @@ import net.jgf.jme.util.TypeParserHelper;
 import org.apache.log4j.Logger;
 
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 
 
 /**
@@ -48,6 +49,18 @@ public final class JmeConfigHelper  {
 	public static Vector3f getVector3f(Config config, String path)  {
 		String vector3f = config.getString(path);
 		Vector3f result = TypeParserHelper.valueOfVector3f(vector3f);
+		return result;
+	}
+
+	public static ColorRGBA getColor(Config config, String path) {
+		String color = config.getString(path);
+		ColorRGBA result = TypeParserHelper.valueOfColorRGBA(color);
+		return result;
+	}
+
+	public static ColorRGBA getColor(Config config, String path, ColorRGBA defaultColor) {
+		ColorRGBA result = defaultColor;
+		if (config.containsKey(path)) result = JmeConfigHelper.getColor(config, path);
 		return result;
 	}
 

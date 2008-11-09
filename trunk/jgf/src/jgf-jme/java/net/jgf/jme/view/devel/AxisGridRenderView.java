@@ -1,4 +1,4 @@
-package net.jgf.jme.view;
+package net.jgf.jme.view.devel;
 
 
 
@@ -31,6 +31,7 @@ public class AxisGridRenderView extends BaseViewState {
 	/**
 	 * Class logger
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(AxisGridRenderView.class);
 
 
@@ -62,13 +63,30 @@ public class AxisGridRenderView extends BaseViewState {
 		rootNode = new Node();
 		Node unlit = buildGeometry();
 		rootNode.attachChild(unlit);
+		rootNode.lock();
 	}
+
+
+
+	/* (non-Javadoc)
+	 * @see net.jgf.core.state.BaseState#unload()
+	 */
+	@Override
+	public void unload() {
+		super.unload();
+		if (rootNode != null) {
+			rootNode.detachAllChildren();
+			rootNode = null;
+		}
+	}
+
+
 
 	protected Node buildGeometry() {
 		Node unlit = new Node();
 
 	  Node solids = new Node("solids");
-	  Node dotteds = new Node("dotteds");
+	  //Node dotteds = new Node("dotteds");
 
   	//Create Grid
     Vector3f[] vertices = new Vector3f[GRID_LINES * 2 * 2];
@@ -168,22 +186,11 @@ public class AxisGridRenderView extends BaseViewState {
     unlit.setRenderState(ts);
     unlit.updateRenderState();
 
+    unlit.lock();
+
     return unlit;
 	}
 
-	/**
-	 * Scene geometry update.
-	 */
-	@Override
-	public void update(float tpf) {
-
-			if (! this.active) return;
-
-			// Center the skybox on the camera
-			// TODO: This should not behere, the skybox belongs to other place
-			//scene.getRootNode().getChild("skybox").setLocalTranslation(DisplaySystem.getDisplaySystem().getRenderer().getCamera().getLocation());
-
-	}
 
 	/**
 	 * Draws the level (and debug info, if needed).

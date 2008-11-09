@@ -30,6 +30,7 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	 */
 	//protected ArrayList<T> children = new ArrayList<T>();
 
+	// TODO: A CopyOnWriteArrayList is being used!
 	protected List<T> children = new CopyOnWriteArrayList<T>();
 
 

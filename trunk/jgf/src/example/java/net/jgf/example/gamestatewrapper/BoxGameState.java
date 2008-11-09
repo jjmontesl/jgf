@@ -12,7 +12,7 @@ import com.jmex.game.state.DebugGameState;
  * <p>BoxState is a JME GameState based on the TestSimpleGame JME test ({@link jmetest.base.TestSimpleGame}).</p>
  * @see net.jgf.jme.view.GameStateWrapperView
  */
-public class BoxState extends DebugGameState {
+public class BoxGameState extends DebugGameState {
 
 	/**
 	 * The box to be shown.
@@ -22,7 +22,7 @@ public class BoxState extends DebugGameState {
 	/**
 	 * Constructs the GameState and adds a box to its root node.
 	 */
-	public BoxState() {
+	public BoxGameState() {
 
 		// Put our box in it
 		box = new Box("my box", new Vector3f(0, 0, 0), 2, 2, 2);

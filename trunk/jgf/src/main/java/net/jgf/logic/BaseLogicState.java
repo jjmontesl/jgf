@@ -15,6 +15,9 @@ public abstract class BaseLogicState extends BaseState implements LogicState {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(BaseLogicState.class);
 
+	@Override
+	public void update(float tpf) {
 
+	}
 
 }

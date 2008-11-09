@@ -86,7 +86,7 @@
 			<view id="view/root/box" class="net.jgf.jme.view.GameStateWrapperView">
 				<autoActivate>true</autoActivate>
 				<autoLoad>true</autoLoad>
-				<gamestate>net.jgf.example.gamestatewrapper.BoxState</gamestate>
+				<gamestate>net.jgf.example.gamestatewrapper.BoxGameState</gamestate>
 			</view>
 					
 			<!-- Console View state that serves as interface to use the Console system -->

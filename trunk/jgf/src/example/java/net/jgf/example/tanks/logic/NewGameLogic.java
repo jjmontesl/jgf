@@ -52,7 +52,7 @@ public class NewGameLogic extends BaseLogicState {
 
 		// Set a camera
 		SceneRenderView sceneRenderView = System.getDirectory().getObjectAs("view/root/level/fight/scene", SceneRenderView.class);
-		sceneRenderView.setCameraController(scene.getCameraControllers().getCameraController("scene/camera/test"));
+		sceneRenderView.setCamera(scene.getCameraControllers().getCameraController("scene/camera/test"));
 
 		// Spawn player
 		SpawnLogic spawnLogic = System.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);

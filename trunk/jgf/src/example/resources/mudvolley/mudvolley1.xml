@@ -84,7 +84,7 @@
 	 -->
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
-		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicStateNode">
+		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
 			
 			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley1.logic.NewGameLogic" 
 				autoLoad="true" autoActivate="true" >

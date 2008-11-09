@@ -3,14 +3,24 @@ package net.jgf.logic;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.core.state.ExclusiveStateNode;
+import net.jgf.core.state.BaseStateNode;
 
 
 /**
  *
  */
 @Configurable
-public class ExclusiveLogicStateNode extends ExclusiveStateNode<LogicState> implements LogicState {
+public abstract class BaseLogicStateNode extends BaseStateNode<LogicState> implements LogicState {
+
+
+	@Override
+	public void update(float tpf) {
+		for (LogicState logicState : children) {
+			if (logicState.isActive()) logicState.update(tpf);
+		}
+	}
+
+
 
 	/**
 	 * Configures this object from Config.
@@ -20,15 +30,7 @@ public class ExclusiveLogicStateNode extends ExclusiveStateNode<LogicState> impl
 
 		super.readConfig(config, configPath, "logic", LogicState.class);
 
+
 	}
-
-	@Override
-	public void update(float tpf) {
-		for (LogicState logic : children) {
-			if (logic.isActive()) logic.update(tpf);
-		}
-	}
-
-
 
 }

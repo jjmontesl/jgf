@@ -267,7 +267,7 @@ public final class Application {
 			logger.debug("Disposing service " + service);
 			service.dispose();
 		}
-		logger.debug("Directory retrievals: " + directory.getRetrievalCount());
+		logger.debug("Directory retrievals: " + directory.getRetrievalCount() + " Peak size: " + directory.getPeakSize());
 	}
 
 	/**
@@ -410,6 +410,17 @@ public final class Application {
 	public Directory getDirectory() {
 		return directory;
 	}
+
+
+
+	/**
+	 * Returns the command line arguments that were passed to this application.
+	 * @see CommandLineArgumentsService
+	 */
+	public String[] getArgs() {
+		return args;
+	}
+
 
 }
 

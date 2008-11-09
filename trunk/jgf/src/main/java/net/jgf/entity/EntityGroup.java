@@ -23,10 +23,8 @@ public class EntityGroup extends BaseStateNode<Entity> implements Entity {
 
 	@Override
 	public void update(float tpf) {
-		if (this.isActive()) {
-			for (Entity entity : children) {
-				if (entity.isActive()) entity.update(tpf);
-			}
+		for (Entity entity : children) {
+			if (entity.isActive()) entity.update(tpf);
 		}
 	}
 

@@ -41,7 +41,7 @@ import net.jgf.core.IllegalStateException;
 import net.jgf.core.service.ServiceException;
 import net.jgf.engine.BaseEngine;
 import net.jgf.engine.Engine;
-import net.jgf.jme.view.StatsView;
+import net.jgf.jme.view.devel.StatsView;
 import net.jgf.logic.LogicManager;
 import net.jgf.system.System;
 import net.jgf.view.ViewManager;
