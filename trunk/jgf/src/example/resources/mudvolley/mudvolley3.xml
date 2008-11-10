@@ -134,29 +134,18 @@
 					</view>
 					
 					
-					<view id="view/root/level/match/scene" class="net.jgf.jme.view.FaderViewNode" 
-						autoLoad="true" autoActivate="true">
-				
-						<fadeInTime>3.0</fadeInTime>
-						<fadeOutTime>3.0</fadeOutTime>
-						<autoFadeOutTime>-1.0</autoFadeOutTime>
-						<allowKeyToSkip>false</allowKeyToSkip>
-						<color>0.0 0.0 0.0</color>
-					
-						<view id="view/root/level/match/scene/faded" class="net.jgf.jme.view.SceneRenderView"
-							autoLoad="true" autoActivate="true" >
-							<sceneManager ref="scene/manager" />		
-							<camera ref="scene/cameras/match" />		
-						</view>
-						
-						<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
-							autoLoad="true" autoActivate="true" >
-							<hasSky ref="scene" />		
-							<camera ref="scene/cameras/match" />	
-						</view>
-						
+					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />		
+						<camera ref="scene/cameras/match" />		
 					</view>
 					
+					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+						autoLoad="true" autoActivate="true" >
+						<hasSky ref="scene" />		
+						<camera ref="scene/cameras/match" />	
+					</view>
+						
 				</view>
 				
 				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView"

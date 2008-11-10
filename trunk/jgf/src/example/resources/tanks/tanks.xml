@@ -149,9 +149,6 @@
 	
 		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
 			
-			<logic id="logic/root/newgame" class="net.jgf.example.tanks.logic.NewGameLogic" >
-			</logic>
-			
 			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
 			
 				<logic id="logic/root/ingame/spawn" class="net.jgf.example.tanks.logic.SpawnLogic"
@@ -169,6 +166,16 @@
 	</service>
 	
 	<!-- 
+		Actions: contains the action list
+	 -->
+	<service id="action" class="net.jgf.action.DefaultActionManager" >
+		
+		<action id="action/newgame" class="net.jgf.example.tanks.action.NewGameAction" >
+		</action>
+		
+	</service>
+	
+	<!-- 
 		View Manager: contains the view state tree.
 	 -->
 	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
@@ -180,28 +187,63 @@
 				
 				<unloadAfterLast>true</unloadAfterLast>
 				
-				<view id="view/root/intro/fader" class="net.jgf.jme.view.FaderViewNode" >
+				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
+					autoLoad="true" autoActivate="true" >
 				
-					<fadeInTime>2.0</fadeInTime>
-					<fadeOutTime>2.0</fadeOutTime>
-					<autoFadeOutTime>2.0</autoFadeOutTime>
+					<fadeInTime>3.0</fadeInTime>
+					<fadeOutTime>0.8</fadeOutTime>
+					<autoFadeOutTime>3.0</autoFadeOutTime>
 					<allowKeyToSkip>true</allowKeyToSkip>
 					<color>0.0 0.0 0.0</color>
 					
-					<view id="view/root/intro" class="net.jgf.jme.view.display.DisplayItemsView" >
-						<item id="view/root/intro/logo" class="net.jgf.jme.view.display.ImageItem">
-							<center>0.0 0.0 0.0</center>
-							<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
-							<size>0.5</size>
+					<view id="view/root/intro/tech" class="net.jgf.jme.view.display.DisplayItemsView" 
+						autoLoad="true" autoActivate="true">
+						
+						<item id="view/root/intro/tech/1" class="net.jgf.jme.view.display.ImageItem">
+							<center>-0.66 0.5 0.0</center>
+							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
+							<size>1.0</size>
 						</item>
+						<item id="view/root/intro/tech/2" class="net.jgf.jme.view.display.ImageItem">
+							<center>0.0 0.5 0.0</center>
+							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
+							<size>0.8</size>
+						</item>
+						<item id="view/root/intro/tech/3" class="net.jgf.jme.view.display.ImageItem">
+							<center>0.66 0.5 0.0</center>
+							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
+							<size>0.5</size>
+						</item>						
 					</view>
 					
 				</view>
 				
-				<view id="view/root/intro/startlogic" class="net.jgf.view.ControllerView" >
-					<action type="RunAction" target="actions/newgame" />
-				</view>
+				<view id="view/root/intro/fader2" class="net.jgf.jme.view.FaderViewNode"
+					autoLoad="true" autoActivate="false" >
 				
+					<fadeInTime>1.5</fadeInTime>
+					<fadeOutTime>0.8</fadeOutTime>
+					<autoFadeOutTime>4.0</autoFadeOutTime>
+					<allowKeyToSkip>true</allowKeyToSkip>
+					<color>0.0 0.0 0.0</color>
+					
+					<view id="view/root/intro/logo" class="net.jgf.jme.view.display.DisplayItemsView" 
+						autoLoad="true" autoActivate="true">
+						
+						<item id="view/root/intro/logo/tanks" class="net.jgf.jme.view.display.ImageItem">
+							<center>0.25 0.0 0.0</center>
+							<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
+							<size>0.75</size>
+						</item>
+					</view>
+					
+				</view>
+
+				<view id="view/root/intro/startlogic" class="net.jgf.view.RunActionView" 
+					autoLoad="true" autoActivate="false" >
+					<action ref="action/newgame" />
+				</view>
+
 			</view>
 
 			<view id="view/root/level" class="net.jgf.view.ViewStateNode">

@@ -1,13 +1,14 @@
 
-package net.jgf.example.tanks.logic;
+package net.jgf.example.tanks.action;
 
+import net.jgf.action.BaseAction;
 import net.jgf.config.Configurable;
 import net.jgf.core.state.StateUtil;
 import net.jgf.entity.EntityGroup;
+import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.jme.view.SceneRenderView;
 import net.jgf.loader.FileChainLoader;
-import net.jgf.logic.BaseLogicState;
 import net.jgf.logic.LogicState;
 import net.jgf.scene.Scene;
 import net.jgf.scene.SceneManager;
@@ -17,29 +18,24 @@ import net.jgf.view.ViewState;
 import org.apache.log4j.Logger;
 
 
-
-
-
 /**
  *
  */
 @Configurable
-public class NewGameLogic extends BaseLogicState {
+public class NewGameAction extends BaseAction {
 
 	/**
 	 * Class logger
 	 */
-	private static final Logger logger = Logger.getLogger(NewGameLogic.class);
+	private static final Logger logger = Logger.getLogger(NewGameAction.class);
 
 	/* (non-Javadoc)
 	 * @see net.jgf.logic.BaseLogicState#activate()
 	 */
 	@Override
-	public void activate() {
+	public void perform() {
 
-		super.activate();
-
-		NewGameLogic.logger.info ("Starting new tanks game (logic)");
+		logger.info ("Starting new tanks game (logic)");
 
 		// Prepare scene
 		SceneManager sceneManager = System.getDirectory().getObjectAs("scene/manager", SceneManager.class);
@@ -69,11 +65,6 @@ public class NewGameLogic extends BaseLogicState {
 		ViewState levelView = System.getDirectory().getObjectAs("view/root/level", ViewState.class);
 		StateUtil.loadAndActivate(levelView);
 
-	}
-
-	@Override
-	public void update(float tpf) {
-		// Nothing to do
 	}
 
 }

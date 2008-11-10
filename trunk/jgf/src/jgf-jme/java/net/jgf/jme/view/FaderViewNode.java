@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
+import com.jme.util.Timer;
 import com.jmex.effects.transients.Fader;
 import com.jmex.effects.transients.Fader.FadeMode;
 
@@ -27,6 +28,7 @@ import com.jmex.effects.transients.Fader.FadeMode;
  * immediately and other geometry can be drawn over the faded stencil buffer.</p>
  */
 @Configurable
+// TODO: Allow to customize the "disableOnFinish" "unloadOnFinish"...
 public class FaderViewNode extends BaseViewStateNode {
 
 	/**
@@ -43,6 +45,8 @@ public class FaderViewNode extends BaseViewStateNode {
 	protected float autoFadeOutTime = -1.0f;
 
 	protected boolean allowKeyToSkip = false;
+
+	protected boolean deactivateOnFinish = true;
 
 	protected ColorRGBA color = ColorRGBA.black;
 
@@ -96,7 +100,7 @@ public class FaderViewNode extends BaseViewStateNode {
 	public void update(float tpf) {
 
 			super.update(tpf);
-			rootNode.updateGeometricState(tpf, true);
+			rootNode.updateGeometricState(Timer.getTimer().getTimePerFrame(), true);
 
 
 			if ((fadeMode == FadeMode.FadeIn) && (! (fader.getAlpha() > 0.0f))) {
@@ -108,6 +112,7 @@ public class FaderViewNode extends BaseViewStateNode {
 
 			if ((fadeMode == FadeMode.FadeOut) && (!(fader.getAlpha() < 1.0f))) {
 				// TODO: Check if we need to disable and or unload
+				if (isDeactivateOnFinish()) this.deactivate();
 			}
 
 	}
@@ -173,6 +178,7 @@ public class FaderViewNode extends BaseViewStateNode {
 		super.readConfig(config, configPath);
 
 		this.setAllowKeyToSkip(config.getBoolean(configPath + "/allowKeyToSkip", isAllowKeyToSkip()));
+		this.setDeactivateOnFinish(config.getBoolean(configPath + "/deactivateOnFinish", isDeactivateOnFinish()));
 		this.setAutoFadeOutTime(config.getFloat(configPath + "/autoFadeOutTime", getAutoFadeOutTime()));
 		this.setFadeInTime(config.getFloat(configPath + "/fadeInTime", getFadeInTime()));
 		this.setFadeOutTime(config.getFloat(configPath + "/fadeOutTime", getFadeOutTime()));
@@ -248,6 +254,20 @@ public class FaderViewNode extends BaseViewStateNode {
 	 */
 	public void setColor(ColorRGBA color) {
 		this.color = color;
+	}
+
+	/**
+	 * @return the deactivateOnFinish
+	 */
+	public boolean isDeactivateOnFinish() {
+		return deactivateOnFinish;
+	}
+
+	/**
+	 * @param deactivateOnFinish the deactivateOnFinish to set
+	 */
+	public void setDeactivateOnFinish(boolean deactivateOnFinish) {
+		this.deactivateOnFinish = deactivateOnFinish;
 	}
 
 
