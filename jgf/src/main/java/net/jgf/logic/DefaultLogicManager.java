@@ -43,7 +43,7 @@ public class DefaultLogicManager extends BaseService implements LogicManager {
 	 */
 	@Override
 	public void update(float tpf) {
-		rootState.update(tpf);
+		if (rootState.isActive()) rootState.update(tpf);
 	}
 
 	/* (non-Javadoc)

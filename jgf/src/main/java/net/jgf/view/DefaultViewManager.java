@@ -24,14 +24,14 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 	 * @see net.jgf.view.ViewManager#update(float)
 	 */
 	public void update(float tpf) {
-		rootState.update(tpf);
+		if (rootState.isActive()) rootState.update(tpf);
 	}
 
 	/* (non-Javadoc)
 	 * @see net.jgf.view.ViewManager#update(float)
 	 */
 	public void input(float tpf) {
-		rootState.input(tpf);
+		if (rootState.isActive()) rootState.input(tpf);
 	}
 
 
@@ -39,7 +39,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 	 * @see net.jgf.view.ViewManager#render(float)
 	 */
 	public void render(float tpf) {
-		rootState.render(tpf);
+		if (rootState.isActive()) rootState.render(tpf);
 	}
 
 	@Override

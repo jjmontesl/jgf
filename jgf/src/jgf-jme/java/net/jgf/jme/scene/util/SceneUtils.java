@@ -125,6 +125,7 @@ public class SceneUtils {
 
 		// Fog state
 		FogState fs = DisplaySystem.getDisplaySystem().getRenderer().createFogState();
+		// TODO: move to createFogState(...)
 		/*
 		fs.setEnabled(scene.getSceneInfo().isFogEnabled());
 		fs.setColor(scene.getSceneInfo().getFogColor());

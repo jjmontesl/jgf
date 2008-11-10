@@ -64,9 +64,27 @@ public final class DirectoryInjector {
 		// Iterate over object fields looking for DirectoryRef annotations
 		Method[] methods = obj.getClass().getMethods();
 		for (Method method : methods) {
+			Boolean ignore = false;
 			DirectoryRef annotation = method.getAnnotation(DirectoryRef.class);
 			if (annotation != null) {
 				// It is annotated: Inject dependency
+
+				// Check if the field is already filled
+				String getter = method.getName().substring(3);
+				getter = String.valueOf(getter.toLowerCase().charAt(0)) + getter.substring(1);
+				Object currentValue = null;
+				try {
+					currentValue = BeanUtils.getProperty(obj, getter);
+				} catch (InvocationTargetException e) {
+					throw new ConfigException("No correct accesor (" + getter + ") for setter " + method.getName() + " in object " + obj +
+							" was found when injecting reference for field " + method.getName() , e);
+				} catch (NoSuchMethodException e) {
+					throw new ConfigException("No accesor (" + getter + ") for setter " + method.getName() + " in object " + obj +
+							" was found when injecting reference for field " + method.getName() , e);
+				} catch (IllegalAccessException e) {
+					throw new ConfigException("No correct accesor (" + getter + ") for setter " + method.getName() + " in object " + obj +
+							" was found when injecting reference for field " + method.getName() , e);
+				}
 
 				String id = annotation.ref();
 
@@ -78,8 +96,12 @@ public final class DirectoryInjector {
 					try {
 						String refFieldValue = BeanUtils.getProperty(obj, annotation.field());
 						if (StringUtils.isBlank(refFieldValue)) {
-							throw new ConfigException("No reference found in field " + annotation.field() + " of object " + obj +
-									" when injecting reference for field " + method.getName() );
+							if (currentValue == null) {
+								throw new ConfigException("No reference found in field " + annotation.field() + " of object " + obj +
+										" when injecting reference for field " + method.getName() );
+							}
+							// Ignore this setter, as there is already a property setted
+							ignore = true;
 						}
 						id = refFieldValue;
 					} catch (InvocationTargetException e) {
@@ -94,16 +116,20 @@ public final class DirectoryInjector {
 					}
 				}
 
-				Object refObj = System.getDirectory().getObjectAs(id, method.getParameterTypes()[0]);
+				if (!ignore) {
 
-				try {
-					method.invoke(obj, new Object[] {refObj});
-				} catch (IllegalArgumentException e) {
-					throw new ConfigException("Invalid object " + refObj + " injected for property " + method.getName() + " of object " + obj);
-				} catch (IllegalAccessException e) {
-					throw new ConfigException("Could not access setter for injected property " + method.getName() + " of object " + obj);
-				} catch (InvocationTargetException e) {
-					throw new ConfigException("Could not access setter for injecter property " + method.getName() + " of object " + obj);
+					Object refObj = System.getDirectory().getObjectAs(id, method.getParameterTypes()[0]);
+
+					try {
+						method.invoke(obj, new Object[] {refObj});
+					} catch (IllegalArgumentException e) {
+						throw new ConfigException("Invalid object " + refObj + " injected for property " + method.getName() + " of object " + obj);
+					} catch (IllegalAccessException e) {
+						throw new ConfigException("Could not access setter for injected property " + method.getName() + " of object " + obj);
+					} catch (InvocationTargetException e) {
+						throw new ConfigException("Could not access setter for injecter property " + method.getName() + " of object " + obj);
+					}
+
 				}
 
 			}
