@@ -187,6 +187,7 @@
 				
 				<unloadAfterLast>true</unloadAfterLast>
 				
+				<!-- 
 				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
 					autoLoad="true" autoActivate="true" >
 				
@@ -238,7 +239,8 @@
 					</view>
 					
 				</view>
-
+ 				-->
+ 				
 				<view id="view/root/intro/startlogic" class="net.jgf.view.RunActionView" 
 					autoLoad="true" autoActivate="false" >
 					<action ref="action/newgame" />

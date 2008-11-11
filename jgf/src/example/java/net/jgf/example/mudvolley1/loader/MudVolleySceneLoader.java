@@ -111,7 +111,7 @@ public final class MudVolleySceneLoader extends SceneLoader {
 
     // Updates
     scene.getRootNode().updateRenderState();
-    scene.getRootNode().updateGeometricState(0, true);
+    //scene.getRootNode().updateGeometricState(0, true);
 
 		// Restart timer
 		Timer.getTimer().reset();

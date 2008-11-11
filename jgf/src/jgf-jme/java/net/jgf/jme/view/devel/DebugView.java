@@ -122,8 +122,7 @@ public class DebugView extends BaseViewState {
 
     	super.update(tpf);
 
-      // Update the geometric state of the rootNode
-      rootNode.updateGeometricState(tpf, true);
+      //rootNode.updateGeometricState(tpf, true);
 
       /** If toggle_wire is a valid command (via key T), change wirestates. */
       if (KeyBindingManager.getKeyBindingManager().isValidCommand(

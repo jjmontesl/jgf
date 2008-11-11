@@ -127,7 +127,7 @@ public class ConsoleView extends BaseViewState implements ConsoleObserver {
 		inputNode.attachChild(inputText);
 		inputNode.setRenderState(font);
 		inputNode.setRenderState(as);
-		inputNode.updateGeometricState(0.0f, true);
+		//inputNode.updateGeometricState(0.0f, true);
 		inputNode.setLocalTranslation(new Vector3f(margin, display.getHeight() - (height) - 1, 0));
 
 		// Create the console

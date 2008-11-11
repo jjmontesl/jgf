@@ -60,12 +60,12 @@ public class SpawnLogic extends BaseLogicState {
 		// Choose a Spawn Point
 		// TODO: Choose an empty one
 
-		DefaultJmeScene scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-
 		Vector3f position = ((SpatialReference)scene.getReferences().getReference("playerStart0")).getSpatial().getLocalTranslation();
 		PlayerTank tank = (PlayerTank) entityLoader.load("FileChainLoader.resourceUrl=tanks/entity/tank.xml");
 		tank.setId("player1");
 		Spatial hull = ((Node)((Node)tank.getSpatial()).getChild("Tank")).getChild("Hull");
+		// TODO: Model Bounds don't quite belong to logic...
+		// maybe to the entity or better yet, to loader
 		BoundingBox obb = new BoundingBox();
 		hull.setModelBound(obb);
 		hull.updateModelBound();
@@ -84,12 +84,14 @@ public class SpawnLogic extends BaseLogicState {
 		Bullet bullet = (Bullet) entityLoader.load("FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
 		bullet.setId("bullet" + bullets++);
 
+		// TODO: Model Bounds don't quite belong to logic...
+		// maybe to the entity or better yet, to loader
 		bullet.getSpatial().setModelBound(new BoundingSphere());
 		bullet.getSpatial().updateModelBound();
 
-		StateUtil.loadAndActivate(bullet);
 		bullet.integrate(bulletEntityGroup, scene.getRootNode(), position);
-		scene.getRootNode().updateRenderState();
+		StateUtil.loadAndActivate(bullet);
+		bullet.getSpatial().updateRenderState();
 
 		Vector3f newPosition = position.clone();
 		newPosition.addLocal(orientation.mult(Vector3f.UNIT_Z).normalizeLocal().multLocal(1.05f));

@@ -41,6 +41,7 @@ import java.lang.annotation.Target;
 /**
  * @author jjmontes
  */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface DirectoryRef {

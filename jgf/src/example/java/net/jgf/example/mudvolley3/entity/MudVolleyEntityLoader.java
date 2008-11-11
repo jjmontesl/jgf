@@ -61,7 +61,7 @@ public final class MudVolleyEntityLoader extends EntityLoader {
     ballNode.setModelBound( new BoundingBox() );
     ballNode.updateWorldVectors();
     ballNode.updateModelBound();
-    ballNode.updateGeometricState(0, true);
+    //ballNode.updateGeometricState(0, true);
 
     BallEntity ballEntity = new BallEntity();
     ballEntity.setId(entityId);
@@ -83,7 +83,7 @@ public final class MudVolleyEntityLoader extends EntityLoader {
 		playerNode.setModelBound( new BoundingBox() );
 		playerNode.updateWorldVectors();
 		playerNode.updateModelBound();
-		playerNode.updateGeometricState(0, true);
+		//playerNode.updateGeometricState(0, true);
 
 		PlayerEntity playerEntity = new PlayerEntity();
 	  playerEntity.setSide(side);

@@ -4,8 +4,6 @@ package net.jgf.view;
 import net.jgf.action.Action;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.core.naming.DirectoryInjector;
-import net.jgf.core.naming.DirectoryRef;
 
 
 /**
@@ -38,7 +36,10 @@ public class RunActionView extends BaseViewState {
 		super.update(tpf);
 
 		// Perform action
-		DirectoryInjector.inject(this);
+		// TODO: Why this dual checking?
+		if ((action == null) && (actionRef != null)) {
+			action = net.jgf.system.System.getDirectory().getObjectAs(actionRef, Action.class);
+		}
 		action.perform();
 
 		this.deactivate();
@@ -54,7 +55,6 @@ public class RunActionView extends BaseViewState {
 	/**
 	 * @param action the action to set
 	 */
-	@DirectoryRef (field="actionRef")
 	public void setAction(Action action) {
 		this.action = action;
 	}
