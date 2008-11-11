@@ -47,6 +47,7 @@ import org.apache.log4j.Logger;
  * @see Directory
  * @author jjmontes
  */
+@Deprecated
 public final class DirectoryInjector {
 
 	/**

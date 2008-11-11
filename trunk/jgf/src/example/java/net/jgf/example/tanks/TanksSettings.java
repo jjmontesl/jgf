@@ -13,6 +13,6 @@ public class TanksSettings {
 
 	public final static float PLAYER_ROTATE_SPEED = FastMath.PI;
 
-	public final static float BULLET_SPEED = 4.0f;
+	public final static float BULLET_SPEED = 3.0f;
 
 }

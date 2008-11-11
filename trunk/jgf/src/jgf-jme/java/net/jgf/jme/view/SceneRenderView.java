@@ -6,8 +6,6 @@ package net.jgf.jme.view;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.IllegalStateException;
-import net.jgf.core.naming.DirectoryInjector;
-import net.jgf.core.naming.DirectoryRef;
 import net.jgf.jme.camera.CameraController;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
@@ -58,16 +56,14 @@ public class SceneRenderView extends BaseViewState {
 		super.load();
 
 		// Initialize objects from references if needed
-		DirectoryInjector.inject(this);
-
-		/*
+		// TODO: Why this checking on nulls? name resolution should be smoother
+		// Idea: register directory users with the directory, so they always have the correct reference
 		if ((sceneManager == null) && (sceneManagerRef != null)) {
-			sceneManager = System.getDirectory().getObjectAs(sceneManagerRef, SceneManager.class);
+			sceneManager = net.jgf.system.System.getDirectory().getObjectAs(sceneManagerRef, SceneManager.class);
 		}
 		if ((camera == null) && (cameraRef != null)) {
-			camera = System.getDirectory().getObjectAs(cameraRef, CameraController.class);
+			camera = net.jgf.system.System.getDirectory().getObjectAs(cameraRef, CameraController.class);
 		}
-		*/
 
 	}
 
@@ -80,7 +76,12 @@ public class SceneRenderView extends BaseViewState {
 			if (! this.active) return;
 
 			JmeScene scene = (JmeScene) sceneManager.getScene();
-			scene.getRootNode().updateGeometricState(tpf, true);
+
+			// TODO: Maybe we should allow an option to update the geometric state
+			// TODO: Note that here is where the updateGeometricState call is done. Document!!!
+			// TODO: Is this correct? doing this here? see SceneRenderView!
+			// TODO: What about other things (skybox, etc...) that need to be updated?
+			//scene.getRootNode().updateGeometricState(tpf, true);
 
 			// Center the skybox on the camera
 			// TODO: This should not behere, the skybox belongs to other place
@@ -122,7 +123,6 @@ public class SceneRenderView extends BaseViewState {
 	/**
 	 * @param cameraController the cameraController to set
 	 */
-	@DirectoryRef (field="cameraRef")
 	public void setCamera(CameraController cameraController) {
 
 		this.camera = cameraController;
@@ -198,7 +198,6 @@ public class SceneRenderView extends BaseViewState {
 	/**
 	 * @param sceneManager the sceneManager to set
 	 */
-	@DirectoryRef (field="sceneManagerRef")
 	public void setSceneManager(SceneManager sceneManager) {
 		this.sceneManager = sceneManager;
 	}

@@ -2,7 +2,6 @@
 package net.jgf.jme.scene;
 
 import net.jgf.scene.BaseScene;
-import net.jgf.scene.Scene;
 
 import org.apache.log4j.Logger;
 
@@ -11,7 +10,7 @@ import com.jme.scene.Node;
 
 /**
  */
-public class JmeScene extends BaseScene implements Scene {
+public class JmeScene extends BaseScene {
 
 	/**
 	 * Class logger
@@ -79,6 +78,9 @@ public class JmeScene extends BaseScene implements Scene {
 	 */
 	public void update(float tpf) {
 
+		// TODO: Note that here is where the updateGeometricState call is done. Document!!!
+		// TODO: Is this correct? doing this here? see SceneRenderView!
+		// TODO: What about other things (skybox, etc...) that need to be updated?
     rootNode.updateGeometricState( tpf, true );
 
 	}

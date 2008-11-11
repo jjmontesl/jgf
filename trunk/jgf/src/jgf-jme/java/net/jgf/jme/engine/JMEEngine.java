@@ -61,7 +61,7 @@ import com.jmex.game.state.GameStateManager;
  * <p>The JMEEngine plugs jMonkeyEngine into the Java Game Framework.</p>
  * <p>JGF requires an Engine during application startup, which manages
  * the main game loop (see {@link Engine} for more information).</p>
- * <p>This implementation creats a JME StandardGame and initializes
+ * <p>This implementation creates a JME StandardGame and initializes
  * the main game state that will call other services (like
  * the {@link LogicManager} and the {@link ViewManager}.</p>
  *
@@ -89,7 +89,7 @@ public final class JMEEngine extends BaseEngine {
 	private StandardGameState standardGameState = null;
 
 	/**
-	 * Whether JME Engine will collect rendering statisticss.
+	 * Whether JME Engine will collect rendering statistics.
 	 */
 	private boolean collectStats = false;
 

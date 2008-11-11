@@ -35,13 +35,13 @@ public class InGameLogic extends BaseLogicState {
 		sceneManager = System.getDirectory().getObjectAs("scene/manager", SceneManager.class);
 	}
 
-
-
 	@Override
 	public void update(float tpf) {
 
-		sceneManager.update(tpf);
+		// Order matters
+		// TODO: Document and maybe do a standard state of this?
 		entityManager.update(tpf);
+		sceneManager.update(tpf);
 
 	}
 

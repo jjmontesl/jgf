@@ -12,6 +12,7 @@ import com.jme.scene.Node;
  */
 public abstract class DisplayItem extends BaseComponent {
 
+	// TODO: Wrong! DisplayItems should draw themselves (load, activate, render: viewstates!)
 	public abstract void load(Node display);
 
 }

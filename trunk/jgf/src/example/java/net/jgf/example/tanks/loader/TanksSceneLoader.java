@@ -147,7 +147,7 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 
     fieldNode.getLocalTranslation().addLocal(0, 0, 0);
     // TODO: Study how collisisions and rendering are affected by the hierarchy of boundings
-    fieldNode.updateGeometricState(0, true);
+    //fieldNode.updateGeometricState(0, true);
     fieldNode.lock();
     fieldNode.lockMeshes();
 
