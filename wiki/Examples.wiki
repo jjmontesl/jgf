@@ -1,0 +1,13 @@
+#summary Examples of JGF games.
+
+= Simple Example =
+
+This section is yet to be built.
+
+In the meanwhile, have a look at the MudVolley Example 3 configuration file:
+
+[http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml /trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml]
+
+And also inspect other files from the examples, like the classes involed:
+
+[http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example/mudvolley1 /trunk/jgf/src/example/java/net/jgf/example/mudvolley1]
