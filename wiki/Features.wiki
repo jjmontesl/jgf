@@ -1,0 +1,108 @@
+#summary JGF (Java Game Engine) Features.
+#labels Featured
+
+= JGF Features =
+
+These are the list of features that are incorporated or are planed.
+
+JGF is composed of more than 200 classes. Fortunately these are separated into packages and features, so you only need to look at a bunch of them at a time.
+
+Spend some time getting familiar with JGF features! Knowing them will allow you to save time or to add a quick feature to your application.
+
+*Services and Configuration System*
+
+JGF main configuration is done in a descriptive XML configuration file which provides. This is the core of JGF. It provides:
+
+  * An easy overview of your application parts and components.
+  * A standard and practical way to configure components.
+  * An easy way to add new components to your game, like adding a new entity group, or a new HUD to be drawn on top of your scene.
+  * An easy way to change implementations to test changes (for example, changing the implementation of a LogicState to try alternate behaviours).
+  
+*Console System*
+
+  * JGF provides a console system, and an implementation using BeanShell as interpreter.
+  * Console system is separated from the user interface used, allowing console systems to be plugged to different graphical look and feels.
+  * Console behaviour is provided through customizable and extensible beans.
+  * A default console view is provided. Others may be available publicly.
+  * A default command line interface is provided for headless mode (_TO BE REFACTORED_). 
+  * Use of a console system is completely optional.
+
+*Settings System* _(TO BE REVIEWED AND REFACTORED)_
+
+  * Settings Service that holds game settings.
+  * Settings Storage Service provides settings saving and loading functionality.
+
+  * Configuration Dialogs for initial settings service _(TO BE DONE)_.
+  * Command Line Options parsing service, which allows to set settings and other framework parameters based on the command line arguments passed to the application _(TO BE REFACTORED)_.
+
+*Menu System*
+
+  * Simple Menu System provides simple menu functionality and navigation.
+  * Simple Menu View provides a default view implementation of the menu tree, which allows you to quickly add a menu system to your game.
+
+*Logic and Graphics states*
+
+  * State Trees are used to manage Logic and Views.
+  * The flow of the game is controlled by activating and deactivating these states.
+  * Structures and services are provided that contain and manage Entities, Players and other common data.
+
+  * Out-of-the-box ViewStates that provide ways to easily show text or images on screen, fade in and out other states...
+
+The usage of ViewStates and LogicStates surely requires some explanation. Visit [States States Guide] for more information.
+
+*Extensibility*
+
+JGF is designed to be extensible. Base classes are provided for most of the components you'll need to implement to code your game. And you can always provide new functionality writing your custom services if you need.
+
+*Development Aids*
+
+  * JGF includes and provides components that easily allow you to add development aids to your game:
+    * JME Scene Debugger (Bounding Bounds viewing, Normals viewing
+    * Physics Debugger
+    * Nymon's Scene Monitor
+    * Scene graph information and statistics _(TO BE DONE)_
+    * Framework components information utils _(TO BE DONE)_
+    * JVM information logger
+
+*Loaders and Art Pipeline*
+
+  * JGF includes a modular loading system for Entities, Scenes and Models. 
+  * An entity pool system is provided.
+  * The modular loading system allows you to have, for example, custom asset formats or generated geometry, and seamless combine those with other assets.
+  * Standard way to convert and cache conerted resources. _TO BE REFACTORED_.
+
+The Loader System definitely requires some explanation. Visit [LoaderSystem Loader System Guide] for more information.
+
+*Default Level Structures*
+
+  * JGF provides default level classes, which contain the scene (containing the geometry, the entities, a physic space... If any of them suits your game, you can avoid level management and focus on entities, or you can extend any of them shall you require additional structures in your scene.
+
+*Audio*
+
+  * A "sound effects machine" service is provided that can speed up development and serve as a starting quick way of putting sound into the application.
+
+*Networking*
+
+  _TO BE REVIEWED_. _TO BE REFACTORED_.
+
+*Application architecture*
+
+  * Standard service and state lifecycles.
+  * Standard functional units (LogicStates, ViewStates and Entities), which make the application easier to understand and develop.
+
+  * JGF is oriented towards a Client / Server architecture (even if your game is not networked). _TO BE REVIEWED_. _TO BE DONE_.
+  * Information between your logic and your interface is routed using messages. _TO BE REVIEWED_. TO BE DONE_.
+
+*Logging*
+
+ * JGF defines a logging utility (log4j). JGF also provides means to configure and manage logging, and default settings for logging.
+  
+ * Service that silently drops lines to the log, showing statistics and information about the JVM (memory, GC, etc...).  
+
+*Build System*
+
+  * Ant scripts provided to package your application, convert it to exe, create installers, create javadocs... _TO BE DONE_.
+
+*Package Naming conventions*
+
+  * JGF "basegame" suggests a standard package structure for games, for users to mimic shall they wish to. _TO BE DONE_.
