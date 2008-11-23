@@ -9,8 +9,8 @@ It is asumed that you have some experience writing Java programs and possibly us
 
   * [DownloadingJGF Downloading JGF]
   * [Overview]
-  * [JGFBasics JGF Basics]
-  * [Tutorials]
+  * [UserGuide User Guide]
+  * [Examples Examples]
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
