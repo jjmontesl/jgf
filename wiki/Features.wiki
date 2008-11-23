@@ -91,7 +91,7 @@ The Loader System definitely requires some explanation. Visit [LoaderSystem Load
   * Standard functional units (LogicStates, ViewStates and Entities), which make the application easier to understand and develop.
 
   * JGF is oriented towards a Client / Server architecture (even if your game is not networked). _TO BE REVIEWED_. _TO BE DONE_.
-  * Information between your logic and your interface is routed using messages. _TO BE REVIEWED_. TO BE DONE_.
+  * Information between your logic and your interface is routed using messages. _TO BE REVIEWED_. _TO BE DONE_.
 
 *Logging*
 
