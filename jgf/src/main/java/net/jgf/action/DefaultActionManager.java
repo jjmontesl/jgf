@@ -10,7 +10,7 @@ import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -48,7 +48,7 @@ public class DefaultActionManager extends BaseService implements ActionManager {
 		List<Action> list = ConfigurableFactory.newListFromConfig(config, configPath + "/action", Action.class);
 		for (Action action : list) {
 			actions.put(action.getId(), action);
-			System.getDirectory().addObject(action.getId(), action);
+			Jgf.getDirectory().addObject(action.getId(), action);
 		}
 
 	}

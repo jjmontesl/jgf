@@ -3,7 +3,7 @@ package net.jgf.loader;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.model.ModelException;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 
 
@@ -14,15 +14,13 @@ import net.jgf.system.System;
 @Configurable
 public class ReferenceLoader<T> extends BaseLoader<T> {
 
-	private String loaderRef;
+	private Loader<T> loader;
 
 
 	@Override
 	public T load(T base, LoadProperties properties) throws ModelException {
 
 		combineProperties(properties);
-		Loader<T> loader = System.getDirectory().getObjectAs(loaderRef, Loader.class);
-
 		return loader.load(base, properties);
 
 	}
@@ -35,10 +33,26 @@ public class ReferenceLoader<T> extends BaseLoader<T> {
 	public void readConfig(Config config, String configPath) {
 
 		super.readConfig(config, configPath);
-
-		// Read list of subtransformers
-		loaderRef = config.getString(configPath + "/loader/@ref");
+		Jgf.getDirectory().register(this, "loader", config.getString(configPath + "/loader/@ref"));
 
 	}
+
+
+	/**
+	 * @return the loader
+	 */
+	public Loader<T> getLoader() {
+		return loader;
+	}
+
+
+	/**
+	 * @param loader the loader to set
+	 */
+	public void setLoader(Loader<T> loader) {
+		this.loader = loader;
+	}
+
+
 
 }

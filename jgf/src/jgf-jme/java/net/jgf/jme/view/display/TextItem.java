@@ -4,19 +4,14 @@ package net.jgf.jme.view.display;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.config.JmeConfigHelper;
+import net.jgf.jme.scene.util.TextQuadUtils;
 
-import com.jme.image.Texture;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial;
-import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
-import com.jme.util.resource.ResourceLocatorTool;
 
 /**
  *
@@ -24,13 +19,19 @@ import com.jme.util.resource.ResourceLocatorTool;
  * @version $Revision$
  */
 @Configurable
-public class ImageItem extends DisplayItem {
+public class TextItem extends DisplayItem {
 
 	protected Vector3f center = new Vector3f();
 
-	protected String textureUrl;
+	protected String text = "UNDEFINED";
 
-	protected float size = 1.0f;
+	protected float size = 0.2f;
+
+	protected float ratio = 1.0f;
+
+	protected String font = TextQuadUtils.DEFAULT_FONT;
+
+	protected Quad quad = null;
 
 	/**
 	 * Configures this object from Config.
@@ -41,8 +42,10 @@ public class ImageItem extends DisplayItem {
 		super.readConfig(config, configPath);
 
 		setCenter(JmeConfigHelper.getVector3f(config, configPath + "/center"));
-		setTextureUrl(config.getString(configPath + "/textureUrl"));
+		setText(config.getString(configPath + "/text"));
+		setFont(config.getString(configPath + "/font", getFont()));
 		setSize(config.getFloat(configPath + "/size"));
+		setRatio(config.getFloat(configPath + "/ratio", getRatio()));
 
 	}
 
@@ -54,34 +57,25 @@ public class ImageItem extends DisplayItem {
 	@Override
 	public void refreshNode(Node display) {
 
-		Quad quad = new Quad("quad-" + this.getId());
-		quad.setCullHint(Spatial.CullHint.Never);
-		quad.setRenderQueueMode(Renderer.QUEUE_ORTHO);
-		//quad.setZOrder(Integer.MIN_VALUE);
-		quad.setLightCombineMode(Spatial.LightCombineMode.Off);
-		quad.setTextureCombineMode(TextureCombineMode.Replace);
+		// TODO: Review this refreshing strategy... should be usable for HUDs too
+		if (quad != null) display.detachChild(quad);
 
-		// Prepare some resources
-    Texture imageTexture = TextureManager.loadTexture(
-    	ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, getTextureUrl()),
-			Texture.MinificationFilter.BilinearNearestMipMap,
-			Texture.MagnificationFilter.Bilinear);
-  	TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-    ts.setTexture(imageTexture, 0);
-    ts.setEnabled(true);
-    quad.setRenderState(ts);
-
-    // TODO: FIXME: size is dependant on image real size and therefore on screen size!
-    float imageHeight = getSize() * ts.getTexture().getImage().getHeight();
-		float imageWidth = getSize() * ts.getTexture().getImage().getWidth();
-		quad.resize(imageWidth, imageHeight);
-
+		TextQuadUtils textLabel = new TextQuadUtils(text.trim());
+		textLabel.setFont(font);
 
 		Vector2f displaySize = new Vector2f(DisplaySystem.getDisplaySystem().getRenderer().getWidth(), DisplaySystem.getDisplaySystem().getRenderer().getHeight());
 		Vector3f ortoCenter = new Vector3f(0.5f * displaySize.x, 0.5f * displaySize.y, 0);
+
+		quad = textLabel.getQuad(ratio);
 		quad.getLocalTranslation().set(ortoCenter.x * center.x + ortoCenter.x, ortoCenter.y * center.y + ortoCenter.y, 0 );
+		quad.getLocalScale().multLocal(size * displaySize.y);
+		//billboard.getLocalTranslation().set(0.0f, 0.0f, 0.0f);
+		//quad.getLocalTranslation().set(center.x, center.y, 0.0f);
+
+		quad.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 
 		quad.updateRenderState();
+		quad.updateGeometricState(0, true);
 
 		display.attachChild(quad);
 
@@ -103,19 +97,25 @@ public class ImageItem extends DisplayItem {
 		this.center = center;
 	}
 
-	/**
-	 * @return the textureUrl
-	 */
-	public String getTextureUrl() {
-		return textureUrl;
-	}
+
 
 	/**
-	 * @param textureUrl the textureUrl to set
+	 * @return the text
 	 */
-	public void setTextureUrl(String textureUrl) {
-		this.textureUrl = textureUrl;
+	public String getText() {
+		return text;
 	}
+
+
+
+	/**
+	 * @param text the text to set
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
+
+
 
 	/**
 	 * @return the size
@@ -129,6 +129,42 @@ public class ImageItem extends DisplayItem {
 	 */
 	public void setSize(float size) {
 		this.size = size;
+	}
+
+
+
+	/**
+	 * @return the ratio
+	 */
+	public float getRatio() {
+		return ratio;
+	}
+
+
+
+	/**
+	 * @param ratio the ratio to set
+	 */
+	public void setRatio(float ratio) {
+		this.ratio = ratio;
+	}
+
+
+
+	/**
+	 * @return the font
+	 */
+	public String getFont() {
+		return font;
+	}
+
+
+
+	/**
+	 * @param font the font to set
+	 */
+	public void setFont(String font) {
+		this.font = font;
 	}
 
 

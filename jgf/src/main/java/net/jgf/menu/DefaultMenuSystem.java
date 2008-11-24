@@ -9,7 +9,7 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -46,7 +46,7 @@ public class DefaultMenuSystem extends BaseService {
 		List<DefaultMenu> tMenus = ConfigurableFactory.newListFromConfig(config, configPath + "/menu", DefaultMenu.class);
 		for (DefaultMenu menu : tMenus) {
 			menus.add(menu);
-			System.getDirectory().addObject(menu.getId(), menu);
+			Jgf.getDirectory().addObject(menu.getId(), menu);
 		}
 
 	}

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework Global Configuration File
+	$Id$
+ --> 	
+
+<jgf>
+
+	<!-- Application configuration -->
+	<application>
+	
+		<!-- Name of the application. Will appear in the Window Title and messages. -->
+		<name>Java Game Framework: Menu Test</name>
+		
+		<!-- Application version -->
+		<version>1.0</version>
+		
+		<!-- Network protocol -->
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+		
+		<!-- Debug mode -->
+		<debug>true</debug>
+		
+		<!-- Engine reference -->
+		<engine ref="engine" />
+		
+	</application>
+	
+	<!-- 
+		Engine Component
+	 -->
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<!-- Enable jME collection of rendering statistics -->
+		<collectStats>${application/debug}</collectStats>
+
+		<!-- Service reference to the Logic Manager -->
+		<logicManager ref="logic" />
+		
+		<!-- Service reference to the State Manager -->
+		<viewManager ref="view" />
+		
+	</service>
+	
+	<!-- 
+		Logic Manager
+	 -->
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+	
+		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
+		</logic>
+		
+	</service>
+	
+	<!-- 
+		State Manager
+	 -->
+	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
+		
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
+			
+			<!-- Background sample scene -->
+			<view id="view/root/box" class="net.jgf.example.box.BoxView"
+				autoLoad="true" autoActivate="true" >
+			</view>
+			
+			<view id="view/root/main/menu" class="net.jgf.jme.view.menu.MenuView"
+						autoLoad="true" autoActivate="true" >
+
+				<initialMenu ref="menu/main" />
+
+			</view>
+							
+		</view>
+			
+	</service>
+	
+	<!-- 
+		Menu System
+	 -->
+	<service id="menu" class="net.jgf.menu.DefaultMenuSystem">
+
+		<menu id="menu/main" class="net.jgf.menu.DefaultMenu">
+			
+			<item id="menu/main/title" class="net.jgf.menu.items.TextMenuItem">
+				<text>Main Menu</text>
+				<size>1.2</size>
+			</item>
+			<item id="menu/main/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
+			<item id="menu/main/newgame" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>New Game</text>
+				<target ref="menu/newgame" />
+			</item>
+			<item id="menu/main/settings" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>Settings</text>
+				<target ref="menu/settings" />
+			</item>
+			<item id="menu/main/quit" class="net.jgf.menu.items.ActionMenuItem">
+				<text>Quit</text>
+				<action ref="" />
+			</item>
+		</menu>
+
+		<menu id="menu/newgame" class="net.jgf.menu.DefaultMenu">
+			
+			<cancelItem>menu/newgame/back</cancelItem>
+		
+			<item id="menu/newgame/title" class="net.jgf.menu.items.TextMenuItem">
+				<text>New Game</text>
+				<size>1.2</size>
+			</item>
+			
+			<item id="menu/newgame/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
+			<item id="menu/newgame/option1" class="net.jgf.menu.items.ActionMenuItem">
+				<text>3 Player</text>
+				<action ref="action/newgame" />
+			</item>
+			<item id="menu/newgame/option2" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>7 Players</text>
+				<target ref="menu/newgame/network" />
+			</item>
+			<item id="menu/newgame/back" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<text>Back</text>
+				<target ref="menu/back" />
+			</item>			
+		</menu>
+		
+	</service>		
+	
+</jgf>
+ 
+
+

@@ -7,7 +7,7 @@ import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.entity.SceneEntity;
 import net.jgf.jme.scene.DefaultJmeScene;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -28,6 +28,7 @@ import com.jme.scene.state.BlendState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.scene.state.ZBufferState.TestFunction;
 import com.jme.system.DisplaySystem;
+import com.jmex.effects.particles.ParticleController;
 import com.jmex.effects.particles.ParticleFactory;
 import com.jmex.effects.particles.ParticlePoints;
 
@@ -62,7 +63,7 @@ public class Bullet extends SceneEntity {
 
 	private int numBounces = 0;
 
-	private int maxBounces = 25;
+	private int maxBounces = 1;
 
 	//PickResults results = new BoundingPickResults();
 	PickResults results = new TrianglePickResults();
@@ -75,13 +76,17 @@ public class Bullet extends SceneEntity {
 	@Override
 	public void load() {
 		super.load();
-		scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		spawnLogic = System.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
+		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
 		numBounces = 0;
 		ttl = BULLET_TTL;
 
-		smoke = createSmoke();
-		scene.getRootNode().attachChild(smoke);
+		if (smoke == null) {
+			smoke = createSmoke();
+			scene.getRootNode().attachChild(smoke);
+		}
+		smoke.getParticleController().setRepeatType(ParticleController.RT_WRAP);
+		smoke.getParticleController().setActive(true);
 	}
 
 
@@ -93,7 +98,8 @@ public class Bullet extends SceneEntity {
 	@Override
 	public void unload() {
 		super.unload();
-		scene.getRootNode().detachChild(smoke);
+		smoke.getParticleController().setRepeatType(ParticleController.RT_CLAMP);
+		//scene.getRootNode().detachChild(smoke);
 	}
 
 
@@ -103,7 +109,7 @@ public class Bullet extends SceneEntity {
     pPoints.setPointSize(8);
     pPoints.setAntialiased(true);
     pPoints.setOriginOffset(new Vector3f(0, 0, 0));
-    pPoints.setInitialVelocity(0.001f);
+    pPoints.setInitialVelocity(-0.0005f);
     pPoints.setStartSize(0.5f);
     pPoints.setEndSize(5.5f);
     pPoints.setMinimumLifeTime(400f);

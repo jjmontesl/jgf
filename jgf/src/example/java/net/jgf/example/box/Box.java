@@ -31,40 +31,31 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.jgf.engine;
+package net.jgf.example.box;
 
-import net.jgf.jme.engine.JMEEngine;
-import net.jgf.logic.LogicManager;
-import net.jgf.view.ViewManager;
+import net.jgf.system.Application;
 
 
 /**
- * <p>The Engine interface defines a service that runs the main game loop. It is responsible
- * for updating the LogicManager and the ViewManager services. An Engine must spawn a thread
- * to run the main game loop.</p>
- * <p>Currently, only a single engine implementation is provided ({@link JMEEngine}). Most users
- * will not need to extend or modify the engine subsystem.</p>
- * <p>See {@link JMEEngine} for an example of an implementation.</p>
- * @see BaseEngine
- * @see JMEEngine
+ * <p>The box example simply shows a box rotating in front of the camera. It is
+ * JGF simplest example.</p><p>The configuration file 'box.xml' shows the simplest
+ * configuration needed to run a JGF application.</p>
+ * <p>This class is a simple entry point for the application.</p>
+ *
+ * @see Application
  * @author jjmontes
  */
-public interface Engine {
+public class Box {
 
 	/**
-	 * Starts the main game loop, and thus the game.
+	 * Entry point to the application. JGF applications should just create
+	 * the Application object and call .start() on it.
+	 * @see Application
 	 */
-	public void start();
+	public static void main(String[] args) throws Exception {
 
-	/**
-	 * Returns a reference to the LogicManager.
-	 */
-	public LogicManager getLogicManager();
+		Application app = new Application("box/box.xml", args);
+		app.start();
 
-	/**
-	 * Returns a reference to the ViewManager.
-	 */
-	public ViewManager getViewManager();
-
+	}
 }
-

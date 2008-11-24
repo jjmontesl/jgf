@@ -6,7 +6,7 @@ import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.jme.config.JmeConfigHelper;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 import net.jgf.view.ViewState;
 
@@ -74,7 +74,7 @@ public final class ToggleInputView extends BaseViewState {
 	public void unload() {
 		// TODO: unload logging should be done by container??
 		view.unload();
-		System.getDirectory().removeObject(view.getId());
+		Jgf.getDirectory().removeObject(view.getId());
 		view = null;
 		super.unload();
 	}
@@ -125,7 +125,7 @@ public final class ToggleInputView extends BaseViewState {
 		super.readConfig(config, configPath);
 
 		view = ConfigurableFactory.newFromConfig(config, configPath + "/view", ViewState.class);
-		System.getDirectory().addObject(view.getId(), view);
+		Jgf.getDirectory().addObject(view.getId(), view);
 
 		key = JmeConfigHelper.getKeyInput(config, configPath + "/key", 0);
 

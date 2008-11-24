@@ -6,7 +6,7 @@ import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
 import net.jgf.core.service.ServiceException;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -47,7 +47,7 @@ public class SceneManager extends BaseService {
 			// TODO: Is not advisable to initialize scenes at reading time because they can be engine
 			// dependent. Scene initialization should be done at runtime??
 			scene = ConfigurableFactory.newFromConfig(config, configPath + "/scene", Scene.class);
-			System.getDirectory().addObject(scene.getId(), scene);
+			Jgf.getDirectory().addObject(scene.getId(), scene);
 		}
 
 	}

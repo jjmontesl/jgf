@@ -48,7 +48,7 @@ public abstract class SceneEntity extends BaseEntity {
 	public void integrate(EntityGroup parentEntity, Node parentNode, Vector3f location) {
 		parentEntity.attachChild(this);
 		this.setId(parentEntity.getId() + "/" + this.getId());
-		net.jgf.system.System.getDirectory().addObject(this.getId(), this);
+		net.jgf.system.Jgf.getDirectory().addObject(this.getId(), this);
 
 		parentNode.attachChild(this.getSpatial());
 		if (location != null) getSpatial().setLocalTranslation(location);
@@ -57,7 +57,7 @@ public abstract class SceneEntity extends BaseEntity {
 	public void exclude(EntityGroup parentEntity, Node parentNode) {
 
 		parentNode.detachChild(this.getSpatial());
-		net.jgf.system.System.getDirectory().removeObject(this.getId());
+		net.jgf.system.Jgf.getDirectory().removeObject(this.getId());
 		parentEntity.dettachChild(this);
 	}
 

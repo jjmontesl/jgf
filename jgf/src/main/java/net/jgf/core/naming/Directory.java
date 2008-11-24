@@ -83,11 +83,17 @@ public final class Directory {
 	private Map<String, WeakReference<Object>> objects;
 
 	/**
+	 * Directory users registry, which sets references to objects that need them.
+	 */
+	private Registry registry;
+
+	/**
 	 * Constructor.
 	 */
 	public Directory() {
 		peakSize = 0;
 		retrievalCount = 0;
+		registry = new Registry();
 		objects = new Hashtable<String, WeakReference<Object>>(DEFAULT_DIRECTORY_SIZE, 0.6f);
 	}
 
@@ -143,10 +149,16 @@ public final class Directory {
 
 		if (objects.size() > peakSize) peakSize = objects.size();
 
+		// Update the registered objects
+		registry.update(id, object);
+
 	}
 
 	/**
 	 * Returns a object given its name, casted to the desired type.
+	 * <p>Note that users can also register themselves with the
+	 * Directory registry, so they receive updated references.</p>
+	 * @see Directory#register(String, Object, String)
 	 */
 	public synchronized <T> T getObjectAs (String id, Class<T> expectedClass) throws ServiceException {
 
@@ -163,7 +175,7 @@ public final class Directory {
 
 		Object o = ref.get();
 		if (o == null) {
-			throw new ConfigException("Trying to retrieve a garbage collected object '" + id + "'");
+			throw new ConfigException("Trying to retrieve a garbage collected object '" + id + "' (the object does not exist anymore but it was not removed from the directory)");
 		}
 
 		if (! expectedClass.isAssignableFrom(o.getClass())) {
@@ -174,6 +186,26 @@ public final class Directory {
 		@SuppressWarnings("unchecked") T objectAs = (T) o;
 
 		return objectAs;
+	}
+
+	/**
+	 * <p>Evaluates if the directory contains an object with a given name. This is an internal function
+	 * used by the Registry and should not be called by users.</p>
+	 */
+	public synchronized boolean containsObject (String id) {
+
+		if (id==null) {
+			throw new ServiceException("Trying to evaluate if directory contains an object with name 'null'");
+		}
+
+		WeakReference<Object> ref = objects.get(id);
+		if (ref == null) return false;
+
+		if (ref.get() == null) {
+			throw new ConfigException("Detected a garbage collected object when evaluating if directory contains an object with name '" + id + "' (the object does not exist anymore but it was not removed from the directory)");
+		}
+
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -194,10 +226,20 @@ public final class Directory {
 	/**
 	 * @return the peakSize
 	 */
-	public int getPeakSize() {
+	public synchronized int getPeakSize() {
 		return peakSize;
 	}
 
-
+	/**
+	 * <p>Registers an object to be updated when the Directory entry named as the
+	 * 'id' argument changes. The object will also be receive an initial update
+	 * to synchronize it with the value in the repository. If the 'id' doesn't
+	 * exist in the Directory, null is injected.</p>
+	 * <p>The object resolved will be injected into the 'field' attribute using
+	 * a public setter.</p>
+	 */
+	public synchronized void register(Object object, String field, String id) {
+		registry.register(object, field, id);
+	}
 
 }

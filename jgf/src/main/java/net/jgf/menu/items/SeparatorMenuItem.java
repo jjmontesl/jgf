@@ -24,4 +24,13 @@ public class SeparatorMenuItem extends BaseMenuItem {
 
 	}
 
+	@Override
+	public boolean isNavigable() {
+	  return false;
+	}
+
+	@Override
+	public void perform() {
+	}
+
 }

@@ -75,9 +75,9 @@ import com.jme.util.resource.SimpleResourceLocator;
  * the startup process. This class also holds the list of services configured and
  * the component directory.</p>
  * <p>Once the framework is started, this object can always be accessed through the static method
- * {@link net.jgf.system.System#getApp()}.</p>
+ * {@link net.jgf.system.Jgf#getApp()}.</p>
  *
- * @see System
+ * @see Jgf
  * @author jjmontes
  */
 public final class Application {
@@ -127,11 +127,6 @@ public final class Application {
 	 * The URL to the configuration file.
 	 */
 	private String configUrl;
-
-	/**
-	 * Name reference to the Engine service to be started by this application.
-	 */
-	private String engineRef;
 
 	/**
 	 * The Engine used.
@@ -208,7 +203,7 @@ public final class Application {
 	private void bootApplication() throws ServiceException {
 
 		// Initialize JGF
-		System.app = this;
+		Jgf.app = this;
 
 		// Init logging
 		initLogging();
@@ -241,8 +236,6 @@ public final class Application {
 			logger.debug("Initializing service " + service);
 			service.initialize();
 		}
-
-		engine = System.getDirectory().getObjectAs(engineRef, Engine.class);
 
 	}
 
@@ -298,7 +291,8 @@ public final class Application {
 		this.setName(config.getString("application/name"));
 		this.setVersion(config.getString("application/version", this.version));
 		this.setDebug(config.getBoolean("application/debug", false));
-		this.setEngineRef(config.getString("application/engine/@ref"));
+
+		Jgf.getDirectory().register(this, "engine", config.getString("application/engine/@ref"));
 
 		// Build and register services
 		List<Service> servicesList = ConfigurableFactory.newListFromConfig(config, "service", Service.class);
@@ -357,21 +351,6 @@ public final class Application {
 
 
 
-	/**
-	 * Returns the name reference to the Engine to be used by JGF.
-	 */
-	public String getEngineRef() {
-		return engineRef;
-	}
-
-
-
-	/**
-	 * Sets the name reference to the Engine to be used by JGF.
-	 */
-	public void setEngineRef(String engineRef) {
-		this.engineRef = engineRef;
-	}
 
 
 	/**
@@ -404,7 +383,7 @@ public final class Application {
 
 	/**
 	 * <p>Returns the naming directory used by this application (note that it is easier
-	 * to access this through the {@link System#getDirectory()}) static method.</p>
+	 * to access this through the {@link Jgf#getDirectory()}) static method.</p>
 	 *
 	 */
 	public Directory getDirectory() {
@@ -420,6 +399,16 @@ public final class Application {
 	public String[] getArgs() {
 		return args;
 	}
+
+
+
+	/**
+	 * @param engine the engine to set
+	 */
+	public void setEngine(Engine engine) {
+		this.engine = engine;
+	}
+
 
 
 }

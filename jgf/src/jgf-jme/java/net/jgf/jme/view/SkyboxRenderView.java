@@ -7,7 +7,6 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.camera.CameraController;
 import net.jgf.jme.scene.sky.HasSky;
-import net.jgf.system.System;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -30,13 +29,6 @@ public class SkyboxRenderView extends BaseViewState {
 	 */
 	protected CameraController camera;
 
-	protected String cameraRef;
-
-	/**
-	 *
-	 */
-	protected String hasSkyRef;
-
 	/**
 	 *
 	 */
@@ -50,9 +42,6 @@ public class SkyboxRenderView extends BaseViewState {
 	@Override
 	public void load() {
 		super.load();
-		// TODO: Check type
-		hasSky = System.getDirectory().getObjectAs(hasSkyRef, HasSky.class);
-		camera = System.getDirectory().getObjectAs(cameraRef, CameraController.class);
 	}
 
 	/**
@@ -130,22 +119,38 @@ public class SkyboxRenderView extends BaseViewState {
 
 		super.readConfig(config, configPath);
 
-		this.hasSkyRef = config.getString(configPath + "/hasSky/@ref", null);
-		this.cameraRef = config.getString(configPath + "/camera/@ref", null);
+		net.jgf.system.Jgf.getDirectory().register(this, "hasSky", config.getString(configPath + "/hasSky/@ref"));
+		net.jgf.system.Jgf.getDirectory().register(this, "camera", config.getString(configPath + "/camera/@ref"));
 	}
 
 	/**
-	 * @return the hasSkyRef
+	 * @return the camera
 	 */
-	public String getHasSkyRef() {
-		return hasSkyRef;
+	public CameraController getCamera() {
+		return camera;
 	}
 
 	/**
-	 * @param hasSkyRef the hasSkyRef to set
+	 * @param camera the camera to set
 	 */
-	public void setHasSkyRef(String hasSkyRef) {
-		this.hasSkyRef = hasSkyRef;
+	public void setCamera(CameraController camera) {
+		this.camera = camera;
 	}
+
+	/**
+	 * @return the hasSky
+	 */
+	public HasSky getHasSky() {
+		return hasSky;
+	}
+
+	/**
+	 * @param hasSky the hasSky to set
+	 */
+	public void setHasSky(HasSky hasSky) {
+		this.hasSky = hasSky;
+	}
+
+
 
 }

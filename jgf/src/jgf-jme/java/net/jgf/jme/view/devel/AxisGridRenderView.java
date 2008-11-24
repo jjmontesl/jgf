@@ -6,7 +6,6 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.camera.CameraController;
 import net.jgf.jme.config.JmeConfigHelper;
-import net.jgf.system.System;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -40,8 +39,6 @@ public class AxisGridRenderView extends BaseViewState {
 	 */
 	protected CameraController camera;
 
-	protected String cameraRef;
-
 	protected Node rootNode;
 
 	protected boolean drawBehind = true;
@@ -58,7 +55,6 @@ public class AxisGridRenderView extends BaseViewState {
 	@Override
 	public void load() {
 		super.load();
-		camera = System.getDirectory().getObjectAs(cameraRef, CameraController.class);
 
 		rootNode = new Node();
 		Node unlit = buildGeometry();
@@ -250,9 +246,52 @@ public class AxisGridRenderView extends BaseViewState {
 
 		super.readConfig(config, configPath);
 
-		this.cameraRef = config.getString(configPath + "/camera/@ref", null);
 		this.drawBehind = config.getBoolean(configPath + "/drawBehind", this.drawBehind);
 		this.center = JmeConfigHelper.getVector3f(config, configPath + "/gridCenter", this.center);
+
+		net.jgf.system.Jgf.getDirectory().register(this, "camera", config.getString(configPath + "/camera/@ref"));
+	}
+
+	/**
+	 * @return the camera
+	 */
+	public CameraController getCamera() {
+		return camera;
+	}
+
+	/**
+	 * @param camera the camera to set
+	 */
+	public void setCamera(CameraController camera) {
+		this.camera = camera;
+	}
+
+	/**
+	 * @return the drawBehind
+	 */
+	public boolean isDrawBehind() {
+		return drawBehind;
+	}
+
+	/**
+	 * @param drawBehind the drawBehind to set
+	 */
+	public void setDrawBehind(boolean drawBehind) {
+		this.drawBehind = drawBehind;
+	}
+
+	/**
+	 * @return the center
+	 */
+	public Vector3f getCenter() {
+		return center;
+	}
+
+	/**
+	 * @param center the center to set
+	 */
+	public void setCenter(Vector3f center) {
+		this.center = center;
 	}
 
 }

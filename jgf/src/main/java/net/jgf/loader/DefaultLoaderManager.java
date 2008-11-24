@@ -10,7 +10,7 @@ import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 
 
@@ -51,7 +51,7 @@ public class DefaultLoaderManager extends BaseService implements LoaderManager {
 
 		List<Loader> cfgLoaders = ConfigurableFactory.newListFromConfig(config, configPath + "/loader", Loader.class);
 		for (Loader<?> loader : cfgLoaders) {
-			System.getDirectory().addObject(loader.getId(), loader);
+			Jgf.getDirectory().addObject(loader.getId(), loader);
 			this.addLoader (loader);
 		}
 

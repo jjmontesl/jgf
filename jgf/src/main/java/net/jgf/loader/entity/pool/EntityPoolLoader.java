@@ -12,7 +12,7 @@ import net.jgf.jme.model.ModelException;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.Loader;
 import net.jgf.loader.entity.EntityLoader;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -29,7 +29,7 @@ public class EntityPoolLoader extends EntityLoader {
 	 */
 	private static final Logger logger = Logger.getLogger(EntityPoolLoader.class);
 
-	private String loaderRef;
+	private Loader<Entity> loader;
 
 	List<EntityPool> pools;
 
@@ -50,8 +50,6 @@ public class EntityPoolLoader extends EntityLoader {
 		checkNullBase(base);
 
 		Entity entity = null;
-
-		Loader<Entity> loader = System.getDirectory().getObjectAs(loaderRef, Loader.class);
 
 		for (EntityPool pool : pools) {
 			if (pool.matches(properties)) {
@@ -104,13 +102,13 @@ public class EntityPoolLoader extends EntityLoader {
 
 		super.readConfig(config, configPath);
 
-		// Read list of subtransformers
-		loaderRef = config.getString(configPath + "/loader/@ref");
+		Jgf.getDirectory().register(this, "loader", config.getString(configPath + "/loader/@ref"));
 
+		// Read list of subtransformers
 		List<EntityPool> poolList = ConfigurableFactory.newListFromConfig(config, configPath + "/pool", EntityPool.class);
 		for (EntityPool pool : poolList) {
 			pools.add(pool);
-			System.getDirectory().addObject(pool.getId(), pool);
+			Jgf.getDirectory().addObject(pool.getId(), pool);
 		}
 
 	}
@@ -122,5 +120,20 @@ public class EntityPoolLoader extends EntityLoader {
 	public String toString() {
 		return this.getClass().getSimpleName() + "[id=" + id +",pools=" + pools.size() + "]";
 	}
+
+	/**
+	 * @return the loader
+	 */
+	public Loader<Entity> getLoader() {
+		return loader;
+	}
+
+	/**
+	 * @param loader the loader to set
+	 */
+	public void setLoader(Loader<Entity> loader) {
+		this.loader = loader;
+	}
+
 
 }

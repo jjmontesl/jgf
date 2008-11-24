@@ -31,13 +31,13 @@ public final class TypeParserHelper  {
 			Field field = KeyInput.class.getField(keyInput);
 			result = field.getInt(null);
 		} catch (SecurityException e) {
-			throw new ConfigException("Could not find KeyInput '" + keyInput + "' when parsing from String", e);
+			throw new ConfigException("Could not find KeyInput '" + keyInput + "' when parsing KeyInput value", e);
 		} catch (NoSuchFieldException e) {
-			throw new ConfigException("Invalid KeyInput '" + keyInput + "' when parsing from String", e);
+			throw new ConfigException("Unknown key name '" + keyInput + "' when parsing a KeyInput value");
 		} catch (IllegalArgumentException e) {
-			throw new ConfigException("Could not access KeyInput '" + keyInput + "' when parsing from String", e);
+			throw new ConfigException("Could not access KeyInput '" + keyInput + "' parsing KeyInput value", e);
 		} catch (IllegalAccessException e) {
-			throw new ConfigException("Could not access KeyInput '" + keyInput + "' when parsing from String", e);
+			throw new ConfigException("Could not access KeyInput '" + keyInput + "' parsing KeyInput value", e);
 		}
 		return result;
 	}

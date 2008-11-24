@@ -9,7 +9,7 @@ import java.util.List;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -52,7 +52,7 @@ public class DisplayItemsView extends BaseViewState {
 		super.load();
 
 		for (DisplayItem item : displayItems) {
-			item.load(this.rootNode);
+			item.refreshNode(this.rootNode);
 		}
 
 	}
@@ -103,7 +103,7 @@ public class DisplayItemsView extends BaseViewState {
 
 		List<DisplayItem> list = ConfigurableFactory.newListFromConfig(config, configPath + "/item", DisplayItem.class);
 		for (DisplayItem item : list) {
-			System.getDirectory().addObject(item.getId(), item);
+			Jgf.getDirectory().addObject(item.getId(), item);
 			this.addItem(item);
 		}
 
@@ -111,6 +111,13 @@ public class DisplayItemsView extends BaseViewState {
 
 	public void addItem(DisplayItem item) {
 		displayItems.add(item);
+		if (this.isLoaded()) item.refreshNode(this.rootNode);
+	}
+
+	public void clearItems() {
+		// TODO: Clear items, textures...
+		this.rootNode.detachAllChildren();
+		displayItems.clear();
 	}
 
 }

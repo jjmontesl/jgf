@@ -57,17 +57,6 @@
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
 		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
-			
-			<logic id="logic/root/input" class="net.jgf.jme.input.DefaultInputLogic">
-				
-				<autoLoad>true</autoLoad>
-				<autoActivate>true</autoActivate>
-				
-				<bindKey command="consoleSwitch" keyCode="KEY_TILDE" />
-				<bindKey command="consoleSwitch" keyCode="%{input.bind.console}" />
-				
-			</logic>
-		
 		</logic>
 		
 	</service>
@@ -79,27 +68,19 @@
 		
 		<view id="view/root" class="net.jgf.view.ViewStateNode">
 			
-			<autoLoad>true</autoLoad>
-			<autoActivate>true</autoActivate>
-			
 			<!-- Background sample scene -->
-			<view id="view/root/box" class="net.jgf.jme.view.GameStateWrapperView">
-				<autoActivate>true</autoActivate>
-				<autoLoad>true</autoLoad>
-				<gamestate>net.jgf.example.gamestatewrapper.BoxGameState</gamestate>
+			<view id="view/root/box" class="net.jgf.example.box.BoxView"
+				autoLoad="true" autoActivate="true" >
 			</view>
 					
 			<!-- Console View state that serves as interface to use the Console system -->
-			<view id="view/root/consolekey" class="net.jgf.jme.view.KeySwitchView">
+			<view id="view/root/consolekey" class="net.jgf.jme.view.ToggleInputView"
+				autoLoad="true" autoActivate="true">
 
-				<autoLoad>true</autoLoad>
-				<autoActivate>true</autoActivate>
+				<key>KEY_BACKSLASH</key>
 
-				<switchCommand>consoleSwitch</switchCommand>
-
-				<view id="view/root/console" class="net.jgf.jme.view.ConsoleView">
-					<autoActivate>true</autoActivate>
-					<autoLoad>true</autoLoad>
+				<view id="view/root/console" class="net.jgf.jme.view.ConsoleView"
+					autoLoad="true" autoActivate="true">
 					<console ref="console" />
 				</view>
 				

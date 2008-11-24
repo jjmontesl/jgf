@@ -40,11 +40,11 @@ import org.apache.log4j.Logger;
 /**
  * <p>This class is a singleton used to globalize the main application objects.
  * It holds references to objects but does not create any of them.</p>
- * <p>The most common method of this class is {@link System#getDirectory()},
+ * <p>The most common method of this class is {@link Jgf#getDirectory()},
  * which provides access to the directory that holds references to the
  * framework components that you will be using.</p>
  */
-public class System {
+public class Jgf {
 
 	/**
 	 * Class logger
@@ -61,7 +61,7 @@ public class System {
 	/**
 	 * Private constructor to avoid instantiation.
 	 */
-	private System() {
+	private Jgf() {
 		// Constructor should do nothing
 	}
 

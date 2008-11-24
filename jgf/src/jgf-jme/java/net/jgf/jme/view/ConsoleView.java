@@ -8,7 +8,6 @@ import net.jgf.config.Configurable;
 import net.jgf.console.Console;
 import net.jgf.console.ConsoleObserver;
 import net.jgf.console.StreamConsoleWrapper;
-import net.jgf.system.System;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -86,7 +85,7 @@ public class ConsoleView extends BaseViewState implements ConsoleObserver {
 	@Override
 	public void load() {
 		super.load();
-		if (console == null) console = System.getDirectory().getObjectAs(consoleRef, StreamConsoleWrapper.class);
+		// TODO: Unload: remove observer
 		console.addConsoleObserver(this);
 		input = new InputHandler();
 		input.addAction(new KeyInputAction(), InputHandler.DEVICE_KEYBOARD, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
@@ -209,7 +208,8 @@ public class ConsoleView extends BaseViewState implements ConsoleObserver {
 	public void readConfig(Config config, String configPath) {
 
 		super.readConfig(config, configPath);
-		this.consoleRef = config.getString(configPath + "/console/@ref", null);
+
+		net.jgf.system.Jgf.getDirectory().register(this, "console", config.getString(configPath + "/console/@ref"));
 
 	}
 

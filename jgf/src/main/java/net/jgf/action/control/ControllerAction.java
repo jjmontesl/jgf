@@ -8,7 +8,7 @@ import net.jgf.action.Action;
 import net.jgf.action.BaseAction;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 
 /**
@@ -57,7 +57,7 @@ public class ControllerAction extends BaseAction {
 
 		for (ActionStep step : steps) {
 
-			Object ref = System.getDirectory().getObjectAs(step.getRef(), Object.class);
+			Object ref = Jgf.getDirectory().getObjectAs(step.getRef(), Object.class);
 
 			if (step.getType() == ActionStepType.RunAction) {
 				((Action) ref).perform();

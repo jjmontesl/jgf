@@ -9,7 +9,7 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -61,7 +61,7 @@ public class FileChainLoader<T> extends BaseLoader<T> {
 		for (Loader<T> subLoader : subLoaders) {
 			// TODO: properties are left to following loaders... only selected properties should survive???!!!!
 			// TODO: this could conflict with default values, as they could be already added by a precedent loader
-			System.getDirectory().addObject(subLoader.getId(), subLoader);
+			Jgf.getDirectory().addObject(subLoader.getId(), subLoader);
 			result = subLoader.load(result, properties);
 		}
 

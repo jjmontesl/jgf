@@ -5,7 +5,6 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
-import net.jgf.system.System;
 import net.jgf.util.system.SystemInfoService;
 import net.jgf.view.BaseViewState;
 
@@ -40,8 +39,6 @@ public class DebugView extends BaseViewState {
   	/**
   	 *
   	 */
-  	protected String sceneManagerRef;
-
   	protected Node rootNode;
 
     protected WireframeState wireState;
@@ -51,12 +48,14 @@ public class DebugView extends BaseViewState {
     protected boolean showDepth = false;
     protected boolean showNormals = false;
 
+    protected SceneManager sceneManager;
+
     @Override
 		public void load() {
 
     	super.load();
 
-    	JmeScene scene= (JmeScene) System.getDirectory().getObjectAs(sceneManagerRef, SceneManager.class).getScene();
+    	JmeScene scene= (JmeScene) sceneManager.getScene();
     	rootNode = scene.getRootNode();
 
       // create a statistics game state
@@ -233,8 +232,28 @@ public class DebugView extends BaseViewState {
 		public void readConfig(Config config, String configPath) {
 
   		super.readConfig(config, configPath);
-  		this.sceneManagerRef = config.getString(configPath + "/sceneManager/@ref");
+
+  		String sceneManagerRef = config.getString(configPath + "/sceneManager/@ref");
+  		if (sceneManagerRef != null) net.jgf.system.Jgf.getDirectory().register(this, "sceneManager", sceneManagerRef);
 
   	}
+
+
+		/**
+		 * @return the sceneManager
+		 */
+		public SceneManager getSceneManager() {
+			return sceneManager;
+		}
+
+
+		/**
+		 * @param sceneManager the sceneManager to set
+		 */
+		public void setSceneManager(SceneManager sceneManager) {
+			this.sceneManager = sceneManager;
+		}
+
+
 
 }

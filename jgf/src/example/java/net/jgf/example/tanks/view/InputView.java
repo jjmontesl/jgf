@@ -6,7 +6,7 @@ package net.jgf.example.tanks.view;
 import net.jgf.config.Configurable;
 import net.jgf.example.tanks.entity.PlayerTank;
 import net.jgf.jme.view.CursorRenderView;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -100,7 +100,7 @@ public class InputView extends BaseViewState {
 
 		super.load();
 
-		player1 = System.getDirectory().getObjectAs("entity/root/players/player1", PlayerTank.class);
+		player1 = Jgf.getDirectory().getObjectAs("entity/root/players/player1", PlayerTank.class);
 
 		inputHandler = new InputHandler();
 		inputHandler.addAction(new KeyInputAction(), InputHandler.DEVICE_KEYBOARD, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
@@ -110,7 +110,7 @@ public class InputView extends BaseViewState {
 	@Override
 	public void activate() {
 		super.activate();
-		CursorRenderView cursorView = System.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
+		CursorRenderView cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
     cursorView.getMouse().registerWithInputHandler( inputHandler );
 		inputHandler.addAction(new TankMouseInputAction(cursorView.getMouse()), InputHandler.DEVICE_MOUSE, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
 	}

@@ -9,6 +9,7 @@ import net.jgf.core.IllegalStateException;
 import net.jgf.jme.camera.CameraController;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
+import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -33,16 +34,6 @@ public class SceneRenderView extends BaseViewState {
 	protected CameraController camera;
 
 	/**
-	 * The reference to the camera
-	 */
-	protected String cameraRef;
-
-	/**
-	 *
-	 */
-	protected String sceneManagerRef;
-
-	/**
 	 *
 	 */
 	protected SceneManager sceneManager;
@@ -54,16 +45,6 @@ public class SceneRenderView extends BaseViewState {
 	@Override
 	public void load() {
 		super.load();
-
-		// Initialize objects from references if needed
-		// TODO: Why this checking on nulls? name resolution should be smoother
-		// Idea: register directory users with the directory, so they always have the correct reference
-		if ((sceneManager == null) && (sceneManagerRef != null)) {
-			sceneManager = net.jgf.system.System.getDirectory().getObjectAs(sceneManagerRef, SceneManager.class);
-		}
-		if ((camera == null) && (cameraRef != null)) {
-			camera = net.jgf.system.System.getDirectory().getObjectAs(cameraRef, CameraController.class);
-		}
 
 	}
 
@@ -127,13 +108,16 @@ public class SceneRenderView extends BaseViewState {
 
 		this.camera = cameraController;
 
+
 		// Set up default camera (only if not dedicated)
 		// TODO: Delegate this to the camera
 		// TODO: Should this be done in this setter? NO!
 		DisplaySystem display = DisplaySystem.getDisplaySystem();
-		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
-		display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
-		display.getRenderer().getCamera().update();
+		if ((display != null) && (display.getRenderer() != null)) {
+			//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
+			display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
+			display.getRenderer().getCamera().update();
+		}
 
 	}
 
@@ -146,23 +130,11 @@ public class SceneRenderView extends BaseViewState {
 		super.readConfig(config, configPath);
 
 		// TODO: Maybe these two ones should be optional / null (study carefully)
-		this.sceneManagerRef = config.getString(configPath + "/sceneManager/@ref");
-		this.cameraRef = config.getString(configPath + "/camera/@ref", null);
-	}
+		String sceneManagerRef = config.getString(configPath + "/sceneManager/@ref");
+		if (sceneManagerRef != null) net.jgf.system.Jgf.getDirectory().register(this, "sceneManager", sceneManagerRef);
+		String cameraRef = config.getString(configPath + "/camera/@ref", null);
+		if (cameraRef != null) Jgf.getDirectory().register(this, "camera", cameraRef);
 
-	/**
-	 * @return the sceneManagerRef
-	 */
-	public String getSceneManagerRef() {
-		return sceneManagerRef;
-	}
-
-	/**
-	 * @param sceneManagerRef the sceneManagerRef to set
-	 */
-	// TODO: If loaded, try to resolve the reference??
-	public void setSceneManagerRef(String sceneManagerRef) {
-		this.sceneManagerRef = sceneManagerRef;
 	}
 
 	/**
@@ -170,22 +142,6 @@ public class SceneRenderView extends BaseViewState {
 	 */
 	public CameraController getCamera() {
 		return camera;
-	}
-
-
-
-	/**
-	 * @return the cameraRef
-	 */
-	public String getCameraRef() {
-		return cameraRef;
-	}
-
-	/**
-	 * @param cameraRef the cameraRef to set
-	 */
-	public void setCameraRef(String cameraRef) {
-		this.cameraRef = cameraRef;
 	}
 
 	/**

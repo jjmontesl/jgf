@@ -5,7 +5,7 @@ import net.jgf.config.Configurable;
 import net.jgf.entity.EntityManager;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.scene.SceneManager;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -31,8 +31,8 @@ public class InGameLogic extends BaseLogicState {
 	@Override
 	public void load() {
 		super.load();
-		entityManager = System.getDirectory().getObjectAs("entity", EntityManager.class);
-		sceneManager = System.getDirectory().getObjectAs("scene/manager", SceneManager.class);
+		entityManager = Jgf.getDirectory().getObjectAs("entity", EntityManager.class);
+		sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
 	}
 
 	@Override
