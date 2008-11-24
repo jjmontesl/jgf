@@ -140,6 +140,8 @@ public abstract class BaseConsole extends BaseService implements Console {
 	 */
 	@Override
 	public void processCommand(String string) {
+		// TODO: This addline doesn't fit well here... should be optional or solved better
+		addLine("> " + string);
 		history.add(string);
 	}
 

@@ -15,7 +15,7 @@ import net.jgf.example.mudvolley1.loader.MudVolleySceneLoader;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.logic.LogicState;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 import net.jgf.view.ViewState;
 
 import org.apache.log4j.Logger;
@@ -48,13 +48,13 @@ public class NewGameLogic extends BaseLogicState {
 		NewGameLogic.logger.info ("Starting new volley game (logic)");
 
 		// Prepare scene
-		DefaultJmeScene scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		MudVolleySceneLoader sceneLoader = System.getDirectory().getObjectAs("loader/scene", MudVolleySceneLoader.class);
+		DefaultJmeScene scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		MudVolleySceneLoader sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene", MudVolleySceneLoader.class);
 		sceneLoader.load(scene);
 
 		// Prepare entities
-		EntityGroup rootEntity = System.getDirectory().getObjectAs("entity/root", EntityGroup.class);
-		MudVolleyEntityLoader entityLoader = System.getDirectory().getObjectAs("loader/entity", MudVolleyEntityLoader.class);
+		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
+		MudVolleyEntityLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity", MudVolleyEntityLoader.class);
 
 		PlayerEntity player1 = entityLoader.loadPlayer("player1", -1.0f);
 		player1.integrate(rootEntity, scene.getRootNode(), new Vector3f(-7, 0, 0));
@@ -70,9 +70,9 @@ public class NewGameLogic extends BaseLogicState {
 
 
 		// Activate next view and logic
-		LogicState inGameLogic = System.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
+		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
 		StateUtil.loadAndActivate(inGameLogic);
-		ViewState sceneRenderView = System.getDirectory().getObjectAs("view/root/level", ViewState.class);
+		ViewState sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
 		StateUtil.loadAndActivate(sceneRenderView);
 
 	}

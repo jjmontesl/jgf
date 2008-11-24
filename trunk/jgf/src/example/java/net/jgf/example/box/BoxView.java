@@ -1,5 +1,5 @@
 
-package net.jgf.example.fader;
+package net.jgf.example.box;
 
 import net.jgf.config.Configurable;
 import net.jgf.jme.scene.DefaultJmeScene;

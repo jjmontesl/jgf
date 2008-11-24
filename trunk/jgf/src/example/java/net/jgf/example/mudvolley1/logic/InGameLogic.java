@@ -8,7 +8,7 @@ import net.jgf.example.mudvolley1.entity.BallEntity;
 import net.jgf.example.mudvolley1.entity.PlayerEntity;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.scene.SceneManager;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -43,12 +43,12 @@ public class InGameLogic extends BaseLogicState {
 	@Override
 	public void load() {
 		super.load();
-		sceneManager = System.getDirectory().getObjectAs("scene/manager", SceneManager.class);
-		entityManager = System.getDirectory().getObjectAs("entity", EntityManager.class);
+		sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
+		entityManager = Jgf.getDirectory().getObjectAs("entity", EntityManager.class);
 
-		player1 = System.getDirectory().getObjectAs("entity/root/player1", PlayerEntity.class);
-		player2 = System.getDirectory().getObjectAs("entity/root/player2", PlayerEntity.class);
-		ball = System.getDirectory().getObjectAs("entity/root/ball", BallEntity.class);
+		player1 = Jgf.getDirectory().getObjectAs("entity/root/player1", PlayerEntity.class);
+		player2 = Jgf.getDirectory().getObjectAs("entity/root/player2", PlayerEntity.class);
+		ball = Jgf.getDirectory().getObjectAs("entity/root/ball", BallEntity.class);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import net.jgf.loader.BaseLoader;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.scene.SceneCreatorLoader;
 import net.jgf.scene.Scene;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -127,10 +127,14 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 
 			// Load extra models
 			if ((data.length() > 1) && (data.charAt(1) == 'L')) {
-				BaseLoader<Node> modelLoader = System.getDirectory().getObjectAs("loader/model/tanks", BaseLoader.class);
+				BaseLoader<Node> modelLoader = Jgf.getDirectory().getObjectAs("loader/model/tanks", BaseLoader.class);
 				Node model = modelLoader.load("ConverterLoader.resourceUrl=tanks/model/lamppost/lamppost.dae");
 				model.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * height, 0.5f + row));
+
+
 				obstaclesNode.attachChild(model);
+				obstaclesNode.updateRenderState();
+
 			}
 
 	    col++;
@@ -140,13 +144,13 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 		scene.getCameraControllers().addCameraController(new StaticCamera(
 				"scene/camera/test", new Vector3f(0.5f * width, 0.9f * width, 0.7f * row), new Vector3f(0.5f * width, 0, 0.5f * row)
 		));
-		net.jgf.system.System.getDirectory().addObject("scene/camera/test", scene.getCameraControllers().getCameraController("scene/camera/test"));
+		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/test", scene.getCameraControllers().getCameraController("scene/camera/test"));
 
 		fieldNode.attachChild(floorNode);
 		fieldNode.attachChild(obstaclesNode);
 
     fieldNode.getLocalTranslation().addLocal(0, 0, 0);
-    // TODO: Study how collisisions and rendering are affected by the hierarchy of boundings
+    // TODO: Study how collisions and rendering are affected by the hierarchy of bounds
     //fieldNode.updateGeometricState(0, true);
     fieldNode.lock();
     fieldNode.lockMeshes();

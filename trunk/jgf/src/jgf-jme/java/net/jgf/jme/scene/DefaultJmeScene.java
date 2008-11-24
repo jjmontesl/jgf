@@ -14,7 +14,7 @@ import net.jgf.jme.scene.sky.HasSky;
 import net.jgf.jme.scene.sky.Sky;
 import net.jgf.refs.HasReferences;
 import net.jgf.refs.References;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -104,7 +104,7 @@ public class DefaultJmeScene extends JmeScene implements HasSky, HasCameras, Has
 		List<CameraController> controllers = ConfigurableFactory.newListFromConfig(config, configPath + "/camera", CameraController.class);
 		for (CameraController camera : controllers) {
 			this.getCameraControllers().addCameraController(camera);
-			System.getDirectory().addObject(camera.getId(), camera);
+			Jgf.getDirectory().addObject(camera.getId(), camera);
 		}
 
 

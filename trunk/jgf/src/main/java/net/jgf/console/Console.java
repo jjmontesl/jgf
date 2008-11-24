@@ -51,6 +51,7 @@ import net.jgf.core.service.Service;
 
  * @author jjmontes
  */
+// TODO: This interface shouldn't be a service
 public interface Console extends Service {
 
 	/**

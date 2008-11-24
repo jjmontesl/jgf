@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.jgf.config.Config;
 import net.jgf.config.ConfigurableFactory;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 /**
  */
@@ -49,7 +49,7 @@ public abstract class BasePlayerGroup extends BasePlayer implements PlayerGroup 
 		List<Player> childPlayers= ConfigurableFactory.newListFromConfig(config, configPath + "/player", Player.class);
 		for (Player player : childPlayers ) {
 			this.attachPlayer(player);
-			System.getDirectory().addObject(player.getId(), player);
+			Jgf.getDirectory().addObject(player.getId(), player);
 		}
 
 	}

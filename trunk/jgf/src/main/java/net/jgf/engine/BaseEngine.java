@@ -39,7 +39,7 @@ import net.jgf.config.Configurable;
 import net.jgf.core.service.BaseService;
 import net.jgf.jme.engine.JMEEngine;
 import net.jgf.logic.LogicManager;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 import net.jgf.view.ViewManager;
 
 import org.apache.log4j.Logger;
@@ -67,19 +67,9 @@ public abstract class BaseEngine extends BaseService implements Engine {
 	protected ViewManager viewManager;
 
 	/**
-	 * Named reference to the ViewManager.
-	 */
-	protected String viewManagerRef;
-
-	/**
 	 * Reference to the LogicManager.
 	 */
 	protected LogicManager logicManager;
-
-	/**
-	 * Named reference to the LogicManager.
-	 */
-	protected String logicManagerRef;
 
 	/**
 	 * Configures this object from the configuration.
@@ -88,15 +78,15 @@ public abstract class BaseEngine extends BaseService implements Engine {
 	@Override
 	public void readConfig(Config config, String configPath) {
 		super.readConfig(config, configPath);
-		this.viewManagerRef = config.getString(configPath + "/viewManager/@ref");
-		this.logicManagerRef = config.getString(configPath + "/logicManager/@ref");
+		Jgf.getDirectory().register(this, "viewManager", config.getString(configPath + "/viewManager/@ref"));
+		Jgf.getDirectory().register(this, "logicManager", config.getString(configPath + "/logicManager/@ref"));
 	}
 
 	/* (non-Javadoc)
 	 * @see net.jgf.engine.Engine#logic()
 	 */
 	@Override
-	public LogicManager logicManager() {
+	public LogicManager getLogicManager() {
 		return logicManager;
 	}
 
@@ -105,37 +95,10 @@ public abstract class BaseEngine extends BaseService implements Engine {
 	 * @see net.jgf.engine.Engine#states()
 	 */
 	@Override
-	public ViewManager viewManager() {
+	public ViewManager getViewManager() {
 		return viewManager;
 	}
 
-	/**
-	 * Gets the named reference to the ViewManager
-	 */
-	public String getViewManagerRef() {
-		return viewManagerRef;
-	}
-
-	/**
-	 * Sets the named reference to the ViewManager.
-	 */
-	public void setViewManagerRef(String viewManagerRef) {
-		this.viewManagerRef = viewManagerRef;
-	}
-
-	/**
-	 * Gets the named reference to the LogicManager.
-	 */
-	public String getLogicManagerRef() {
-		return logicManagerRef;
-	}
-
-	/**
-	 * Sets the named reference to the LogicManager.
-	 */
-	public void setLogicManagerRef(String logicManagerRef) {
-		this.logicManagerRef = logicManagerRef;
-	}
 
 	/**
 	 * <p>On initialization, BaseEngine resolves the named references to
@@ -147,15 +110,19 @@ public abstract class BaseEngine extends BaseService implements Engine {
 
 		super.initialize();
 
-		if (viewManagerRef == null) throw new ConfigException("No viewManager reference found in " + this);
-		if (logicManagerRef == null) throw new ConfigException("No logicManager reference found in " + this);
-
-		// Resolve references
-		viewManager = System.getDirectory().getObjectAs(viewManagerRef, ViewManager.class);
-		logicManager = System.getDirectory().getObjectAs(logicManagerRef, LogicManager.class);
+		if (viewManager == null) throw new ConfigException("No viewManager reference found in " + this);
+		if (logicManager == null) throw new ConfigException("No logicManager reference found in " + this);
 
 	}
 
+
+	public void setViewManager(ViewManager viewManager) {
+		this.viewManager = viewManager;
+	}
+
+	public void setLogicManager(LogicManager logicManager) {
+		this.logicManager = logicManager;
+	}
 
 
 }

@@ -11,7 +11,7 @@ import net.jgf.example.mudvolley1.entity.PlayerEntity;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.Loader;
 import net.jgf.loader.entity.EntityLoader;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -73,7 +73,7 @@ public final class MudVolleyEntityLoader extends EntityLoader {
 
 	public PlayerEntity loadPlayer(String entityId, float side) {
 
-		Loader<Node> modelLoader = System.getDirectory().getObjectAs("loader/model/mudvolley", Loader.class);
+		Loader<Node> modelLoader = Jgf.getDirectory().getObjectAs("loader/model/mudvolley", Loader.class);
 
 		LoadProperties loadProperties = new LoadProperties();
 		loadProperties.put("ConverterLoader.resourceUrl", "mudvolley/model/playerRed.dae");

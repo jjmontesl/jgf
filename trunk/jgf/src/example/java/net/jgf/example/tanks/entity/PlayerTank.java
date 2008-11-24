@@ -8,7 +8,7 @@ import net.jgf.jme.audio.AudioItem;
 import net.jgf.jme.entity.SceneEntity;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.jme.view.CursorRenderView;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -75,10 +75,10 @@ public class PlayerTank extends SceneEntity {
 	public void load() {
 		// TODO Auto-generated method stub
 		super.load();
-		spawnLogic = System.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
-		cursorView = System.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
-		audioItem = System.getDirectory().getObjectAs("audio/shot", AudioItem.class);
-		scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
+		cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
+		audioItem = Jgf.getDirectory().getObjectAs("audio/shot", AudioItem.class);
+		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
 	}
 
 	@Override
@@ -102,6 +102,9 @@ public class PlayerTank extends SceneEntity {
 		if (walkUp) direction.z = -1;
 		if (walkDown) direction.z = 1;
 		direction.normalizeLocal();
+
+		// TODO: Stop the tank when shooting?
+		//if (fireWait > 0.1f) direction.set(0,0,0);
 
 		Spatial hull = ((Node)((Node)spatial).getChild("Tank")).getChild("Hull");
 		Vector3f orientation = hull.getWorldRotation().mult(Vector3f.UNIT_Y).normalizeLocal();

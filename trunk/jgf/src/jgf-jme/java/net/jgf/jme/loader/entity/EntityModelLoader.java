@@ -9,7 +9,7 @@ import net.jgf.jme.entity.SceneEntity;
 import net.jgf.loader.BaseLoader;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.entity.EntityLoader;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -32,7 +32,7 @@ public final class EntityModelLoader extends EntityLoader {
 		combineProperties(properties);
 
 		String loaderRef = properties.get("EntityModelLoader.loader");
-		BaseLoader<Node> modelLoader = System.getDirectory().getObjectAs(loaderRef, BaseLoader.class);
+		BaseLoader<Node> modelLoader = Jgf.getDirectory().getObjectAs(loaderRef, BaseLoader.class);
 		Node model = modelLoader.load(properties);
 		((SceneEntity)entity).setSpatial(model);
 

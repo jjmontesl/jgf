@@ -11,12 +11,12 @@
 	<application>
 	
 		<!-- Name of the application. Will appear in the Window Title and messages. -->
-		<name>Java Game Framework: Fader Test</name>
+		<name>Java Game Framework: Box Test</name>
 		
 		<!-- Application version -->
 		<version>1.0</version>
 		
-		<!-- Network protool -->
+		<!-- Network protocol -->
 		<networkProtocolVersion>1.0</networkProtocolVersion>
 		
 		<!-- Debug mode -->
@@ -49,7 +49,6 @@
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
 		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
-			
 		</logic>
 		
 	</service>
@@ -58,38 +57,16 @@
 		State Manager
 	 -->
 	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
-			
-			
-		<!-- Using 2 nested faders to create a two-color fader effect -->
-				
-		<view id="view/root/fader1" class="net.jgf.jme.view.FaderViewNode" 
-			autoLoad="true" autoActivate="true">		
-			
-			<fadeInTime>4.0</fadeInTime>
-			<autoFadeOutTime>20.0</autoFadeOutTime>
-			<fadeOutTime>15.0</fadeOutTime>
-			<allowKeyToSkip>false</allowKeyToSkip>
-			<color>0.0 0.0 0.0</color>
-			
-			<view id="view/root/fader1/fader2" class="net.jgf.jme.view.FaderViewNode" 
-				autoLoad="true" autoActivate="true">
 		
-					<fadeInTime>10.0</fadeInTime>
-					<autoFadeOutTime>10.0</autoFadeOutTime>
-					<fadeOutTime>15.0</fadeOutTime>
-					<allowKeyToSkip>false</allowKeyToSkip>
-					<color>0.5 0.5 0.0</color>
-					<deactivateOnFinish>false</deactivateOnFinish>
-					
-					<!-- Background sample scene -->
-					<view id="view/root/box" class="net.jgf.example.box.BoxView"
-						autoLoad="true" autoActivate="true" >
-					</view>
-				
-			</view>
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
 			
+			<!-- Background sample scene -->
+			<view id="view/root/box" class="net.jgf.example.box.BoxView"
+				autoLoad="true" autoActivate="true" >
+			</view>
+							
 		</view>
-	
+			
 	</service>
 	
 </jgf>

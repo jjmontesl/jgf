@@ -10,7 +10,7 @@ import net.jgf.jme.scene.util.SceneUtils;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.scene.SceneLoader;
 import net.jgf.scene.Scene;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -48,7 +48,7 @@ public final class MudVolleySceneLoader extends SceneLoader {
 
 		DefaultJmeScene scene = (DefaultJmeScene) sceneGen;
 
-		scene.setTitle(System.getApp().getName());
+		scene.setTitle(Jgf.getApp().getName());
 
 		// Initialize common render states
 		SceneUtils.createCommonRenderStates(scene);

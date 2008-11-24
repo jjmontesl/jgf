@@ -31,23 +31,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.jgf.core.naming;
+package net.jgf.example.menu;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.jgf.system.Application;
+
 
 /**
+ * <p>The menu example shows the usage of the Menu system.</p>
+ * <p>This class is a simple entry point for the application.</p>
+ *
+ * @see Application
  * @author jjmontes
  */
-@Deprecated
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface DirectoryRef {
+public class Menu {
 
-	public String field() default "";
+	/**
+	 * Entry point to the application. JGF applications should just create
+	 * the Application object and call .start() on it.
+	 * @see Application
+	 */
+	public static void main(String[] args) throws Exception {
 
-	public String ref() default ""	;
+		Application app = new Application("menu/menu.xml", args);
+		app.start();
 
+	}
 }

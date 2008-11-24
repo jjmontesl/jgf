@@ -10,6 +10,8 @@ import net.jgf.core.component.Component;
  */
 public interface MenuItem extends Component {
 
+	public void perform();
 
+	public boolean isNavigable();
 
 }

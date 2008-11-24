@@ -3,7 +3,7 @@ package net.jgf.entity;
 import net.jgf.config.Config;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 public abstract class BaseEntityManager extends BaseService implements EntityManager {
 
@@ -30,7 +30,7 @@ public abstract class BaseEntityManager extends BaseService implements EntityMan
 		super.readConfig(config, configPath);
 
 		this.rootEntity = ConfigurableFactory.newFromConfig(config, configPath + "/entity", Entity.class);
-		System.getDirectory().addObject(rootEntity.getId(), rootEntity);
+		Jgf.getDirectory().addObject(rootEntity.getId(), rootEntity);
 
 	}
 

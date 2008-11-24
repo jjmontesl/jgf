@@ -10,7 +10,7 @@ import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -48,7 +48,7 @@ public final class SimpleSoundService extends BaseService {
 		List<AudioItem> audioItemsTemp = ConfigurableFactory.newListFromConfig(config, configPath + "/audio", AudioItem.class);
 		for (AudioItem audioItem : audioItemsTemp) {
 			this.addAudioItem(audioItem);
-			System.getDirectory().addObject(audioItem.getId(), audioItem);
+			Jgf.getDirectory().addObject(audioItem.getId(), audioItem);
 		}
 
 	}

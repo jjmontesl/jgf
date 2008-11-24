@@ -6,7 +6,7 @@ import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
 import net.jgf.core.service.ServiceException;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -38,7 +38,7 @@ public class DefaultPlayerManager extends BaseService implements PlayerManager {
 		super.readConfig(config, configPath);
 
 		rootGroup = ConfigurableFactory.newFromConfig(config, configPath + "/player", PlayerGroup.class);
-		System.getDirectory().addObject(rootGroup.getId(), rootGroup);
+		Jgf.getDirectory().addObject(rootGroup.getId(), rootGroup);
 
 	}
 

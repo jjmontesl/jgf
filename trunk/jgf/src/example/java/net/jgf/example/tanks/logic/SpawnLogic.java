@@ -10,7 +10,7 @@ import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
 import net.jgf.logic.BaseLogicState;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
@@ -43,10 +43,10 @@ public class SpawnLogic extends BaseLogicState {
 	@Override
 	public void load() {
 		super.load();
-		entityLoader = System.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
-		playerEntityGroup = System.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
-		bulletEntityGroup = System.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
-		scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
+		playerEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
+		bulletEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
+		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
 	}
 
 	@Override

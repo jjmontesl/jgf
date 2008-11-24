@@ -7,7 +7,7 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.jme.model.ModelException;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 
 
@@ -52,7 +52,7 @@ public class ChainLoader<T> extends BaseLoader<T> {
 		List<Loader> subloaders = ConfigurableFactory.newListFromConfig(config, configPath + "/loader", Loader.class);
 		for (Loader<T> loader: subloaders) {
 			addLoader(loader);
-			System.getDirectory().addObject(loader.getId(), loader);
+			Jgf.getDirectory().addObject(loader.getId(), loader);
 		}
 
 

@@ -9,7 +9,7 @@ import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.component.BaseComponent;
 import net.jgf.menu.items.MenuItem;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -46,10 +46,19 @@ public class DefaultMenu extends BaseComponent {
 		List<MenuItem> tItems = ConfigurableFactory.newListFromConfig(config, configPath + "/item", MenuItem.class);
 		for (MenuItem item: tItems) {
 			items.add(item);
-			System.getDirectory().addObject(item.getId(), item);
+			Jgf.getDirectory().addObject(item.getId(), item);
 		}
 
 	}
+
+	/**
+	 * @return the items
+	 */
+	public List<MenuItem> getItems() {
+		return items;
+	}
+
+
 
 
 

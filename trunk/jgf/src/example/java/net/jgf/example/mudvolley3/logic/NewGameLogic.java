@@ -12,7 +12,7 @@ import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.scene.SceneLoader;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.logic.LogicState;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 import net.jgf.view.ViewState;
 
 import org.apache.log4j.Logger;
@@ -45,13 +45,13 @@ public class NewGameLogic extends BaseLogicState {
 		logger.info ("Starting new volley game (logic)");
 
 		// Prepare scene
-		DefaultJmeScene scene = System.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		SceneLoader sceneLoader = System.getDirectory().getObjectAs("loader/scene", SceneLoader.class);
+		DefaultJmeScene scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		SceneLoader sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene", SceneLoader.class);
 		sceneLoader.load(scene);
 
 		// Prepare entities
-		EntityGroup rootEntity = System.getDirectory().getObjectAs("entity/root", EntityGroup.class);
-		MudVolleyEntityLoader entityLoader = System.getDirectory().getObjectAs("loader/entity", MudVolleyEntityLoader.class);
+		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
+		MudVolleyEntityLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity", MudVolleyEntityLoader.class);
 
 		PlayerEntity player1 = entityLoader.loadPlayer("player1", -1.0f);
 		player1.integrate(rootEntity, scene.getRootNode(), new Vector3f(-7, 0, 0));
@@ -66,13 +66,13 @@ public class NewGameLogic extends BaseLogicState {
 		StateUtil.loadAndActivate(rootEntity);
 
 		// Link camera to ball
-		MudVolleyCamera camera = System.getDirectory().getObjectAs("scene/cameras/match", MudVolleyCamera.class);
+		MudVolleyCamera camera = Jgf.getDirectory().getObjectAs("scene/cameras/match", MudVolleyCamera.class);
 		camera.setTarget(ball.getSpatial());
 
 		// Change states
-		ViewState sceneRenderView = System.getDirectory().getObjectAs("view/root/level", ViewState.class);
+		ViewState sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
 		StateUtil.loadAndActivate(sceneRenderView);
-		LogicState inGameLogic = System.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
+		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
 		StateUtil.loadAndActivate(inGameLogic);
 
 	}

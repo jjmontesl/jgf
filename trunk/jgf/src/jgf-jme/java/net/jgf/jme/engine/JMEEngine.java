@@ -43,7 +43,7 @@ import net.jgf.engine.BaseEngine;
 import net.jgf.engine.Engine;
 import net.jgf.jme.view.devel.StatsView;
 import net.jgf.logic.LogicManager;
-import net.jgf.system.System;
+import net.jgf.system.Jgf;
 import net.jgf.view.ViewManager;
 
 import org.apache.log4j.Logger;
@@ -133,7 +133,7 @@ public final class JMEEngine extends BaseEngine {
 		@Override
 		public void cleanup() {
 			JMEEngine.logger.info("Cleaning up StandardGame");
-			System.getApp().dispose();
+			Jgf.getApp().dispose();
 		}
 
 	}
@@ -184,7 +184,7 @@ public final class JMEEngine extends BaseEngine {
 		// TODO: resolve dedicated from config, as per configuration
 		//boolean dedicated = System.getComponents().getComponentAs("settings", Settings.class).getBoolean("network.dedicatedServer");
 		boolean dedicated = false;
-		game = new StandardGame(System.getApp().getName(),
+		game = new StandardGame(Jgf.getApp().getName(),
 				dedicated ? GameType.HEADLESS : GameType.GRAPHICAL);
 		//StandardGame game = new StandardGame(Globals.APPLICATION_NAME, GameType.GRAPHICAL);
 
