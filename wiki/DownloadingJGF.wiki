@@ -3,14 +3,17 @@
 
 = Downloading JGF =
 
-Currently JGF is still in an early stage of development.
+Currently JGF is still in an early stage of development. A pair of core functionality aspects are yet to be built. Also, deep changes should be expected in the API and configuration format.
 
-The source code can be accessed at:
+The source code can be accessed following the instructions at:
 
 [http://code.google.com/p/jgf/source/checkout http://code.google.com/p/jgf/source/checkout]
 
 = Dependencies =
 
-In order to use JGF, you will need to add libraries or a project dependency to [http://www.jmonkeyengine.com JMonkeyEngine] (the underlying game engine). 
+In order to use JGF, you will need to add libraries or a project dependency to the 'trunk' version of [http://www.jmonkeyengine.com JMonkeyEngine] (the underlying game engine). 
 
-Other dependencies are included in the src/main/lib directory. Those need to be added to your Java classpath.
+Other dependencies are included in the src/main/lib directory. Those need to be added to your Java classpath at compile time and runtime.
+
+
+[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
