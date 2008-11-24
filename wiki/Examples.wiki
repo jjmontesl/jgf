@@ -2,11 +2,13 @@
 
 = Examples =
 
+<wiki:toc max_depth="2" />
+
 ==MudVolley Tutorials==
 
 This section is yet to be built.
 
-In the meanwhile, have a look at the MudVolley Example 3 configuration file:
+In the meanwhile, have a look at the !MudVolley Example 3 configuration file:
 
 [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml /trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml]
 
@@ -21,8 +23,8 @@ The following applications are included to test different components and to serv
   * [Box] - The simplest minimum example of a JGF application.
 
   * [Console] - How to use JGF console.
-  * [Fader] - How to use the FaderView node to apply a fade-in and fade-out effect.
-  * [GameStateWrapper] - Wraps JME GameStates into JGF ViewStates.
+  * [Fader] - How to use the !FaderView node to apply a fade-in and fade-out effect.
+  * [GameStateWrapper] - Wraps JME !GameStates into JGF !ViewStates.
   * [Menu] - Tests the (simple) default menu system.
 
 ==JGF Base Game Structure==
