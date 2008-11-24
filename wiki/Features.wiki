@@ -27,6 +27,8 @@ JGF main configuration is done in a descriptive XML configuration file which pro
   * A default command line interface is provided for headless mode (_TO BE REFACTORED_). 
   * Use of a console system is completely optional.
 
+  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-console-1.png
+
 *Settings System* _(TO BE REVIEWED AND REFACTORED)_
 
   * Settings Service that holds game settings.
@@ -40,6 +42,8 @@ JGF main configuration is done in a descriptive XML configuration file which pro
   * Simple Menu System provides simple menu functionality and navigation.
   * Simple Menu View provides a default view implementation of the menu tree, which allows you to quickly add a menu system to your game.
 
+  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-menu-1.png
+
 *Logic and Graphics states*
 
   * State Trees are used to manage Logic and Views.
@@ -47,6 +51,10 @@ JGF main configuration is done in a descriptive XML configuration file which pro
   * Structures and services are provided that contain and manage Entities, Players and other common data.
 
   * Out-of-the-box ViewStates that provide ways to easily show text or images on screen, fade in and out other states...
+
+  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-1.png
+
+  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-2.png
 
 The usage of ViewStates and LogicStates surely requires some explanation. Visit [States States Guide] for more information.
 
@@ -63,6 +71,8 @@ JGF is designed to be extensible. Base classes are provided for most of the comp
     * Scene graph information and statistics _(TO BE DONE)_
     * Framework components information utils _(TO BE DONE)_
     * JVM information logger
+
+  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-debug-1.png
 
 *Loaders and Art Pipeline*
 
