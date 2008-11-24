@@ -1,6 +1,21 @@
 #summary Examples of JGF games.
 
-= Simple Example =
+= Examples =
+
+==Test Applications==
+
+The following applications are included to test different components and to serve as examples. Click on their names to read the corresponding component information in the [UserGuide User Guide].
+
+  * [Box] - The simplest minimum example of a JGF application.
+
+  * [Console] - How to use JGF console.
+  * [Fader] - How to use the FaderView node to apply a fade-in and fade-out effect.
+  * [GameStateWrapper] - Wraps JME GameStates into JGF ViewStates.
+  * [Menu] - Tests the (simple) default menu system.
+
+==JGF Base Game Structure==
+
+==MudVolley Tutorials==
 
 This section is yet to be built.
 
@@ -11,6 +26,10 @@ In the meanwhile, have a look at the MudVolley Example 3 configuration file:
 And also inspect other files from the examples, like the classes involed:
 
 [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example /trunk/jgf/src/example/java/net/jgf/example]
+
+==Tanks Game==
+
+A complete game is provided with with JGF: [Tanks]. Follow the link to find out the details.
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
