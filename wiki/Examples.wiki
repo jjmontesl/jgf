@@ -2,6 +2,18 @@
 
 = Examples =
 
+==MudVolley Tutorials==
+
+This section is yet to be built.
+
+In the meanwhile, have a look at the MudVolley Example 3 configuration file:
+
+[http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml /trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml]
+
+And also inspect other files from the examples, like the classes involed:
+
+[http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example /trunk/jgf/src/example/java/net/jgf/example]
+
 ==Test Applications==
 
 The following applications are included to test different components and to serve as examples. Click on their names to read the corresponding component information in the [UserGuide User Guide].
@@ -15,17 +27,7 @@ The following applications are included to test different components and to serv
 
 ==JGF Base Game Structure==
 
-==MudVolley Tutorials==
-
-This section is yet to be built.
-
-In the meanwhile, have a look at the MudVolley Example 3 configuration file:
-
-[http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml /trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml]
-
-And also inspect other files from the examples, like the classes involed:
-
-[http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example /trunk/jgf/src/example/java/net/jgf/example]
+A base game with a basic structure is provided to make starting a new project a cut-and-paste matter.
 
 ==Tanks Game==
 
