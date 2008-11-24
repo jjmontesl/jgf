@@ -5,8 +5,6 @@
 
 These are the list of features that are incorporated or are planed.
 
-JGF is composed of more than 200 classes. Fortunately these are separated into packages and features, so you only need to look at a bunch of them at a time.
-
 Spend some time getting familiar with JGF features! Knowing them will allow you to save time or to add a quick feature to your application.
 
 *Services and Configuration System*
