@@ -6,6 +6,12 @@
 
 <wiki:toc max_depth="2" />
 
+==How to read this guide==
+
+If you are trying to learn JGF, please visit the [GettingStarted Getting Started] guide!
+
+This guide is not a tutorial. It covers particular topics shall you wish to learn more about a particular subject.
+
 ==The directory==
 
 JGF components need to talk to each other. Because JGF is a loosely coupled system, components need to be provided with references to the other components they collaborate with. 
