@@ -1,12 +1,12 @@
 
 package net.jgf.jme.model;
 
-import net.jgf.core.GgfRuntimeException;
+import net.jgf.core.JgfRuntimeException;
 
 /**
  * Represents an exception relative to the data files or loading.
  */
-public class ModelException extends GgfRuntimeException {
+public class ModelException extends JgfRuntimeException {
 
 	/**
 	 *

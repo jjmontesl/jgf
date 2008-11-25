@@ -40,7 +40,7 @@ package net.jgf.core;
  *
  * @author jjmontes
  */
-public class IllegalStateException extends GgfRuntimeException {
+public class IllegalStateException extends JgfRuntimeException {
 
 	/**
 	 * Id for serialization

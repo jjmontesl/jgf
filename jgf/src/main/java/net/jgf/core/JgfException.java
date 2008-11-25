@@ -34,33 +34,26 @@
 package net.jgf.core;
 
 /**
- * <p>General Gaming Framework error. Most of JGF exceptions are of this type, as it is a
- * {@link RuntimeException} and it doesn't require to be caught.</p>
- * <p>The (questionable) reason for this design decision is that most of the exceptions
- * raised by the framework are due to design-time issues, and should be found and solved during
- * development time. As JGF aims for code simplicity, exception handling is left to the framework,
- * thus reducing the need for the user to capture exceptions.</p>
- *
- * @author jjmontes
+ * General Gaming Framework exception.
  */
-public class GgfRuntimeException extends RuntimeException {
+public class JgfException extends Exception {
 
 	/**
 	 * Id for serialization
 	 */
-	private static final long serialVersionUID = -7065111665947721010L;
+	private static final long serialVersionUID = -8971616437376909601L;
 
 	/**
-	 * Builds a new GgfRuntimeException with the message specified.
+	 * Builds a new JgfException with the message specified.
 	 */
-	public GgfRuntimeException(String arg0) {
+	public JgfException(String arg0) {
 		super(arg0);
 	}
 
 	/**
-	 * Builds a new GgfRuntimeException with the given message and the given nested exception.
+	 * Builds a new JgfException with the given message and the given nested exception.
 	 */
-	public GgfRuntimeException(String arg0, Throwable arg1) {
+	public JgfException(String arg0, Throwable arg1) {
 		super(arg0, arg1);
 	}
 
