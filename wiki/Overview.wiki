@@ -77,7 +77,7 @@ For example, if you need to add an introduction screen to your game, you just ne
 
 
 
-http://jgf.googlecode.com/svn-history/r67/trunk/jgf/doc/design/diagrams/game-components.png
+http://jgf.googlecode.com/svn/trunk/jgf/doc/design/diagrams/game-components.png
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
