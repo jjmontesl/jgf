@@ -2,7 +2,6 @@ package net.jgf.loader;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.jme.model.ModelException;
 import net.jgf.system.Jgf;
 
 
@@ -18,7 +17,7 @@ public class ReferenceLoader<T> extends BaseLoader<T> {
 
 
 	@Override
-	public T load(T base, LoadProperties properties) throws ModelException {
+	public T load(T base, LoadProperties properties) throws LoaderException {
 
 		combineProperties(properties);
 		return loader.load(base, properties);

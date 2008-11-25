@@ -49,6 +49,7 @@ import org.apache.log4j.Logger;
  * @author jjmontes
  * @version $Revision$
  */
+// TODO: The buffer should be part of a DefaultConsoleObserver
 public abstract class BaseConsole extends BaseService implements Console {
 
 	/**

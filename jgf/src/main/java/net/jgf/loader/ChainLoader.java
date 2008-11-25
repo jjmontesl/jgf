@@ -6,7 +6,6 @@ import java.util.List;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
-import net.jgf.jme.model.ModelException;
 import net.jgf.system.Jgf;
 
 
@@ -25,7 +24,7 @@ public class ChainLoader<T> extends BaseLoader<T> {
 	}
 
 	@Override
-	public T load(T object, LoadProperties properties) throws ModelException {
+	public T load(T object, LoadProperties properties) throws LoaderException {
 
 		T result = object;
 
