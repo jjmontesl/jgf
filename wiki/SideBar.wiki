@@ -3,8 +3,8 @@
 === JGF ===
 
 
+  * [Overview]
   * [Features]
-  * [Overview JGF Overview: The easy way to games in Java]
 
   * [DownloadingJGF Downloading JGF]
   * [GettingStarted Getting Started]
