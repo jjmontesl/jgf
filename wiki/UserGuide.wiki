@@ -1,0 +1,9 @@
+#summary User Guide
+
+=User Guide=
+
+===The directory===
+
+JGF components need to talk to each other. Because JGF is a loosely coupled system, components need to be provided with references to the other components they collaborate with. 
+
+The *Directory* is the glues between components. When an application
