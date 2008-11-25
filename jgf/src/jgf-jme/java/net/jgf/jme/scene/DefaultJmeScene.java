@@ -43,11 +43,6 @@ public class DefaultJmeScene extends JmeScene implements HasSky, HasCameras, Has
 
 	protected CameraControllerSet cameras;
 
-	/**
-	 * Scene data (spawn points, missions, game modes, etc...)
-	 */
-	protected DefaultLevelData levelData;
-
 	protected Sky sky;
 
 	public DefaultJmeScene() {
