@@ -3,12 +3,13 @@
 * JGF
   * [Overview]
   * [Features]
+  * [GettingStarted Getting Started]
 
 * Download
   * [DownloadingJGF Downloading JGF]
 
 * Documentation
-  * [GettingStarted Getting Started]
+  * [Overview]
   * [UserGuide User Guide]
   * [Examples Examples]
   * [Javadoc Javadoc]
