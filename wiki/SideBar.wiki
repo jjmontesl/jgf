@@ -1,21 +1,14 @@
 #summary Wiki Sidebar
 
-*JGF*
+*JGF
+  *[Overview]
+  *[Features]
 
-[Overview]
+*Download
+  *[DownloadingJGF Downloading JGF]
 
-[Features]
-
-*Download*
-
-[DownloadingJGF Downloading JGF]
-
-* Documentation *
-
-[GettingStarted Getting Started]
-
-[UserGuide User Guide]
-
-[Examples Examples]
-
-[Javadoc Javadoc]
+*Documentation
+  *[GettingStarted Getting Started]
+  *[UserGuide User Guide]
+  *[Examples Examples]
+  *[Javadoc Javadoc]
