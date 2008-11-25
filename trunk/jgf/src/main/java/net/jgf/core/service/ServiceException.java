@@ -33,7 +33,7 @@
 
 package net.jgf.core.service;
 
-import net.jgf.core.GgfRuntimeException;
+import net.jgf.core.JgfRuntimeException;
 
 
 /**
@@ -41,7 +41,7 @@ import net.jgf.core.GgfRuntimeException;
  *
  * @author jjmontes
  */
-public class ServiceException extends GgfRuntimeException {
+public class ServiceException extends JgfRuntimeException {
 
 	/**
 	 * Id for serialization

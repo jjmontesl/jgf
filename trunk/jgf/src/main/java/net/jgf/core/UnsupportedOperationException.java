@@ -39,7 +39,7 @@ package net.jgf.core;
  *
  * @author jjmontes
  */
-public class UnsupportedOperationException extends GgfException {
+public class UnsupportedOperationException extends JgfException {
 
 	/**
 	 * Id for serialization

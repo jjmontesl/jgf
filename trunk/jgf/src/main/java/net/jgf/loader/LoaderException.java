@@ -1,12 +1,12 @@
 
 package net.jgf.loader;
 
-import net.jgf.core.GgfRuntimeException;
+import net.jgf.core.JgfRuntimeException;
 
 /**
  * Represents an exception relative to loading.
  */
-public class LoaderException extends GgfRuntimeException {
+public class LoaderException extends JgfRuntimeException {
 
 	/**
 	 *

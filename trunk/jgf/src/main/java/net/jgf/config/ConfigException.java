@@ -33,7 +33,7 @@
 
 package net.jgf.config;
 
-import net.jgf.core.GgfRuntimeException;
+import net.jgf.core.JgfRuntimeException;
 
 
 /**
@@ -42,7 +42,7 @@ import net.jgf.core.GgfRuntimeException;
  * @author jjmontes
  * @version $Revision$
  */
-public class ConfigException extends GgfRuntimeException {
+public class ConfigException extends JgfRuntimeException {
 
 	/**
 	 * The serialVersionUID of this Exception

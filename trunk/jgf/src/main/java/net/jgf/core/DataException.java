@@ -37,7 +37,7 @@ package net.jgf.core;
 /**
  * Represents an exception relative to data files or loading.
  */
-public class DataException extends GgfRuntimeException {
+public class DataException extends JgfRuntimeException {
 
 	/**
 	 * Id for serialization
