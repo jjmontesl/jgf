@@ -32,23 +32,25 @@ _The game at a glance_
 
 Defining the game structure in a configuration file allows us to see the big picture and think on how to implement or expand our game.
 
-But, what services is a JGF game composed of? The main components are:
+But, what services is a JGF game composed of? The main services (which you will probably cut and paste) are:
 
   * *Engine*: the engine runs the main game loop, updating the LogicState and ViewState trees.
-  * *Logic*: this service just contains the LogicState tree. Inside this service we build the LogicState tree that will handle our game logic. 
-  * *View*: this service contains the ViewState tree. Here we specify the different views and input that we will use. For example, you'll have ViewStates for the menus, the introduction screens, the main game, the hud...
+  * *Logic*: this service just contains the !LogicState tree. Inside this service we build the !LogicState tree that will handle our game logic. 
+  * *View*: this service contains the !ViewState tree. Here we specify the different views and input that we will use. For example, you'll have !ViewStates for the menus, the introduction screens, the main game, the hud...
 
-Other services or components that you will be using are the EntityManager and probably the SettingsManager and some others.
+Other services or components that you may be using are the !EntityManager, the !SettingsManager, the !MenuSystem...
 
-This separation of concepts 
+Services and its parts are defined in the configuration file, and work together to form your game:
 
 http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/mudvolley-configtree.png
+
+_Structure of the JGF configuration file (showing some different services and components)_
 
 ===Benefits of using a framework===
 
 Of course you could also get your hands on the keyboard and start coding from "scratch" (asuming you will be using a 3D Engine anyway). You can have a quick prototype in days or in hours, and for simple applications that could be enough.
 
-But let's face it, often you'll need a functionality (like some menus or an introduction screen) built in quickly without worrying too much about the details. Usually you would code an initial version, but using a framework allows you to add those quickly and in a clean fashion.
+But let's face it, often you'll need a functionality (like some menus or an introduction screen) built in quickly without worrying too much about the details. Usually you would code an initial version, but using a framework allows you to add those quickly and in a clean fashion. 
 
 For example, if you need to add an introduction screen to your game, you just need to add a new View and make sure it runs sequentially before your other Views:
 
@@ -72,10 +74,11 @@ For example, if you need to add an introduction screen to your game, you just ne
 </view>
 }}}
 
+If you later decide that you want to replace the whole introduction screen with a video or something completely different, you just need to replace that view with another framework or custom view.
 
-===The directory===
+===System overview===
 
-
+If you are a geometrical person, you may prefer to look at the JGF System Overview diagram, which shows several significant components of the system: 
 
 http://jgf.googlecode.com/svn/trunk/jgf/doc/design/diagrams/game-components.png
 
