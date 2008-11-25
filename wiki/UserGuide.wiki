@@ -11,3 +11,6 @@
 JGF components need to talk to each other. Because JGF is a loosely coupled system, components need to be provided with references to the other components they collaborate with. 
 
 The Directory is the glues between components. When an application
+
+
+[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
