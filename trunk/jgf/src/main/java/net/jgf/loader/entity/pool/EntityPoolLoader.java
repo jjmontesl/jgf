@@ -8,9 +8,9 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.entity.Entity;
-import net.jgf.jme.model.ModelException;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.Loader;
+import net.jgf.loader.LoaderException;
 import net.jgf.loader.entity.EntityLoader;
 import net.jgf.system.Jgf;
 
@@ -44,7 +44,7 @@ public class EntityPoolLoader extends EntityLoader {
 
 	@Override
 	// TODO: Add methods to use from code, but beware that the loaderRef is being resolved in every load
-	public Entity load(Entity base, LoadProperties properties) throws ModelException {
+	public Entity load(Entity base, LoadProperties properties) throws LoaderException {
 
 		combineProperties(properties);
 		checkNullBase(base);

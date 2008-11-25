@@ -37,7 +37,6 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.service.BaseService;
-import net.jgf.jme.engine.JMEEngine;
 import net.jgf.logic.LogicManager;
 import net.jgf.system.Jgf;
 import net.jgf.view.ViewManager;

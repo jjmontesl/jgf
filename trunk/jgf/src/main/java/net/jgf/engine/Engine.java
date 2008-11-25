@@ -33,7 +33,6 @@
 
 package net.jgf.engine;
 
-import net.jgf.jme.engine.JMEEngine;
 import net.jgf.logic.LogicManager;
 import net.jgf.view.ViewManager;
 
