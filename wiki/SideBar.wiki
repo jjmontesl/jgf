@@ -3,12 +3,12 @@
 === JGF ===
 
 
-  * [Overview]
-  * [Features]
+[Overview]
+[Features]
 
-  * [DownloadingJGF Downloading JGF]
-  * [GettingStarted Getting Started]
+[DownloadingJGF Downloading JGF]
 
-  * [UserGuide User Guide]
-  * [Examples Examples]
-  * [Javadoc Javadoc]
+[GettingStarted Getting Started]
+[UserGuide User Guide]
+[Examples Examples]
+[Javadoc Javadoc]
