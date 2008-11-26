@@ -2,8 +2,6 @@
 
 =User Guide=
 
-==Table of Contents==
-
 <wiki:toc max_depth="2" />
 
 ==How to read this guide==
