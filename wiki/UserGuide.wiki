@@ -18,7 +18,6 @@ This guide is not a tutorial. It covers particular topics shall you wish to lear
     # [Application]
     # [Directory]
     # [States]
-
   # View States
     # [SceneRenderView]
     # [FaderView]
