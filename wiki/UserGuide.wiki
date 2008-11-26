@@ -12,21 +12,16 @@ If you are trying to learn JGF, please visit the [GettingStarted Getting Started
 
 This guide is not a tutorial. It covers particular topics shall you wish to learn more about a particular subject.
 
-== Sections ==
+== Guide Table of Contents ==
 
-  ===JGF Core===
+  #  JGF Core
+    # [Application]
+    # [Directory]
+    # [States]
 
-  [Application]
-
-  [Directory]
-
-  [States]
-
-  ===View States===
-
-  [SceneRenderView]
-
-  [FaderView]
+  # View States
+    # [SceneRenderView]
+    # [FaderView]
   
 
 
