@@ -11,3 +11,7 @@ Note that the Directory is not the only way to reach objects. You can get refere
 === Adding and removing objects to the directory ===
 
 === Finding objects through the directory ===
+
+
+
+[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
