@@ -15,12 +15,12 @@ This guide is not a tutorial. It covers particular topics shall you wish to lear
 == Guide Table of Contents ==
 
   #  JGF Core
-    # [Application]
-    # [Directory]
-    # [States]
+    * [Application]
+    * [Directory]
+    * [States]
   # View States
-    # [SceneRenderView]
-    # [FaderView]
+    * [SceneRenderView]
+    * [FaderView]
   
 
 
