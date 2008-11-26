@@ -14,7 +14,17 @@ This guide is not a tutorial. It covers particular topics shall you wish to lear
 
 == Sections ==
 
-[Directory]
+  ===JGF Core===
 
+  [Application]
+  [Directory]
+  [States]
+
+  [Design]
+
+  ===View States===
+
+  [FaderView]
+  
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
