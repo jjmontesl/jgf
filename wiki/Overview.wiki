@@ -48,9 +48,7 @@ _Structure of the JGF configuration file (showing some different services and co
 
 ===Benefits of using a framework===
 
-Of course you could also get your hands on the keyboard and start coding from "scratch" (asuming you will be using a 3D Engine anyway). You can have a quick prototype in days or in hours, and for simple applications that could be enough.
-
-But let's face it, often you'll need a functionality (like some menus or an introduction screen) built in quickly without worrying too much about the details. Usually you would code an initial version, but using a framework allows you to add those quickly and in a clean fashion. 
+Often you'll need functionality (like menus or an introduction screen) ready to use quickly without worrying too much about the details. Usually you would code an initial version, but using a framework allows you to add those quickly and in a clean fashion. 
 
 For example, if you need to add an introduction screen to your game, you just need to add a new View and make sure it runs sequentially before your other Views:
 
