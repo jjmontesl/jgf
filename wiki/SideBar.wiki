@@ -15,4 +15,4 @@
   * [Javadoc Javadoc]
 
 * More information
-  * [http://groups.google.es/group/jgf-devel JGF Development List]
+  * [http://groups.google.es/group/jgf-users JGF Users List]
