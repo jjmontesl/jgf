@@ -9,7 +9,7 @@ Spend some time getting familiar with JGF features! Knowing them will allow you 
 
 *Services and Configuration System*
 
-JGF main configuration is done in a descriptive XML configuration file which provides. This is the core of JGF. It provides:
+JGF main configuration is done in a descriptive XML configuration file. This is the core of JGF. It provides:
 
   * An easy overview of your application parts and components.
   * A standard and practical way to configure components.
