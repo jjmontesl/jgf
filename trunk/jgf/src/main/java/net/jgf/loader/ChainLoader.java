@@ -31,6 +31,9 @@ public class ChainLoader<T> extends BaseLoader<T> {
 		combineProperties(properties);
 
 		for (Loader<T> subLoader : subLoaders) {
+			// TODO: properties are left to following loaders... only selected properties should survive???!!!!
+			// TODO: this could conflict with default values, as they could be already added by a precedent loader
+			// TODO: this has proven to conflict... properties need to be copied for each child
 			result = subLoader.load(result, properties);
 		}
 

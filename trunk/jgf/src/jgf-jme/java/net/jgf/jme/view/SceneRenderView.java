@@ -6,7 +6,6 @@ package net.jgf.jme.view;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.IllegalStateException;
-import net.jgf.jme.camera.CameraController;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
@@ -27,11 +26,6 @@ public class SceneRenderView extends BaseViewState {
 	 * Class logger
 	 */
 	private static final Logger logger = Logger.getLogger(SceneRenderView.class);
-
-	/**
-	 * The camera controller that manages the Scene Render camera.
-	 */
-	protected CameraController camera;
 
 	/**
 	 *
@@ -80,12 +74,12 @@ public class SceneRenderView extends BaseViewState {
 
 		if (! this.active) return;
 
-		if (camera == null) {
+		if (sceneManager.getCamera() == null) {
 			throw new IllegalStateException("No camera is associated to " + this);
 		}
 
 		// Update the camera controller
-		if (camera != null) camera.update(tpf);
+		sceneManager.getCamera().update(tpf);
 
 		JmeScene scene = (JmeScene) sceneManager.getScene();
 
@@ -101,25 +95,6 @@ public class SceneRenderView extends BaseViewState {
 
 	}
 
-	/**
-	 * @param cameraController the cameraController to set
-	 */
-	public void setCamera(CameraController cameraController) {
-
-		this.camera = cameraController;
-
-
-		// Set up default camera (only if not dedicated)
-		// TODO: Delegate this to the camera
-		// TODO: Should this be done in this setter? NO!
-		DisplaySystem display = DisplaySystem.getDisplaySystem();
-		if ((display != null) && (display.getRenderer() != null)) {
-			//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
-			display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
-			display.getRenderer().getCamera().update();
-		}
-
-	}
 
 	/**
 	 * Configures this object from Config.
@@ -135,13 +110,6 @@ public class SceneRenderView extends BaseViewState {
 		String cameraRef = config.getString(configPath + "/camera/@ref", null);
 		if (cameraRef != null) Jgf.getDirectory().register(this, "camera", cameraRef);
 
-	}
-
-	/**
-	 * @return the camera
-	 */
-	public CameraController getCamera() {
-		return camera;
 	}
 
 	/**

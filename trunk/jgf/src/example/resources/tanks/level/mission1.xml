@@ -10,20 +10,35 @@
 
 	<loader>
 	
-		<loader id="!scene.creator" class="net.jgf.loader.ReferenceLoader">
-			<loader ref="loader/scene/preprocessor" />
-			
-			<property name="DefaultJmeSceneLoader.title" value="Mission 1" />
-			<property name="DefaultJmeSceneLoader.subtitle" value="" />
+		<loader id="!scene.creation" class="net.jgf.loader.scene.SceneCreatorLoader" >
+			<property name="SceneCreatorLoader.id" value="scene" />
+			<property name="SceneCreatorLoader.sceneClass" value="net.jgf.jme.scene.DefaultJmeScene" />	
 		</loader>
-		
- 
+				
+		<loader id="!scene.initialize" class="net.jgf.jme.loader.scene.DefaultJmeSceneLoader" >
+			<property name="DefaultJmeSceneLoader.title" value="Mission 1" />
+			<property name="DefaultJmeSceneLoader.subtitle" value="A walk in the park" />
+		</loader>
+
  		<!-- 
 		<loader id="!scene.skybox" class="net.jgf.jme.loader.scene.SkyBoxLoader" >
 			<property name="SkyBoxLoader.skybox" value="" />
 		</loader>
 		-->
-
+	
+	  <loader id="!scene.initialize" class="net.jgf.jme.loader.scene.DefaultJmeSceneLoader" >
+			<property name="DefaultJmeSceneLoader.title" value="Mission 1" />
+			<property name="DefaultJmeSceneLoader.subtitle" value="A walk in the park" />
+		</loader>
+	  
+	  <loader id="!scene.cameras" class="net.jgf.jme.loader.scene.CameraLoader">
+ 			
+			<camera id="scene/camera/overview" class="net.jgf.jme.camera.StaticCamera" >
+				<target>15.0 0.0 2.0</target>
+				<location>3.0 3.0 14.0</location>
+			</camera>
+			
+	  </loader>
 	
 		<loader id="!scene.tanks" class="net.jgf.example.tanks.loader.TanksSceneLoader">
 			
@@ -46,33 +61,53 @@
 				6 . . . . .  . . . . .  . .  . 2
 				8 8 8 7 6 5  4 3 3 3 3  3 4  4 2
 			</map>
-			-->
-
+			 -->
 					
 			<!-- Width: 26 -->
 			<map>
-			  5 6 6 6 6 6 5 5 4  3 2 2 2 4 4 4 4  4 5 5 6 6 6 6 6 6 
-				5	5 4 4 4 4 5 5 5  3 3 4 4 5 5 2 2L 2 4 6 6 5 5 5 5 5
-				5 . . . . . . . .  . . . . . . . .  . . . . . . . . 5
-				5 . . . . . . . .  . . . . . . . .  . . . . . . . . 2
-				4 . . . . . . . 1  . . . . . . . .  . . . . . . . . 2
-				4 . . P . . . . 3L . . . . . . . .  . . . . . . . . 4
-				2 . . . . . . . 1  . . . . . . 3 .  . . . . . . . . 4
-				4 . . . . . . . .  . . . . . . 4 .  . . . . . . . . 4
-				7 . . . . . . . .  . . . . . . 5 .  . . . . . a . . 4
-				6 . . . . . . . .  . . . . . . 4 .  . . . . . . . . 4
-				5 . . . . . . . 1  . . . . . . 3 .  . . . . . . . . 4
-				4 . . P . . . . 3L . . . . . . . .  . . . . . . . . 3
-				3 . . . . . . . 1  . . . . . . . .  . . . . . . . . 3
-				2 . . . . . . . .  . . . . . . . .  . . . . . . . . 2
-				6 . . . . . . . .  . . . . . . . .  . . . . . . . . 2
-				8 8 7 6 5 4 3 3 3  3 4 4 5 5 5 2 2  4 6 6 5 5 2 2 2 2
+			  5 6 6 6 6 6 5 5 4  3 2 2 2 - - 3 4  4 5 5 6 6 6 6 6 6 
+				5	5 4 4 4 4 5 5 5  3 3 2 - - 2 2 3A 2 4 6 6 5 5 5 5 5
+				5 . . . . . . . .  . . - - . . . .  . . . . . . . . 5
+				5 . . . . . . . .  . . - - . . . .  . . . . . . . . 2
+				4 . . . . . . . 1  . . - - . . . .  . . . . . . . . 2
+				4 . . y . . . . 3B . . - . . . . .  . . . . . . . . 4
+				2 . . . . . . . 1  . - - . . . 3 .  . . . . . . . . 4
+				4 . . . . . . . .  . - - . . . 4 .  . . . . . . . . 4
+				7 . . . . . . . .  . - - . . . 5 .  . . . . . a . . 4
+				6 . . . . . . . .  . - - - . . 4 .  . . . . . . . . 4
+				5 . . . . . . . 1  . . - - . . 3 .  . . . . . . . . 4
+				4 . . z . . . . 3C . . - - . . . .  . . . . . . . . 3
+				3 . . . . . . . 1  . . - - . . . .  . . . . . . . . 3
+				2 . . . . . . . .  . . . - - . . .  . . . . . . . . 2
+				6 . . . . . . . .  . . . - - . . .  . . . . . . . . 2
+				8 8 7 6 5 4 3 3 3  3 4 4 - - 5 2 2  4 6 6 5 5 2 2 2 2
 			</map>
-			  			
+
 		</loader> 
 		
-		<loader id="!scene.postprocessor" class="net.jgf.loader.ReferenceLoader">
-			<loader ref="loader/scene/postprocessor" />
+		<loader id="!scene.referencesProcessor" class="net.jgf.example.tanks.loader.ReferencesProcessorLoader">
+		
+			<reference name="A B C" type="model">
+				<loader id="!scene.referencesProcessor/lamps" class="net.jgf.loader.ReferenceLoader">
+					<loader ref="loader/model/tanks" />
+					<property name="ConverterLoader.resourceUrl" value="tanks/model/lamppost/lamppost.dae" />
+				</loader>
+			</reference> 
+			
+			<reference name="B C" type="model">
+				<loader id="!scene.referencesProcessor/lampsRot" class="net.jgf.jme.loader.model.SpatialTransformerLoader" >
+					<property name="SpatialTransformerLoader.rotatePi" value="0.0 0.5 0.0" />
+				</loader>
+			</reference>
+			
+			<!-- 
+			<reference name="a b c d e f" type="entity">
+				<loader id="!scene.referencesProcessor.enemies" class="net.jgf.jme.loader.entity.EntityLoader" >
+					<property name="SpatialTransformerLoader.rotatePi" value="-0.5 0.0 0.0" />
+				</loader>
+			</reference>
+			 -->
+						
 		</loader>
 		
 	</loader>

@@ -5,7 +5,7 @@ import net.jgf.config.Configurable;
 import net.jgf.core.state.StateUtil;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
-import net.jgf.example.tanks.entity.PlayerTank;
+import net.jgf.example.tanks.entity.Tank;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -55,13 +55,13 @@ public class SpawnLogic extends BaseLogicState {
 	}
 
 
-	public PlayerTank spawnPlayer() {
+	public Tank spawnPlayer() {
 
 		// Choose a Spawn Point
 		// TODO: Choose an empty one
 
-		Vector3f position = ((SpatialReference)scene.getReferences().getReference("playerStart0")).getSpatial().getLocalTranslation();
-		PlayerTank tank = (PlayerTank) entityLoader.load("FileChainLoader.resourceUrl=tanks/entity/tank.xml");
+		Vector3f position = ((SpatialReference)scene.getReferences().getReference("z")).getSpatial().getLocalTranslation();
+		Tank tank = (Tank) entityLoader.load("FileChainLoader.resourceUrl=tanks/entity/tank.xml");
 		tank.setId("player1");
 		Spatial hull = ((Node)((Node)tank.getSpatial()).getChild("Tank")).getChild("Hull");
 		// TODO: Model Bounds don't quite belong to logic...

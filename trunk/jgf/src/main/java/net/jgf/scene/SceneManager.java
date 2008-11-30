@@ -6,9 +6,12 @@ import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
 import net.jgf.core.service.ServiceException;
+import net.jgf.jme.camera.CameraController;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
+
+import com.jme.system.DisplaySystem;
 
 
 /**
@@ -25,6 +28,8 @@ public class SceneManager extends BaseService {
 	private static final Logger logger = Logger.getLogger(SceneManager.class);
 
 	protected Scene scene;
+
+	protected CameraController camera;
 
 	/**
 	 * @return the scene
@@ -50,6 +55,11 @@ public class SceneManager extends BaseService {
 			Jgf.getDirectory().addObject(scene.getId(), scene);
 		}
 
+		if (config.containsKey(configPath + "/camera/@ref")) {
+			String cameraRef = config.getString(configPath + "/camera/@ref");
+			Jgf.getDirectory().register(this, "camera", cameraRef);
+		}
+
 	}
 
 
@@ -69,6 +79,33 @@ public class SceneManager extends BaseService {
 
 	public void update(float tpf) {
 		scene.update(tpf);
+	}
+
+
+	/**
+	 * @return the camera
+	 */
+	public CameraController getCamera() {
+		return camera;
+	}
+
+
+	/**
+	 * @param camera the camera to set
+	 */
+	public void setCamera(CameraController camera) {
+
+		this.camera = camera;
+
+		if (camera != null) {
+			// Set up default camera (only if not dedicated)
+			// TODO: Delegate this to the camera! not the place!
+			DisplaySystem display = DisplaySystem.getDisplaySystem();
+			//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
+			display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
+			display.getRenderer().getCamera().update();
+		}
+
 	}
 
 

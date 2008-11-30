@@ -8,14 +8,13 @@ import net.jgf.config.Configurable;
 import net.jgf.jme.camera.StaticCamera;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
-import net.jgf.loader.BaseLoader;
 import net.jgf.loader.LoadProperties;
-import net.jgf.loader.scene.SceneCreatorLoader;
+import net.jgf.loader.scene.SceneLoader;
 import net.jgf.scene.Scene;
-import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.bounding.OrientedBoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
@@ -33,11 +32,12 @@ import com.jme.util.resource.ResourceLocatorTool;
 /**
  */
 @Configurable
-public final class TanksSceneLoader extends SceneCreatorLoader {
+public final class TanksSceneLoader extends SceneLoader {
 
 	/**
 	 * Class logger
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(TanksSceneLoader.class);
 
 	String[] dataArray;
@@ -83,7 +83,6 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 		// Generate map
 		int row = 0;
 		int col = 0;
-		int playerStartCount = 0;
 		for (int i = 0; i < dataArray.length; i++) {
 
 			int height = 0;
@@ -97,14 +96,26 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 			// Holes
 			if (data.charAt(0) == '-') height = -1;
 
-			// Player
-			if (data.charAt(0) == 'P') {
-				Node playerStartNode = new Node("playerStart" + playerStartCount + "Node");
-				playerStartNode.setLocalTranslation(new Vector3f(0.5f + col, 0.0f, 0.5f + row));
-				SpatialReference playerStart = new SpatialReference("playerStart" + playerStartCount, playerStartNode);
-				scene.getReferences().addReference(playerStart);
-				playerStartCount++;
+			// References
+			char valChar = (data.length() > 1 ? data.charAt(1) : data.charAt(0));
+			if ( ((valChar >= 'a') && (valChar <= 'z')) ||
+					 ((valChar >= 'A') && (valChar <= 'Z')) ) {
+				Node referenceNode = new Node("referenceNode-" + valChar);
+				referenceNode.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * height, 0.5f + row));
+				SpatialReference reference = new SpatialReference(String.valueOf(valChar), referenceNode);
+				scene.getReferences().addReference(reference);
 			}
+
+			// Load extra models
+			/*
+			if ((data.length() > 1) && (data.charAt(1) == 'L')) {
+				BaseLoader<Node> modelLoader = Jgf.getDirectory().getObjectAs("loader/model/tanks", BaseLoader.class);
+				Node model = modelLoader.load("ConverterLoader.resourceUrl=tanks/model/lamppost/lamppost.dae");
+				model.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * height, 0.5f + row));
+				obstaclesNode.attachChild(model);
+				obstaclesNode.updateRenderState();
+			}
+			 */
 
 			if (height > -1.5f) {
 		    Box floor = new Box("cell_" + row + "_" + col,
@@ -125,22 +136,14 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 		    }
 			}
 
-			// Load extra models
-			if ((data.length() > 1) && (data.charAt(1) == 'L')) {
-				BaseLoader<Node> modelLoader = Jgf.getDirectory().getObjectAs("loader/model/tanks", BaseLoader.class);
-				Node model = modelLoader.load("ConverterLoader.resourceUrl=tanks/model/lamppost/lamppost.dae");
-				model.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * height, 0.5f + row));
-
-
-				obstaclesNode.attachChild(model);
-				obstaclesNode.updateRenderState();
-
-			}
-
 	    col++;
 			if (col >= width) { col = 0; row++; }
 		}
 
+		floorNode.setModelBound(new BoundingBox());
+		floorNode.updateModelBound();
+
+		// TODO: Create camera in the loader
 		scene.getCameraControllers().addCameraController(new StaticCamera(
 				"scene/camera/test", new Vector3f(0.5f * width, 0.9f * width, 0.7f * row), new Vector3f(0.5f * width, 0, 0.5f * row)
 		));
@@ -148,6 +151,7 @@ public final class TanksSceneLoader extends SceneCreatorLoader {
 
 		fieldNode.attachChild(floorNode);
 		fieldNode.attachChild(obstaclesNode);
+
 
     fieldNode.getLocalTranslation().addLocal(0, 0, 0);
     // TODO: Study how collisions and rendering are affected by the hierarchy of bounds

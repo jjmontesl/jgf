@@ -66,7 +66,7 @@
 		during runtime.
 	 -->
 	<service id="scene/manager" class="net.jgf.scene.SceneManager">
-			
+			<camera ref="scene/camera/test" />
 	</service>
 	
 	<!--
@@ -94,32 +94,6 @@
 			<property name="TanksEntitiesFromReferencesLoader.entityManager" value="entity/manager" />
 		</loader>
 		
-		<!--  The first part of scene loading: creates a scene and adds some default states -->
-		<loader id="loader/scene/preprocessor" class="net.jgf.loader.ChainLoader">
-			
-			<loader id="loader/scene/preprocessor/scene" class="net.jgf.loader.scene.SceneCreatorLoader" >
-				<property name="SceneCreatorLoader.id" value="scene" />
-				<property name="SceneCreatorLoader.sceneClass" value="net.jgf.jme.scene.DefaultJmeScene" />	
-			</loader>
-					
-			<loader id="loader/scene/preprocessor/jmeinitializer" class="net.jgf.jme.loader.scene.DefaultJmeSceneLoader" >
-			</loader>
-
-		</loader>
-
-		<!--   -->
-		<loader id="loader/scene/postprocessor" class="net.jgf.loader.ChainLoader">
-
-			<loader class="ReferencesFromSceneLoader">
-			</loader>
-			
-			<loader class="EntitiesFromReferencesLoader">
-			</loader>
-			
-			<loader class="CamerasFromReferencesLoader">
-			</loader>		
-		
-		</loader>
 		
 		<!--  The EntityLoader used is a FileChainLoader: reads a chain of loaders from a file -->
 		<loader id="loader/entity" class="net.jgf.loader.FileChainLoader">
@@ -254,19 +228,19 @@
 						<item id="view/root/intro/logo/title" class="net.jgf.jme.view.display.TextItem">
 							<center>-0.00 -0.3 0.0</center>
 							<size>0.25</size>
-							<font>Serif BOLD 40</font>
+							<font>Verdana BOLD 40</font>
 							<text>T a n k s</text>
 						</item>	
 						
 					</view>
 					
 				</view>
- 				 -->
-
-				<view id="view/root/intro/startlogic" class="net.jgf.view.StateControllerView" 
+				 -->
+				 
+				<view id="view/root/intro/startlogic" class="net.jgf.view.RunActionView" 
 					autoLoad="true" autoActivate="false" >
-					<!-- <action ref="action/newgame" />  -->
-					<action type="loadAndActivate" ref="view/root/main" />
+					<action ref="action/newgame" />
+					<!-- <action type="loadAndActivate" ref="view/root/main" /> -->
 				</view>
 
 			</view>
@@ -302,7 +276,7 @@
 				
 				<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridRenderView" 
 					autoLoad="true" autoActivate="true" >
-					<camera ref="scene/camera/test" />
+					<sceneManager ref="scene/manager" />
 					<drawBehind>false</drawBehind>
 					<gridCenter>0.0 0.5 0.0</gridCenter>
 				</view>
@@ -325,7 +299,20 @@
 					</view>
 				
 				</view>
-						
+			
+				<view id="view/root/level/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+					autoLoad="true" autoActivate="true" >
+
+					<key>KEY_F12</key>
+			
+					<view id="view/root/level/ui/scenemonitor" class="net.jgf.jme.view.devel.SceneMonitorView"
+						autoLoad="true" autoActivate="false" context="debug">
+						<scene ref="scene" />
+						<updateInterval>5</updateInterval>
+					</view>
+				
+				</view>
+		
 				<view id="view/root/level/cursor" class="net.jgf.jme.view.CursorRenderView"
 					autoLoad="true" autoActivate="true" >
 					<textureUrl>tanks/texture/cursor.png</textureUrl>
