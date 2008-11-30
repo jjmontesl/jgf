@@ -7,7 +7,6 @@ import net.jgf.core.state.StateUtil;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.scene.DefaultJmeScene;
-import net.jgf.jme.view.SceneRenderView;
 import net.jgf.loader.FileChainLoader;
 import net.jgf.logic.LogicState;
 import net.jgf.scene.Scene;
@@ -47,8 +46,8 @@ public class NewGameAction extends BaseAction {
 		Jgf.getDirectory().addObject(scene.getId(), scene);
 
 		// Set a camera
-		SceneRenderView sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level/fight/scene", SceneRenderView.class);
-		sceneRenderView.setCamera(scene.getCameraControllers().getCameraController("scene/camera/test"));
+		//SceneRenderView sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level/fight/scene", SceneRenderView.class);
+		//sceneRenderView.setCamera(scene.getCameraControllers().getCameraController("scene/camera/test"));
 
 		// Spawn player
 		SpawnLogic spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);

@@ -3,7 +3,6 @@ package net.jgf.loader.scene;
 
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
-import net.jgf.loader.BaseLoader;
 import net.jgf.loader.LoadProperties;
 import net.jgf.scene.Scene;
 
@@ -12,7 +11,7 @@ import net.jgf.scene.Scene;
 /**
  */
 @Configurable
-public class SceneCreatorLoader extends BaseLoader<Scene> {
+public class SceneCreatorLoader extends SceneLoader {
 
 	@Override
 	public Scene load(Scene base, LoadProperties properties) {

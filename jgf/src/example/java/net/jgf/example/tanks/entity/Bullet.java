@@ -149,7 +149,7 @@ public class Bullet extends SceneEntity {
 		speed = direction.normalizeLocal().mult(TanksSettings.BULLET_SPEED);
 
 		// Check collision
-		Ray ray = new Ray(position.clone(), speed.normalize				());
+		Ray ray = new Ray(position.clone(), speed.normalize());
 		Node obstacles = (Node)((Node)(scene.getRootNode().getChild("fieldNode"))).getChild("obstaclesNode");
 		results.clear();
 		segment = null;
@@ -211,7 +211,10 @@ public class Bullet extends SceneEntity {
 
 		if (segment != null)  {
 
+
 			Vector3f loc = spatial.getWorldTranslation();
+
+			/*
 			Vector3f neg = segment.getNegativeEnd(new Vector3f());
 			Vector3f pos = segment.getPositiveEnd(new Vector3f());
 
@@ -223,6 +226,9 @@ public class Bullet extends SceneEntity {
 			if ((loc.x < neg.x - 0.00001f || loc.x > pos.x + 0.00001f) ||
 					(loc.y < neg.y - 0.00001f || loc.y > pos.y + 0.00001f) ||
 					(loc.z < neg.z - 0.00001f || loc.z > pos.z + 0.00001f)) {
+				*/
+
+			if (! segment.pointInsideBounds(loc, 0.00001f)) {
 
 				if (numBounces < maxBounces) {
 					numBounces ++;

@@ -35,7 +35,7 @@ public class SpatialTransformerLoader extends ModelLoader {
 			node.getLocalRotation().fromAngles(FastMath.PI * rotatePi.x, FastMath.PI * rotatePi.y, FastMath.PI * rotatePi.z);
 		}
 
-		Node result = new Node(node.getName() + "Transformed");
+		Node result = new Node(node.getName() + "-trans");
 		result.attachChild(node);
 
 		return result;

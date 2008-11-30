@@ -61,6 +61,7 @@ public class FileChainLoader<T> extends BaseLoader<T> {
 		for (Loader<T> subLoader : subLoaders) {
 			// TODO: properties are left to following loaders... only selected properties should survive???!!!!
 			// TODO: this could conflict with default values, as they could be already added by a precedent loader
+			// TODO: this has proven to conflict... properties need to be copied for each child
 			Jgf.getDirectory().addObject(subLoader.getId(), subLoader);
 			result = subLoader.load(result, properties);
 		}

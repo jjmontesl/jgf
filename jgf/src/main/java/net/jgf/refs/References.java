@@ -1,6 +1,7 @@
 
 package net.jgf.refs;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import net.jgf.config.ConfigException;
@@ -37,6 +38,10 @@ public class References {
 	 */
 	public Reference getReference(String name) {
 		return references.get(name);
+	}
+
+	public Collection<Reference> getReferences() {
+		return references.values();
 	}
 
 }

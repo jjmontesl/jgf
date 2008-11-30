@@ -10,6 +10,7 @@ import net.jgf.jme.config.JmeConfigHelper;
 import com.jme.input.action.InputActionEvent;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import com.jme.system.DisplaySystem;
 
 /**
  * A camera attached to a Viewable entity.
@@ -48,6 +49,11 @@ public class StaticCamera extends CameraController {
 		Camera camera = this.getCamera();
 		camera.setLocation(location);
 		camera.lookAt(target, Vector3f.UNIT_Y);
+
+		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
+		DisplaySystem display = DisplaySystem.getDisplaySystem();
+		camera.setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
+
 		camera.update();
 	}
 
