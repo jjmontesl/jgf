@@ -13,3 +13,6 @@
   * [UserGuide User Guide]
   * [Examples Examples]
   * [Javadoc Javadoc]
+
+* More information
+  * [http://groups.google.es/group/jgf-devel JGF Development List]
