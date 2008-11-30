@@ -72,6 +72,8 @@ JGF is designed to be extensible. Base classes are provided for most of the comp
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-debug-1.png
 
+  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-scenemonitor-1.png
+
 *Loaders and Art Pipeline*
 
   * JGF includes a modular loading system for Entities, Scenes and Models. 
