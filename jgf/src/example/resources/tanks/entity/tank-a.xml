@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework 
+	Scene Loader File
+	$Id$
+ --> 	
+
+<jgf>
+
+	<loader>
+	
+		<loader id="!entity.creator" class="net.jgf.loader.entity.EntityCreatorLoader" >
+			<property name="EntityCreatorLoader.entityClass" value="net.jgf.example.tanks.entity.AITank" />
+		</loader>
+		
+		<!-- 
+		<loader id="!entity.attributes" class="net.jgf.loader.AttributeMapperLoader" >
+			<property name="AttributeMapperLoader.speed" value="10.0" />
+			<property name="AttributeMapperLoader.maxBullets" value="1" />
+		</loader>
+		 -->
+
+		<loader id="!entity.model" class="net.jgf.jme.loader.entity.EntityModelLoader" >
+			<property name="ConverterLoader.resourceUrl" value="tanks/model/tank/tank.dae" />
+		</loader>
+		
+	</loader>
+	
+	
+</jgf>
+ 
+
+

@@ -15,6 +15,7 @@ import net.jgf.system.Jgf;
  *
  */
 @Configurable
+// TODO: Duality with StateControllerView
 public class ControllerAction extends BaseAction {
 
 

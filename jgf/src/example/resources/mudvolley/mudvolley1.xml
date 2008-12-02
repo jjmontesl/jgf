@@ -51,6 +51,8 @@
 			
 			</scene>
 			
+			<camera ref="scene/cameras/overview" />
+			
 	</service>
 	
 	<!--
@@ -118,13 +120,11 @@
 				<view id="view/root/level/scene" class="net.jgf.jme.view.SceneRenderView"
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />		
-					<camera ref="scene/cameras/overview" />	
 				</view>
 				
 				<view id="view/root/level/skybox" class="net.jgf.jme.view.SkyboxRenderView"
 					autoLoad="true" autoActivate="true" >
-					<hasSky ref="scene" />		
-					<camera ref="scene/cameras/overview" />	
+					<sceneManager ref="scene/manager" />	
 				</view>
 				
 			</view>

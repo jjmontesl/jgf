@@ -5,7 +5,7 @@ package net.jgf.jme.loader.entity;
 
 import net.jgf.config.Configurable;
 import net.jgf.entity.Entity;
-import net.jgf.jme.entity.SceneEntity;
+import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.loader.BaseLoader;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.entity.EntityLoader;
@@ -34,7 +34,7 @@ public final class EntityModelLoader extends EntityLoader {
 		String loaderRef = properties.get("EntityModelLoader.loader");
 		BaseLoader<Node> modelLoader = Jgf.getDirectory().getObjectAs(loaderRef, BaseLoader.class);
 		Node model = modelLoader.load(properties);
-		((SceneEntity)entity).setSpatial(model);
+		((SpatialEntity)entity).setSpatial(model);
 
 		return entity;
 

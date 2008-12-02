@@ -141,7 +141,7 @@ public final class TanksSceneLoader extends SceneLoader {
 		}
 
 		floorNode.setModelBound(new BoundingBox());
-		floorNode.updateModelBound();
+		//floorNode.updateModelBound();
 
 		// TODO: Create camera in the loader
 		scene.getCameraControllers().addCameraController(new StaticCamera(

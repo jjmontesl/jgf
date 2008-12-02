@@ -17,7 +17,7 @@ import com.jme.scene.Spatial;
 /**
  * An airplane.
  */
-public abstract class SceneEntity extends BaseEntity {
+public abstract class SpatialEntity extends BaseEntity {
 
 	protected Spatial spatial;
 

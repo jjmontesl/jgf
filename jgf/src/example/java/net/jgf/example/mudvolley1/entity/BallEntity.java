@@ -4,7 +4,7 @@ package net.jgf.example.mudvolley1.entity;
 
 
 import net.jgf.example.mudvolley1.MudSettings;
-import net.jgf.jme.entity.SceneEntity;
+import net.jgf.jme.entity.SpatialEntity;
 
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
@@ -12,7 +12,7 @@ import com.jme.math.Vector3f;
 
 /**
  */
-public class BallEntity extends SceneEntity {
+public class BallEntity extends SpatialEntity {
 
 	private Vector3f speed = new Vector3f(Vector3f.ZERO);
 

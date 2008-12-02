@@ -48,6 +48,8 @@ public class FaderViewNode extends BaseViewStateNode {
 
 	protected boolean deactivateOnFinish = true;
 
+	protected boolean unloadOnFinish = false;
+
 	protected ColorRGBA color = ColorRGBA.black;
 
 	protected Fader fader;
@@ -111,8 +113,8 @@ public class FaderViewNode extends BaseViewStateNode {
 			}
 
 			if ((fadeMode == FadeMode.FadeOut) && (!(fader.getAlpha() < 1.0f))) {
-				// TODO: Check if we need to disable and or unload
 				if (isDeactivateOnFinish()) this.deactivate();
+				if (isUnloadOnFinish()) this.unload();
 			}
 
 	}
@@ -179,10 +181,12 @@ public class FaderViewNode extends BaseViewStateNode {
 
 		this.setAllowKeyToSkip(config.getBoolean(configPath + "/allowKeyToSkip", isAllowKeyToSkip()));
 		this.setDeactivateOnFinish(config.getBoolean(configPath + "/deactivateOnFinish", isDeactivateOnFinish()));
+		this.setUnloadOnFinish(config.getBoolean(configPath + "/unloadOnFinish", isUnloadOnFinish()));
 		this.setAutoFadeOutTime(config.getFloat(configPath + "/autoFadeOutTime", getAutoFadeOutTime()));
 		this.setFadeInTime(config.getFloat(configPath + "/fadeInTime", getFadeInTime()));
 		this.setFadeOutTime(config.getFloat(configPath + "/fadeOutTime", getFadeOutTime()));
 		this.setColor(JmeConfigHelper.getColor(config, configPath + "/color", getColor()));
+
 
 	}
 
@@ -198,6 +202,22 @@ public class FaderViewNode extends BaseViewStateNode {
 	 */
 	public void setFadeInTime(float fadeInTime) {
 		this.fadeInTime = fadeInTime;
+	}
+
+
+
+	/**
+	 * @return the unloadOnFinish
+	 */
+	public boolean isUnloadOnFinish() {
+		return unloadOnFinish;
+	}
+
+	/**
+	 * @param unloadOnFinish the unloadOnFinish to set
+	 */
+	public void setUnloadOnFinish(boolean unloadOnFinish) {
+		this.unloadOnFinish = unloadOnFinish;
 	}
 
 	/**

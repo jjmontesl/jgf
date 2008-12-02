@@ -13,13 +13,11 @@ import net.jgf.system.Jgf;
 @Configurable
 public class ReferenceLoader<T> extends BaseLoader<T> {
 
-	private Loader<T> loader;
-
-
 	@Override
 	public T load(T base, LoadProperties properties) throws LoaderException {
 
 		combineProperties(properties);
+		Loader<T> loader = Jgf.getDirectory().getObjectAs(properties.get("ReferenceLoader.loader"), Loader.class);
 		return loader.load(base, properties);
 
 	}
@@ -32,26 +30,7 @@ public class ReferenceLoader<T> extends BaseLoader<T> {
 	public void readConfig(Config config, String configPath) {
 
 		super.readConfig(config, configPath);
-		Jgf.getDirectory().register(this, "loader", config.getString(configPath + "/loader/@ref"));
 
 	}
-
-
-	/**
-	 * @return the loader
-	 */
-	public Loader<T> getLoader() {
-		return loader;
-	}
-
-
-	/**
-	 * @param loader the loader to set
-	 */
-	public void setLoader(Loader<T> loader) {
-		this.loader = loader;
-	}
-
-
 
 }

@@ -10,6 +10,8 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
+import net.jgf.entity.EntityGroup;
+import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.loader.LoadProperties;
@@ -18,6 +20,7 @@ import net.jgf.loader.scene.SceneLoader;
 import net.jgf.refs.HasReferences;
 import net.jgf.refs.Reference;
 import net.jgf.scene.Scene;
+import net.jgf.system.Jgf;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -51,6 +54,8 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 
 		public Loader<Object> loader;
 
+		public String target;
+
 	}
 
 	public ArrayList<ReferenceProcessor> processors = new ArrayList<ReferenceProcessor>();
@@ -71,6 +76,7 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 				ReferenceProcessor proc = new ReferenceProcessor();
 				proc.name = names;
 				proc.type = ReferenceProcessorType.valueOf(config.getString(configPath + "/reference[" + index + "]/@type"));
+				proc.target = config.getString(configPath + "/reference[" + index + "]/@target", null);
 				proc.loader = ConfigurableFactory.newFromConfig(config, configPath + "/reference[" + index + "]/loader", Loader.class);
 				processors.add(proc);
 			}
@@ -99,6 +105,7 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 	protected void processReference(JmeScene scene, Reference ref, LoadProperties properties) {
 		// Check if it matches any processor
 		for (ReferenceProcessor proc : processors) {
+
 			if (ArrayUtils.contains(proc.name, ref.getName())) {
 				// Process it
 				if (proc.type == ReferenceProcessorType.model) {
@@ -127,10 +134,30 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 					anchor.updateWorldVectors(true);
 					anchor.updateModelBound();
 
+				} else if (proc.type == ReferenceProcessorType.entity) {
+
+					// TODO: Copy prefs! NO! In this one we need to override! Solve this!
+					SpatialEntity entity = (SpatialEntity) proc.loader.load(null, new LoadProperties());
+					Node anchor = (Node) ((SpatialReference) ref).getSpatial();
+
+					anchor.attachChild((entity).getSpatial());
+					entity.setSpatial(anchor);
+					scene.getRootNode().attachChild(anchor);
+					anchor.updateRenderState();
+					anchor.updateWorldVectors(true);
+					anchor.updateModelBound();
+
+					EntityGroup group = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
+					entity.setId(ref.getName());
+					group.attachChild(entity);
+
 				} else {
 					throw new ConfigException("Unsupported reference processor type '" + proc.type + "' when processing references at loader " + this.id);
 				}
 			}
+
+
+
 		}
 	}
 

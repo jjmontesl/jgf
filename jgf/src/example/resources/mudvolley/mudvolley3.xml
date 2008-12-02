@@ -88,6 +88,8 @@
 					
 			</scene>
 			
+			<camera ref="scene/cameras/match" />
+			
 	</service>
 	
 	<!--
@@ -135,13 +137,11 @@
 					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
-						<camera ref="scene/cameras/match" />		
 					</view>
 					
 					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
 						autoLoad="true" autoActivate="true" >
-						<hasSky ref="scene" />		
-						<camera ref="scene/cameras/match" />	
+						<sceneManager ref="scene/manager" />		
 					</view>
 						
 				</view>
@@ -159,7 +159,8 @@
 					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridRenderView" context="debug"
 						autoLoad="true" autoActivate="false" >
 
-						<camera ref="scene/cameras/match" />
+						<sceneManager ref="scene/manager" />
+						
 						<drawBehind>false</drawBehind>
 						<gridCenter>0.0 0.5 0.0</gridCenter>
 					</view>

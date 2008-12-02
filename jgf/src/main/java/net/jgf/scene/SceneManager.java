@@ -11,8 +11,6 @@ import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
-import com.jme.system.DisplaySystem;
-
 
 /**
  * Hold a Scene
@@ -96,15 +94,6 @@ public class SceneManager extends BaseService {
 	public void setCamera(CameraController camera) {
 
 		this.camera = camera;
-
-		if (camera != null) {
-			// Set up default camera (only if not dedicated)
-			// TODO: Delegate this to the camera! not the place!
-			DisplaySystem display = DisplaySystem.getDisplaySystem();
-			//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
-			display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
-			display.getRenderer().getCamera().update();
-		}
 
 	}
 

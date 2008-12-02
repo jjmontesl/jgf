@@ -5,8 +5,8 @@ package net.jgf.jme.view;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.jme.camera.CameraController;
 import net.jgf.jme.scene.sky.HasSky;
+import net.jgf.scene.SceneManager;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -23,16 +23,10 @@ public class SkyboxRenderView extends BaseViewState {
 	 */
 	private static final Logger logger = Logger.getLogger(SkyboxRenderView.class);
 
-
-	/**
-	 * The camera controller that manages the Scene Render camera.
-	 */
-	protected CameraController camera;
-
 	/**
 	 *
 	 */
-	protected HasSky hasSky;
+	protected SceneManager sceneManager;
 
 
 
@@ -54,10 +48,11 @@ public class SkyboxRenderView extends BaseViewState {
 
 			// Center the skybox on the camera
 			// TODO: This should not behere, the skybox belongs to other place
+			// TODO: Actually implement this!
 			//scene.getRootNode().getChild("skybox").setLocalTranslation(DisplaySystem.getDisplaySystem().getRenderer().getCamera().getLocation());
 
 			// Update the camera controller
-			if (camera != null) camera.update(tpf);
+			if (sceneManager.getCamera() != null) sceneManager.getCamera().update(tpf);
 
 
 	}
@@ -72,42 +67,17 @@ public class SkyboxRenderView extends BaseViewState {
 
 		if (! this.active) return;
 
-		if (camera == null) return;
+		if (sceneManager.getCamera() == null) return;
 
 		// TODO: Do only when needed
 		//scene.getRootNode().updateRenderState();
 
 		//if (passManager != null) passManager.renderPasses(DisplaySystem.getDisplaySystem().getRenderer());
-		DisplaySystem.getDisplaySystem().getRenderer().draw(hasSky.getSky().getRootNode());
+		DisplaySystem.getDisplaySystem().getRenderer().draw(((HasSky)sceneManager.getScene()).getSky().getRootNode());
 
 		/*
 		SceneMonitor.getMonitor().renderViewer(DisplaySystem.getDisplaySystem().getRenderer());
 		*/
-
-	}
-
-	/**
-	 * @return the cameraController
-	 */
-	public CameraController getCameraController() {
-		return camera;
-	}
-
-	/**
-	 * @param cameraController the cameraController to set
-	 */
-	public void setCameraController(CameraController cameraController) {
-
-		this.camera = cameraController;
-
-		// Set up default camera (only if not dedicated)
-		// TODO: Delegate this to the camera
-		DisplaySystem display = DisplaySystem.getDisplaySystem();
-		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
-		display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
-		display.getRenderer().getCamera().update();
-
-
 
 	}
 
@@ -119,36 +89,21 @@ public class SkyboxRenderView extends BaseViewState {
 
 		super.readConfig(config, configPath);
 
-		net.jgf.system.Jgf.getDirectory().register(this, "hasSky", config.getString(configPath + "/hasSky/@ref"));
-		net.jgf.system.Jgf.getDirectory().register(this, "camera", config.getString(configPath + "/camera/@ref"));
+		net.jgf.system.Jgf.getDirectory().register(this, "sceneManager", config.getString(configPath + "/sceneManager/@ref"));
 	}
 
 	/**
-	 * @return the camera
+	 * @return the sceneManager
 	 */
-	public CameraController getCamera() {
-		return camera;
+	public SceneManager getSceneManager() {
+		return sceneManager;
 	}
 
 	/**
-	 * @param camera the camera to set
+	 * @param sceneManager the sceneManager to set
 	 */
-	public void setCamera(CameraController camera) {
-		this.camera = camera;
-	}
-
-	/**
-	 * @return the hasSky
-	 */
-	public HasSky getHasSky() {
-		return hasSky;
-	}
-
-	/**
-	 * @param hasSky the hasSky to set
-	 */
-	public void setHasSky(HasSky hasSky) {
-		this.hasSky = hasSky;
+	public void setSceneManager(SceneManager sceneManager) {
+		this.sceneManager = sceneManager;
 	}
 
 

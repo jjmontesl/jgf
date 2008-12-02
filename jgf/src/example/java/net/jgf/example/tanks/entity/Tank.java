@@ -3,7 +3,7 @@ package net.jgf.example.tanks.entity;
 import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.audio.AudioItem;
-import net.jgf.jme.entity.SceneEntity;
+import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.jme.view.CursorRenderView;
 import net.jgf.system.Jgf;
@@ -18,7 +18,7 @@ import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
-public abstract class Tank extends SceneEntity {
+public abstract class Tank extends SpatialEntity {
 
 	/**
 	 * Class logger
@@ -33,8 +33,6 @@ public abstract class Tank extends SceneEntity {
 
 	protected float speedRel;
 
-	protected Vector3f target = new Vector3f();
-
 	protected float fireDelay = 0.200f;
 
 	protected float fireWait;
@@ -48,7 +46,6 @@ public abstract class Tank extends SceneEntity {
 	protected AudioItem audioItem;
 
 	protected DefaultJmeScene scene;
-
 
 	private boolean firing;
 
@@ -77,7 +74,7 @@ public abstract class Tank extends SceneEntity {
 		Spatial hull = ((Node)((Node)spatial).getChild("Tank")).getChild("Hull");
 		Vector3f orientation = hull.getWorldRotation().mult(Vector3f.UNIT_Y).normalizeLocal();
 
-		float angle = orientation.angleBetween(direction);
+		float angle = orientation.angleBetween(direction.normalize());
 		float mirrorangle = angle > FastMath.HALF_PI ? FastMath.PI - angle : angle;
 		float obtuse = angle > FastMath.HALF_PI ? -1.0f : 1.0f;
 
@@ -92,14 +89,14 @@ public abstract class Tank extends SceneEntity {
 				// Adjust speed
 				if ((obtuse >= 0 && speedRel >= 0) || (obtuse <= 0 && speedRel <= 0)) {
 					speedRel = speedRel + (obtuse * accelRel * tpf);
-					speedRel = FastMath.clamp(speedRel, -1, 1);
+					speedRel = FastMath.clamp(speedRel, -direction.length(), direction.length());
 					throtling = true;
 				}
 			}
 
 			// Rotate the tank towards the direction
 
-			Vector3f rotDirection = new Quaternion().fromAngleAxis(FastMath.HALF_PI, Vector3f.UNIT_Y).mult(direction);
+			Vector3f rotDirection = new Quaternion().fromAngleAxis(FastMath.HALF_PI, Vector3f.UNIT_Y).mult(direction.normalize());
 			float anglePositive = orientation.angleBetween(rotDirection);
 			float sign = obtuse * (anglePositive > FastMath.HALF_PI ? 1.0f : -1.0f);
 
@@ -134,14 +131,10 @@ public abstract class Tank extends SceneEntity {
 			spatial.getLocalTranslation().y = 0;
 		}
 
-		// Canon
-		Spatial canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
-		target.setY(canon.getLocalTranslation().y);
-		canon.lookAt(target, Vector3f.UNIT_Y);
-
 		spatial.updateWorldVectors();
 
 		// Fire
+		Spatial canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
 		if (fireWait < 0) {
 			if (firing) {
 				fireWait = fireDelay;
@@ -157,20 +150,6 @@ public abstract class Tank extends SceneEntity {
 		} else {
 			fireWait = fireWait - tpf;
 		}
-	}
-
-	/**
-	 * @return the target
-	 */
-	public Vector3f getTarget() {
-		return target;
-	}
-
-	/**
-	 * @param target the target to set
-	 */
-	public void setTarget(Vector3f target) {
-		this.target = target;
 	}
 
 	/**
