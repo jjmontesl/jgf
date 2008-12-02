@@ -18,9 +18,9 @@ When we want to add functionality to the game, we add components to the configur
 </view>
 }}}
 
-The example shows the configuration of a ViewState (get used because ViewStates are a core part of JGF). In a real application, a ViewState is included somewhere within a ViewState tree. When the state is rendered it will check if a screenshot has been requested, and act accordingly.
+The example shows the configuration of a !ViewState (!ViewStates are a core part of JGF). In a real application, !ViewStates are structured into _tree_. When the state is rendered it will check if a screenshot has been requested, and act accordingly.
 
-In the practice, you copy and paste the configuration from the examples and modify the parameters to suit your needs.
+In the practice, most of the time you copy and paste the configuration from the examples and modify the parameters to suit your needs.
 
 _The game at a glance_
 
