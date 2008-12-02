@@ -14,8 +14,11 @@ import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 @Configurable
 public class ViewSequencerNode extends BaseViewStateNode implements StateObserver {
 
-
-	protected boolean unloadAfterLast;
+	/**
+	 * <p>Whether this sequencer node has to unload itself when the last child
+	 * is deactivated.</p>
+	 */
+	protected boolean unloadOnFinish;
 
 	/**
 	 * Configures this object from Config.
@@ -25,7 +28,7 @@ public class ViewSequencerNode extends BaseViewStateNode implements StateObserve
 
 		super.readConfig(config, configPath);
 
-		this.setUnloadAfterLast(config.getBoolean(configPath + "/unloadAfterLast", isUnloadAfterLast()));
+		this.setUnloadOnFinish(config.getBoolean(configPath + "/unloadOnFinish", isUnloadOnFinish()));
 
 	}
 
@@ -52,6 +55,9 @@ public class ViewSequencerNode extends BaseViewStateNode implements StateObserve
 
 
 
+	/* (non-Javadoc)
+	 * @see net.jgf.core.state.StateObserver#onStateLifecycle(net.jgf.core.state.StateLifecycleEvent)
+	 */
 	@Override
 	public void onStateLifecycle(StateLifecycleEvent evt) {
 
@@ -69,12 +75,12 @@ public class ViewSequencerNode extends BaseViewStateNode implements StateObserve
 			if (found >= 0) {
 				if (children.size() > found + 1) {
 					children.get(found+1).activate();
-				}
-			} else {
-				// Last state: cleanup
-				this.deactivate();
-				if (unloadAfterLast) {
-					this.unload();
+				} else {
+					// Last state: cleanup
+					this.deactivate();
+					if (unloadOnFinish) {
+						this.unload();
+					}
 				}
 			}
 
@@ -84,18 +90,20 @@ public class ViewSequencerNode extends BaseViewStateNode implements StateObserve
 	}
 
 	/**
-	 * @return the unloadAfterLast
+	 * @return the unloadOnFinish
 	 */
-	public boolean isUnloadAfterLast() {
-		return unloadAfterLast;
+	public boolean isUnloadOnFinish() {
+		return unloadOnFinish;
 	}
 
 	/**
-	 * @param unloadAfterLast the unloadAfterLast to set
+	 * @param unloadOnFinish the unloadOnFinish to set
 	 */
-	public void setUnloadAfterLast(boolean unloadAfterLast) {
-		this.unloadAfterLast = unloadAfterLast;
+	public void setUnloadOnFinish(boolean unloadOnFinish) {
+		this.unloadOnFinish = unloadOnFinish;
 	}
+
+
 
 
 

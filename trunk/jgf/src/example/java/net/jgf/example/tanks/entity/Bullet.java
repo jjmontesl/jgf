@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import net.jgf.config.Configurable;
 import net.jgf.example.tanks.TanksSettings;
+import net.jgf.example.tanks.entity.util.ProjectileTrip;
 import net.jgf.example.tanks.logic.SpawnLogic;
-import net.jgf.jme.entity.SceneEntity;
+import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.system.Jgf;
 
@@ -14,7 +15,6 @@ import org.apache.log4j.Logger;
 import com.jme.intersection.PickResults;
 import com.jme.intersection.TrianglePickResults;
 import com.jme.math.FastMath;
-import com.jme.math.LineSegment;
 import com.jme.math.Quaternion;
 import com.jme.math.Ray;
 import com.jme.math.Triangle;
@@ -35,7 +35,7 @@ import com.jmex.effects.particles.ParticlePoints;
 /**
  */
 @Configurable
-public class Bullet extends SceneEntity {
+public class Bullet extends SpatialEntity {
 
 	/**
 	 * Class logger
@@ -49,26 +49,22 @@ public class Bullet extends SceneEntity {
 
 	private float ttl;
 
-	private Vector3f speed = new Vector3f();
+	private final Vector3f speed = new Vector3f();
 
 	private DefaultJmeScene scene;
 
 	private SpawnLogic spawnLogic;
-
-	private LineSegment segment;
-
-	private Vector3f nextDir = new Vector3f();
-
-	private Vector3f nextPos = new Vector3f();
 
 	private int numBounces = 0;
 
 	private int maxBounces = 1;
 
 	//PickResults results = new BoundingPickResults();
-	PickResults results = new TrianglePickResults();
+	private final PickResults results = new TrianglePickResults();
 
 	private ParticlePoints smoke;
+
+	private final ProjectileTrip trip = new ProjectileTrip();
 
 	/* (non-Javadoc)
 	 * @see net.jgf.core.state.BaseState#load()
@@ -146,13 +142,12 @@ public class Bullet extends SceneEntity {
 		spatial.getLocalRotation().lookAt(direction, Vector3f.UNIT_Y);
 		spatial.getLocalRotation().multLocal(new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y));
 		//spatial.getLocalScale().set(20,20,20);
-		speed = direction.normalizeLocal().mult(TanksSettings.BULLET_SPEED);
+		speed.set(direction).normalizeLocal().multLocal(TanksSettings.BULLET_SPEED);
 
 		// Check collision
 		Ray ray = new Ray(position.clone(), speed.normalize());
 		Node obstacles = (Node)((Node)(scene.getRootNode().getChild("fieldNode"))).getChild("obstaclesNode");
 		results.clear();
-		segment = null;
 		results.setCheckDistance(true);
 		obstacles.findPick(ray, results);
 		Triangle triangle = null;
@@ -183,14 +178,16 @@ public class Bullet extends SceneEntity {
 			Vector3f exactHit = new Vector3f();
 			ray.intersectWhere(triangle, exactHit);
 
-			segment = new LineSegment(position.clone(), speed.normalize(),
-										exactHit.subtract(position).length() - BULLET_HALFWIDTH);
-			nextDir = speed.clone().negateLocal().normalizeLocal();
-			nextPos = exactHit.add(nextDir.mult(BULLET_HALFWIDTH));
+			trip.segment.getOrigin().set(position);
+			trip.segment.getDirection().set(speed).normalizeLocal();
+			trip.segment.setExtent(exactHit.subtract(position).length() - BULLET_HALFWIDTH); // FIXME: Objects created here
+			trip.bounceDirection.set(speed).negateLocal().normalizeLocal(); // Temporal value, not bounce direction yet
+			trip.hitPosition.set(exactHit).addLocal(trip.bounceDirection.mult(BULLET_HALFWIDTH));
+
 			Quaternion q = new Quaternion();
 			triangle.calculateNormal();
 			q.fromAngleAxis(FastMath.PI, triangle.getNormal());
-			q.mult(nextDir.clone(), nextDir);
+			q.mult(trip.bounceDirection.clone(), trip.bounceDirection); // Overwriting temporal value of bounceDirection
 
 
 		}
@@ -209,7 +206,7 @@ public class Bullet extends SceneEntity {
 
 		// Check position
 
-		if (segment != null)  {
+		if (trip.segment != null)  {
 
 
 			Vector3f loc = spatial.getWorldTranslation();
@@ -228,11 +225,11 @@ public class Bullet extends SceneEntity {
 					(loc.z < neg.z - 0.00001f || loc.z > pos.z + 0.00001f)) {
 				*/
 
-			if (! segment.pointInsideBounds(loc, 0.00001f)) {
+			if (! trip.segment.pointInsideBounds(loc, 0.00001f)) {
 
 				if (numBounces < maxBounces) {
 					numBounces ++;
-					startFrom(nextPos.clone(), nextDir.clone());
+					startFrom(trip.hitPosition.clone(), trip.bounceDirection.clone());
 				} else {
 					// Destroy
 					ttl = -1;

@@ -14,6 +14,7 @@ import com.jme.system.DisplaySystem;
 
 /**
  */
+// TODO: Add warnings for the updateInterval (too low will kill the app, negatives not accepted)
 @Configurable
 public final class SceneMonitorView extends BaseViewState {
 
@@ -25,7 +26,7 @@ public final class SceneMonitorView extends BaseViewState {
 
 	protected JmeScene scene;
 
-	protected float updateInterval = 20.0f;
+	protected float updateInterval = 60.0f;
 
 	/**
 	 * Calls the underlying View cleanup method and unloads this GameStateWrapperView.
@@ -46,6 +47,7 @@ public final class SceneMonitorView extends BaseViewState {
 	public void update(float tpf) {
 		super.update(tpf);
 		SceneMonitor.getMonitor().updateViewer(tpf);
+		if (!SceneMonitor.getMonitor().isVisible()) this.deactivate();
 	}
 
 	/* (non-Javadoc)

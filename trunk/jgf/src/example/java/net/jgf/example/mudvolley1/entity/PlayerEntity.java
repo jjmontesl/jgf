@@ -2,13 +2,13 @@
 package net.jgf.example.mudvolley1.entity;
 
 import net.jgf.example.mudvolley1.MudSettings;
-import net.jgf.jme.entity.SceneEntity;
+import net.jgf.jme.entity.SpatialEntity;
 
 import com.jme.math.FastMath;
 
 /**
  */
-public class PlayerEntity extends SceneEntity {
+public class PlayerEntity extends SpatialEntity {
 
 	private float walkSpeed = MudSettings.PLAYER_WALK_SPEED;
 

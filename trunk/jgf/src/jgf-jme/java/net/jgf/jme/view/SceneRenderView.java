@@ -8,7 +8,6 @@ import net.jgf.config.Configurable;
 import net.jgf.core.IllegalStateException;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
-import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -78,6 +77,13 @@ public class SceneRenderView extends BaseViewState {
 			throw new IllegalStateException("No camera is associated to " + this);
 		}
 
+		// Set up default camera (only if not dedicated)
+		// TODO: Delegate this to the camera! not the place! to EACH camera
+		DisplaySystem display = DisplaySystem.getDisplaySystem();
+		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
+		display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
+		display.getRenderer().getCamera().update();
+
 		// Update the camera controller
 		sceneManager.getCamera().update(tpf);
 
@@ -107,8 +113,6 @@ public class SceneRenderView extends BaseViewState {
 		// TODO: Maybe these two ones should be optional / null (study carefully)
 		String sceneManagerRef = config.getString(configPath + "/sceneManager/@ref");
 		if (sceneManagerRef != null) net.jgf.system.Jgf.getDirectory().register(this, "sceneManager", sceneManagerRef);
-		String cameraRef = config.getString(configPath + "/camera/@ref", null);
-		if (cameraRef != null) Jgf.getDirectory().register(this, "camera", cameraRef);
 
 	}
 

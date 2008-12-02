@@ -5,6 +5,8 @@ import net.jgf.config.Configurable;
 
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.system.DisplaySystem;
 
 /**
@@ -20,6 +22,8 @@ public class PlayerTank extends Tank {
 
 	private boolean walkDown;
 
+	protected final Vector3f target = new Vector3f();
+
 	@Override
 	public void update(float tpf) {
 
@@ -30,9 +34,16 @@ public class PlayerTank extends Tank {
 		if (walkDown) direction.z = 1;
 		direction.normalizeLocal();
 
-		super.update(tpf);
+		// Canon
+		Spatial canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
+		target.setY(canon.getLocalTranslation().y);
+		canon.lookAt(target, Vector3f.UNIT_Y);
 
 		fixCursor();
+
+		super.update(tpf);
+
+
 
 	}
 
@@ -101,6 +112,20 @@ public class PlayerTank extends Tank {
 	 */
 	public void setWalkDown(boolean walkDown) {
 		this.walkDown = walkDown;
+	}
+
+	/**
+	 * @return the target
+	 */
+	public Vector3f getTarget() {
+		return target;
+	}
+
+	/**
+	 * @param target the target to set
+	 */
+	public void setTarget(Vector3f target) {
+		this.target.set(target);
 	}
 
 }

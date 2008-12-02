@@ -47,13 +47,13 @@
 			<entity id="entity/root/players" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
-			<entity id="entity/root/enemies" class="net.jgf.entity.EntityGroup">
+			<entity id="entity/root/enemy" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
 			<entity id="entity/root/bullets" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
-			<entity id="entity/root/mines" class="net.jgf.entity.EntityGroup">
+			<entity id="entity/root/mine" class="net.jgf.entity.EntityGroup">
 			</entity>
 
 		</entity>
@@ -90,8 +90,6 @@
 		defines the level). See the level configuration to see the each level's loading chain -->
 		<loader id="loader/scene" class="net.jgf.loader.FileChainLoader">
 			<property name="TanksSceneLoader.sceneManager" value="scene/manager" />
-			<property name="TanksEntitiesFromReferencesLoader.entityLoader" value="loader/entity" />
-			<property name="TanksEntitiesFromReferencesLoader.entityManager" value="entity/manager" />
 		</loader>
 		
 		
@@ -160,9 +158,9 @@
 			<view id="view/root/sequencer" class="net.jgf.view.ViewSequencerNode" 
 				autoLoad="true" autoActivate="true" >
 				
-				<unloadAfterLast>true</unloadAfterLast>
-				
-				<!-- 
+				<unloadOnFinish>true</unloadOnFinish>
+
+			<!-- 
 				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
 					autoLoad="true" autoActivate="true" >
 				
@@ -235,7 +233,7 @@
 					</view>
 					
 				</view>
-				 -->
+				  -->
 				 
 				<view id="view/root/intro/startlogic" class="net.jgf.view.RunActionView" 
 					autoLoad="true" autoActivate="false" >
