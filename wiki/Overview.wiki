@@ -2,12 +2,6 @@
 
 = JGF Overview =
 
-===Straight into the matter===
-
-JGF is a framework and as such it gives you a way of building your game. When you use a framework, you need to get used to its structure. JGF separates your game into *Entities*, *ViewStates* and *LogicStates*, and a few other components.
-
-But let's see how a JGF application looks:
-
 ===JGF Configuration===
 
 _The JGF configuration file_
@@ -32,7 +26,7 @@ _The game at a glance_
 
 Defining the game structure in a configuration file allows us to see the big picture and think on how to implement or expand our game.
 
-But, what services is a JGF game composed of? The main services (which you will probably cut and paste) are:
+But what services is a JGF game composed of? The main services (which you will probably cut and paste) are:
 
   * *Engine*: the engine runs the main game loop, updating the LogicState and ViewState trees.
   * *Logic*: this service just contains the !LogicState tree. Inside this service we build the !LogicState tree that will handle our game logic. 
@@ -46,9 +40,15 @@ http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/mudvolley-configtree.png
 
 _Structure of the JGF configuration file (showing some different services and components)_
 
+===Game design pieces===
+
+JGF is a framework and as such it gives you a way of building your game. When you use a framework, you need to get used to its structure. JGF provides *!Entities*, *!ViewStates* and *!LogicStates*, as foundations for the design of your game look and feel.
+
 ===Benefits of using a framework===
 
-Often you'll need functionality (like menus or an introduction screen) ready to use quickly without worrying too much about the details. Usually you would code an initial version, but using a framework allows you to add those quickly and in a clean fashion. 
+Often you'll need functionality (like menus or an introduction screen) ready to use quickly without worrying too much about the details. 
+
+Using reusable components for most of these tasks allows you to quickly develop prototypes and easily promote them to production code. 
 
 For example, if you need to add an introduction screen to your game, you just need to add a new View and make sure it runs sequentially before your other Views:
 
