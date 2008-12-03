@@ -4,6 +4,7 @@
   * [Overview]
   * [Features]
   * [GettingStarted Getting Started]
+  * [FAQ]
 
 * Download
   * [DownloadingJGF Downloading JGF]
@@ -13,6 +14,7 @@
   * [UserGuide User Guide]
   * [Examples Examples]
   * [Javadoc Javadoc]
+  * [FAQ]
 
 * More information
   * [http://groups.google.es/group/jgf-users JGF Users List]
