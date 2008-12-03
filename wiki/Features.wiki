@@ -118,4 +118,4 @@ The Loader System definitely requires some explanation. Visit [LoaderSystem Load
   * JGF "basegame" suggests a standard package structure for games, for users to mimic shall they wish to. _TO BE DONE_.
 
 
-[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
+[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source] - [FAQ]
