@@ -8,8 +8,8 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.state.State;
 import net.jgf.core.state.StateUtil;
-import net.jgf.logic.BaseLogicAction;
-import net.jgf.logic.LogicAction;
+import net.jgf.logic.action.BaseLogicAction;
+import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
 
 
