@@ -20,8 +20,6 @@ import net.jgf.system.Jgf;
 @Configurable
 public class ControllerAction extends BaseLogicAction {
 
-
-
 	protected List<ActionStep> steps = new ArrayList<ActionStep>(1);
 
 	/**

@@ -78,6 +78,8 @@ public class EntityPoolLoader extends EntityLoader {
 
 		boolean found = false;
 
+		// TODO: Diagnostics mode: check if entity returned is deactivated and unloaded!
+
 		for (EntityPool pool : pools) {
 
 			// Try to retrieve the entity from the pool

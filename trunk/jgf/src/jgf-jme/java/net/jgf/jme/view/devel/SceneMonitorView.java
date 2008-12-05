@@ -28,18 +28,6 @@ public final class SceneMonitorView extends BaseViewState {
 
 	protected float updateInterval = 60.0f;
 
-	/**
-	 * Calls the underlying View cleanup method and unloads this GameStateWrapperView.
-	 * @see net.jgf.core.state.BaseState#unload()
-	 */
-	@Override
-	public void unload() {
-		if (isActive()) deactivate();
-		super.unload();
-	}
-
-
-
 	/* (non-Javadoc)
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
@@ -81,6 +69,17 @@ public final class SceneMonitorView extends BaseViewState {
 		SceneMonitor.getMonitor().showViewer(false);
 		SceneMonitor.getMonitor().unregisterNode(scene.getRootNode());
 		super.deactivate();
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see net.jgf.core.state.BaseState#unload()
+	 */
+	@Override
+	public void unload() {
+		super.unload();
+		SceneMonitor.getMonitor().cleanup();
 	}
 
 	/**

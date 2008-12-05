@@ -36,6 +36,8 @@ package net.jgf.config;
 import java.net.URL;
 import java.util.List;
 
+import net.jgf.jme.config.JmeConfigHelper;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
@@ -53,7 +55,7 @@ import com.jme.util.resource.ResourceLocatorTool;
  * <p>This class relies on Apache Commons Configuration to do its job. The library is
  * configured to use the XPath resolver, and thus configuration elements are accessed
  * using XPath notation. More information can be found in the documentation of
- * {@link XMLConfiguration} and Apache Commons COnfiguration in general.</p>
+ * {@link XMLConfiguration} and Apache Commons Configuration in general.</p>
  * </p>Some modules provide helper classes that expand this class functionality. For
  * example, the JME module provides {@link JmeConfigHelper}, which provides methods
  * to read more specific types.</p>

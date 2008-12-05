@@ -117,10 +117,11 @@ public abstract class BaseState extends BaseComponent implements State {
 	/* (non-Javadoc)
 	 * @see net.jgf.view.ViewState#unload()
 	 */
-	// TODO: Should automatically deactivate on unload?
+	// TODO: Should automatically deactivate on unload? yes! state lifecycle!
 	@Override
 	public void unload() {
 		BaseState.logger.debug("Unloading " + this);
+		if (this.active) this.deactivate();
 		this.loaded = false;
 	}
 
