@@ -1,9 +1,9 @@
 
 package net.jgf.menu.items;
 
-import net.jgf.action.Action;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
 
 
@@ -15,7 +15,7 @@ import net.jgf.system.Jgf;
 @Configurable
 public class ActionMenuItem extends TextMenuItem {
 
-	protected Action action;
+	protected LogicAction action;
 
 	/**
 	 * Configures this object from Config.
@@ -36,20 +36,20 @@ public class ActionMenuItem extends TextMenuItem {
 
 	@Override
 	public void perform() {
-		action.perform();
+		action.perform(null);
 	}
 
 	/**
 	 * @return the action
 	 */
-	public Action getAction() {
+	public LogicAction getAction() {
 		return action;
 	}
 
 	/**
 	 * @param action the action to set
 	 */
-	public void setAction(Action action) {
+	public void setAction(LogicAction action) {
 		this.action = action;
 	}
 

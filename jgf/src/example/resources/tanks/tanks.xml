@@ -122,29 +122,27 @@
 	
 		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
 			
-			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
+			<logic id="logic/action" class="net.jgf.logic.LogicStateNode" 
+				autoActivate="false">
+				
+				<logic id="logic/action/newgame" class="net.jgf.example.tanks.logic.NewGameAction" >
+				</logic>
+				
+			</logic>
 			
+			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode" >
+				
 				<logic id="logic/root/ingame/spawn" class="net.jgf.example.tanks.logic.SpawnLogic"
 					autoLoad="true" autoActivate="true" >
 				</logic>
 			
-				<logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic" 
-					autoLoad="true" autoActivate="true" >
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic"
+					autoLoad="true" autoActivate="true" > 
 				</logic>
 			
 			</logic>
 			
 		</logic>
-		
-	</service>
-	
-	<!-- 
-		Actions: contains the action list
-	 -->
-	<service id="action" class="net.jgf.action.DefaultActionManager" >
-		
-		<action id="action/newgame" class="net.jgf.example.tanks.action.NewGameAction" >
-		</action>
 		
 	</service>
 	
@@ -237,8 +235,7 @@
 				 
 				<view id="view/root/intro/startlogic" class="net.jgf.view.RunActionView" 
 					autoLoad="true" autoActivate="false" >
-					<action ref="action/newgame" />
-					<!-- <action type="loadAndActivate" ref="view/root/main" /> -->
+					<action ref="logic/action/newgame" />
 				</view>
 
 			</view>

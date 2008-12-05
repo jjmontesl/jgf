@@ -54,7 +54,7 @@ public abstract class SpatialEntity extends BaseEntity {
 		if (location != null) getSpatial().setLocalTranslation(location);
 	}
 
-	public void exclude(EntityGroup parentEntity, Node parentNode) {
+	public void withdraw(EntityGroup parentEntity, Node parentNode) {
 
 		parentNode.detachChild(this.getSpatial());
 		net.jgf.system.Jgf.getDirectory().removeObject(this.getId());
