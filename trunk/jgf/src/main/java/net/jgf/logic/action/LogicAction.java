@@ -1,4 +1,4 @@
-package net.jgf.logic;
+package net.jgf.logic.action;
 
 import net.jgf.core.component.Component;
 

@@ -1,5 +1,7 @@
 
-package net.jgf.logic;
+package net.jgf.logic.action;
+
+import net.jgf.logic.BaseLogicState;
 
 import org.apache.log4j.Logger;
 
