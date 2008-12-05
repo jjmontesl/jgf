@@ -225,7 +225,7 @@ public class Bullet extends SpatialEntity {
 					(loc.z < neg.z - 0.00001f || loc.z > pos.z + 0.00001f)) {
 				*/
 
-			if (! trip.segment.pointInsideBounds(loc, 0.00001f)) {
+			if (! trip.segment.isPointInsideBounds(loc, 0.00001f)) {
 
 				if (numBounces < maxBounces) {
 					numBounces ++;
