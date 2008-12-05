@@ -103,7 +103,7 @@ public class SpawnLogic extends BaseLogicState {
 
 	public void destroyBullet(Bullet bullet) {
 
-		bullet.exclude(bulletEntityGroup, scene.getRootNode());
+		bullet.withdraw(bulletEntityGroup, scene.getRootNode());
 		StateUtil.deactivateAndUnload(bullet);
 
 		entityLoader.returnToPool(bullet);
