@@ -6,6 +6,7 @@ import net.jgf.core.state.StateUtil;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
 import net.jgf.example.tanks.entity.Tank;
+import net.jgf.example.tanks.view.EffectsView;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -23,6 +24,7 @@ import com.jme.scene.Spatial;
 
 
 /**
+ * This class is likely going to change once the game is networked
  */
 @Configurable
 public class SpawnLogic extends BaseLogicState {
@@ -35,6 +37,8 @@ public class SpawnLogic extends BaseLogicState {
 
 	DefaultJmeScene scene;
 
+	EffectsView effectsView;
+
 	int bullets = 0;
 
 	/* (non-Javadoc)
@@ -46,6 +50,7 @@ public class SpawnLogic extends BaseLogicState {
 		entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
 		playerEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
 		bulletEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
+		effectsView = Jgf.getDirectory().getObjectAs("view/root/level/fight/effects", EffectsView.class);
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
 	}
 
@@ -61,7 +66,7 @@ public class SpawnLogic extends BaseLogicState {
 		// TODO: Choose an empty one
 
 		Vector3f position = ((SpatialReference)scene.getReferences().getReference("z")).getSpatial().getLocalTranslation();
-		Tank tank = (Tank) entityLoader.load("FileChainLoader.resourceUrl=tanks/entity/tank.xml");
+		Tank tank = (Tank) entityLoader.load(null, "FileChainLoader.resourceUrl=tanks/entity/tank.xml");
 		tank.setId("player1");
 		Spatial hull = ((Node)((Node)tank.getSpatial()).getChild("Tank")).getChild("Hull");
 		// TODO: Model Bounds don't quite belong to logic...
@@ -81,7 +86,7 @@ public class SpawnLogic extends BaseLogicState {
 		// Choose a Spawn Point
 		// TODO: Choose an empty one
 
-		Bullet bullet = (Bullet) entityLoader.load("FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
+		Bullet bullet = (Bullet) entityLoader.load(null, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
 		bullet.setId("bullet" + bullets++);
 
 		// TODO: Model Bounds don't quite belong to logic...
@@ -91,12 +96,15 @@ public class SpawnLogic extends BaseLogicState {
 
 		bullet.integrate(bulletEntityGroup, scene.getRootNode(), position);
 		StateUtil.loadAndActivate(bullet);
-		bullet.getSpatial().updateRenderState();
+		//bullet.getSpatial().updateRenderState();
+		scene.getRootNode().updateRenderState();
 
 		Vector3f newPosition = position.clone();
 		newPosition.addLocal(orientation.mult(Vector3f.UNIT_Z).normalizeLocal().multLocal(1.05f));
 		newPosition.y = 0.6f;
 		bullet.startFrom(newPosition, orientation.mult(Vector3f.UNIT_Z));
+
+		effectsView.addBullet(bullet);
 
 		return bullet;
 	}
@@ -105,6 +113,8 @@ public class SpawnLogic extends BaseLogicState {
 
 		bullet.withdraw(bulletEntityGroup, scene.getRootNode());
 		StateUtil.deactivateAndUnload(bullet);
+
+		effectsView.addExplosion(bullet.getSpatial().getWorldTranslation());
 
 		entityLoader.returnToPool(bullet);
 

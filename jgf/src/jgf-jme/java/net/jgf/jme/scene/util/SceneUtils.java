@@ -91,6 +91,8 @@ public class SceneUtils {
 	 */
 	public static void createCommonRenderStates(DefaultJmeScene scene) {
 
+		// TODO: Use an enumeration for these and the key for the commonRenderStates in DefaultJMEScene
+
 		// Create ZBuffer for depth
 		ZBufferState zb = DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
 		zb.setEnabled(true);

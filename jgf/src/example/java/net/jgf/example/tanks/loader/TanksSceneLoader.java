@@ -123,9 +123,9 @@ public final class TanksSceneLoader extends SceneLoader {
 		    floor.clearRenderState(RenderState.RS_TEXTURE);
 		    //quad.setLightCombineMode(Spatial.LightCombineMode.Off);
 		    floor.setTextureCombineMode(TextureCombineMode.Replace);
-		    floor.setCullHint(CullHint.Never);
 		    floor.setModelBound(new OrientedBoundingBox());
 		    floor.updateModelBound();
+
 		    floor.setRenderState(ts);
 
 		    if (height > 0.1f) {
@@ -133,6 +133,7 @@ public final class TanksSceneLoader extends SceneLoader {
 		    } else {
 		    	floorNode.setModelBound(null);
 		    	floorNode.attachChild(floor);
+
 		    }
 			}
 
@@ -140,6 +141,7 @@ public final class TanksSceneLoader extends SceneLoader {
 			if (col >= width) { col = 0; row++; }
 		}
 
+		floorNode.setCullHint(CullHint.Never);
 		floorNode.setModelBound(new BoundingBox());
 		//floorNode.updateModelBound();
 

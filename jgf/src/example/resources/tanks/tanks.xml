@@ -66,7 +66,8 @@
 		during runtime.
 	 -->
 	<service id="scene/manager" class="net.jgf.scene.SceneManager">
-			<camera ref="scene/camera/test" />
+			<!--  <camera ref="scene/camera/overview" /> -->
+			 <camera ref="scene/camera/test" />
 	</service>
 	
 	<!--
@@ -108,7 +109,8 @@
 				<key>FileChainLoader.resourceUrl</key>
 				<value>tanks/entity/bullet.xml</value>
 				<maxInstances>200</maxInstances>
-				<preloadInstances>100</preloadInstances>
+				<!--  TODO: Sort preloading out -->
+				<preloadInstances>50</preloadInstances>
  			</pool>
 			
 		</loader>		
@@ -262,6 +264,10 @@
 						<sceneManager ref="scene/manager" />		
 					</view>
 					
+					<view id="view/root/level/fight/effects" class="net.jgf.example.tanks.view.EffectsView"
+						autoLoad="true" autoActivate="true" >
+					</view>					
+					
 					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView"
 						autoLoad="true" autoActivate="true" >
 					</view>
@@ -375,7 +381,7 @@
 		System Information Service
 	 -->
 	<service id="systemInfo" class="net.jgf.util.system.SystemInfoService" context="debug">
-		<reportInterval>20000</reportInterval>
+		<reportInterval>5000</reportInterval>
 	</service>
 	
 </jgf>
