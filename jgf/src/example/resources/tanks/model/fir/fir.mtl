@@ -1,0 +1,134 @@
+# Blender3D MTL File: fir.blend
+# Material Count: 12
+newmtl NoName,2_NoName,1_Sol_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.009_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_Cylinder_firtrunk_texture.bmp
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.050000 0.050000 0.050000
+Ni 1.000000
+d 0.996078
+illum 2
+map_Kd firtrunk_texture.bmp
+
+
+newmtl NoName,2_NoName,1_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.002_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.003_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.008_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.004_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.006_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.005_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.007_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
+newmtl NoName,2_NoName,1.001_firneedle_texture.tga
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.420392 0.156862
+Ks 0.055000 0.055000 0.055000
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd firneedle_texture.tga
+
+
