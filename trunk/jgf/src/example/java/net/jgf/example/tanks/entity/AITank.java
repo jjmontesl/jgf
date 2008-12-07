@@ -5,6 +5,7 @@ import net.jgf.config.Configurable;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.system.Jgf;
 
+import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
 /**
@@ -12,7 +13,7 @@ import com.jme.math.Vector3f;
 @Configurable
 public class AITank extends Tank {
 
-	protected Vector3f targetPos = Vector3f.ZERO.clone();
+	protected Vector3f targetPos = new Vector3f();
 
 	protected SpatialEntity targetEntity = null;
 
@@ -34,6 +35,10 @@ public class AITank extends Tank {
 
 		direction.set(targetPos.subtract(spatial.getLocalTranslation()));
 		direction.normalizeLocal().multLocal(0.2f);
+
+		this.setTarget(targetEntity.getSpatial().getLocalTranslation());
+		this.getTarget().y = 0.5f;
+		if (FastMath.rand.nextFloat() < 0.01) fire();
 
 		super.update(tpf);
 

@@ -19,18 +19,9 @@ import com.jme.math.Quaternion;
 import com.jme.math.Ray;
 import com.jme.math.Triangle;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
 import com.jme.scene.TriMesh;
-import com.jme.scene.Spatial.CullHint;
-import com.jme.scene.state.BlendState;
-import com.jme.scene.state.ZBufferState;
-import com.jme.scene.state.ZBufferState.TestFunction;
-import com.jme.system.DisplaySystem;
-import com.jmex.effects.particles.ParticleController;
-import com.jmex.effects.particles.ParticleFactory;
-import com.jmex.effects.particles.ParticlePoints;
 
 /**
  */
@@ -62,8 +53,6 @@ public class Bullet extends SpatialEntity {
 	//PickResults results = new BoundingPickResults();
 	private final PickResults results = new TrianglePickResults();
 
-	private ParticlePoints smoke;
-
 	private final ProjectileTrip trip = new ProjectileTrip();
 
 	/* (non-Javadoc)
@@ -77,12 +66,6 @@ public class Bullet extends SpatialEntity {
 		numBounces = 0;
 		ttl = BULLET_TTL;
 
-		if (smoke == null) {
-			smoke = createSmoke();
-			scene.getRootNode().attachChild(smoke);
-		}
-		smoke.getParticleController().setRepeatType(ParticleController.RT_WRAP);
-		smoke.getParticleController().setActive(true);
 	}
 
 
@@ -94,46 +77,9 @@ public class Bullet extends SpatialEntity {
 	@Override
 	public void unload() {
 		super.unload();
-		smoke.getParticleController().setRepeatType(ParticleController.RT_CLAMP);
-		//scene.getRootNode().detachChild(smoke);
+
 	}
 
-
-	protected ParticlePoints createSmoke() {
-	   // Particles
-    ParticlePoints pPoints = ParticleFactory.buildPointParticles("smoke", 30);
-    pPoints.setPointSize(8);
-    pPoints.setAntialiased(true);
-    pPoints.setOriginOffset(new Vector3f(0, 0, 0));
-    pPoints.setInitialVelocity(-0.0005f);
-    pPoints.setStartSize(0.5f);
-    pPoints.setEndSize(5.5f);
-    pPoints.setMinimumLifeTime(400f);
-    pPoints.setMaximumLifeTime(600f);
-    pPoints.setStartColor(new ColorRGBA(0.3f, 0.3f, 0.3f, 0.5f));
-    pPoints.setEndColor(new ColorRGBA(0.1f, 0.1f, 0.1f, 0));
-    pPoints.setMaximumAngle(2f * FastMath.DEG_TO_RAD);
-    pPoints.getParticleController().setControlFlow(true);
-    pPoints.warmUp(15);
-
-    BlendState as1 = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
-    as1.setBlendEnabled(true);
-    as1.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
-    as1.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
-    as1.setEnabled(true);
-    pPoints.setRenderState(as1);
-
-    ZBufferState zstate = DisplaySystem.getDisplaySystem().getRenderer().createZBufferState();
-    zstate.setEnabled(true);
-    zstate.setWritable(false);
-    zstate.setFunction(TestFunction.LessThanOrEqualTo);
-    pPoints.setRenderState(zstate);
-
-    // TODO: Drawing always!
-    pPoints.setCullHint(CullHint.Never);
-
-    return pPoints;
-	}
 
 
 	public void startFrom(Vector3f position, Vector3f direction) {
@@ -238,9 +184,6 @@ public class Bullet extends SpatialEntity {
 			}
 
 		}
-
-		smoke.setOriginOffset(spatial.getWorldTranslation());
-		smoke.setEmissionDirection(spatial.getWorldRotation().mult(Vector3f.UNIT_Z));
 
 		// Check time to live
 		ttl -= tpf;

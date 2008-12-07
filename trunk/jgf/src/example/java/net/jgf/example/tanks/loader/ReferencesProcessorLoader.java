@@ -99,6 +99,8 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 			processReference((JmeScene)base, ref, properties);
 		}
 
+		//ModelUtil.updateRenderStateRecursive(((JmeScene)base).getRootNode());
+
 		return base;
 	}
 
@@ -126,10 +128,11 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 					// Create new properties as they should not be propagated / shared between loaders
 					// TODO: Probably same strategy than chainloaders: copy prefs. for each subloader
 					subnode = (Node) proc.loader.load(subnode, new LoadProperties());
+					subnode.updateRenderState();
 					anchor.attachChild(subnode);
 
-					scene.getRootNode().detachChild(anchor);
 					scene.getRootNode().attachChild(anchor);
+					//((Node)(scene.getRootNode().getChild("fieldNode"))).attachChild(anchor);
 					anchor.updateRenderState();
 					anchor.updateWorldVectors(true);
 					anchor.updateModelBound();
@@ -140,7 +143,7 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 					SpatialEntity entity = (SpatialEntity) proc.loader.load(null, new LoadProperties());
 					Node anchor = (Node) ((SpatialReference) ref).getSpatial();
 
-					anchor.attachChild((entity).getSpatial());
+					anchor.attachChild(entity.getSpatial());
 					entity.setSpatial(anchor);
 					scene.getRootNode().attachChild(anchor);
 					anchor.updateRenderState();
@@ -152,7 +155,7 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 					group.attachChild(entity);
 
 				} else {
-					throw new ConfigException("Unsupported reference processor type '" + proc.type + "' when processing references at loader " + this.id);
+					throw new ConfigException("Unsupported reference processor of type '" + proc.type + "' when processing references at loader " + this.id);
 				}
 			}
 

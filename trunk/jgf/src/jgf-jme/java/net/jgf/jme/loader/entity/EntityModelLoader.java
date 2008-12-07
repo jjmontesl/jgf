@@ -33,7 +33,7 @@ public final class EntityModelLoader extends EntityLoader {
 
 		String loaderRef = properties.get("EntityModelLoader.loader");
 		BaseLoader<Node> modelLoader = Jgf.getDirectory().getObjectAs(loaderRef, BaseLoader.class);
-		Node model = modelLoader.load(properties);
+		Node model = modelLoader.load(null, properties);
 		((SpatialEntity)entity).setSpatial(model);
 
 		return entity;

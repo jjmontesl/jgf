@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -18,7 +19,6 @@ import org.apache.log4j.Logger;
 
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jme.scene.TriMesh;
 import com.jme.util.export.binary.BinaryExporter;
 import com.jme.util.export.binary.BinaryImporter;
 import com.jme.util.resource.ResourceLocatorTool;
@@ -43,7 +43,7 @@ public class ModelUtil {
 	 *  This method opens a model in various format evaluating the extension.
 	 *  In case the same resource can be found in jbin format, and that resource is not older than
 	 *  the original file, then it is loaded instead.
-	 *  Otherways the model is loaded and saved in jbin format for later user.
+	 *  Otherwise the model is loaded and saved in jbin format for later user.
 	 */
 	public static Node convertModel (String resourceName) throws ModelException {
 
@@ -112,6 +112,12 @@ public class ModelUtil {
 			}
 			if (originalExtension.equals("obj")) {
 				formatConverter = new ObjToJme();
+				File matlib = new File(originalFile.getParentFile(), "fir.mtl");
+				try {
+					formatConverter.setProperty("mtllib", matlib.toURL());
+				} catch (MalformedURLException e) {
+					throw new ModelException ("Could not load material library for obj from '" + matlib.getAbsolutePath() + "'", e);
+				}
 			}
 
 			//formatConverter.setProperty("mtllib", convertedURL);
@@ -133,7 +139,7 @@ public class ModelUtil {
 
 					//loadedModel = (Node) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
 					loadedModel = new Node("trimeshcoming");
-					TriMesh tmp = (TriMesh) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
+					Spatial tmp = (Spatial) BinaryImporter.getInstance().load(new ByteArrayInputStream(BO.toByteArray()));
 					loadedModel.attachChild(tmp);
 
 				}
@@ -175,19 +181,19 @@ public class ModelUtil {
 
 	/**
 	 * Searches for a child with a given name
-	 * @param node
+	 * @param spatial
 	 * @param name
 	 * @return
 	 */
-	public static Node findChild(Node node, String name) {
+	public static Spatial findChild(Spatial spatial, String name) {
 
-		if (name.equals(node.getName())) return node;
+		if (name.equals(spatial.getName())) return spatial;
 
-		List<Spatial> children = node.getChildren();
-		if (children != null) {
-			for (Spatial child : children) {
-				if (child instanceof Node) {
-					Node result = ModelUtil.findChild ((Node) child, name);
+		if (spatial instanceof Node) {
+			List<Spatial> children = ((Node)spatial).getChildren();
+			if (children != null) {
+				for (Spatial child : children) {
+					Spatial result = ModelUtil.findChild (child, name);
 					if (result != null) return result;
 				}
 			}
@@ -195,5 +201,19 @@ public class ModelUtil {
 
 		return null;
 	}
+
+	/*
+	public static void updateRenderStateRecursive(Spatial spatial) {
+		spatial.updateRenderState();
+		if (spatial instanceof Node) {
+			List<Spatial> children = ((Node)spatial).getChildren();
+			if (children != null) {
+				for (Spatial child : children) {
+					updateRenderStateRecursive(child);
+				}
+			}
+		}
+	}
+	*/
 
 }

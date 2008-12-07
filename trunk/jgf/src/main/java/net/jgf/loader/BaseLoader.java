@@ -37,18 +37,6 @@ public abstract class BaseLoader<E> extends BaseComponent implements Loader<E> {
 		return load(base, map);
 	}
 
-	public E load(String... properties) {
-		return load(null, properties);
-	}
-
-	public E load(E base) {
-		return load(base, new String[]{});
-	}
-
-	public E load(LoadProperties properties) {
-		return load(null, properties);
-	}
-
 	protected void combineProperties(LoadProperties passedProperties) {
 		for (Entry<String, String> entry : defaultProperties.entrySet()) {
 			if (! passedProperties.containsKey(entry.getKey())) passedProperties.put(entry.getKey(), entry.getValue());

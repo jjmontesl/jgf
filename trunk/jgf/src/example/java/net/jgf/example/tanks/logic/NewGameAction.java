@@ -39,7 +39,7 @@ public class NewGameAction extends BaseLogicAction {
 		SceneManager sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
 		FileChainLoader<Scene> sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene", FileChainLoader.class);
 		DefaultJmeScene scene =(DefaultJmeScene) sceneLoader.load(
-				"FileChainLoader.resourceUrl=tanks/level/mission1.xml"
+				null, "FileChainLoader.resourceUrl=tanks/level/mission1.xml"
 		);
 		sceneManager.setScene(scene);
 		Jgf.getDirectory().addObject(scene.getId(), scene);
