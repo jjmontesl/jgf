@@ -18,8 +18,6 @@ Maybe you want to take some time to check [Features JGF Features] before moving 
 
 ===JGF Configuration===
 
-_The JGF configuration file_
-
 So how does a JGF game look like?
 
 JGF applications are initializated using a configuration file. JGF reads this file and initializes a number of services for you. This file reflects how our game is composed.
@@ -38,9 +36,9 @@ In the practice, you just need to copy and paste the component you need from exa
 
 Using this approach has a few advantages: you can easily add or remove components and states to your game during development. You can also substitute some components with testing versions of them.
 
-_How the game is coded_
+===How the game is built===
 
-You will be mainly adding three types of components to your game:
+Mainly three types of components are needed to build a game:
 
   * *Entities*: represent each object, item or character that interacts with the game.
   * *!LogicStates*: Define the different logic blocks and behaviours of your game.
