@@ -2,13 +2,29 @@
 
 = JGF Overview =
 
+===Introduction===
+
+Since you are reading this we assume you are interested in writing Games or Interactive Applications. Good :-).
+
+There are several systems that almost every game uses nowadays. For example, every game saves and keeps the user settings (controls, speakers volume...). Almost every game has some sort of menu too, and may of them provide a "console" mode for advanced users. Virtually all games have introduction screens, loading screens, and on screen displays.
+
+And apart from all that, there's the actual game.
+
+Using a framework provides you with a set of systems that work well together, and a structure for you to build your game logic and aspect. With JGF, you can then focus on your actual game development leaving the typical funcionality up to JGF. 
+
+JGF is not a "game maker" or a "tool". It is not a game engine either. JGF is a game development framework for in Java... you will be programming your game in Java and, for the time being, you will be using the only supported 3D engine "jMonkeyEngine".
+
+Maybe you want to take some time to check [Features JGF Features] before moving on...
+
 ===JGF Configuration===
 
 _The JGF configuration file_
 
-JGF applications are initializated using a configuration file. This file reflects how our game is composed.
+So how does a JGF game look like?
 
-When we want to add functionality to the game, we add components to the configuration file. For example, if we want to add a screenshot functionality to our game, we would add the following ViewState:
+JGF applications are initializated using a configuration file. JGF reads this file and initializes a number of services for you. This file reflects how our game is composed.
+
+When you want to add functionality to the game, you add components to the configuration file. For example, if we want to add a screenshot feature to your game, you would add the following component (note the name of the _class_ and the parameters _key_ and _path_):
 
 {{{
 <view id="view/root/level/screenshot" class="net.jgf.jme.view.ScreenshotView" 
@@ -18,31 +34,23 @@ When we want to add functionality to the game, we add components to the configur
 </view>
 }}}
 
-The example shows the configuration of a !ViewState (!ViewStates are a core part of JGF). In a real application, !ViewStates are structured into _tree_. When the state is rendered it will check if a screenshot has been requested, and act accordingly.
+In the practice, you just need to copy and paste the component you need from examples and modify the parameters to suit your game.
 
-In the practice, most of the time you copy and paste the configuration from the examples and modify the parameters to suit your needs.
+Using this approach has a few advantages: you can easily add or remove components and states to your game during development. You can also substitute some components with testing versions of them.
 
-_The game at a glance_
+_How the game is coded_
 
-Defining the game structure in a configuration file allows us to see the big picture and think on how to implement or expand our game.
+You will be mainly adding three types of components to your game:
 
-But what services is a JGF game composed of? The main services (which you will probably cut and paste) are:
+  * *Entities*: represent each object, item or character that interacts with the game.
+  * *!LogicStates*: Define the different logic blocks and behaviours of your game.
+  * *!ViewStates*: Define the different views and input that you will use. For example, you'll have !ViewStates for the menus, the introduction screens, the main game, the hud...
 
-  * *Engine*: the engine runs the main game loop, updating the LogicState and ViewState trees.
-  * *Logic*: this service just contains the !LogicState tree. Inside this service we build the !LogicState tree that will handle our game logic. 
-  * *View*: this service contains the !ViewState tree. Here we specify the different views and input that we will use. For example, you'll have !ViewStates for the menus, the introduction screens, the main game, the hud...
-
-Other services or components that you may be using are the !EntityManager, the !SettingsManager, the !MenuSystem...
-
-Services and its parts are defined in the configuration file, and work together to form your game:
+Services and its parts are defined in the configuration file, and work together to form your game. You can see the configuration file as a tree of services that contain different components:
 
 http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/mudvolley-configtree.png
 
 _Structure of the JGF configuration file (showing some different services and components)_
-
-===Game design pieces===
-
-JGF is a framework and as such it gives you a way of building your game. When you use a framework, you need to get used to its structure. JGF provides *!Entities*, *!ViewStates* and *!LogicStates*, as foundations for the design of your game look and feel.
 
 ===Benefits of using a framework===
 
@@ -75,8 +83,6 @@ For example, if you need to add an introduction screen to your game, you just ne
 If you later decide that you want to replace the whole introduction screen with a video or something completely different, you just need to replace that view with another framework or custom view.
 
 ===System overview===
-
-If you are a geometrical person, you may prefer to look at the JGF System Overview diagram, which shows several significant components of the system: 
 
 http://jgf.googlecode.com/svn/trunk/jgf/doc/design/diagrams/game-components.png
 
