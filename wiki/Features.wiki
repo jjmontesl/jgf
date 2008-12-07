@@ -9,21 +9,16 @@ Spend some time getting familiar with JGF features! Knowing them will allow you 
 
 *Services and Configuration System*
 
-JGF main configuration is done in a descriptive XML configuration file. This is the core of JGF. It provides:
+JGF main configuration is done in a descriptive XML configuration file, which provides:
 
-  * An easy overview of your application parts and components.
+  * Easy overview of your application parts and components.
   * A standard and practical way to configure components.
-  * An easy way to add new components to your game, like adding a new entity group, or a new HUD to be drawn on top of your scene.
-  * An easy way to change implementations to test changes (for example, changing the implementation of a LogicState to try alternate behaviours).
+  * Easy way to add new pieces to your game.
+  * A convenient environment for testing.
   
 *Console System*
 
-  * JGF provides a console system, and an implementation using BeanShell as interpreter.
-  * Console system is separated from the user interface used, allowing console systems to be plugged to different graphical look and feels.
-  * Console behaviour is provided through customizable and extensible beans.
-  * A default console view is provided. Others may be available publicly.
-  * A default command line interface is provided for headless mode (_TO BE REFACTORED_). 
-  * Use of a console system is completely optional.
+  Extensible and replaceable console system. Functionality, aspect and language can be customized.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-console-1.png
 
@@ -37,9 +32,6 @@ JGF main configuration is done in a descriptive XML configuration file. This is 
 
 *Menu System*
 
-  * Simple Menu System provides simple menu functionality and navigation.
-  * Simple Menu View provides a default view implementation of the menu tree, which allows you to quickly add a menu system to your game.
-
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-menu-1.png
 
 *Logic and Graphics states*
@@ -48,13 +40,9 @@ JGF main configuration is done in a descriptive XML configuration file. This is 
   * The flow of the game is controlled by activating and deactivating these states.
   * Structures and services are provided that contain and manage Entities, Players and other common data.
 
-  * Out-of-the-box ViewStates that provide ways to easily show text or images on screen, fade in and out other states...
-
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-1.png
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-2.png
-
-The usage of ViewStates and LogicStates surely requires some explanation. Visit [States States Guide] for more information.
 
 *Extensibility*
 
@@ -77,19 +65,13 @@ JGF is designed to be extensible. Base classes are provided for most of the comp
 *Loaders and Art Pipeline*
 
   * JGF includes a modular loading system for Entities, Scenes and Models. 
-  * An entity pool system is provided.
-  * The modular loading system allows you to have, for example, custom asset formats or generated geometry, and seamless combine those with other assets.
+  * Pool systems are provided. _TO BE REFACTORED_.
+  * Easily insert and combine custom assets and generated geometry.
   * Standard way to convert and cache conerted resources. _TO BE REFACTORED_.
-
-The Loader System definitely requires some explanation. Visit [LoaderSystem Loader System Guide] for more information.
-
-*Default Level Structures*
-
-  * JGF provides default level classes, which contain the scene (containing the geometry, the entities, a physic space... If any of them suits your game, you can avoid level management and focus on entities, or you can extend any of them shall you require additional structures in your scene.
 
 *Audio*
 
-  * A "sound effects machine" service is provided that can speed up development and serve as a starting quick way of putting sound into the application.
+  * A convenient, easy to use "sound effects machine" component is provided.
 
 *Networking*
 
@@ -105,9 +87,8 @@ The Loader System definitely requires some explanation. Visit [LoaderSystem Load
 
 *Logging*
 
- * JGF defines a logging utility (log4j). JGF also provides means to configure and manage logging, and default settings for logging.
-  
- * Service that silently drops lines to the log, showing statistics and information about the JVM (memory, GC, etc...).  
+ * JGF defines a logging utility (log4j). JGF also provides means to configure and manage logging, and default settings for logging.  
+ * Statistics and information about the JVM (memory, GC, etc...).  
 
 *Build System*
 
