@@ -150,9 +150,10 @@ public final class ReferencesProcessorLoader extends SceneLoader {
 					anchor.updateWorldVectors(true);
 					anchor.updateModelBound();
 
+					// TODO: This needs to be customizable?
 					EntityGroup group = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
 					entity.setId(ref.getName());
-					group.attachChild(entity);
+					entity.integrate(group, scene.getRootNode());
 
 				} else {
 					throw new ConfigException("Unsupported reference processor of type '" + proc.type + "' when processing references at loader " + this.id);

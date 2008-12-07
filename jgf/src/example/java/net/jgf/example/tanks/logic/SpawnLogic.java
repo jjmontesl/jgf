@@ -3,10 +3,12 @@ package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.state.StateUtil;
+import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
 import net.jgf.example.tanks.entity.Tank;
 import net.jgf.example.tanks.view.EffectsView;
+import net.jgf.jme.model.util.FakeSavable;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -35,7 +37,11 @@ public class SpawnLogic extends BaseLogicState {
 
 	EntityGroup bulletEntityGroup;
 
+	EntityGroup enemyEntityGroup;
+
 	DefaultJmeScene scene;
+
+	Node bulletNode;
 
 	EffectsView effectsView;
 
@@ -50,8 +56,11 @@ public class SpawnLogic extends BaseLogicState {
 		entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
 		playerEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
 		bulletEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
+		enemyEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
 		effectsView = Jgf.getDirectory().getObjectAs("view/root/level/fight/effects", EffectsView.class);
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		bulletNode = (Node) scene.getRootNode().getChild("bullets");
+
 	}
 
 	@Override
@@ -94,13 +103,15 @@ public class SpawnLogic extends BaseLogicState {
 		bullet.getSpatial().setModelBound(new BoundingSphere());
 		bullet.getSpatial().updateModelBound();
 
-		bullet.integrate(bulletEntityGroup, scene.getRootNode(), position);
+		bullet.integrate(bulletEntityGroup, bulletNode, position);
+		bullet.getSpatial().setUserData("entity", new FakeSavable<Entity>(bullet));
+
 		StateUtil.loadAndActivate(bullet);
 		//bullet.getSpatial().updateRenderState();
 		scene.getRootNode().updateRenderState();
 
 		Vector3f newPosition = position.clone();
-		newPosition.addLocal(orientation.mult(Vector3f.UNIT_Z).normalizeLocal().multLocal(1.05f));
+		newPosition.addLocal(orientation.mult(Vector3f.UNIT_Z).normalizeLocal().multLocal(1.10f));
 		newPosition.y = 0.6f;
 		bullet.startFrom(newPosition, orientation.mult(Vector3f.UNIT_Z));
 
@@ -111,12 +122,24 @@ public class SpawnLogic extends BaseLogicState {
 
 	public void destroyBullet(Bullet bullet) {
 
-		bullet.withdraw(bulletEntityGroup, scene.getRootNode());
+		bullet.withdraw(bulletEntityGroup, bulletNode);
+		effectsView.addExplosion(bullet.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_BULLET_TTL);
+
 		StateUtil.deactivateAndUnload(bullet);
 
-		effectsView.addExplosion(bullet.getSpatial().getWorldTranslation());
-
 		entityLoader.returnToPool(bullet);
+
+	}
+
+	public void destroyTank(Tank tank) {
+
+		if (playerEntityGroup.containsChild(tank)) {
+			tank.withdraw(playerEntityGroup, scene.getRootNode());
+		} else {
+			tank.withdraw(enemyEntityGroup, scene.getRootNode());
+		}
+		effectsView.addExplosion(tank.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_TANK_TTL);
+		StateUtil.deactivateAndUnload(tank);
 
 	}
 

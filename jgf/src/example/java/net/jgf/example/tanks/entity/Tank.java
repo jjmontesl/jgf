@@ -1,17 +1,20 @@
 package net.jgf.example.tanks.entity;
 
+import net.jgf.entity.Entity;
 import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.audio.AudioItem;
 import net.jgf.jme.entity.SpatialEntity;
+import net.jgf.jme.model.util.FakeSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.jme.view.CursorRenderView;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
-import com.jme.intersection.BoundingCollisionResults;
+import com.jme.intersection.CollisionData;
 import com.jme.intersection.CollisionResults;
+import com.jme.intersection.TriangleCollisionResults;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
@@ -23,6 +26,7 @@ public abstract class Tank extends SpatialEntity {
 	/**
 	 * Class logger
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(PlayerTank.class);
 
 	protected float topWalkSpeed = TanksSettings.PLAYER_WALK_SPEED;
@@ -52,6 +56,10 @@ public abstract class Tank extends SpatialEntity {
 	private boolean mining;
 
 	protected final Vector3f target = new Vector3f();
+
+	private final CollisionResults bulletResults = new TriangleCollisionResults();
+
+	private final CollisionResults obstaclesResults = new TriangleCollisionResults();
 
 	Spatial hull;
 
@@ -139,20 +147,25 @@ public abstract class Tank extends SpatialEntity {
 	protected void updateCollisions(float tpf) {
 
 		// Collisions
-		CollisionResults results = new BoundingCollisionResults();
-		hull.calculateCollisions(((Node)(scene.getRootNode().getChild("fieldNode"))).getChild("obstaclesNode"),  results);
-		for (int i = 0 ; i < results.getNumber(); i++) {
+
+		obstaclesResults.clear();
+		hull.calculateCollisions(((Node)(scene.getRootNode().getChild("fieldNode"))).getChild("obstaclesNode"),  obstaclesResults);
+		for (int i = 0 ; i < obstaclesResults.getNumber(); i++) {
 			//spatial.setLocalTranslation(lastPosition);
 
-			Vector3f targetPos = results.getCollisionData(i).getTargetMesh().getWorldBound().getCenter().clone();
-			Vector3f sourcePos = results.getCollisionData(i).getSourceMesh().getWorldBound().getCenter().clone();
-			targetPos.y = sourcePos.y = 0;
-			Vector3f diff = sourcePos.subtract(targetPos);
-			diff.y = 0;
-			diff.normalizeLocal();
+			CollisionData data = obstaclesResults.getCollisionData(i);
+			if ((data.getTargetTris().size() > 0)||(data.getSourceTris().size() > 0)) {
 
-			spatial.getLocalTranslation().addLocal(diff.mult(topWalkSpeed * tpf));
-			spatial.getLocalTranslation().y = 0;
+				Vector3f targetPos = obstaclesResults.getCollisionData(i).getTargetMesh().getWorldBound().getCenter().clone();
+				Vector3f sourcePos = obstaclesResults.getCollisionData(i).getSourceMesh().getWorldBound().getCenter().clone();
+				targetPos.y = sourcePos.y = 0;
+				Vector3f diff = sourcePos.subtract(targetPos);
+				diff.y = 0;
+				diff.normalizeLocal();
+
+				spatial.getLocalTranslation().addLocal(diff.mult(topWalkSpeed * tpf));
+				spatial.getLocalTranslation().y = 0;
+			}
 		}
 
 		spatial.updateWorldVectors();
@@ -170,7 +183,10 @@ public abstract class Tank extends SpatialEntity {
 		// An additional logic class is used
 		// TODO: On networked game this is likely to change
 		if (fireHold < 0) {
-			spawnLogic.spawnBullet(canon.getWorldTranslation().clone(), canon.getWorldRotation().clone());
+
+			Bullet bullet = spawnLogic.spawnBullet(canon.getWorldTranslation().clone(), canon.getWorldRotation().clone());
+			bullet.setOwner(this);
+
 			audioItem.play();
 			fireHold = fireDelay;
 			return true;
@@ -211,6 +227,38 @@ public abstract class Tank extends SpatialEntity {
 	}
 
 	/**
+	 */
+	protected void updateHits (float tpf) {
+		// Check collisions
+
+		canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
+		bulletResults.clear();
+		canon.calculateCollisions(scene.getRootNode().getChild("bullets"), bulletResults);
+
+		if (bulletResults.getNumber() > 0) {
+			// Impacted by bullet. Destroy tank and bullet.
+			CollisionData data = bulletResults.getCollisionData(0);
+			// If the bounding is hit, we check tris
+			if (data.getTargetTris().size() > 0) {
+				Spatial hitGeom = data.getTargetMesh();
+				for (; (hitGeom != null) && (hitGeom.getUserData("entity") == null); hitGeom = hitGeom.getParent());
+
+				if (hitGeom != null) {
+					Bullet bullet = (Bullet) ((FakeSavable<Entity>) hitGeom.getUserData("entity")).getContent();
+
+					// Destroy tank
+					spawnLogic.destroyTank(this);
+					// Destroy bullet
+					spawnLogic.destroyBullet(bullet);
+
+				}
+			}
+
+		}
+
+	}
+
+	/**
 	 * Updates the tank. This is called every frame.
 	 */
 	@Override
@@ -219,6 +267,8 @@ public abstract class Tank extends SpatialEntity {
 		updateMovement(tpf);
 
 		updateCollisions(tpf);
+
+		updateHits(tpf);
 
 		updateWeapons(tpf);
 

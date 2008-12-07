@@ -15,6 +15,8 @@ import net.jgf.view.ViewState;
 
 import org.apache.log4j.Logger;
 
+import com.jme.scene.Node;
+
 
 /**
  *
@@ -43,6 +45,10 @@ public class NewGameAction extends BaseLogicAction {
 		);
 		sceneManager.setScene(scene);
 		Jgf.getDirectory().addObject(scene.getId(), scene);
+
+		// Default Nodes
+		scene.getRootNode().attachChild(new Node("bullets"));
+
 
 		// Set a camera
 		//SceneRenderView sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level/fight/scene", SceneRenderView.class);
