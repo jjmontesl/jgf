@@ -55,6 +55,10 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 		}
 	}
 
+	public boolean containsChild(T state) {
+		return (children.contains(state));
+	}
+
 	/* (non-Javadoc)
 	 * @see net.jgf.view.ViewState#setActive(boolean)
 	 */

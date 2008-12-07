@@ -19,7 +19,7 @@
 			<property name="DefaultJmeSceneLoader.title" value="Mission 1" />
 			<property name="DefaultJmeSceneLoader.subtitle" value="A walk in the park" />
 		</loader>
-
+		
  		<!-- 
 		<loader id="!scene.skybox" class="net.jgf.jme.loader.scene.SkyBoxLoader" >
 			<property name="SkyBoxLoader.skybox" value="" />

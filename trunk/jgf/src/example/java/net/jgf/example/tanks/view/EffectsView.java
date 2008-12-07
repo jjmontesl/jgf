@@ -46,7 +46,9 @@ public class EffectsView extends BaseViewState {
 	 */
 	private static final Logger logger = Logger.getLogger(EffectsView.class);
 
-	private static final float EXPLOSION_TTL = 0.9f;
+	public static final float EXPLOSION_BULLET_TTL = 0.8f;
+
+	public static final float EXPLOSION_TANK_TTL = 1.7f;
 
 	private class SmokeEffect {
 		public ParticlePoints particles = null;
@@ -58,7 +60,8 @@ public class EffectsView extends BaseViewState {
 		public Node node = null;
 		public Quaternion rotation = null;
 		public ColorRGBA fadeColor = null;
-		public float ttl = EXPLOSION_TTL;
+		public float ttl;
+		public float initialTtl;
 	}
 
 	private DefaultJmeScene scene;
@@ -145,7 +148,7 @@ public class EffectsView extends BaseViewState {
 
 				explosion.node.getLocalRotation().multLocal(explosion.rotation);
 
-				explosion.fadeColor.a = (explosion.ttl) / EXPLOSION_TTL;
+				explosion.fadeColor.a = (explosion.ttl) / explosion.initialTtl;
 
 				explosion.node.updateRenderState();
 
@@ -227,7 +230,7 @@ public class EffectsView extends BaseViewState {
 
 	}
 
-	public void addExplosion(Vector3f location) {
+	public void addExplosion(Vector3f location, float factor) {
 
 		Node node = (Node)((BaseLoader) loader).load(null, "ConverterLoader.resourceUrl=tanks/model/explosion/explosion.dae");
 		node.getLocalTranslation().set(location);
@@ -263,6 +266,8 @@ public class EffectsView extends BaseViewState {
 		explosion.node = node;
 		explosion.rotation = new Quaternion();
 		explosion.fadeColor = fadecolor;
+		explosion.ttl = factor;
+		explosion.initialTtl = factor;
 		// TODO: Optimize
 		explosion.rotation.fromAngleAxis(FastMath.DEG_TO_RAD * 3.0f * FastMath.nextRandomFloat(),
 				new Vector3f(FastMath.nextRandomFloat(), FastMath.nextRandomFloat(), FastMath.nextRandomFloat()).normalizeLocal());

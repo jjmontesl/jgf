@@ -3,15 +3,20 @@ package net.jgf.example.tanks.entity;
 import java.util.ArrayList;
 
 import net.jgf.config.Configurable;
+import net.jgf.entity.Entity;
 import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.entity.util.ProjectileTrip;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.entity.SpatialEntity;
+import net.jgf.jme.model.util.FakeSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
+import com.jme.intersection.BoundingCollisionResults;
+import com.jme.intersection.CollisionData;
+import com.jme.intersection.CollisionResults;
 import com.jme.intersection.PickResults;
 import com.jme.intersection.TrianglePickResults;
 import com.jme.math.FastMath;
@@ -21,6 +26,7 @@ import com.jme.math.Triangle;
 import com.jme.math.Vector3f;
 import com.jme.scene.Geometry;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
 
 /**
@@ -50,10 +56,16 @@ public class Bullet extends SpatialEntity {
 
 	private int maxBounces = 1;
 
-	//PickResults results = new BoundingPickResults();
-	private final PickResults results = new TrianglePickResults();
+	private Entity owner;
+
+	//PickResults pickResults = new BoundingPickResults();
+	private final PickResults pickResults = new TrianglePickResults();
 
 	private final ProjectileTrip trip = new ProjectileTrip();
+
+	private final CollisionResults bulletResults = new BoundingCollisionResults();
+
+
 
 	/* (non-Javadoc)
 	 * @see net.jgf.core.state.BaseState#load()
@@ -63,9 +75,9 @@ public class Bullet extends SpatialEntity {
 		super.load();
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
 		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
+
 		numBounces = 0;
 		ttl = BULLET_TTL;
-
 	}
 
 
@@ -93,15 +105,15 @@ public class Bullet extends SpatialEntity {
 		// Check collision
 		Ray ray = new Ray(position.clone(), speed.normalize());
 		Node obstacles = (Node)((Node)(scene.getRootNode().getChild("fieldNode"))).getChild("obstaclesNode");
-		results.clear();
-		results.setCheckDistance(true);
-		obstacles.findPick(ray, results);
+		pickResults.clear();
+		pickResults.setCheckDistance(true);
+		obstacles.findPick(ray, pickResults);
 		Triangle triangle = null;
 
-		if (results.getNumber() > 0) {
+		if (pickResults.getNumber() > 0) {
 
-			ArrayList<Integer> tris = results.getPickData(0).getTargetTris();
-			Geometry geom = results.getPickData(0).getTargetMesh();
+			ArrayList<Integer> tris = pickResults.getPickData(0).getTargetTris();
+			Geometry geom = pickResults.getPickData(0).getTargetMesh();
 
 			TriMesh mesh = ((TriMesh) geom);
 
@@ -189,9 +201,55 @@ public class Bullet extends SpatialEntity {
 		ttl -= tpf;
 		if (ttl < 0) {
 			spawnLogic.destroyBullet(this);
+		} else {
+			// Check collisions
+			updateCollisions(tpf);
 		}
 
 
+	}
+
+	protected void updateCollisions(float tpf) {
+
+		// Check collisions with other bullets
+
+		bulletResults.clear();
+		this.getSpatial().calculateCollisions(scene.getRootNode().getChild("bullets"), bulletResults);
+
+		if (bulletResults.getNumber() > 0) {
+			// Impacted by bullet. Destroy tank and bullet.
+			CollisionData data = bulletResults.getCollisionData(0);
+
+			// If the bounding is hit, we check tris
+			Spatial hitGeom = data.getTargetMesh();
+			for (; (hitGeom != null) && (hitGeom.getUserData("entity") == null); hitGeom = hitGeom.getParent());
+
+			if (hitGeom != null) {
+				Bullet bullet = (Bullet) ((FakeSavable<Entity>) hitGeom.getUserData("entity")).getContent();
+
+				// Destroy tank
+				spawnLogic.destroyBullet(this);
+				// Destroy bullet
+				spawnLogic.destroyBullet(bullet);
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * @return the owner
+	 */
+	public Entity getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @param owner the owner to set
+	 */
+	public void setOwner(Entity owner) {
+		this.owner = owner;
 	}
 
 
