@@ -23,7 +23,7 @@ Run some examples to ensure everything works (also, examples are useful sources 
 
 === 4 - Follow the tutorials or copy the base application and start coding! ===
 
-  * [Examples Examples]
+  * [Examples Tutorials and Examples]
   * [UserGuide User Guide]
 
 
