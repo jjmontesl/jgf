@@ -15,12 +15,16 @@ This guide is not a tutorial. It covers particular topics shall you wish to lear
   #  JGF Core
     * [Application]
     * [Directory]
+    * [Services]
     * [States]
-  # View States
-    * [SceneRenderView]
-    * [FaderView]
-  
+  # JGF Components
+    * [ViewStates]
+    * [LogicStates]
+    * [Entities]
+  # Examples
+    * [MudVolley MudVolley Tutorials]
+    * [ExampleApplications Example Applications]
 
 
 
-[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
+[http://code.google.com/p/jgf/ JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
