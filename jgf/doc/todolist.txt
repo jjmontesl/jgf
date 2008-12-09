@@ -51,20 +51,16 @@ TO-DO LIST:
 		at net.jgf.example.tanks.entity.Bullet.update(Bullet.java:232)
 		at net.jgf.entity.EntityGroup.update(EntityGroup.java:27)
   
-- Service/Component Dependencies / Context
+- Service/Component Dependencies / Context | Services initialization Order
 
 - Optionally disable or even better, configure (log4j?), logging for jME classes. Check that <debug>
-  affects default logging... ???
+  affects default logging... ??? Add a LoggingConfiguratorService
   
-- Cameras should return info, not set the camera!!
-
-- Loaders should all be Thread Safe: document and ensure.
-
-- Use annotations in all objects, and add the lifecycle facilities to injecting.
+- Loaders should all be Thread Safe? document and ensure.
 
 - Views should use the ConsoleObserver interface. Review consoles.
 
-- FIX: Naming of Cameras / CameraController  and XML: "camera" and "cameras/camera" with different semantics!
+- FIX: Naming of Cameras / CameraController and XML: "camera" and "cameras/camera" with different semantics!
 
 - Command line parser service.
 
