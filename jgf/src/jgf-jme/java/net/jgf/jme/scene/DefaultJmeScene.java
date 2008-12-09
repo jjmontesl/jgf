@@ -4,12 +4,12 @@ package net.jgf.jme.scene;
 import java.util.Hashtable;
 import java.util.List;
 
+import net.jgf.camera.CameraController;
+import net.jgf.camera.CameraControllerSet;
+import net.jgf.camera.HasCameras;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
-import net.jgf.jme.camera.CameraController;
-import net.jgf.jme.camera.CameraControllerSet;
-import net.jgf.jme.camera.HasCameras;
 import net.jgf.jme.scene.sky.HasSky;
 import net.jgf.jme.scene.sky.Sky;
 import net.jgf.refs.HasReferences;
@@ -96,13 +96,14 @@ public class DefaultJmeScene extends JmeScene implements HasSky, HasCameras, Has
 
 		super.readConfig(config, configPath);
 
-		List<CameraController> controllers = ConfigurableFactory.newListFromConfig(config, configPath + "/camera", CameraController.class);
+		List<CameraController> controllers = ConfigurableFactory.newListFromConfig(config, configPath + "/cameras/camera", CameraController.class);
 		for (CameraController camera : controllers) {
 			this.getCameraControllers().addCameraController(camera);
 			Jgf.getDirectory().addObject(camera.getId(), camera);
 		}
 
-
 	}
+
+
 
 }

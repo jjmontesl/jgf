@@ -33,10 +33,15 @@
 	  
 	  <loader id="!scene.cameras" class="net.jgf.jme.loader.scene.CameraLoader">
  			
-			<camera id="scene/camera/overview" class="net.jgf.jme.camera.StaticCamera" >
-				<target>15.0 0.0 2.0</target>
-				<location>3.0 3.0 14.0</location>
-			</camera>
+ 			<cameras>
+				<camera id="scene/camera/overview" class="net.jgf.jme.camera.StaticCamera" >
+					<target>15.0 0.0 2.0</target>
+					<location>3.0 3.0 14.0</location>
+				</camera>
+			</cameras>
+			
+			<!--  <camera ref="scene/camera/overview" /> -->
+			<camera ref="scene/camera/test" />
 			
 	  </loader>
 	

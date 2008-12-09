@@ -22,7 +22,6 @@ public class JmeScene extends BaseScene {
 	 */
 	protected Node rootNode;
 
-
 	/**
 	 * Default constructor.
 	 */
@@ -102,7 +101,5 @@ public class JmeScene extends BaseScene {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 }

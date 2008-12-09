@@ -8,7 +8,7 @@ import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
 import net.jgf.example.tanks.entity.Tank;
 import net.jgf.example.tanks.view.EffectsView;
-import net.jgf.jme.model.util.FakeSavable;
+import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -104,7 +104,7 @@ public class SpawnLogic extends BaseLogicState {
 		bullet.getSpatial().updateModelBound();
 
 		bullet.integrate(bulletEntityGroup, bulletNode, position);
-		bullet.getSpatial().setUserData("entity", new FakeSavable<Entity>(bullet));
+		bullet.getSpatial().setUserData("entity", new TransientSavable<Entity>(bullet));
 
 		StateUtil.loadAndActivate(bullet);
 		//bullet.getSpatial().updateRenderState();

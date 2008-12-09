@@ -5,7 +5,7 @@ import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.audio.AudioItem;
 import net.jgf.jme.entity.SpatialEntity;
-import net.jgf.jme.model.util.FakeSavable;
+import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.jme.view.CursorRenderView;
 import net.jgf.system.Jgf;
@@ -244,7 +244,7 @@ public abstract class Tank extends SpatialEntity {
 				for (; (hitGeom != null) && (hitGeom.getUserData("entity") == null); hitGeom = hitGeom.getParent());
 
 				if (hitGeom != null) {
-					Bullet bullet = (Bullet) ((FakeSavable<Entity>) hitGeom.getUserData("entity")).getContent();
+					Bullet bullet = (Bullet) ((TransientSavable<Entity>) hitGeom.getUserData("entity")).getContent();
 
 					// Destroy tank
 					spawnLogic.destroyTank(this);

@@ -73,7 +73,7 @@ public class SceneRenderView extends BaseViewState {
 
 		if (! this.active) return;
 
-		if (sceneManager.getCamera() == null) {
+		if (sceneManager.getScene().getCamera() == null) {
 			throw new IllegalStateException("No camera is associated to " + this);
 		}
 
@@ -85,7 +85,7 @@ public class SceneRenderView extends BaseViewState {
 		display.getRenderer().getCamera().update();
 
 		// Update the camera controller
-		sceneManager.getCamera().update(tpf);
+		sceneManager.getScene().getCamera().update(tpf);
 
 		JmeScene scene = (JmeScene) sceneManager.getScene();
 

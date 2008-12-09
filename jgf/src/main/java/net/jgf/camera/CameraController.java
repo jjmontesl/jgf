@@ -1,13 +1,11 @@
 
-package net.jgf.jme.camera;
+package net.jgf.camera;
 
 
 
 import net.jgf.core.component.BaseComponent;
 
 import com.jme.input.action.InputActionEvent;
-import com.jme.renderer.Camera;
-import com.jme.system.DisplaySystem;
 
 /**
  * A camera attached to a Viewable entity.
@@ -32,11 +30,6 @@ public abstract class CameraController extends BaseComponent {
 
 	public CameraController(String id)  {
 		super(id);
-	}
-
-	// TODO: Camera should be configurable?? By default returning the default camera
-	protected Camera getCamera() {
-		return DisplaySystem.getDisplaySystem().getRenderer().getCamera();
 	}
 
 }

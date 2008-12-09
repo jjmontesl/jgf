@@ -79,16 +79,21 @@
 			
 			<scene id="scene" class="net.jgf.jme.scene.DefaultJmeScene">
 			
-				<camera id="scene/cameras/match" class="net.jgf.example.mudvolley3.camera.MudVolleyCamera" />
-			
-				<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
-					<target>0.0 4.0 0.0</target>
-					<location>17.0 4.0 24.0</location>
-				</camera>
+				<cameras>
+				
+					<camera id="scene/cameras/match" class="net.jgf.example.mudvolley3.camera.MudVolleyCamera" />
+				
+					<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
+						<target>0.0 4.0 0.0</target>
+						<location>17.0 4.0 24.0</location>
+					</camera>
+				
+				</cameras>
+	
+				<camera ref="scene/cameras/match" />
 					
 			</scene>
 			
-			<camera ref="scene/cameras/match" />
 			
 	</service>
 	
@@ -156,13 +161,14 @@
 
 					<key>KEY_F10</key>
 
-					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridRenderView" context="debug"
+					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" context="debug"
 						autoLoad="true" autoActivate="false" >
 
 						<sceneManager ref="scene/manager" />
 						
 						<drawBehind>false</drawBehind>
-						<gridCenter>0.0 0.5 0.0</gridCenter>
+						<center>0.0 0.5 0.0</center>
+						<rotatePi>0.5 0.0 0.0</rotatePi>
 					</view>
 
 				</view>

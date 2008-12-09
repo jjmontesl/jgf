@@ -1,6 +1,8 @@
 
 package net.jgf.scene;
 
+
+import net.jgf.camera.CameraController;
 import net.jgf.core.component.Component;
 
 
@@ -30,5 +32,9 @@ public interface Scene extends Component {
 	public void dispose();
 
   public void setId(String id);
+
+  public void setCamera(CameraController camera);
+
+  public CameraController getCamera();
 
 }
