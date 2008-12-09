@@ -1,0 +1,119 @@
+/*
+ * Java Game Framework
+ * $Id$
+ */
+ 
+TO-DO LIST:
+ 
+- - -
+
+- Add a JUnit tests for directory and registry!!! 
+ 
+- Prepare the grid / axis properly as state, and also put a reusable version
+  at http://www.jmonkeyengine.com/jmeforum/index.php?topic=9638.0;topicseen.
+
+- MUST DO: Check that no wrong elements are in the configuration(s) (Schema? code?)
+
+- Maybe the PoolLoader should collect pooled entities automatically on unload, at least optional?
+  
+- Unregister everywhere we register  
+
+- FIXME: Unloading of textures created by DisplayView is not implemented!!!
+
+- IMPORTANT: The registry should check if the same field is registered to different keys! 
+
+- FIXME: Seems that ToggleInput allows repeating events for SceneMonitorView! Check that,
+  and check if many inputs can cause this.
+  
+- Solve the names of hasSky and implement references (i.e. for tank firing)  
+  
+- TODO: Wrong! DisplayItems should draw themselves (load, activate, render: viewstates!)
+
+- Actions should not force a perform() method. That would be a ArgumentLessAction...
+  think all this about argument parameters and whether they will be reusable
+  or interfaces will need to be created. Think about actions / spawn logic
+  
+- Do states allow double loading / activation? Define (and enforce) this?
+  So far, BaseState doesn't enforce this (see load()).  
+  
+- ModelLoader is adding the model directory to the ResourceLocator (for textures). This is probably
+  wrong unless that changes is rolled back afterwards... check this.
+  
+- Check headers / license / header title
+  
+- Check / Workaround the following issue (not reproducible anymore?):
+
+	2008-12-04 23:09:27,953 OpenGL ERROR [DefaultUncaughtExceptionHandler] Main game loop broken by uncaught exception
+	java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+		at java.util.ArrayList.RangeCheck(ArrayList.java:547)
+		at java.util.ArrayList.get(ArrayList.java:322)
+		at net.jgf.example.tanks.entity.Bullet.startFrom(Bullet.java:164)
+		at net.jgf.example.tanks.entity.Bullet.update(Bullet.java:232)
+		at net.jgf.entity.EntityGroup.update(EntityGroup.java:27)
+  
+- Service/Component Dependencies / Context
+
+- Optionally disable or even better, configure (log4j?), logging for jME classes. Check that <debug>
+  affects default logging... ???
+  
+- Cameras should return info, not set the camera!!
+
+- Loaders should all be Thread Safe: document and ensure.
+
+- Use annotations in all objects, and add the lifecycle facilities to injecting.
+
+- Views should use the ConsoleObserver interface. Review consoles.
+
+- FIX: Naming of Cameras / CameraController  and XML: "camera" and "cameras/camera" with different semantics!
+
+- Command line parser service.
+
+- GameSettings Dialogs
+
+- VERY IMPORTANT: Can a state be loaded twice? and activated? Check if FaderView 
+  restarts on double-activation, or whether some state performs actions twice on double loading...
+  Easy option is forbid it. At least consider a warning!. 
+
+- Handle error when LWJGL is not present (a thread is not finished?)
+
+- Enforce lifecycles detecting violations and throwing exceptions.
+
+- Use input correctly in all ViewStates.
+
+- Ensure all readConfig use setters and getters and do not assign properties directly (best practice)
+
+- Modify all readConfig documentation and refer to the @Configurable class, explaining how it 
+  is needed if you plan to include your object in the configuration. 
+
+- Review all usage of exceptions and check if they are appropriate (for instance, ConfigException
+  is being used in places where it is not completely appropriate: TypeParserHelper...
+  
+- The unregistering of catalog subscriptions is not examined. Currently, there is not a 
+  standard point to unregister subscriptions and/or many components don't unregister themselves.
+
+- Ant scripts to package the game, apply launch4j, fatjar, copying the appropriate
+  dependencies and creating installers and distributable packages. All configurable.
+
+LIMITATIONS:
+
+- States and other components don't have parents so they can potentially 
+  be attached to many parents ???
+
+- Loaders can't have a scene defined inside (the scene would be built, but it cannot
+  be copied to many loaders). On the other hand, a FileChainLoader could. True that
+  loaders should use only properties, but this is proving not the case.
+  Definitely, loading is one of the darkest aspects.
+
+TUTORIALS:
+
+1 - Introducing JGF: Mudvolley Tutorial
+2 - Introducing debugging (Debug, Stats, SystemInfoComponent, AxisGrid, Screenshot)
+3 - Introducing some loaders (model loader, scene loader, entity loader?)
+4 - Introducing introduction states
+5 - Introducing settings and settingsdialogs and settingsstorage
+6 - Introducing menus
+7 - Introducing adding logic for points and hud
+8 - Introducing console
+9 - Introducing network ???
+10 - Putting everything together and Packaging
+
