@@ -1,4 +1,4 @@
-#summary Examples of JGF games.
+#summary Tutorials and Examples of JGF games.
 
 = Examples =
 
@@ -36,4 +36,4 @@ A base game with a basic structure is provided to make starting a new project a 
 A complete game is provided with with JGF: [Tanks]. Follow the link to find out the details.
 
 
-[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
+[http://code.google.com/p/jgf/ JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
