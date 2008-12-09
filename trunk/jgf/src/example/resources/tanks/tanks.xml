@@ -66,8 +66,6 @@
 		during runtime.
 	 -->
 	<service id="scene/manager" class="net.jgf.scene.SceneManager">
-			<!--  <camera ref="scene/camera/overview" /> -->
-			 <camera ref="scene/camera/test" />
 	</service>
 	
 	<!--
@@ -160,7 +158,7 @@
 				
 				<unloadOnFinish>true</unloadOnFinish>
 
-			<!-- 
+				<!-- 
 				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
 					autoLoad="true" autoActivate="true" >
 				
@@ -233,7 +231,8 @@
 					</view>
 					
 				</view>
-				  -->
+				
+				-->
 				 
 				<view id="view/root/intro/startlogic" class="net.jgf.view.RunActionView" 
 					autoLoad="true" autoActivate="false" >
@@ -275,11 +274,12 @@
 				</view>
 				
 				
-				<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridRenderView" 
+				<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" 
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 					<drawBehind>false</drawBehind>
-					<gridCenter>0.0 0.5 0.0</gridCenter>
+					<center>0.0 0.01 0.0</center>
+					<spacing>2</spacing>
 				</view>
 				
 				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView" 

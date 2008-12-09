@@ -8,7 +8,7 @@ import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.entity.util.ProjectileTrip;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.entity.SpatialEntity;
-import net.jgf.jme.model.util.FakeSavable;
+import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.system.Jgf;
 
@@ -89,7 +89,7 @@ public class Bullet extends SpatialEntity {
 	@Override
 	public void unload() {
 		super.unload();
-
+		this.getSpatial().setUserData("entity", null);
 	}
 
 
@@ -150,7 +150,8 @@ public class Bullet extends SpatialEntity {
 
 		}
 
-		spatial.updateWorldVectors();
+		// We need to update this as bullet position will be immediately used in collisions: beware pooled entities!
+		spatial.updateGeometricState(0, true);
 
 	}
 
@@ -158,7 +159,7 @@ public class Bullet extends SpatialEntity {
 	public void update(float tpf) {
 
 
-		// Actually move the tank
+		// Actually move the bullet
 		spatial.getLocalTranslation().addLocal(speed.mult(tpf));
 		spatial.updateWorldVectors();
 
@@ -217,19 +218,18 @@ public class Bullet extends SpatialEntity {
 		this.getSpatial().calculateCollisions(scene.getRootNode().getChild("bullets"), bulletResults);
 
 		if (bulletResults.getNumber() > 0) {
-			// Impacted by bullet. Destroy tank and bullet.
+			// Impacted by bullet
 			CollisionData data = bulletResults.getCollisionData(0);
 
-			// If the bounding is hit, we check tris
+			// Get the entity
 			Spatial hitGeom = data.getTargetMesh();
 			for (; (hitGeom != null) && (hitGeom.getUserData("entity") == null); hitGeom = hitGeom.getParent());
 
 			if (hitGeom != null) {
-				Bullet bullet = (Bullet) ((FakeSavable<Entity>) hitGeom.getUserData("entity")).getContent();
+				Bullet bullet = (Bullet) ((TransientSavable<Entity>) hitGeom.getUserData("entity")).getContent();
 
-				// Destroy tank
+				// Destroy bullets
 				spawnLogic.destroyBullet(this);
-				// Destroy bullet
 				spawnLogic.destroyBullet(bullet);
 
 			}

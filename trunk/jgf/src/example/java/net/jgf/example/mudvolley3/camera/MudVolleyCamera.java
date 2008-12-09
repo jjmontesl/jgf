@@ -5,7 +5,7 @@ package net.jgf.example.mudvolley3.camera;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.jme.camera.CameraController;
+import net.jgf.jme.camera.JmeCamera;
 import net.jgf.jme.config.JmeConfigHelper;
 
 import com.jme.input.action.InputActionEvent;
@@ -15,7 +15,7 @@ import com.jme.scene.Spatial;
 /**
  */
 @Configurable
-public class MudVolleyCamera extends CameraController {
+public class MudVolleyCamera extends JmeCamera {
 
 
 	protected Vector3f location = new Vector3f();

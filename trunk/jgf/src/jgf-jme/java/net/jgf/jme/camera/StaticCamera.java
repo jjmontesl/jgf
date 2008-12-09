@@ -16,7 +16,7 @@ import com.jme.system.DisplaySystem;
  * A camera attached to a Viewable entity.
  */
 @Configurable
-public class StaticCamera extends CameraController {
+public class StaticCamera extends JmeCamera {
 
 	protected Vector3f location = new Vector3f();
 

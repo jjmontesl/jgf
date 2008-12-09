@@ -3,14 +3,14 @@
  * $Id$
  */
  
-TO-DO LIST:
+TO-DO LIST
+(Items are deleted when completed)
  
 - - -
 
-- Add a JUnit tests for directory and registry!!! 
+- Add JUnit tests for directory and registry!!! 
  
-- Prepare the grid / axis properly as state, and also put a reusable version
-  at http://www.jmonkeyengine.com/jmeforum/index.php?topic=9638.0;topicseen.
+- Menus.
 
 - MUST DO: Check that no wrong elements are in the configuration(s) (Schema? code?)
 

@@ -1,5 +1,5 @@
 
-package net.jgf.jme.camera;
+package net.jgf.camera;
 
 
 

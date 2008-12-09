@@ -3,7 +3,10 @@ package net.jgf.scene;
 
 import java.util.Date;
 
+import net.jgf.camera.CameraController;
+import net.jgf.config.Config;
 import net.jgf.core.component.BaseComponent;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -37,6 +40,11 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 	 * Date when this level was constructed.
 	 */
 	protected Date spawnDate;
+
+	/**
+	 * The current camera that will be used to render this scene.
+	 */
+	protected CameraController camera;
 
 	/**
 	 * Default constructor.
@@ -95,5 +103,34 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 	}
 
 
+	/**
+	 * @return the camera
+	 */
+	public CameraController getCamera() {
+		return camera;
+	}
+
+
+	/**
+	 * @param camera the camera to set
+	 */
+	public void setCamera(CameraController camera) {
+		this.camera = camera;
+	}
+
+	/**
+	 * Configures this object from Config.
+	 */
+	@Override
+	public void readConfig(Config config, String configPath) {
+
+		super.readConfig(config, configPath);
+
+		if (config.containsKey(configPath + "/camera/@ref")) {
+			String cameraRef = config.getString(configPath + "/camera/@ref");
+			Jgf.getDirectory().register(this, "camera", cameraRef);
+		}
+
+	}
 
 }

@@ -44,14 +44,17 @@
 			
 			<scene id="scene" class="net.jgf.jme.scene.DefaultJmeScene">
 			
-				<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
-					<target>0.0 4.0 0.0</target>
-					<location>0.0 4.0 24.0</location>
-				</camera>
+				<cameras>
+					<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
+						<target>0.0 4.0 0.0</target>
+						<location>0.0 4.0 24.0</location>
+					</camera>
+				</cameras>
+
+				<camera ref="scene/cameras/overview" />
 			
 			</scene>
 			
-			<camera ref="scene/cameras/overview" />
 			
 	</service>
 	
