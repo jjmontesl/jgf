@@ -6,6 +6,6 @@
 
 *Q:* Is jMonkeyEngine the only game engine usable with JGF?
 
-*A:* Currently yes. While writing implementations for other engines is in theory possible, this is not a minor task. Currently jMonkeyEngine is the only supported game engine with JGF.
+*A:* Currently yes. While writing implementations for other engines is in theory possible, this is not a minor task. Currently jMonkeyEngine is the only engine supported by JGF.
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source] - [FAQ]
