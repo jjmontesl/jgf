@@ -18,16 +18,16 @@ And also inspect other files from the examples, like the classes involed:
 
 The !MudVolley Tutorials are the main JGF tutorials. Through this courses you will build a small game with JGF and evolve it through several steps.
 
-1 - [Tutorial1 JGF: Mudvolley Tutorial]
-2 - [Tutorial2 Debugging (Debug, Stats, SystemInfoComponent, AxisGrid, Screenshot)]
-3 - [Tutorial3 Loaders (model loader, scene loader, entity loader?)]
-4 - [Tutorial4 Introduction states]
-5 - [Tutorial5 Settings and Settings Dialogs and Settings Storage]
-6 - [Tutorial6 Menus]
-7 - [Tutorial7 HUD]
-8 - [Tutorial8 Console]
-9 - [Tutorial9 Network]
-10 - [Tutorial10 Packaging]
+  # [Tutorial1 First Application with JGF]
+  # [Tutorial2 Debugging (Debug, Stats, SystemInfoComponent, AxisGrid, Screenshot)]
+  # [Tutorial3 Loaders (model loader, scene loader, entity loader?)]
+  # [Tutorial4 Introduction states]
+  # [Tutorial5 Settings and Settings Dialogs and Settings Storage]
+  # [Tutorial6 Menus]
+  # [Tutorial7 HUD]
+  # [Tutorial8 Console]
+  # [Tutorial9 Network]
+  # [Tutorial10 Packaging]
 
 ==Test Applications==
 
