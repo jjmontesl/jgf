@@ -65,7 +65,9 @@ public final class Directory {
 	/**
 	 * Initial default estimated directory size. This is the initial capacity of the underlying map.
 	 */
-	private static final int DEFAULT_DIRECTORY_SIZE = 256;
+	private static final int DIRECTORY_DEFAULT_SIZE = 256;
+
+	private static final char DIRECTORY_EXCLUDING_PREFIX = '!';
 
 	/**
 	 * Number of objects that were retrieved from this directory.
@@ -94,7 +96,7 @@ public final class Directory {
 		peakSize = 0;
 		retrievalCount = 0;
 		registry = new Registry();
-		objects = new Hashtable<String, WeakReference<Object>>(DEFAULT_DIRECTORY_SIZE, 0.6f);
+		objects = new Hashtable<String, WeakReference<Object>>(DIRECTORY_DEFAULT_SIZE, 0.6f);
 	}
 
 	/**
@@ -106,7 +108,7 @@ public final class Directory {
 		if (StringUtils.isBlank(id)) {
 			throw new ConfigException("Cannot remove object with a blank name: '" + id + "'");
 		}
-		if (id.charAt(0) == '!') return null;
+		if (id.charAt(0) == DIRECTORY_EXCLUDING_PREFIX) return null;
 
 		WeakReference<Object> reference = objects.remove(id);
 		if (reference == null) {
@@ -134,13 +136,13 @@ public final class Directory {
 			throw new ConfigException("Cannot add object " + object + " with a blank name: '" + id + "'");
 		}
 
-		if (id.charAt(0) == '!') {
-			logger.debug("Not adding object with id '" + id + "' to the directory as it starts with '!'");
+		if (id.charAt(0) == DIRECTORY_EXCLUDING_PREFIX) {
+			logger.debug("Not adding object with id '" + id + "' to the directory as it starts with '" + DIRECTORY_EXCLUDING_PREFIX + "'");
 			return;
 		}
 
 		// Check if the object is duplicated and if so throw an exception
-		// TODO: Should allow replacing? Because components can disappear... at least check on that.
+		// TODO: Should allow replacing? Because components can disappear... at least check on that. Also check test.
 		if (objects.containsKey(id)) {
 			throw new ConfigException("Cannot add object with name " + id + " because an object with that name already exists");
 		}
@@ -168,6 +170,7 @@ public final class Directory {
 			throw new ServiceException("Trying to retrieve object with name 'null'");
 		}
 
+		// TODO: This souldn't be a configexception. Review exceptions.
 		WeakReference<Object> ref = objects.get(id);
 		if (ref == null) {
 			throw new ConfigException("No object found when resolving reference '" + id + "'");

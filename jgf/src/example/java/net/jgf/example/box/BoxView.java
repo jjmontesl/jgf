@@ -58,7 +58,7 @@ public class BoxView extends BaseViewState {
 	@Override
 	public void update(float tpf) {
 		super.update(tpf);
-		scene.getRootNode().getLocalRotation().multLocal(new Quaternion().fromAngleAxis(tpf, new Vector3f(1.0f, 1.0f, 1.0f)));
+		scene.getRootNode().getLocalRotation().multLocal(new Quaternion().fromAngleAxis(tpf, new Vector3f(1.0f, 1.0f, 1.0f))).normalize();
 		scene.update(tpf);
 	}
 
