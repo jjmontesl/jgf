@@ -89,6 +89,7 @@ JGF is designed to be extensible. Base classes are provided for most of the comp
 
  * JGF defines a logging utility (log4j). JGF also provides means to configure and manage logging, and default settings for logging.  
  * Statistics and information about the JVM (memory, GC, etc...).  
+ * Clean and informed startup and shutdown procedures.
 
 *Build System*
 
