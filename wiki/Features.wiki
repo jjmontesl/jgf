@@ -48,7 +48,7 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
 
 JGF is designed to be extensible. Base classes are provided for most of the components you'll need to implement to code your game. And you can always provide new functionality writing your custom services if you need.
 
-*Development Aids*
+*Development Support*
 
   * JGF includes and provides components that easily allow you to add development aids to your game:
     * JME Scene Debugger (Bounding Bounds viewing, Normals viewing
@@ -94,10 +94,6 @@ JGF is designed to be extensible. Base classes are provided for most of the comp
 *Build System*
 
   * Ant scripts provided to package your application, convert it to exe, create installers, create javadocs... _TO BE DONE_.
-
-*Package Naming conventions*
-
-  * JGF "basegame" suggests a standard package structure for games, for users to mimic shall they wish to. _TO BE DONE_.
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source] - [FAQ]
