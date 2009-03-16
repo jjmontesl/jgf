@@ -49,6 +49,13 @@
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
 		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
+			
+			<logic id="logic/action/quit" class="net.jgf.logic.action.QuitAction" />
+			
+			<logic id="logic/action/newgame" class="net.jgf.logic.action.QuitAction" >
+				
+			</logic>
+			
 		</logic>
 		
 	</service>
@@ -65,7 +72,7 @@
 				autoLoad="true" autoActivate="true" >
 			</view>
 			
-			<view id="view/root/main/menu" class="net.jgf.jme.view.menu.MenuView"
+			<view id="view/root/main/menu" class="net.jgf.jme.view.menu.DefaultMenuView"
 						autoLoad="true" autoActivate="true" >
 
 				<initialMenu ref="menu/main" />
@@ -83,46 +90,49 @@
 
 		<menu id="menu/main" class="net.jgf.menu.DefaultMenu">
 			
-			<item id="menu/main/title" class="net.jgf.menu.items.TextMenuItem">
-				<text>Main Menu</text>
-				<size>1.2</size>
+			<item id="menu/main/title" class="net.jgf.menu.items.TitleMenuItem">
+				<key>Main Menu</key>
 			</item>
+			<item id="menu/main/subtitle" class="net.jgf.menu.items.LabelMenuItem">
+				<key>It's time to make a choice</key>
+			</item>
+			
+			
 			<item id="menu/main/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
 			<item id="menu/main/newgame" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>New Game</text>
+				<key>New Game</key>
 				<target ref="menu/newgame" />
 			</item>
 			<item id="menu/main/settings" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>Settings</text>
-				<target ref="menu/settings" />
+				<key>Settings</key>
+				<target ref="menu/newgame" />
 			</item>
 			<item id="menu/main/quit" class="net.jgf.menu.items.ActionMenuItem">
-				<text>Quit</text>
-				<action ref="" />
+				<key>Quit</key>
+				<action ref="logic/action/quit" />
 			</item>
 		</menu>
 
 		<menu id="menu/newgame" class="net.jgf.menu.DefaultMenu">
 			
-			<cancelItem>menu/newgame/back</cancelItem>
+			<cancelItem ref="menu/newgame/back" />
 		
-			<item id="menu/newgame/title" class="net.jgf.menu.items.TextMenuItem">
-				<text>New Game</text>
-				<size>1.2</size>
+			<item id="menu/newgame/title" class="net.jgf.menu.items.TitleMenuItem">
+				<key>New Game</key>
 			</item>
 			
 			<item id="menu/newgame/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
 			<item id="menu/newgame/option1" class="net.jgf.menu.items.ActionMenuItem">
-				<text>3 Player</text>
-				<action ref="action/newgame" />
+				<key>3 Player</key>
+				<action ref="logic/action/newgame" />
 			</item>
-			<item id="menu/newgame/option2" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>7 Players</text>
-				<target ref="menu/newgame/network" />
+			<item id="menu/newgame/option2" class="net.jgf.menu.items.ActionMenuItem">
+				<key>7 Players</key>
+				<action ref="logic/action/newgame" />
 			</item>
 			<item id="menu/newgame/back" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>Back</text>
-				<target ref="menu/back" />
+				<key>Back</key>
+				<target ref="menu/main" />
 			</item>			
 		</menu>
 		

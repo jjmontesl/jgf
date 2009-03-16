@@ -125,8 +125,19 @@
 			<logic id="logic/action" class="net.jgf.logic.LogicStateNode" 
 				autoActivate="false">
 				
-				<logic id="logic/action/newgame" class="net.jgf.example.tanks.logic.NewGameAction" >
+				<logic id="logic/action/newgame" class="net.jgf.logic.action.control.ControllerAction" >
+					<step type="deactivateAndUnload" ref="view/root/main" />
+					<step type="runAction" ref="logic/action/newgame/init" />
 				</logic>
+				
+				<logic id="logic/action/newgame/init" class="net.jgf.example.tanks.logic.NewGameAction" >
+				</logic>
+				
+				<logic id="logic/action/showmenu" class="net.jgf.logic.action.control.ControllerAction" >
+					<step type="loadAndActivate" ref="view/root/main" />
+				</logic>
+				
+				<logic id="logic/action/quit" class="net.jgf.logic.action.QuitAction" />
 				
 			</logic>
 			
@@ -158,7 +169,7 @@
 				
 				<unloadOnFinish>true</unloadOnFinish>
 
-				<!-- 
+				
 				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
 					autoLoad="true" autoActivate="true" >
 				
@@ -232,22 +243,33 @@
 					
 				</view>
 				
-				-->
-				 
-				<view id="view/root/intro/startlogic" class="net.jgf.view.RunActionView" 
+				
+				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
-					<action ref="logic/action/newgame" />
+					<action ref="logic/action/showmenu" />
 				</view>
+
+
 
 			</view>
 
-			<view id="view/root/main" class="net.jgf.view.ViewStateNode">
+			<view id="view/root/main" class="net.jgf.view.ViewStateNode"
+				autoLoad="false" autoActivate="false" >
 				
-				<view id="view/root/main/menu" class="net.jgf.jme.view.menu.MenuView"
+				<view id="view/root/main/background" class="net.jgf.jme.view.display.DisplayItemsView" 
+					autoLoad="true" autoActivate="true">
+					
+					<item id="view/root/main/background/warpigs" class="net.jgf.jme.view.display.ImageItem">
+						<center>0.0 0.0 0.0</center>
+						<textureUrl>tanks/texture/logo/war-pigs.png</textureUrl>
+						<size>2.0</size>
+					</item>
+					
+				</view>
+				
+				<view id="view/root/main/menu" class="net.jgf.jme.view.menu.DefaultMenuView"
 						autoLoad="true" autoActivate="true" >
-
 					<initialMenu ref="menu/main" />
-								
 				</view>
 				
 			</view>
@@ -343,16 +365,16 @@
 
 		<menu id="menu/main" class="net.jgf.menu.DefaultMenu">
 			<item id="menu/main/newgame" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>New Game</text>
+				<key>New Game</key>
 				<target ref="menu/newgame" />
 			</item>
 			<item id="menu/main/settings" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>Settings</text>
+				<key>Settings</key>
 				<target ref="menu/settings" />
 			</item>
 			<item id="menu/main/quit" class="net.jgf.menu.items.ActionMenuItem">
-				<text>Quit</text>
-				<action ref="" />
+				<key>Quit</key>
+				<action ref="logic/action/quit" />
 			</item>
 		</menu>
 
@@ -361,17 +383,17 @@
 			<cancelItem>menu/newgame/back</cancelItem>
 		
 			<item id="menu/newgame/1player" class="net.jgf.menu.items.ActionMenuItem">
-				<text>1 Player Missions</text>
-				<action ref="action/newgame" />
+				<key>1 Player Missions</key>
+				<action ref="logic/action/newgame" />
 			</item>
 			<item id="menu/newgame/network" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>Network Game</text>
+				<key>Network Game</key>
 				<target ref="menu/newgame/network" />
 			</item>
 			<item id="menu/newgame/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
 			<item id="menu/newgame/back" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<text>Back</text>
-				<target ref="menu/back" />
+				<key>Back</key>
+				<target ref="menu/main" />
 			</item>			
 		</menu>
 		
