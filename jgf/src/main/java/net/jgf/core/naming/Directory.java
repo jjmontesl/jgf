@@ -142,7 +142,6 @@ public final class Directory {
 		}
 
 		// Check if the object is duplicated and if so throw an exception
-		// TODO: Should allow replacing? Because components can disappear... at least check on that. Also check test.
 		if (objects.containsKey(id)) {
 			throw new ConfigException("Cannot add object with name " + id + " because an object with that name already exists");
 		}
@@ -160,6 +159,7 @@ public final class Directory {
 	 * Returns a object given its name, casted to the desired type.
 	 * <p>Note that users can also register themselves with the
 	 * Directory registry, so they receive updated references.</p>
+	 * <p>An exception is thrown if the object is not present.</p>
 	 * @see Directory#register(String, Object, String)
 	 */
 	public synchronized <T> T getObjectAs (String id, Class<T> expectedClass) throws ServiceException {

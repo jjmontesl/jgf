@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  * @version $Revision$
  */
 @Configurable
-public class DefaultMenu extends BaseComponent {
+public class DefaultMenu extends BaseComponent implements Menu {
 
 	/**
 	 * Class logger
@@ -28,12 +28,6 @@ public class DefaultMenu extends BaseComponent {
 	private static final Logger logger = Logger.getLogger(DefaultMenu.class);
 
 	protected List<MenuItem> items;
-
-
-	public DefaultMenu() {
-		super();
-		items = new ArrayList<MenuItem>();
-	}
 
 	/**
 	 * Configures this object from Config.
@@ -51,11 +45,17 @@ public class DefaultMenu extends BaseComponent {
 
 	}
 
-	/**
-	 * @return the items
+	/* (non-Javadoc)
+	 * @see net.jgf.menu.Menu#getItems()
 	 */
 	public List<MenuItem> getItems() {
 		return items;
+	}
+
+
+	public DefaultMenu() {
+		super();
+		items = new ArrayList<MenuItem>();
 	}
 
 

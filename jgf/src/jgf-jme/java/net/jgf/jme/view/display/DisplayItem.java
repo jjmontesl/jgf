@@ -17,4 +17,6 @@ public abstract class DisplayItem extends BaseComponent {
 	// TODO: They could change, but also we could use: load/activate... maybe that's better
 	public abstract void refreshNode(Node display);
 
+	public abstract void destroyNode(Node display);
+
 }

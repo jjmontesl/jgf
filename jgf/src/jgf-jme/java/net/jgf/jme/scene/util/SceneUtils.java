@@ -48,7 +48,7 @@ public class SceneUtils {
 
 
     DirectionalLight light2 = new DirectionalLight();
-    light2.setDirection (new Vector3f(0.7f, -0.6f, 0.9f));
+    light2.setDirection (new Vector3f(-8.3f, -0.6f, 0.9f));
     light2.setAmbient(new ColorRGBA(0.4f, 0.4f, 0.9f, 0.7f));
     light2.setDiffuse(new ColorRGBA(0.4f, 0.4f, 0.9f, 0.7f));
     light2.setSpecular(new ColorRGBA(0.4f, 0.4f, 0.9f, 0.7f));

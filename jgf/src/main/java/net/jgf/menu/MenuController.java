@@ -15,46 +15,47 @@ import net.jgf.menu.items.MenuItem;
 @Configurable
 public class MenuController extends BaseComponent {
 
-	protected DefaultMenu initialMenu;
+	protected Menu initialMenu;
 
-	protected DefaultMenu currentMenu;
+	protected Menu currentMenu;
 
 	protected int currentIndex;
 
-	protected boolean viewValid;
-
 	public void nextItem() {
-		// TODO: Skip separators...
-		currentIndex++;
-		viewValid = false;
-		if (currentIndex < 0) currentIndex = 0;
-		if (currentIndex >= currentMenu.getItems().size()) currentIndex = currentMenu.getItems().size() - 1;
+		changeItem(+1);
 	}
 
 	public void previousItem() {
-		currentIndex--;
-		viewValid = false;
-		if (currentIndex < 0) currentIndex = 0;
-		if (currentIndex >= currentMenu.getItems().size()) currentIndex = currentMenu.getItems().size() - 1;
+		changeItem(-1);
 	}
 
-	public void activateCurrentItem() {
-		getCurrentMenuItem().perform();
-		viewValid = false;
+	private void changeItem(int offset) {
+
+		int initialIndex = currentIndex;
+		boolean stepChanged;
+
+		do {
+			stepChanged = false;
+			int previousIndex = currentIndex;
+			currentIndex += offset;;
+			if (currentIndex < 0) currentIndex = 0;
+			if (currentIndex >= currentMenu.getItems().size()) currentIndex = currentMenu.getItems().size() - 1;
+			if (previousIndex != currentIndex) stepChanged = true;
+		} while (stepChanged && (! currentMenu.getItems().get(currentIndex).isNavigable()));
+
+		if (! currentMenu.getItems().get(currentIndex).isNavigable()) currentIndex = initialIndex;
+
 	}
 
-	public void jumpTo() {
-		viewValid = false;
-	}
-
-	public void jumpBack() {
-		viewValid = false;
+	public void useCurrentItem() {
+		getCurrentMenuItem().perform(this);
 	}
 
 	public void reset() {
-		currentMenu = initialMenu;
-		currentIndex = 0; // TODO: Move to first navigable, move back on perform if no navigable available
-		viewValid = false;
+
+		// Move the initial index to the first navigable option
+		currentIndex = 0;
+		if (! currentMenu.getItems().get(currentIndex).isNavigable()) nextItem();
 	}
 
 	/**
@@ -74,28 +75,28 @@ public class MenuController extends BaseComponent {
 	/**
 	 * @return the initialMenu
 	 */
-	public DefaultMenu getInitialMenu() {
+	public Menu getInitialMenu() {
 		return initialMenu;
 	}
 
 	/**
 	 * @param initialMenu the initialMenu to set
 	 */
-	public void setInitialMenu(DefaultMenu initialMenu) {
+	public void setInitialMenu(Menu initialMenu) {
 		this.initialMenu = initialMenu;
 	}
 
 	/**
 	 * @return the currentMenu
 	 */
-	public DefaultMenu getCurrentMenu() {
+	public Menu getCurrentMenu() {
 		return currentMenu;
 	}
 
 	/**
 	 * @param currentMenu the currentMenu to set
 	 */
-	public void setCurrentMenu(DefaultMenu currentMenu) {
+	public void setCurrentMenu(Menu currentMenu) {
 		this.currentMenu = currentMenu;
 	}
 
@@ -112,21 +113,5 @@ public class MenuController extends BaseComponent {
 	public void setCurrentIndex(int currentIndex) {
 		this.currentIndex = currentIndex;
 	}
-
-	/**
-	 * @return the viewValid
-	 */
-	public boolean isViewValid() {
-		return viewValid;
-	}
-
-	/**
-	 * @param viewValid the viewValid to set
-	 */
-	public void setViewValid(boolean viewValid) {
-		this.viewValid = viewValid;
-	}
-
-
 
 }

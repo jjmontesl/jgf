@@ -5,7 +5,6 @@ package net.jgf.jme.view.menu;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.jme.view.display.DisplayItemsView;
 import net.jgf.menu.MenuController;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
@@ -15,28 +14,27 @@ import org.apache.log4j.Logger;
 /**
  *
  */
+// TODO: Renderer should be customizable
 @Configurable
-public class MenuView extends BaseViewState {
+public class DefaultMenuView extends BaseViewState {
 
 	/**
 	 * Class logger
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(MenuView.class);
-
-	protected DisplayItemsView display;
+	private static final Logger logger = Logger.getLogger(DefaultMenuView.class);
 
 	protected MenuController controller;
 
-	protected MenuDisplayBuilder displayBuilder;
+	protected DefaultMenuLookAndFeel menuLaf;
 
 	// TODO: Add sound capabilities
 
-	public MenuView() {
+	public DefaultMenuView() {
 		controller = new MenuController();
-		display = new DisplayItemsView();
-		display.setId(this.getId() + "-DisplayItems");
+		menuLaf = new DefaultMenuLookAndFeel(controller);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see net.jgf.view.BaseViewState#load()
@@ -44,10 +42,10 @@ public class MenuView extends BaseViewState {
 	@Override
 	public void load() {
 		super.load();
-		controller.reset();
 
-		display.load();
-		displayBuilder = new MenuDisplayBuilder();
+		controller.setCurrentMenu(controller.getInitialMenu());
+		controller.reset();
+		menuLaf.load();
 	}
 
 
@@ -57,8 +55,8 @@ public class MenuView extends BaseViewState {
 	@Override
 	public void unload() {
 		super.unload();
-		display.unload();
-		displayBuilder = null;
+		menuLaf.unload();
+		menuLaf = null;
 	}
 
 	/**
@@ -69,13 +67,7 @@ public class MenuView extends BaseViewState {
 
 			super.update(tpf);
 
-			// Check if we need to rebuild the display
-			if (! controller.isViewValid()) {
-				displayBuilder.build(display, controller);
-				controller.setViewValid(true);
-			}
-
-			display.update(tpf);
+			menuLaf.update(tpf);
 
 	}
 
@@ -89,7 +81,7 @@ public class MenuView extends BaseViewState {
 	public void render(float tpf) {
 
 		super.render(tpf);
-		display.render(tpf);
+		menuLaf.render(tpf);
 
 	}
 
@@ -102,7 +94,7 @@ public class MenuView extends BaseViewState {
 	@Override
 	public void activate() {
 		super.activate();
-		display.activate();
+		menuLaf.activate();
 	}
 
 	/**
@@ -111,8 +103,8 @@ public class MenuView extends BaseViewState {
 	 */
 	@Override
 	public void deactivate() {
+		menuLaf.deactivate();
 		super.deactivate();
-		display.deactivate();
 	}
 
 	/**
@@ -130,15 +122,6 @@ public class MenuView extends BaseViewState {
 		super.readConfig(config, configPath);
 		String initialMenuRef = config.getString(configPath + "/initialMenu/@ref");
 		Jgf.getDirectory().register(controller, "initialMenu", initialMenuRef);
-	}
-
-	/**
-	 * <p>Marks the current menu view as invalid. If the menu screen which currently visible is modified externally, the menu
-	 * needs to be redrawn. Calling this method will ensure that the menu is redrawn
-	 * during the next update cycle.</p>
-	 */
-	public void invalidateMenuView() {
-		controller.setViewValid(false);
 	}
 
 }

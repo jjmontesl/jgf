@@ -11,7 +11,7 @@ import net.jgf.system.Jgf;
  *
  */
 @Configurable
-public class RunActionView extends BaseViewState {
+public class ActionView extends BaseViewState {
 
 	protected LogicAction action;
 

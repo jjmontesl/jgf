@@ -2,8 +2,10 @@
 package net.jgf.menu.items;
 
 import net.jgf.config.Config;
+import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.logic.action.LogicAction;
+import net.jgf.menu.MenuController;
 import net.jgf.system.Jgf;
 
 
@@ -13,7 +15,7 @@ import net.jgf.system.Jgf;
  * @version $Revision$
  */
 @Configurable
-public class ActionMenuItem extends TextMenuItem {
+public class ActionMenuItem extends BaseMenuItem {
 
 	protected LogicAction action;
 
@@ -35,7 +37,15 @@ public class ActionMenuItem extends TextMenuItem {
 	}
 
 	@Override
-	public void perform() {
+	public void perform(MenuController controller) {
+
+		if (Jgf.getApp().isDebug()) {
+			if (action == null) {
+				throw new ConfigException("Cannot run action from " + this + " (no action set)");
+			}
+
+		}
+
 		action.perform(null);
 	}
 
@@ -52,7 +62,6 @@ public class ActionMenuItem extends TextMenuItem {
 	public void setAction(LogicAction action) {
 		this.action = action;
 	}
-
 
 
 }

@@ -27,12 +27,12 @@ public class DefaultMenuSystem extends BaseService {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(DefaultMenuSystem.class);
 
-	protected Set<DefaultMenu> menus;
+	protected Set<Menu> menus;
 
 
 	public DefaultMenuSystem() {
 		super();
-		menus = new HashSet<DefaultMenu>();
+		menus = new HashSet<Menu>();
 	}
 
 	/**
@@ -43,8 +43,8 @@ public class DefaultMenuSystem extends BaseService {
 
 		super.readConfig(config, configPath);
 
-		List<DefaultMenu> tMenus = ConfigurableFactory.newListFromConfig(config, configPath + "/menu", DefaultMenu.class);
-		for (DefaultMenu menu : tMenus) {
+		List<Menu> tMenus = ConfigurableFactory.newListFromConfig(config, configPath + "/menu", Menu.class);
+		for (Menu menu : tMenus) {
 			menus.add(menu);
 			Jgf.getDirectory().addObject(menu.getId(), menu);
 		}

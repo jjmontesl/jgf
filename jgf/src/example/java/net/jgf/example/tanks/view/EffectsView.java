@@ -66,6 +66,8 @@ public class EffectsView extends BaseViewState {
 
 	private DefaultJmeScene scene;
 
+	private Node smokesNode;
+
 	private ArrayList<SmokeEffect> smokes = new ArrayList<SmokeEffect>(60);
 
 	private ArrayList<ExplosionEffect> explosions = new ArrayList<ExplosionEffect>(30);
@@ -105,6 +107,10 @@ public class EffectsView extends BaseViewState {
 	public void activate() {
 		super.activate();
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		if (smokesNode == null) {
+			smokesNode = new Node("smokes");
+			scene.getRootNode().attachChild(smokesNode);
+		}
 	}
 
 	/*
@@ -132,7 +138,7 @@ public class EffectsView extends BaseViewState {
 				smoke.ttl -= tpf;
 				if (smoke.ttl < 0) {
 					// TODO: This shouldn't be in the root node
-					scene.getRootNode().detachChild(smoke.particles);
+					smokesNode.detachChild(smoke.particles);
 					iterator.remove();
 				}
 			}
@@ -208,8 +214,8 @@ public class EffectsView extends BaseViewState {
 		// TODO: Pool SmokeEffects for performance
 		ParticlePoints smokeParticles = createSmoke();
 		// TODO: This shouldn't be in the root node
-		scene.getRootNode().attachChild(smokeParticles);
-		scene.getRootNode().updateRenderState();
+		smokesNode.attachChild(smokeParticles);
+		smokesNode.updateRenderState();
 
 		smokeParticles.getParticleController().setRepeatType(ParticleController.RT_WRAP);
 		smokeParticles.getParticleController().setActive(true);

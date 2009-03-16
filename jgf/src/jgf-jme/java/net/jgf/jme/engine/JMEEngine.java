@@ -233,9 +233,11 @@ public final class JMEEngine extends BaseEngine {
 	 */
 	@Override
 	public void dispose() {
-		super.dispose();
-		game.finish();
-		game = null;
+		if (disposed == false) {
+			super.dispose();
+			game.finish();
+			game = null;
+		}
 	}
 
 	/**
