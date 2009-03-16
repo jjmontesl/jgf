@@ -90,7 +90,7 @@
 				
 				</cameras>
 	
-				<camera ref="scene/cameras/match" />
+				<camera ref="scene/cameras/overview" />
 					
 			</scene>
 			
