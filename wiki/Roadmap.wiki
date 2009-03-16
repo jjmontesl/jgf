@@ -1,0 +1,20 @@
+#summary JGF Roadmap
+
+= JGF - Roadmap =
+
+JGF has not been released for public usage. Here are the steps ahead in its development.
+
+*0.8 beta (first public release)*
+
+  * Finish the console system.
+  * Implement startup, settings and configuration services.
+  * Implement the network system and architecture.
+  * Review and solve the TODO list and TODO code notes when possible.
+
+* Later on *
+
+  * Add missing documentation and review licence notes.
+  * Complete Wiki and tutorials.
+
+
+[http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
