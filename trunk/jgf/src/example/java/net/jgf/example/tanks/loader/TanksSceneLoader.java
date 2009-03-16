@@ -18,10 +18,13 @@ import com.jme.bounding.BoundingBox;
 import com.jme.bounding.OrientedBoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Box;
+import com.jme.scene.state.ClipState;
+import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
@@ -94,7 +97,7 @@ public final class TanksSceneLoader extends SceneLoader {
 			}
 
 			// Holes
-			if (data.charAt(0) == '-') height = -1;
+			if (data.charAt(0) == '-') height = -2;
 
 			// References
 			char valChar = (data.length() > 1 ? data.charAt(1) : data.charAt(0));
@@ -147,7 +150,8 @@ public final class TanksSceneLoader extends SceneLoader {
 
 		// TODO: Create camera in the loader
 		scene.getCameraControllers().addCameraController(new StaticCamera(
-				"scene/camera/test", new Vector3f(0.5f * width, 0.9f * width, 0.7f * row), new Vector3f(0.5f * width, 0, 0.5f * row)
+				"scene/camera/test", new Vector3f(0.5f * width, 0.45f * width, 0.5f * row),
+				new Vector3f(0.5f * width, 0, 0.49f * row)
 		));
 		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/test", scene.getCameraControllers().getCameraController("scene/camera/test"));
 
@@ -162,6 +166,29 @@ public final class TanksSceneLoader extends SceneLoader {
     fieldNode.lockMeshes();
 
     scene.getRootNode().attachChild(fieldNode);
+
+    // Water
+    InteractiveWater water = new net.jgf.example.tanks.loader.InteractiveWater("water", 40);
+    water.setModelBound(new BoundingBox());
+    water.updateModelBound();
+
+    MaterialState ms = DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
+    ms.setAmbient(new ColorRGBA(0.1f, 0.15f, 0.25f, 1.0f));
+    ms.setDiffuse(new ColorRGBA(0.2f, 0.25f, 0.4f, 1.0f));
+    ms.setSpecular(new ColorRGBA(0.2f, 0.2f, 0.25f, 1.0f));
+    ms.setShininess(70.0f);
+    water.setRenderState(ms);
+
+    ClipState cs = DisplaySystem.getDisplaySystem().getRenderer().createClipState();
+    cs.setEnableClipPlane(ClipState.CLIP_PLANE0, true);
+    cs.setClipPlaneEquation(ClipState.CLIP_PLANE0, 0, -1, 0, 0);
+    water.setRenderState(cs);
+
+    water.updateRenderState();
+    water.getLocalTranslation().set(-20 + width / 2, -1.2f, -20 + row / 2);
+    water.getLocalScale().set(1f, 0.2f, 1f);
+
+    scene.getRootNode().attachChild(water);
 
     // Updates
     scene.getRootNode().updateRenderState();

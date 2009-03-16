@@ -40,7 +40,6 @@ public class DisplayItemsView extends BaseViewState {
 
 	public DisplayItemsView() {
 		displayItems = new ArrayList<DisplayItem>();
-		rootNode = new Node("display-" + this.getId());
 	}
 
 	/* (non-Javadoc)
@@ -48,6 +47,8 @@ public class DisplayItemsView extends BaseViewState {
 	 */
 	@Override
 	public void load() {
+
+		rootNode = new Node("display-" + this.getId());
 
 		super.load();
 
@@ -119,5 +120,20 @@ public class DisplayItemsView extends BaseViewState {
 		this.rootNode.detachAllChildren();
 		displayItems.clear();
 	}
+
+	public void removeItem(DisplayItem item) {
+		item.destroyNode(this.rootNode);
+		displayItems.remove(item);
+
+	}
+
+	/**
+	 * @return the rootNode
+	 */
+	public Node getRootNode() {
+		return rootNode;
+	}
+
+
 
 }

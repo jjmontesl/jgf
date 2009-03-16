@@ -87,10 +87,10 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	// TODO: Check unloading policy
 	@Override
 	public void unload() {
-		super.unload();
 		for (T state : children) {
-			state.unload();
+			if (state.isLoaded()) state.unload();
 		}
+		if (this.isLoaded()) super.unload();
 	}
 
 	/**

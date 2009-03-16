@@ -1,7 +1,6 @@
 
 package net.jgf.menu.items;
 
-import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.menu.MenuController;
 
@@ -12,26 +11,18 @@ import net.jgf.menu.MenuController;
  * @version $Revision$
  */
 @Configurable
-public class SeparatorMenuItem extends BaseMenuItem {
-
-
-	/**
-	 * Configures this object from Config.
-	 */
-	@Override
-	public void readConfig(Config config, String configPath) {
-
-		super.readConfig(config, configPath);
-
-	}
+public class LabelMenuItem extends BaseMenuItem {
 
 	@Override
 	public boolean isNavigable() {
 	  return false;
 	}
 
+
+
 	@Override
 	public void perform(MenuController controller) {
+		// Nothing to do
 	}
 
 }

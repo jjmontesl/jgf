@@ -89,6 +89,7 @@ public class Bullet extends SpatialEntity {
 	@Override
 	public void unload() {
 		super.unload();
+		// TODO: Verify this is cleaning up correctly
 		this.getSpatial().setUserData("entity", null);
 	}
 
@@ -167,22 +168,7 @@ public class Bullet extends SpatialEntity {
 
 		if (trip.segment != null)  {
 
-
 			Vector3f loc = spatial.getWorldTranslation();
-
-			/*
-			Vector3f neg = segment.getNegativeEnd(new Vector3f());
-			Vector3f pos = segment.getPositiveEnd(new Vector3f());
-
-			// TODO: Why this correction? Why negative and positive don't work as expected?
-	 		if (neg.x > pos.x) { float t = neg.x; neg.x = pos.x; pos.x = t; }
-	 		if (neg.y > pos.y) { float t = neg.y; neg.y = pos.y; pos.y = t; }
-	 		if (neg.z > pos.z) { float t = neg.z; neg.z = pos.z; pos.z = t; }
-
-			if ((loc.x < neg.x - 0.00001f || loc.x > pos.x + 0.00001f) ||
-					(loc.y < neg.y - 0.00001f || loc.y > pos.y + 0.00001f) ||
-					(loc.z < neg.z - 0.00001f || loc.z > pos.z + 0.00001f)) {
-				*/
 
 			if (! trip.segment.isPointInsideBounds(loc, 0.00001f)) {
 

@@ -52,7 +52,8 @@ public class StaticCamera extends JmeCamera {
 
 		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
 		DisplaySystem display = DisplaySystem.getDisplaySystem();
-		camera.setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
+		//camera.setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
+		camera.setFrustumPerspective( 80.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
 
 		camera.update();
 	}

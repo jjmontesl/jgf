@@ -12,6 +12,8 @@ import net.jgf.logic.action.BaseLogicAction;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
 
+import org.apache.log4j.Logger;
+
 
 /**
  *
@@ -19,6 +21,11 @@ import net.jgf.system.Jgf;
 // TODO: Register the steps so the references are always resolved for performance reasons
 @Configurable
 public class ControllerAction extends BaseLogicAction {
+
+	/**
+	 * Class logger.
+	 */
+	private static final Logger logger = Logger.getLogger(ControllerAction.class);
 
 	protected List<ActionStep> steps = new ArrayList<ActionStep>(1);
 
@@ -30,8 +37,8 @@ public class ControllerAction extends BaseLogicAction {
 
 		super.readConfig(config, configPath);
 
-		int index = 0;
-		while (config.containsKey(configPath + "/step[" + index + "]")) {
+		int index = 1;
+		while (config.containsKey(configPath + "/step[" + index + "]/@type")) {
 			ActionStep step = new ActionStep();
 			step.setType(ActionStepType.valueOf(config.getString(configPath + "/step[" + index + "]/@type")));
 			step.setRef(config.getString(configPath + "/step[" + index + "]/@ref"));
@@ -55,6 +62,8 @@ public class ControllerAction extends BaseLogicAction {
 	 */
 	@Override
 	public void perform(String action) {
+
+		logger.info("Performing action " + this);
 
 		for (ActionStep step : steps) {
 

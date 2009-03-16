@@ -59,6 +59,7 @@ public class TextItem extends DisplayItem {
 
 		// TODO: Review this refreshing strategy... should be usable for HUDs too
 		if (quad != null) display.detachChild(quad);
+		// TODO: Remove texture? Check if this is done somewhere
 
 		TextQuadUtils textLabel = new TextQuadUtils(text.trim());
 		textLabel.setFont(font);
@@ -79,6 +80,17 @@ public class TextItem extends DisplayItem {
 
 		display.attachChild(quad);
 
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see net.jgf.jme.view.display.DisplayItem#destroyNode(com.jme.scene.Node)
+	 */
+	@Override
+	public void destroyNode(Node display) {
+		// TODO: destroy textures, etc.?
+		display.detachChild(quad);
 	}
 
 
@@ -165,6 +177,15 @@ public class TextItem extends DisplayItem {
 	 */
 	public void setFont(String font) {
 		this.font = font;
+	}
+
+
+
+	/**
+	 * @return the quad
+	 */
+	public Quad getQuad() {
+		return quad;
 	}
 
 

@@ -274,6 +274,9 @@ public final class Application {
 
 		// Start
 		logger.info("Starting engine");
+		if (engine == null) {
+			throw new ConfigException("No engine defined for the JGF application");
+		}
 		engine.start();
 
 		logger.debug("Directory contains " + directory);

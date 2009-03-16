@@ -32,6 +32,8 @@ public class ImageItem extends DisplayItem {
 
 	protected float size = 1.0f;
 
+	private Quad quad;
+
 	/**
 	 * Configures this object from Config.
 	 */
@@ -54,7 +56,7 @@ public class ImageItem extends DisplayItem {
 	@Override
 	public void refreshNode(Node display) {
 
-		Quad quad = new Quad("quad-" + this.getId());
+		quad = new Quad("quad-" + this.getId());
 		quad.setCullHint(Spatial.CullHint.Never);
 		quad.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		//quad.setZOrder(Integer.MIN_VALUE);
@@ -85,6 +87,15 @@ public class ImageItem extends DisplayItem {
 
 		display.attachChild(quad);
 
+	}
+
+	/* (non-Javadoc)
+	 * @see net.jgf.jme.view.display.DisplayItem#destroyNode(com.jme.scene.Node)
+	 */
+	@Override
+	public void destroyNode(Node display) {
+		// TODO: destroy textures, etc.?
+		display.detachChild(quad);
 	}
 
 
