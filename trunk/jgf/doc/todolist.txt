@@ -8,8 +8,6 @@ TO-DO LIST
  
 - - -
 
-- Add JUnit tests for directory and registry!!! 
- 
 - Menus.
 
 - MUST DO: Check that no wrong elements are in the configuration(s) (Schema? code?)
@@ -17,6 +15,13 @@ TO-DO LIST
 - Maybe the PoolLoader should collect pooled entities automatically on unload, at least optional?
   
 - Unregister everywhere we register  
+
+- URGENT! IMPORTANT: during loading / unloading / activation / etc... there are repeated calls
+  of unload. Checking if the service / component is already unloading is complex and error-prone.
+  Externalize this to a core functionality which calls unload without repetitions. Calls to
+  load, unload... will be done trough this core functionality (this will allow for time metrics too).
+  Current "load" "unload" "activate" "dispose"... will be redirected to this service, and implementation
+  will be done on a doLoad?? Affected parts are states/entities, services and maybe more. 
 
 - FIXME: Unloading of textures created by DisplayView is not implemented!!!
 
@@ -41,6 +46,8 @@ TO-DO LIST
   
 - Check headers / license / header title
   
+- Add JUnit tests for directory and registry!!! 
+ 
 - Check / Workaround the following issue (not reproducible anymore?):
 
 	2008-12-04 23:09:27,953 OpenGL ERROR [DefaultUncaughtExceptionHandler] Main game loop broken by uncaught exception
