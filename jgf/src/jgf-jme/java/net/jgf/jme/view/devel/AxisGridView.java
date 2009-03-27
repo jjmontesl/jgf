@@ -202,7 +202,7 @@ public class AxisGridView extends BaseViewState {
     regularGrid.getDefaultColor().set(ColorRGBA.darkGray);
     grid.attachChild(regularGrid);
     Geometry markerGrid = new Line("markerLine", markerVertices.toArray(new Vector3f[]{}), null,null,null);
-    regularGrid.getDefaultColor().set(ColorRGBA.lightGray);
+    markerGrid.getDefaultColor().set(ColorRGBA.lightGray);
     grid.attachChild(markerGrid);
 
     grid.getLocalRotation().fromAngles(FastMath.PI * rotatePi.x, FastMath.PI * rotatePi.y, FastMath.PI * rotatePi.z);
