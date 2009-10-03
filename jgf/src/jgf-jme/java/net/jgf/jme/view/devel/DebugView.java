@@ -2,9 +2,11 @@
 package net.jgf.jme.view.devel;
 
 import net.jgf.config.Config;
+import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
+import net.jgf.util.system.NamingUtils;
 import net.jgf.util.system.SystemInfoService;
 import net.jgf.view.BaseViewState;
 
@@ -55,7 +57,11 @@ public class DebugView extends BaseViewState {
 
     	super.load();
 
+    	if (sceneManager == null) {
+    		throw new ConfigException(this.toString() + " cannot be loaded because no SceneManager has been set.");
+    	}
     	JmeScene scene= (JmeScene) sceneManager.getScene();
+
     	rootNode = scene.getRootNode();
 
       // create a statistics game state
@@ -107,6 +113,9 @@ public class DebugView extends BaseViewState {
         // TODO: Screenshot should be another ViewState
         KeyBindingManager.getKeyBindingManager().set("screen_shot", KeyInput.KEY_F1);
 
+        KeyBindingManager.getKeyBindingManager().set("jgf_report", KeyInput.KEY_F4);
+
+        // TODO: Remove this??
         KeyBindingManager.getKeyBindingManager().set("parallel_projection", KeyInput.KEY_F2);
 
         KeyBindingManager.getKeyBindingManager().set("toggle_depth", KeyInput.KEY_F3);
@@ -149,6 +158,10 @@ public class DebugView extends BaseViewState {
               "screen_shot", false)) {
           DisplaySystem.getDisplaySystem().getRenderer().takeScreenShot(
                   "SimpleGameScreenShot");
+      }
+      if (KeyBindingManager.getKeyBindingManager().isValidCommand(
+          "jgf_report", false)) {
+      	logger.info("Report: \n" + NamingUtils.directoryReport());
       }
       if (KeyBindingManager.getKeyBindingManager().isValidCommand(
               "parallel_projection", false)) {

@@ -8,6 +8,15 @@ TO-DO LIST
  
 - - -
 
+- Tanks
+  - ProjectileTrip calculation should go to the Scene or to Separate Logic
+  - Smoke
+  - Decals for tops
+  - Decals, vegetation on the floor
+  - Texture every 2 squares 
+  - Tank shadow??
+  - Optimize boxes
+
 - Menus.
 
 - MUST DO: Check that no wrong elements are in the configuration(s) (Schema? code?)

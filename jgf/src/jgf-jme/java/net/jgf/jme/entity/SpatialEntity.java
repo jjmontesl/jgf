@@ -21,6 +21,14 @@ public abstract class SpatialEntity extends BaseEntity {
 
 	protected Spatial spatial;
 
+	public SpatialEntity() {
+		super();
+	}
+
+	public SpatialEntity(String id) {
+		super (id);
+	}
+
 	/**
 	 * @return the spatial
 	 */

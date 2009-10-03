@@ -174,7 +174,6 @@ final class DefaultMenuLookAndFeel {
 
 
 		// Update
-		inputHandler.update(tpf);
 		for (Widget widget : widgets.values()) {
 			widget.update(tpf);
 		}
@@ -226,6 +225,10 @@ final class DefaultMenuLookAndFeel {
 	public void deactivate() {
 		display.deactivate();
 		clearMenu();
+	}
+
+	public void input(float tpf) {
+		inputHandler.update(tpf);
 	}
 
 }

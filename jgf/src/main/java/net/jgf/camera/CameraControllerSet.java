@@ -3,6 +3,11 @@ package net.jgf.camera;
 
 import java.util.HashMap;
 
+import net.jgf.config.ConfigException;
+import net.jgf.system.Jgf;
+
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * CameraControllerSet manages the cameras attached to an entity or other component.
@@ -26,6 +31,11 @@ public class CameraControllerSet {
 	 */
 	public void addCameraController(CameraController cameraController) {
 		// TODO: Check for not null/empty ids
+		if (Jgf.getApp().isDebug()) {
+			if (StringUtils.isBlank(cameraController.getId())) {
+				throw new ConfigException("Cannot add a CameraController with a null id to a CameraControllerSet");
+			}
+		}
 		cameraControllers.put(cameraController.getId(), cameraController);
 	}
 

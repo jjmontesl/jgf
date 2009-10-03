@@ -15,6 +15,7 @@ import com.jme.system.DisplaySystem;
 @Configurable
 public abstract class JmeCamera extends CameraController {
 
+	// TODO: Add FOV
 
 	public JmeCamera() {
 		super();

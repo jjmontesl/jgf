@@ -2,7 +2,7 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
-import net.jgf.core.state.StateUtil;
+import net.jgf.core.state.StateHelper;
 import net.jgf.entity.EntityGroup;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
@@ -56,18 +56,18 @@ public class NewGameAction extends BaseLogicAction {
 
 		// Spawn player
 		SpawnLogic spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
-		StateUtil.loadAndActivate(spawnLogic);
+		StateHelper.loadAndActivate(spawnLogic);
 		spawnLogic.spawnPlayer();
 
 		// Prepare entities
 		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
-		StateUtil.loadAndActivate(rootEntity);
+		StateHelper.loadAndActivate(rootEntity);
 
 		// Activate next view and logic
 		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
-		StateUtil.loadAndActivate(inGameLogic);
+		StateHelper.loadAndActivate(inGameLogic);
 		ViewState levelView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
-		StateUtil.loadAndActivate(levelView);
+		StateHelper.loadAndActivate(levelView);
 
 	}
 

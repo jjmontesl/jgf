@@ -108,7 +108,9 @@ public final class ConfigurableFactory {
 		try {
 			classType = Class.forName(className);
 		} catch (ClassNotFoundException e) {
-			throw new ConfigException("Class not found (" + className + ") when creating object with prefix '" + configPath + "'", e);
+			throw new ConfigException("Class not found '" + className + "' when creating object with prefix '" + configPath + "'", e);
+		} catch (Throwable e) {
+			throw new ConfigException("Class search error '" + className + "' when creating object with prefix '" + configPath + "'", e);
 		}
 
 		// Check if the class is the expected class, or throw an exception
@@ -124,9 +126,9 @@ public final class ConfigurableFactory {
 		try {
 			newInstance = boundedClassType.newInstance();
 		} catch (InstantiationException e) {
-			throw new ConfigException ("Element " + configPath + " could not be instantiated from config (tip: check it has a public void constructor)", e);
+			throw new ConfigException ("Element " + configPath + " could not be instantiated from config (tip: check it has a public void constructor, is not abstract...)", e);
 		} catch (IllegalAccessException e) {
-			throw new ConfigException ("Element " + configPath + " could not be instantiated from config (tip: check it has a public void constructor)", e);
+			throw new ConfigException ("Element " + configPath + " could not be instantiated from config (tip: check it has a public void constructor, is not abstract...)", e);
 		}
 
 		// Call configurable object factory
@@ -139,7 +141,7 @@ public final class ConfigurableFactory {
 			} catch (NoSuchMethodException e) {
 				throw new ConfigException ("Element " + configPath + " is marked as @Configurable but doesn't provide a configuration method '" + Configurable.READCONFIG_METHOD_NAME + "'", e);
 			} catch (IllegalAccessException e) {
-				throw new ConfigException ("Element " + configPath + " could not be instantiated from config (tip: check it has a public void constructor)", e);
+				throw new ConfigException ("Element " + configPath + " could not be instantiated from config (tip: check it has a public void constructor, is not abstract...)", e);
 			} catch (InvocationTargetException e) {
 				throw new ConfigException ("Element " + configPath + " could not be created", e);
 			}

@@ -29,6 +29,8 @@ public class SceneUtils {
 	 */
 	private static final Logger logger = Logger.getLogger(Application.class);
 
+	private static final String DEFAULT_SKYBOX_SUFFIX = ".png";
+
 	/**
 	 * Sets up default lighting
 	 */
@@ -143,36 +145,43 @@ public class SceneUtils {
 		scene.getCommonRenderStates().put("fogDisabled", fsd);
 	}
 
+	public static Node setupSkyBox(String prefix) {
+		return setupSkyBox(prefix, null);
+	}
+
 	/**
 	 * Sets up a Skybox
 	 */
-	public static Node setupSkyBox(String name) {
+	// TODO: There should be possible to configure the constants below (positiveZ...)
+	public static Node setupSkyBox(String prefix, String suffix) {
+
+		if (suffix == null) suffix = DEFAULT_SKYBOX_SUFFIX;
 
     // Create the node
     Skybox skybox = new Skybox("skybox", 400, 400, 400);
 
     Texture north = TextureManager.loadTexture(
-    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, name + "/north.jpg"),
+    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, prefix + "positiveZ" + suffix),
     		Texture.MinificationFilter.NearestNeighborLinearMipMap,
         Texture.MagnificationFilter.NearestNeighbor);
     Texture south = TextureManager.loadTexture(
-    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, name + "/south.jpg"),
+    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, prefix + "negativeZ" + suffix),
     		Texture.MinificationFilter.NearestNeighborLinearMipMap,
         Texture.MagnificationFilter.NearestNeighbor);
     Texture east = TextureManager.loadTexture(
-    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, name + "/east.jpg"),
+    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, prefix + "positiveX" + suffix),
     		Texture.MinificationFilter.NearestNeighborLinearMipMap,
         Texture.MagnificationFilter.NearestNeighbor);
     Texture west = TextureManager.loadTexture(
-    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, name + "/west.jpg"),
+    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, prefix + "negativeX" + suffix),
     		Texture.MinificationFilter.NearestNeighborLinearMipMap,
         Texture.MagnificationFilter.NearestNeighbor);
     Texture up = TextureManager.loadTexture(
-    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, name + "/top.jpg"),
+    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, prefix + "positiveY" + suffix),
     		Texture.MinificationFilter.NearestNeighborLinearMipMap,
         Texture.MagnificationFilter.NearestNeighbor);
     Texture down = TextureManager.loadTexture(
-    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, name + "/bottom.jpg"),
+    		ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, prefix + "negativeY" + suffix),
     		Texture.MinificationFilter.NearestNeighborLinearMipMap,
         Texture.MagnificationFilter.NearestNeighbor);
 

@@ -5,7 +5,7 @@ import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
 import net.jgf.core.state.State;
-import net.jgf.core.state.StateUtil;
+import net.jgf.core.state.StateHelper;
 
 
 /**
@@ -63,7 +63,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 		super.readConfig(config, configPath);
 
 		this.rootState = ConfigurableFactory.newFromConfig(config, configPath + "/view", ViewState.class);
-		StateUtil.registerState(rootState);
+		StateHelper.registerState(rootState);
 
 	}
 

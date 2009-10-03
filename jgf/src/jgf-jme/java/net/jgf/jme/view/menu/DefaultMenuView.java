@@ -36,6 +36,18 @@ public class DefaultMenuView extends BaseViewState {
 	}
 
 
+
+	/* (non-Javadoc)
+	 * @see net.jgf.view.BaseViewState#input(float)
+	 */
+	@Override
+	public void input(float tpf) {
+		super.input(tpf);
+		menuLaf.input(tpf);
+	}
+
+
+
 	/* (non-Javadoc)
 	 * @see net.jgf.view.BaseViewState#load()
 	 */

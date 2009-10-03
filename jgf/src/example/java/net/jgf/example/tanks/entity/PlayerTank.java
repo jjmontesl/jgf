@@ -39,6 +39,7 @@ public class PlayerTank extends Tank {
 	protected void fixCursor() {
 		// Don't let cursor get too away
 		Vector3f distanceToTarget = target.subtract(spatial.getLocalTranslation());
+		distanceToTarget.setY(0.5f);
 		if (distanceToTarget.length() > 15) {
 			distanceToTarget.normalizeLocal().multLocal(15).addLocal(spatial.getLocalTranslation());
 			Vector3f newPos = DisplaySystem.getDisplaySystem().getRenderer().getCamera().getScreenCoordinates(distanceToTarget);

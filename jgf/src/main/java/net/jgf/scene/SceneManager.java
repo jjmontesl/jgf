@@ -30,7 +30,7 @@ public class SceneManager extends BaseService {
 	 * @return the scene
 	 */
 	public Scene getScene() {
-		if (scene == null) throw new ServiceException("Tried to retrieve a scene from " + this + " but no scene was loaded");
+		if (scene == null) throw new ServiceException("Tried to retrieve a scene from " + this + " but no scene has been set");
 		return scene;
 	}
 
@@ -50,8 +50,8 @@ public class SceneManager extends BaseService {
 			Jgf.getDirectory().addObject(scene.getId(), scene);
 		}
 
-		
-		
+
+
 	}
 
 

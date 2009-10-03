@@ -55,6 +55,8 @@
 			
 			<entity id="entity/root/mine" class="net.jgf.entity.EntityGroup">
 			</entity>
+			
+			net.jgf.jme.view.FreeCameraView
 
 		</entity>
 			
@@ -75,7 +77,7 @@
 		
 		<!-- This chain provides model loading and caching and also rotates the
 		loaded nodes to correct the orientation used in blender to design models for this game -->
-		<loader id="loader/model/tanks" class="net.jgf.loader.ChainLoader" >
+		<loader id="loader/model" class="net.jgf.loader.ChainLoader" >
 			
 			<loader id="loader/model/converter" class="net.jgf.jme.loader.model.ConverterLoader" />
 		
@@ -94,7 +96,7 @@
 		
 		<!--  The EntityLoader used is a FileChainLoader: reads a chain of loaders from a file -->
 		<loader id="loader/entity" class="net.jgf.loader.FileChainLoader">
-			<property name="EntityModelLoader.loader" value="loader/model/tanks" />
+			<property name="EntityModelLoader.loader" value="loader/model" />
 		</loader>
 		
 		<!-- This entity loader is an alternative entity loader that pools entities: it wraps
@@ -164,12 +166,11 @@
 
 		<view id="view/root" class="net.jgf.view.ViewStateNode">
 
-			<view id="view/root/sequencer" class="net.jgf.view.ViewSequencerNode" 
+			<view id="view/root/intro" class="net.jgf.view.ViewSequencerNode" 
 				autoLoad="true" autoActivate="true" >
 				
 				<unloadOnFinish>true</unloadOnFinish>
-
-				
+				<!-- 
 				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
 					autoLoad="true" autoActivate="true" >
 				
@@ -243,7 +244,7 @@
 					
 				</view>
 				
-				
+				 -->
 				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
 					<action ref="logic/action/showmenu" />
@@ -280,6 +281,13 @@
 				<view id="view/root/level/fight" class="net.jgf.view.ViewStateNode"
 					autoLoad="true" autoActivate="true" >
 					
+					<!-- 
+					<view id="view/root/level/fight/spectator" class="net.jgf.jme.view.FreeCameraView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />
+					</view>
+					 -->
+					
 					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
@@ -292,17 +300,23 @@
 					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView"
 						autoLoad="true" autoActivate="true" >
 					</view>
-				
+					
+					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />		
+					</view>					
+					
 				</view>
 				
-				
+				<!-- 
 				<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" 
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 					<drawBehind>false</drawBehind>
 					<center>0.0 0.01 0.0</center>
-					<spacing>2</spacing>
+					<spacing>1</spacing>
 				</view>
+				 -->
 				
 				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView" 
 					autoLoad="true" autoActivate="true" >

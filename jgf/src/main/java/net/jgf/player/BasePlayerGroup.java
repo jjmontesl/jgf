@@ -16,7 +16,13 @@ public abstract class BasePlayerGroup extends BasePlayer implements PlayerGroup 
 	protected ArrayList<Player> players;
 
 
+	public BasePlayerGroup(String name) {
+		super(name);
+		players = new ArrayList<Player>();
+	}
+
 	public BasePlayerGroup() {
+		super();
 		players = new ArrayList<Player>();
 	}
 

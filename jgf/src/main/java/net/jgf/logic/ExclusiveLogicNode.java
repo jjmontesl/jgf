@@ -33,7 +33,7 @@ public class ExclusiveLogicNode extends BaseLogicStateNode implements StateObser
 				if (state.isActive()) activeCount++;
 			}
 
-			// If more than one, disable all but last
+			// If more than one, disable all but the originating state
 			if (activeCount > 1)  {
 				for (LogicState state : children) {
 					if ((state.isActive()) && (state != evt.getSource())) state.deactivate();

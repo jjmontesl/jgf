@@ -6,11 +6,11 @@
 package net.jgf.example.mudvolley1.logic;
 
 import net.jgf.config.Configurable;
-import net.jgf.core.state.StateUtil;
+import net.jgf.core.state.StateHelper;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.mudvolley1.entity.BallEntity;
-import net.jgf.example.mudvolley1.entity.MudVolleyEntityLoader;
 import net.jgf.example.mudvolley1.entity.PlayerEntity;
+import net.jgf.example.mudvolley1.loader.MudVolleyEntityLoader;
 import net.jgf.example.mudvolley1.loader.MudVolleySceneLoader;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.logic.BaseLogicState;
@@ -66,14 +66,13 @@ public class NewGameLogic extends BaseLogicState {
 		ball.integrate(rootEntity, scene.getRootNode());
 
 		scene.getRootNode().updateRenderState();
-		StateUtil.loadAndActivate(rootEntity);
-
+		StateHelper.loadAndActivate(rootEntity);
 
 		// Activate next view and logic
 		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
-		StateUtil.loadAndActivate(inGameLogic);
+		StateHelper.loadAndActivate(inGameLogic);
 		ViewState sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
-		StateUtil.loadAndActivate(sceneRenderView);
+		StateHelper.loadAndActivate(sceneRenderView);
 
 	}
 

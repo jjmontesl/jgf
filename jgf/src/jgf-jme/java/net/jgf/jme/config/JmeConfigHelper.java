@@ -26,6 +26,7 @@ public final class JmeConfigHelper  {
 	/**
 	 * Class logger
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JmeConfigHelper.class);
 
 	public static int getKeyInput(Config config, String path, int defaultKeyInput)  {

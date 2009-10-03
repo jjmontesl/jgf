@@ -3,16 +3,11 @@ package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
 import net.jgf.entity.EntityManager;
-import net.jgf.example.tanks.loader.InteractiveWater;
-import net.jgf.example.tanks.loader.InteractiveWater.PaintMode;
-import net.jgf.jme.scene.JmeScene;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
-
-import com.jme.math.FastMath;
 
 
 /**
@@ -48,11 +43,13 @@ public class InGameLogic extends BaseLogicState {
 		entityManager.update(tpf);
 		sceneManager.update(tpf);
 
+		/*
 		// Waves
 		InteractiveWater water = (InteractiveWater)((JmeScene)(sceneManager.getScene())).getRootNode().getChild("water");
     water.setPaintMode(PaintMode.PAINT_SOURCE);
   	if (FastMath.nextRandomFloat() < 0.1) water.dabSomePaint(FastMath.nextRandomInt(0, 40), FastMath.nextRandomInt(0, 40));
   	water.update(tpf);
+  	*/
 
 	}
 

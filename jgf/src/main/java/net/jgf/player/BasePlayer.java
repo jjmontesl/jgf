@@ -19,6 +19,25 @@ public abstract class BasePlayer extends BaseComponent implements Player {
 	 */
 	protected PlayerGroup parent;
 
+
+
+
+	/**
+	 * @param name
+	 */
+	public BasePlayer(String name) {
+		super();
+		this.name = name;
+	}
+
+
+
+	public BasePlayer() {
+		super();
+	}
+
+
+
 	/**
 	 * Configures this object from Config.
 	 */

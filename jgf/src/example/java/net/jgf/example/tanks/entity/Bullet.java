@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.jgf.config.Configurable;
 import net.jgf.entity.Entity;
-import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.entity.util.ProjectileTrip;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.entity.SpatialEntity;
@@ -39,6 +38,8 @@ public class Bullet extends SpatialEntity {
 	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(Bullet.class);
+
+	public final static float BULLET_SPEED = 3.2f;
 
 	public static final float BULLET_TTL = 30.0f;
 
@@ -81,6 +82,14 @@ public class Bullet extends SpatialEntity {
 	}
 
 
+	/**
+	 * @return the trip
+	 */
+	public ProjectileTrip getTrip() {
+		return trip;
+	}
+
+
 
 
 	/* (non-Javadoc)
@@ -101,7 +110,7 @@ public class Bullet extends SpatialEntity {
 		spatial.getLocalRotation().lookAt(direction, Vector3f.UNIT_Y);
 		spatial.getLocalRotation().multLocal(new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y));
 		//spatial.getLocalScale().set(20,20,20);
-		speed.set(direction).normalizeLocal().multLocal(TanksSettings.BULLET_SPEED);
+		speed.set(direction).normalizeLocal().multLocal(BULLET_SPEED);
 
 		// Check collision
 		Ray ray = new Ray(position.clone(), speed.normalize());

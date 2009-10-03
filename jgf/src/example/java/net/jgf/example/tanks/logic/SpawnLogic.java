@@ -2,7 +2,7 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
-import net.jgf.core.state.StateUtil;
+import net.jgf.core.state.StateHelper;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
@@ -106,7 +106,7 @@ public class SpawnLogic extends BaseLogicState {
 		bullet.integrate(bulletEntityGroup, bulletNode, position);
 		bullet.getSpatial().setUserData("entity", new TransientSavable<Entity>(bullet));
 
-		StateUtil.loadAndActivate(bullet);
+		StateHelper.loadAndActivate(bullet);
 		//bullet.getSpatial().updateRenderState();
 		scene.getRootNode().updateRenderState();
 
@@ -125,7 +125,7 @@ public class SpawnLogic extends BaseLogicState {
 		bullet.withdraw(bulletEntityGroup, bulletNode);
 		effectsView.addExplosion(bullet.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_BULLET_TTL);
 
-		StateUtil.deactivateAndUnload(bullet);
+		StateHelper.deactivateAndUnload(bullet);
 
 		entityLoader.returnToPool(bullet);
 
@@ -139,7 +139,7 @@ public class SpawnLogic extends BaseLogicState {
 			tank.withdraw(enemyEntityGroup, scene.getRootNode());
 		}
 		effectsView.addExplosion(tank.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_TANK_TTL);
-		StateUtil.deactivateAndUnload(tank);
+		StateHelper.deactivateAndUnload(tank);
 
 	}
 

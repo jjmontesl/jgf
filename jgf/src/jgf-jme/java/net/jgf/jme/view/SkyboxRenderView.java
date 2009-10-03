@@ -47,12 +47,19 @@ public class SkyboxRenderView extends BaseViewState {
 			if (! this.active) return;
 
 			// Center the skybox on the camera
-			// TODO: This should not behere, the skybox belongs to other place
+			// TODO: This should not behere, the skybox belongs to other place ??? Not sure, maybe it does
 			// TODO: Actually implement this!
 			//scene.getRootNode().getChild("skybox").setLocalTranslation(DisplaySystem.getDisplaySystem().getRenderer().getCamera().getLocation());
 
+
 			// Update the camera controller
-			if (sceneManager.getScene().getCamera() != null) sceneManager.getScene().getCamera().update(tpf);
+			if (sceneManager.getScene().getCamera() != null) {
+
+				((HasSky)sceneManager.getScene()).getSky().getRootNode().setLocalTranslation(
+						DisplaySystem.getDisplaySystem().getRenderer().getCamera().getLocation()
+				);
+				((HasSky)sceneManager.getScene()).getSky().getRootNode().updateGeometricState(tpf, true);
+			}
 
 
 	}
