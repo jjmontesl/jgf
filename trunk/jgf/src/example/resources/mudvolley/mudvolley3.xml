@@ -87,10 +87,10 @@
 						<target>0.0 4.0 0.0</target>
 						<location>17.0 4.0 24.0</location>
 					</camera>
-				
+					
 				</cameras>
 	
-				<camera ref="scene/cameras/overview" />
+				<camera ref="scene/cameras/match" />
 					
 			</scene>
 			
@@ -138,6 +138,10 @@
 						autoLoad="true" autoActivate="true" >
 					</view>
 					
+					<view id="view/root/level/match/spectator" class="net.jgf.jme.view.FreeCameraView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />
+					</view>
 					
 					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
@@ -148,6 +152,7 @@
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
+					
 						
 				</view>
 				

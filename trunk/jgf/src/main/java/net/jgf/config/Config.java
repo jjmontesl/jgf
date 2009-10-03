@@ -36,6 +36,8 @@ package net.jgf.config;
 import java.net.URL;
 import java.util.List;
 
+import net.jgf.jme.config.JmeConfigHelper;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
@@ -95,11 +97,15 @@ public final class Config  {
 		this.configResourcePath = configResourcePath;
 		URL configURL = ResourceLocatorTool.locateResource("config", configResourcePath);
 
+		if (configURL == null) {
+			throw new ConfigException("Could not find configuration at '" + configResourcePath + "'");
+		}
+
 		try {
 			config = new XMLConfiguration(configURL);
 			config.setExpressionEngine(new XPathExpressionEngine());
 		} catch (ConfigurationException e) {
-			throw new ConfigException ("Could not read configuration from '" + configResourcePath + "'", e);
+			throw new ConfigException ("Could not read configuration from '" + configURL.toString() + "'", e);
 		}
 
 		// TODO: Process includes recursively (Commons Config composite configuration) or leave it up to XML include?

@@ -67,7 +67,7 @@
 		
 		</loader>
 		
-		<loader id="loader/entity" class="net.jgf.example.mudvolley1.entity.MudVolleyEntityLoader">
+		<loader id="loader/entity" class="net.jgf.example.mudvolley1.loader.MudVolleyEntityLoader">
 						
 		</loader> 	
 				

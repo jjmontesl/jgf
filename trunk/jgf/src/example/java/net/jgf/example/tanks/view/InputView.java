@@ -36,7 +36,7 @@ public class InputView extends BaseViewState {
 	 */
 	private static final Logger logger = Logger.getLogger(InputView.class);
 
-	InputHandler inputHandler;
+	protected InputHandler inputHandler;
 
 	/**
 	 * Key action

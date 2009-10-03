@@ -1,8 +1,10 @@
 
 package net.jgf.jme.scene;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import net.jgf.camera.CameraController;
 import net.jgf.camera.CameraControllerSet;
@@ -13,7 +15,7 @@ import net.jgf.config.ConfigurableFactory;
 import net.jgf.jme.scene.sky.HasSky;
 import net.jgf.jme.scene.sky.Sky;
 import net.jgf.refs.HasReferences;
-import net.jgf.refs.References;
+import net.jgf.refs.ReferenceSet;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
@@ -39,11 +41,13 @@ public class DefaultJmeScene extends JmeScene implements HasSky, HasCameras, Has
 	/**
 	 * Scene reference nodes, which can be used as location and rotation references.
 	 */
-	protected References references;
+	protected ReferenceSet references;
 
 	protected CameraControllerSet cameras;
 
 	protected Sky sky;
+
+	protected Map<String, Object> properties;
 
 	public DefaultJmeScene() {
 
@@ -51,13 +55,17 @@ public class DefaultJmeScene extends JmeScene implements HasSky, HasCameras, Has
 		commonRenderStates = new Hashtable<String, RenderState>();
 
 		// Reference nodes
-		references = new References();
+		references = new ReferenceSet();
 
 		cameras = new CameraControllerSet();
+
+		properties = new HashMap<String, Object>();
 
 		sky = new Sky();
 
 	}
+
+
 
 	public DefaultJmeScene(String id) {
 
@@ -84,7 +92,7 @@ public class DefaultJmeScene extends JmeScene implements HasSky, HasCameras, Has
 	}
 
 	@Override
-	public References getReferences() {
+	public ReferenceSet getReferences() {
 		return references;
 	}
 
@@ -102,6 +110,15 @@ public class DefaultJmeScene extends JmeScene implements HasSky, HasCameras, Has
 			Jgf.getDirectory().addObject(camera.getId(), camera);
 		}
 
+	}
+
+
+
+	/**
+	 * @return the properties
+	 */
+	public Map<String, Object> getProperties() {
+		return properties;
 	}
 
 

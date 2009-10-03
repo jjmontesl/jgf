@@ -12,10 +12,18 @@ import net.jgf.core.state.BaseState;
 public abstract class BaseEntity extends BaseState implements Entity {
 
 	public BaseEntity() {
-		super();
+		this(null);
+	}
+
+
+
+	public BaseEntity(String id) {
+		super(id);
 		this.autoActivate = true;
 		this.autoLoad = true;
 	}
+
+
 
 	@Override
 	public void update(float tpf) {

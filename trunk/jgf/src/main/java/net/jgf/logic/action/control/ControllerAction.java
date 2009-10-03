@@ -7,7 +7,7 @@ import java.util.List;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.state.State;
-import net.jgf.core.state.StateUtil;
+import net.jgf.core.state.StateHelper;
 import net.jgf.logic.action.BaseLogicAction;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
@@ -72,10 +72,10 @@ public class ControllerAction extends BaseLogicAction {
 				ref.perform(action);
 			} else if (step.getType() == ActionStepType.loadAndActivate) {
 				State state = Jgf.getDirectory().getObjectAs(step.getRef(), State.class);
-				StateUtil.loadAndActivate(state);
+				StateHelper.loadAndActivate(state);
 			} else if (step.getType() == ActionStepType.deactivateAndUnload) {
 				State state = Jgf.getDirectory().getObjectAs(step.getRef(), State.class);
-				StateUtil.deactivateAndUnload(state);
+				StateHelper.deactivateAndUnload(state);
 			} else if (step.getType() == ActionStepType.activate) {
 				State state = Jgf.getDirectory().getObjectAs(step.getRef(), State.class);
 				state.activate();

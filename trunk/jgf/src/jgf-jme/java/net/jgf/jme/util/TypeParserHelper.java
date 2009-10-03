@@ -23,6 +23,7 @@ public final class TypeParserHelper  {
 	/**
 	 * Class logger
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(TypeParserHelper.class);
 
 	public static int valueOfKeyInput(String keyInput)  {

@@ -36,6 +36,7 @@ package net.jgf.core.naming;
 import java.lang.ref.WeakReference;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
 
 import net.jgf.config.ConfigException;
 import net.jgf.core.service.ServiceException;
@@ -216,7 +217,7 @@ public final class Directory {
 	 */
 	@Override
 	public synchronized String toString() {
-		return "Directory[#items=" + objects.size() + "]";
+		return "Directory[#items=" + this.getSize() + "]";
 	}
 
 	/**
@@ -231,6 +232,17 @@ public final class Directory {
 	 */
 	public synchronized int getPeakSize() {
 		return peakSize;
+	}
+
+	/**
+	 * Returns the current directory size.
+	 */
+	public synchronized int getSize() {
+		return objects.size();
+	}
+
+	public synchronized Set<String> getKeys() {
+		return objects.keySet();
 	}
 
 	/**

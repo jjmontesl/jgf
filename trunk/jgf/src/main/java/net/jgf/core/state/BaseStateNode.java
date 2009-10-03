@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import net.jgf.config.Config;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.ServiceException;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -34,16 +35,19 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	protected List<T> children = new CopyOnWriteArrayList<T>();
 
 
-	/* (non-Javadoc)
+	/**
+   * <p>Checks for invalid null state and null state.getId() are done only if in debug mode.</p>
 	 * @see net.jgf.logic.StateNode#addChild(net.jgf.logic.LogicState)
 	 */
 	public void attachChild(T state) {
-		logger.debug("Adding child state " + state);
-		if (state == null) {
-			throw new ServiceException("Trying to add a null children state to " + this);
-		}
-		if (state.getId() == null) {
-			throw new ServiceException("Trying to add a children state with 'null' id to " + this);
+		if (Jgf.getApp().isDebug()) {
+			logger.debug("Adding child state " + state);
+			if (state == null) {
+				throw new ServiceException("Trying to add a null children state to " + this);
+			}
+			if (state.getId() == null) {
+				throw new ServiceException("Trying to add a children state with 'null' id to " + this);
+			}
 		}
 		children.add(state);
 	}
@@ -57,6 +61,11 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 
 	public boolean containsChild(T state) {
 		return (children.contains(state));
+	}
+
+	public List<T> children() {
+		return children;
+		//children.iterator()();
 	}
 
 	/* (non-Javadoc)
@@ -102,7 +111,7 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 
 		List<T> childStates = ConfigurableFactory.newListFromConfig(config, configPath + "/" + childElementName, childElementClass);
 		for (T state : childStates) {
-			StateUtil.registerState(state);
+			StateHelper.registerState(state);
 			this.attachChild(state);
 		}
 

@@ -1,0 +1,69 @@
+/*
+ * General Gaming Framework
+ * $Id$
+ */
+
+TO WIKI! 
+
+INTRODUCTION
+
+JGF is a framework. While with JME you often have to aggregate objects, with JGF you will
+be extending them.
+
+CONS
+
+- Attachment idiom is very loose. Sometimes objects are linked because of the configuration,
+  sometimes we need to attach them if we have created them. Not a big deal but...
+  
+- Initialization is an issue. Sometimes entities need to be created. However if we try
+  to define them in the config, then attachment to models is difficult.
+
+DESIGN
+
+- All framework instantiable objects are JavaBeans. They provide a default constructor and
+  can be configured afterwards. Initialization is done at initialization time (via "initialize",
+  "load" or similar idioms, if needed).
+
+- JGF will not call loading methods on any service or object. The framework builds the
+  services and components and initializes the services. Then enters the main loop.
+  That's all. Initial loading has to be done in the first state of logic.
+  Exception to this are a possible InitializationLogicState and similar OOTB states
+  that help with initializations (and even those, need to be explicitly included
+  as logic). So no entity loading apart from declared entities, no level loading, 
+  no model loading...   Another exception is the initial loading performed by the engine
+  on the ViewStateManager and the LogicStateManager.
+  // Check if actions are included they affect this statement ???? 
+
+- States respect the contract of "isActive()" and "isLoaded()" themselves, this allows
+  for states that override this behaviour or that need to perform some task even while
+  inactive (checking for keypresses to activate themselves, for example). NO! IT'S 
+  THE OPPOSITE CURRENTLY!
+ 
+  When a state is activated, its parent is not usually affected. However controlling
+  states (like Exclusive*State) get updated from children.
+  
+  However, if parent is inactive, updates shall not be propagated????
+  
+  States must accept double loading and/or double activation??? Why???
+  
+  (Clarify this in State documentation!!!)
+  
+  - Review all states are activated/loaded externally or internally, but consistently. 
+  This should be part of the contract for state aggregation. Note that at least
+  autoloading/autoactiating seems to need to be external (DONE: External!)
+
+- All systems / objects allow for context filtering (onlydebug, onlydedicated...) ??????
+
+- All exceptions are RuntimeExceptions. This controversial decision causes that you are not
+  forced to capture any exception, but you still can if you wish to. This is done
+  to favour projects were resources and configuration are static after the project is
+  released, thus all code lines are likely to be tested. You still can catch some
+  exceptions if you need to do so in some systems of your application. (REVIEW and CHECK)
+
+- Objects are beans. They can be created and then configured. The user es responsible of
+  doing this before calling methods that require a certain status. This is also the base
+  for the Directory: objects register their dependencies, but those can be met or not when
+  methods are called. It's up to the user to make sure that objects are correctly initialized
+  before calling methods.
+ 
+

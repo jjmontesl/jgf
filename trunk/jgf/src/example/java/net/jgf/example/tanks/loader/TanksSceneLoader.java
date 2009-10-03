@@ -5,6 +5,8 @@ package net.jgf.example.tanks.loader;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.example.tanks.ai.TanksMap;
+import net.jgf.example.tanks.ai.TanksMap.Tile;
 import net.jgf.jme.camera.StaticCamera;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
@@ -15,16 +17,12 @@ import net.jgf.scene.Scene;
 import org.apache.log4j.Logger;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.bounding.OrientedBoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Box;
-import com.jme.scene.state.ClipState;
-import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
@@ -43,9 +41,11 @@ public final class TanksSceneLoader extends SceneLoader {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(TanksSceneLoader.class);
 
-	String[] dataArray;
+	protected int width;
 
-	int width;
+	protected int height;
+
+	protected String rawData;
 
 	/**
 	 * Configures this object from Config.
@@ -56,9 +56,8 @@ public final class TanksSceneLoader extends SceneLoader {
 		super.readConfig(config, configPath);
 
 		width = config.getInt(configPath + "/width");
-		String rawData = config.getString(configPath + "/map");
-
-		dataArray = rawData.split("\\s+");
+		height = config.getInt(configPath + "/height");
+		rawData = config.getString(configPath + "/map");
 
 	}
 
@@ -83,56 +82,71 @@ public final class TanksSceneLoader extends SceneLoader {
     Node floorNode = new Node("floorNode");
     Node obstaclesNode = new Node("obstaclesNode");
 
+  	String[] dataArray;
+  	dataArray = rawData.split("\\s+");
+
 		// Generate map
+    TanksMap map = new TanksMap(height, width);
+
 		int row = 0;
 		int col = 0;
 		for (int i = 0; i < dataArray.length; i++) {
 
-			int height = 0;
-			String data = dataArray[i];
+			Tile tile = new Tile();
+			tile.col = col;
+			tile.row = row;
+			map.setTile(row, col, tile);
+
+			tile.raise = 0;
+			tile.text = dataArray[i];
 
 			// Walls
-			if ((data.charAt(0) >= '0') && (data.charAt(0) <= '9')) {
-				height = Integer.parseInt(String.valueOf(data.charAt(0)));
+			if ((tile.text.charAt(0) >= '0') && (tile.text.charAt(0) <= '9')) {
+				tile.raise = Integer.parseInt(String.valueOf(tile.text.charAt(0)));
 			}
 
 			// Holes
-			if (data.charAt(0) == '-') height = -2;
+			if (tile.text.charAt(0) == '-') {
+				tile.obstacle = true;
+				tile.raise = -2;
+			}
 
-			// References
-			char valChar = (data.length() > 1 ? data.charAt(1) : data.charAt(0));
+			// ReferenceSet
+			char valChar = (tile.text.length() > 1 ? tile.text.charAt(1) : tile.text.charAt(0));
 			if ( ((valChar >= 'a') && (valChar <= 'z')) ||
 					 ((valChar >= 'A') && (valChar <= 'Z')) ) {
 				Node referenceNode = new Node("referenceNode-" + valChar);
-				referenceNode.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * height, 0.5f + row));
+				referenceNode.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * tile.raise, 0.5f + row));
 				SpatialReference reference = new SpatialReference(String.valueOf(valChar), referenceNode);
+
 				scene.getReferences().addReference(reference);
+
+		    if (tile.raise >= 1) {
+		    	floorNode.setModelBound(null);
+		    	floorNode.attachChild(reference.getSpatial());
+		    } else {
+		    	obstaclesNode.attachChild(reference.getSpatial());
+		    	tile.obstacle = true;
+		    }
+
+		    referenceNode.updateGeometricState(0, true);
+
 			}
 
-			// Load extra models
-			/*
-			if ((data.length() > 1) && (data.charAt(1) == 'L')) {
-				BaseLoader<Node> modelLoader = Jgf.getDirectory().getObjectAs("loader/model/tanks", BaseLoader.class);
-				Node model = modelLoader.load("ConverterLoader.resourceUrl=tanks/model/lamppost/lamppost.dae");
-				model.setLocalTranslation(new Vector3f(0.5f + col, 0.5f * height, 0.5f + row));
-				obstaclesNode.attachChild(model);
-				obstaclesNode.updateRenderState();
-			}
-			 */
-
-			if (height > -1.5f) {
+			if (tile.raise > -1.5f) {
 		    Box floor = new Box("cell_" + row + "_" + col,
-		    		new Vector3f(col, -2, row), new Vector3f(col + 1, 0.5f * height, row + 1));
+		    		new Vector3f(col, -2, row), new Vector3f(col + 1, 0.5f * tile.raise, row + 1));
 		    floor.clearRenderState(RenderState.RS_TEXTURE);
 		    //quad.setLightCombineMode(Spatial.LightCombineMode.Off);
 		    floor.setTextureCombineMode(TextureCombineMode.Replace);
-		    floor.setModelBound(new OrientedBoundingBox());
+		    floor.setModelBound(new BoundingBox());
 		    floor.updateModelBound();
 
 		    floor.setRenderState(ts);
 
-		    if (height > 0.1f) {
+		    if (tile.raise > 0) {
 		    	obstaclesNode.attachChild(floor);
+		    	tile.obstacle = true;
 		    } else {
 		    	floorNode.setModelBound(null);
 		    	floorNode.attachChild(floor);
@@ -158,7 +172,6 @@ public final class TanksSceneLoader extends SceneLoader {
 		fieldNode.attachChild(floorNode);
 		fieldNode.attachChild(obstaclesNode);
 
-
     fieldNode.getLocalTranslation().addLocal(0, 0, 0);
     // TODO: Study how collisions and rendering are affected by the hierarchy of bounds
     //fieldNode.updateGeometricState(0, true);
@@ -168,6 +181,7 @@ public final class TanksSceneLoader extends SceneLoader {
     scene.getRootNode().attachChild(fieldNode);
 
     // Water
+    /*
     InteractiveWater water = new net.jgf.example.tanks.loader.InteractiveWater("water", 40);
     water.setModelBound(new BoundingBox());
     water.updateModelBound();
@@ -189,6 +203,7 @@ public final class TanksSceneLoader extends SceneLoader {
     water.getLocalScale().set(1f, 0.2f, 1f);
 
     scene.getRootNode().attachChild(water);
+    */
 
     // Updates
     scene.getRootNode().updateRenderState();
@@ -196,6 +211,8 @@ public final class TanksSceneLoader extends SceneLoader {
 
 		// Restart timer
 		Timer.getTimer().reset();
+
+		scene.getProperties().put("map", map);
 
 		return scene;
 

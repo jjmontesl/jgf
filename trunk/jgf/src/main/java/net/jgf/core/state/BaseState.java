@@ -37,6 +37,11 @@ public abstract class BaseState extends BaseComponent implements State {
 	protected ArrayList<StateObserver> stateObservers;
 
 	public BaseState() {
+		this(null);
+	}
+
+	public BaseState(String id) {
+		super(id);
 		stateObservers = new ArrayList<StateObserver>();
 	}
 

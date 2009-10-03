@@ -82,7 +82,7 @@ public class EffectsView extends BaseViewState {
 	@Override
 	public void load() {
 		super.load();
-		loader = Jgf.getDirectory().getObjectAs("loader/model/tanks", Loader.class);
+		loader = Jgf.getDirectory().getObjectAs("loader/model", Loader.class);
 	}
 
 

@@ -7,7 +7,6 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.config.JmeConfigHelper;
 
-import com.jme.input.action.InputActionEvent;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.system.DisplaySystem;
@@ -30,14 +29,6 @@ public class StaticCamera extends JmeCamera {
 		super(id);
 		this.location = location;
 		this.target = target;
-	}
-
-	/**
-	 * Process input
-	 */
-	@Override
-	public void processMouseInput(InputActionEvent evt) {
-
 	}
 
 	/**

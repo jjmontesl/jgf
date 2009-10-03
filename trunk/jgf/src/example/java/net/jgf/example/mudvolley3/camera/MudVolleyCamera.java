@@ -8,7 +8,6 @@ import net.jgf.config.Configurable;
 import net.jgf.jme.camera.JmeCamera;
 import net.jgf.jme.config.JmeConfigHelper;
 
-import com.jme.input.action.InputActionEvent;
 import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;
 
@@ -21,14 +20,6 @@ public class MudVolleyCamera extends JmeCamera {
 	protected Vector3f location = new Vector3f();
 
 	protected Spatial target;
-
-	/**
-	 * Process input
-	 */
-	@Override
-	public void processMouseInput(InputActionEvent evt) {
-
-	}
 
 	/**
 	 * Updates the camera using its controller

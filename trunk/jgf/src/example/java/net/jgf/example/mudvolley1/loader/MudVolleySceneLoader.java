@@ -66,7 +66,7 @@ public final class MudVolleySceneLoader extends SceneLoader {
     //scene.getRootNode().setRenderState(scene.getCommonRenderStates().get("fog"));
 
     // Add skybox
-  	Node skybox = SceneUtils.setupSkyBox("mudvolley/skybox");
+  	Node skybox = SceneUtils.setupSkyBox("mudvolley/skybox/grandcanyon/", ".jpg");
   	skybox.setRenderState(scene.getCommonRenderStates().get("fogDisabled"));
   	scene.getSky().setRootNode(skybox);
   	skybox.updateRenderState();
