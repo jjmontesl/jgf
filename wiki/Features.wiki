@@ -3,9 +3,9 @@
 
 = JGF Features =
 
-These are the list of features that are incorporated or are planed.
+_Please note that some of the features listed are still to be built. A number of them have currently only basic support. If you are interested please collaborate with the project submitting your comments, usage feedback or patches._
 
-Spend some time getting familiar with JGF features! Knowing them will allow you to save time or to add a quick feature to your application.
+Spend some time getting familiar with JGF features. Knowing them will allow you to save time or to add a quick feature to your application.
 
 *Services and Configuration System*
 
@@ -13,21 +13,24 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
 
   * Easy overview of your application parts and components.
   * A standard and practical way to configure components.
-  * Easy way to add new pieces to your game.
+  * Easy way to add or replace components of your game.
   * A convenient environment for testing.
   
 *Console System*
 
-  Extensible and replaceable console system. Functionality, aspect and language can be customized.
+  * Extensible and replaceable console system. Functionality, aspect and language can be customized.
+  * A Beanshell console is provided.
+  * Basic graphical interface.
+  * Default console beans for Game Settings management _(TO BE DONE)_.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-console-1.png
 
 *Settings System* _(TO BE REVIEWED AND REFACTORED)_
 
-  * Settings Service that holds game settings.
-  * Settings Storage Service provides settings saving and loading functionality.
+  * Settings Service holds game settings.
+  * Settings Storage Service provides saving and loading functionality for settings.
 
-  * Configuration Dialogs for initial settings service _(TO BE DONE)_.
+  * Configuration Dialog for initial settings _(TO BE DONE)_.
   * Command Line Options parsing service, which allows to set settings and other framework parameters based on the command line arguments passed to the application _(TO BE REFACTORED)_.
 
 *Menu System*
@@ -37,8 +40,8 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
 *Logic and Graphics states*
 
   * State Trees are used to manage Logic and Views.
-  * The flow of the game is controlled by activating and deactivating these states.
-  * Structures and services are provided that contain and manage Entities, Players and other common data.
+  * Game flow is controlled by the activation of those states.
+  * There are services for Entities, Players and other data management.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-1.png
 
@@ -46,9 +49,7 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
 
 *Extensibility*
 
-JGF is designed to be extensible. Base classes are provided for most of the components you'll need to implement to code your game. And you can always provide new functionality writing your custom services if you need.
-
-*Development Support*
+JGF is designed to be extensible. Base classes are provided for most of the components you'll need to implement to code your game. And you can always provide new functionality writing your custom components if you need.
 
   * JGF includes and provides components that easily allow you to add development aids to your game:
     * JME Scene Debugger (Bounding Bounds viewing, Normals viewing
@@ -66,8 +67,8 @@ JGF is designed to be extensible. Base classes are provided for most of the comp
 
   * JGF includes a modular loading system for Entities, Scenes and Models. 
   * Pool systems are provided. _TO BE REFACTORED_.
-  * Easily insert and combine custom assets and generated geometry.
-  * Standard way to convert and cache conerted resources. _TO BE REFACTORED_.
+  * Easily insert and combine assets, effects, entities, logic and views.
+  * Standard way to convert and cache converted resources. _TO BE REVIEWED_.
 
 *Audio*
 
@@ -75,15 +76,15 @@ JGF is designed to be extensible. Base classes are provided for most of the comp
 
 *Networking*
 
-  _TO BE REVIEWED_. _TO BE REFACTORED_.
+  _Networking is unfortunately one of the key features that is missing. This area needs to be reviewed. At least some work has already been done that prepare JGF to be a network-enabled game framework._
 
 *Application architecture*
 
   * Standard service and state lifecycles.
   * Standard functional units (LogicStates, ViewStates and Entities), which make the application easier to understand and develop.
+  * Controlled resource loading and unloading.
 
   * JGF is oriented towards a Client / Server architecture (even if your game is not networked). _TO BE REVIEWED_. _TO BE DONE_.
-  * Information between your logic and your interface is routed using messages. _TO BE REVIEWED_. _TO BE DONE_.
 
 *Logging*
 
