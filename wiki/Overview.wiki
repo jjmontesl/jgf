@@ -6,23 +6,23 @@
 
 Since you are reading this we assume you are interested in writing Games or Interactive Applications. Good :-).
 
-There are several systems that almost every game uses nowadays. For example, every game saves and keeps the user settings (controls, speakers volume...). Almost every game has some sort of menu too, and may of them provide a "console" mode for advanced users. Virtually all games have introduction screens, loading screens, and on screen displays.
+There are several systems that almost every game uses nowadays. For example, games usually need to maintain some sort of user settings (like controls, sound volume...). Almost every game has some sort of menu too, and some of them provide a "console" mode for advanced users or developers. Virtually all games have introduction screens, loading screens, on screen displays... And then, there's the actual game.
 
-And apart from all that, there's the actual game.
+Using a game development framework provides you with a set of systems that work well together, and a structure for you to build your game logic and aspect. With JGF, you can focus more on your actual game development, while leaving the typical funcionality up to JGF framework. 
 
-Using a framework provides you with a set of systems that work well together, and a structure for you to build your game logic and aspect. With JGF, you can then focus on your actual game development leaving the typical funcionality up to JGF. 
+JGF is not a "game maker", a "tool", or a "game engine", but uses and provides some of those components you need, so you can go straight to game programming. 
 
-JGF is not a "game maker" or a "tool". It is not a game engine either. JGF is a game development framework for in Java... you will be programming your game in Java and, for the time being, you will be using the only supported 3D engine "jMonkeyEngine".
+JGF is a game development framework for in Java... you will be programming your game in Java. Also, the only currently supported 3D engine is "[http://www.jmonkeyengine.com jMonkeyEngine]".
 
-Maybe you want to take some time to check [Features JGF Features] before moving on...
+I suggest you to spend some time reading [Features JGF Features] before moving on...
 
 ===JGF Configuration===
 
 So how does a JGF game look like?
 
-JGF applications are initializated using a configuration file. JGF reads this file and initializes a number of services for you. This file reflects how our game is composed.
+JGF applications are defined using a configuration file. JGF reads this file and initializes a number of components for you. This file reflects the structure of your game to some degree.
 
-When you want to add functionality to the game, you add components to the configuration file. For example, if we want to add a screenshot feature to your game, you would add the following component (note the name of the _class_ and the parameters _key_ and _path_):
+When you want to add functionality to the game, you add components to the configuration file. For example, if you wish to add a screenshot capabilities to your game, you would add the following component that allows users to make a screenshot when pressing a key (note the name of the _class_ and the parameters _key_ and _path_):
 
 {{{
 <view id="view/root/level/screenshot" class="net.jgf.jme.view.ScreenshotView" 
@@ -32,53 +32,33 @@ When you want to add functionality to the game, you add components to the config
 </view>
 }}}
 
-In the practice, you just need to copy and paste the component you need from examples and modify the parameters to suit your game.
+In real life you would usually be pasting the component you need from examples and modify the parameters to suit your needs.
 
-Using this approach has a few advantages: you can easily add or remove components and states to your game during development. You can also substitute some components with testing versions of them.
+Using this approach has a few advantages: you can easily add or remove components and states to your game during development. You can also substitute some components with testing versions of them, or comment some of them out for testing purposes.
 
 ===How the game is built===
 
-Mainly three types of components are needed to build a game:
+To continue this overview, let's have a look at the kind of stuff we can easily add to the game you are building:
 
-  * *Entities*: represent each object, item or character that interacts with the game.
-  * *!LogicStates*: Define the different logic blocks and behaviours of your game.
-  * *!ViewStates*: Define the different views and input that you will use. For example, you'll have !ViewStates for the menus, the introduction screens, the main game, the hud...
+  * View States: define different views you will be using. This includes menu views, introduction screens, on screen display, loading screens. Views can be laid on top of other views.
+  * Logic States: define different parts of your game behaviour. User needs to code these ones.
+  * Entities: represent any entity your game uses. This includes players and enemies, bullets or spawn points... Entity Manager and Entity Groups are provided.
 
-Services and its parts are defined in the configuration file, and work together to form your game. You can see the configuration file as a tree of services that contain different components:
+Components are defined in the configuration file, and work together to make your work. You can see the configuration file as a tree of services that contain different components:
 
 http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/mudvolley-configtree.png
 
-_Structure of the JGF configuration file (showing some different services and components)_
+_Structure of the JGF configuration file (showing some arbitrary services and components)_
 
-===Benefits of using a framework===
+===How to put all this together===
 
-Often you'll need functionality (like menus or an introduction screen) ready to use quickly without worrying too much about the details. 
+JGF mostly provides functionality to load and enable different states (views, logic, entities...), and a common set of interfaces to access other components (scene, loaders, settings...).
 
-Using reusable components for most of these tasks allows you to quickly develop prototypes and easily promote them to production code. 
+Game flow can be controlled by enabling or disabling logic states, view states and entities. You will also be calling methods on those components (fire a bullet, spawn an enemy...).
 
-For example, if you need to add an introduction screen to your game, you just need to add a new View and make sure it runs sequentially before your other Views:
+The most typical piece of code you will be programming is your bootup code, where you will probably use a few loaders and create a few entities. You will also be coding most of your logic (again: fire a bullet, spawn an enemy). 
 
-{{{
-<view id="view/root/intro/logo" class="net.jgf.jme.view.display.DisplayItemsView" 
-	autoLoad="true" autoActivate="true">
-	
-	<item id="view/root/intro/logo/tanks" class="net.jgf.jme.view.display.ImageItem">
-		<center>0.0 0.2 0.0</center>
-		<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
-		<size>0.75</size>
-	</item>
-	
-	<item id="view/root/intro/logo/title" class="net.jgf.jme.view.display.TextItem">
-		<center>-0.00 -0.3 0.0</center>
-		<size>0.25</size>
-		<font>Verdana BOLD 40</font>
-		<text>T a n k s</text>
-	</item>	
-	
-</view>
-}}}
-
-If you later decide that you want to replace the whole introduction screen with a video or something completely different, you just need to replace that view with another framework or custom view.
+JGF also provides default components of different nature. They allow you to sequence states, create scenes, load cameras, load entities, load models, transform models, add a skyboxes to a scene, group entities...
 
 ===System overview===
 
