@@ -6,25 +6,25 @@
 
 ==How to read this guide==
 
-If you are trying to learn JGF, please visit the [GettingStarted Getting Started] guide!
+If you are trying to learn JGF or looking for tutorials and examples, please visit the [GettingStarted Getting Started] guide.
 
-This guide is not a tutorial. It covers particular topics shall you wish to learn more about a particular subject.
+This guide is not a tutorial. It covers some core JGF topics. Please note that links point to the relevant Javadoc where possible. 
 
 == Guide Table of Contents ==
 
+  #  Introduction to JGF
+    * [Features]
+    * [Overview]
+    * [GettingStarted Getting Started]
   #  JGF Core
-    * [Application]
-    * [Directory]
-    * [Services]
-    * [States]
+    * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/main/java/net/jgf/system/Application.java Application]
+    * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/main/java/net/jgf/core/naming/Directory.java Directory]
+    * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/main/java/net/jgf/core/state/State.java States]
+    * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/main/java/net/jgf/core/service/Service.java Services]
   # JGF Components
-    * [ViewStates]
-    * [LogicStates]
-    * [Entities]
-  # Examples
-    * [MudVolley MudVolley Tutorials]
-    * [ExampleApplications Example Applications]
-
+    * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/main/java/net/jgf/view/ViewState.java ViewStates]
+    * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/main/java/net/jgf/logic/LogicState.java LogicStates]
+    * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/main/java/net/jgf/entity/Entity.java Entities]
 
 
 [http://code.google.com/p/jgf/ JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
