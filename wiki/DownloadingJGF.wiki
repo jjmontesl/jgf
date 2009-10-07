@@ -5,15 +5,50 @@
 
 _Note: JGF is currently in an early stage of development. Some functionality is yet to be built and some deep changes to the API should be expected. If you are interested in the project, please send us your feedback, join the user list, or contribute ideas or patches._
 
-The source code can be accessed following the instructions at:
+There are currently no packages for JGF, so you need to download the source code using your favourite tool or IDE. It can be accessed following the instructions at:
 
 [http://code.google.com/p/jgf/source/checkout http://code.google.com/p/jgf/source/checkout]
 
-= Dependencies =
+= Previous Steps =
 
-In order to use JGF, you will need to add libraries or a project dependency to the 'trunk' version of [http://www.jmonkeyengine.com JMonkeyEngine] (the underlying game engine). 
+Before going on, you should ensure you are able to compile and run [http://www.jmonkeyengine.com JMonkeyEngine] 2 applications and examples. 
 
-Other dependencies are included in the src/main/lib directory. Those need to be added to your Java classpath at compile time and runtime.
+If you are new to JME (JMonkeyEngine) hava a look at [http://www.jmonkeyengine.com/wiki/doku.php?id=the_tutorials_-_jme_2 JME2 Tutorials Page]. You will find a lot of help in JME Forums too.
+
+= Configuring your IDE for JGF =
+
+You will need to configure this project as a Java project in your Development Environment, so you can build it and run examples:
+
+1) Define source AND resource folders. JGF code and resources are distributed along a few folders. Make sure you "include as source folders" all the "java" and "resources" folders:
+
+  /src/example/java
+  /src/example/resources
+  /src/jgf-jme/java
+  /src/jgf-jmephysics/java
+  /src/main/java
+
+2) At runtime, all those directories should also be added to your classpath (Eclipse does this automatically when you define those folders as "source folders").
+
+3) Include all libraries (.jar) in the "lib" directories:
+
+  /src/jgf-jme/lib
+  /src/main/lib
+
+4) JMonkeyEngine is also needed to build and run the framework, but it is not included with JGF. You need to include JME2 libraries or to reference JME2 project from JGF project.
+
+5) Build (compile) the project.
+
+6) As with any other JME project, you will need to reference the native libraries. If you have any doubt about this, you should ensure you can run JavaMonkeyEngine applications and tests. Run the following example:
+
+  net.jgf.example.box.Box
+
+7) There are more examples in the package net.jgf.example, run them all.
+
+8) Visit [http://groups.google.com/group/jgf-users JGF Users List] or [http://www.jmonkeyengine.com/forum/index.php?topic=9495.30 JGF at JME Forums] and let us know you succeeded ;-).
+
+
+_(Eclipse project files are included along with source code, but you may need to correct some of the project library dependencies and project dependencies (on JME) to suit your environment)_
+
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
