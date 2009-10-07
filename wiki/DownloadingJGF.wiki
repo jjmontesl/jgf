@@ -3,7 +3,7 @@
 
 = Downloading JGF =
 
-Currently JGF is still in an early stage of development. Some functionality is yet to be built. Also, deep changes to the API can be expected.
+_Note: JGF is currently in an early stage of development. Some functionality is yet to be built and some deep changes to the API should be expected. If you are interested in the project, please send us your feedback, join the user list, or contribute ideas or patches._
 
 The source code can be accessed following the instructions at:
 
