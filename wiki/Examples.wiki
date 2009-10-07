@@ -31,7 +31,7 @@ The !MudVolley Tutorials are the main JGF tutorials. Through this courses you wi
 
 ==Test Applications==
 
-The following applications are included to test different components and to serve as examples. Click on their names to read the corresponding component information in the [UserGuide User Guide].
+The following applications are included to test different components and to serve as examples.
 
   * [Box] - The simplest minimum example of a JGF application.
 
@@ -42,7 +42,7 @@ The following applications are included to test different components and to serv
 
 ==JGF Base Game Structure==
 
-A base game with a basic structure is provided to make starting a new project a cut-and-paste matter.
+A base game with a basic structure is provided to make starting a new project a cut-and-paste matter (_TO BE DONE_).
 
 ==Tanks Game==
 
