@@ -36,9 +36,9 @@
 				
 			</cameras>
 			
-			<!--  <camera ref="scene/camera/test" /> -->
-			
 			<camera ref="scene/camera/test" />
+			
+<!--			<camera ref="scene/camera/intermission" />-->
 			
 	  </loader>
 	
