@@ -56,8 +56,6 @@
 			<entity id="entity/root/mine" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
-			net.jgf.jme.view.FreeCameraView
-
 		</entity>
 			
 	</service> 
@@ -281,12 +279,12 @@
 				<view id="view/root/level/fight" class="net.jgf.view.ViewStateNode"
 					autoLoad="true" autoActivate="true" >
 					
-					<!-- 
+					
 					<view id="view/root/level/fight/spectator" class="net.jgf.jme.view.FreeCameraView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />
 					</view>
-					 -->
+					 
 					
 					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
@@ -308,7 +306,7 @@
 					
 				</view>
 				
-				<!-- 
+				 
 				<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" 
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
@@ -316,7 +314,7 @@
 					<center>0.0 0.01 0.0</center>
 					<spacing>1</spacing>
 				</view>
-				 -->
+				
 				
 				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView" 
 					autoLoad="true" autoActivate="true" >
@@ -342,7 +340,13 @@
 
 					<key>KEY_F12</key>
 			
-					<view id="view/root/level/ui/scenemonitor" class="net.jgf.jme.view.devel.SceneMonitorView"
+					<!-- <view id="view/root/level/ui/scenemonitor" class="net.jgf.jme.view.devel.SceneMonitorView"
+						autoLoad="true" autoActivate="false" context="debug">
+						<scene ref="scene" />
+						<updateInterval>5</updateInterval>
+					</view>  -->
+					
+					<view id="view/root/level/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
 						autoLoad="true" autoActivate="false" context="debug">
 						<scene ref="scene" />
 						<updateInterval>5</updateInterval>

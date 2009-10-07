@@ -32,7 +32,7 @@ public class PlayerTank extends Tank {
 
 		super.update(tpf);
 
-		fixCursor();
+		//fixCursor();
 
 	}
 
