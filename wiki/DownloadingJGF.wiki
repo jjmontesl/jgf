@@ -1,6 +1,8 @@
 #summary How to get JGF.
 #labels Featured
 
+<wiki:toc max_depth="1" />
+
 = Downloading JGF =
 
 _Note: JGF is currently in an early stage of development. Some functionality is yet to be built and some deep changes to the API should be expected. If you are interested in the project, please send us your feedback, join the user list, or contribute ideas or patches._
@@ -47,7 +49,9 @@ You will need to configure this project as a Java project in your Development En
 8) Visit [http://groups.google.com/group/jgf-users JGF Users List] or [http://www.jmonkeyengine.com/forum/index.php?topic=9495.30 JGF at JME Forums] and let us know you succeeded ;-).
 
 
+
 _(Eclipse project files are included along with source code, but you may need to correct some of the project library dependencies and project dependencies (on JME) to suit your environment)_
+
 
 
 
