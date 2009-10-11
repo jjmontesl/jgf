@@ -43,7 +43,7 @@ public class PlayerTank extends Tank {
 		if (distanceToTarget.length() > 15) {
 			distanceToTarget.normalizeLocal().multLocal(15).addLocal(spatial.getLocalTranslation());
 			Vector3f newPos = DisplaySystem.getDisplaySystem().getRenderer().getCamera().getScreenCoordinates(distanceToTarget);
-			cursorView.getMouse().setLocalTranslation(newPos);
+			//cursorView.getMouse().setLocalTranslation(newPos);
 			MouseInput.get().setCursorPosition((int)newPos.x, (int)newPos.y);
 		}
 	}

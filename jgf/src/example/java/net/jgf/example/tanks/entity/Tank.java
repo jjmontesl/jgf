@@ -1,13 +1,13 @@
 package net.jgf.example.tanks.entity;
 
 import net.jgf.entity.Entity;
+import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.TanksSettings;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.audio.AudioItem;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
-import net.jgf.jme.view.CursorRenderView;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
@@ -45,7 +45,7 @@ public abstract class Tank extends SpatialEntity {
 
 	protected SpawnLogic spawnLogic;
 
-	protected CursorRenderView cursorView;
+	//protected CursorRenderView cursorView;
 
 	protected AudioItem audioItem;
 
@@ -60,6 +60,8 @@ public abstract class Tank extends SpatialEntity {
 	private final CollisionResults bulletResults = new TriangleCollisionResults();
 
 	private final CollisionResults obstaclesResults = new TriangleCollisionResults();
+	
+	private EntityGroup enemyEntities;
 
 	Spatial hull;
 
@@ -78,9 +80,11 @@ public abstract class Tank extends SpatialEntity {
 		super.load();
 
 		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
-		cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
+		//cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
 		audioItem = Jgf.getDirectory().getObjectAs("audio/shot", AudioItem.class);
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		
+		enemyEntities = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
 
 		hull = ((Node)((Node)spatial).getChild("Tank")).getChild("Hull");
 		canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
@@ -142,11 +146,43 @@ public abstract class Tank extends SpatialEntity {
 	}
 
 	/**
+	 * 
+	 */
+	protected void updateCollisionsTanks(float tpf) {
+		
+		for (Entity entity : enemyEntities.children()) {
+			Tank tank = (Tank) entity;
+			obstaclesResults.clear();
+			hull.calculateCollisions(tank.hull, obstaclesResults);
+			for (int i = 0 ; i < obstaclesResults.getNumber(); i++) {
+
+				CollisionData data = obstaclesResults.getCollisionData(i);
+				if ((data.getTargetTris().size() > 0)||(data.getSourceTris().size() > 0)) {
+					
+					Vector3f targetPos = obstaclesResults.getCollisionData(i).getTargetMesh().getWorldBound().getCenter().clone();
+					Vector3f sourcePos = obstaclesResults.getCollisionData(i).getSourceMesh().getWorldBound().getCenter().clone();
+					targetPos.y = sourcePos.y = 0;
+					Vector3f diff = targetPos.subtract(sourcePos);
+					diff.y = 0;
+					diff.normalizeLocal();
+
+					tank.getSpatial().getLocalTranslation().addLocal(diff.mult(topWalkSpeed * tpf));
+					tank.getSpatial().getLocalTranslation().y = 0;
+				}
+			}
+
+			tank.getSpatial().updateWorldVectors();
+		}
+		
+		
+	}
+	
+	/**
 	 * Calculate collisions with the obstacles node of the scene
 	 */
 	protected void updateCollisions(float tpf) {
 
-		// Collisions
+		// Collisions with hull
 
 		obstaclesResults.clear();
 		hull.calculateCollisions(((Node)(scene.getRootNode().getChild("fieldNode"))).getChild("obstaclesNode"),  obstaclesResults);
@@ -155,7 +191,14 @@ public abstract class Tank extends SpatialEntity {
 
 			CollisionData data = obstaclesResults.getCollisionData(i);
 			if ((data.getTargetTris().size() > 0)||(data.getSourceTris().size() > 0)) {
-
+				
+				/*
+				int firstTriangleIndex = obstaclesResults.getCollisionData(i).getTargetTris().get(0);
+				Vector3f[] vec = new Vector3f[3];
+				((TriMesh)(obstaclesResults.getCollisionData(i).getTargetMesh())).getTriangle(firstTriangleIndex, vec);
+				Vector3f normal = 
+				*/
+				
 				Vector3f targetPos = obstaclesResults.getCollisionData(i).getTargetMesh().getWorldBound().getCenter().clone();
 				Vector3f sourcePos = obstaclesResults.getCollisionData(i).getSourceMesh().getWorldBound().getCenter().clone();
 				targetPos.y = sourcePos.y = 0;
@@ -266,6 +309,8 @@ public abstract class Tank extends SpatialEntity {
 
 		updateMovement(tpf);
 
+		updateCollisionsTanks(tpf);
+		
 		updateCollisions(tpf);
 
 		updateHits(tpf);

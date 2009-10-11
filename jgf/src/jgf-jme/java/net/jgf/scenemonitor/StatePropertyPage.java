@@ -15,7 +15,6 @@ import com.acarter.propertytable.PropertyTable;
 import com.acarter.propertytable.propertyobject.BooleanPropertyObject;
 import com.acarter.propertytable.propertyobject.BooleanPropertyObject.I_BooleanPropertyObjectListener;
 import com.acarter.scenemonitor.propertydescriptor.A_PropertyPage;
-import com.jme.scene.Controller;
 
 /**
  * <p>This state manages the level rendering. If disabled, no level
@@ -37,6 +36,7 @@ public class StatePropertyPage extends A_PropertyPage {
 		// Define properties
 		PropertySection stateSection = new PropertySection("State");
 		stateSection.addProperty(new Property("Active", new BooleanPropertyObject()));
+		stateSection.addProperty(new Property("Loaded", new BooleanPropertyObject()));
 		stateSection.setState(PropertySectionState.EXPANDED);
 		model.addPropertySection(0, stateSection);
 		
@@ -57,11 +57,9 @@ public class StatePropertyPage extends A_PropertyPage {
             }
     }
 
-    @SuppressWarnings("unchecked")
     protected void updateListeners(final State state) {
             
         BooleanPropertyObject active = (BooleanPropertyObject)model.getPropertySection("State").getProperty("Active").getPropertyObject();
-        
         active.SetListener(new I_BooleanPropertyObjectListener() {
                 public boolean readValue() {
                     return state.isActive();
@@ -75,6 +73,19 @@ public class StatePropertyPage extends A_PropertyPage {
                 }
         });     
         
+        BooleanPropertyObject loaded = (BooleanPropertyObject)model.getPropertySection("State").getProperty("Loaded").getPropertyObject();
+        loaded.SetListener(new I_BooleanPropertyObjectListener() {
+            public boolean readValue() {
+                return state.isLoaded();
+            }
+            public void saveValue(boolean value) {
+                if ((value == true) && (!state.isLoaded())) {   
+                	state.load();
+                } else if ((value == false) && (state.isLoaded())) {
+                	state.unload();
+                }
+            }
+    });     
     }
     
 

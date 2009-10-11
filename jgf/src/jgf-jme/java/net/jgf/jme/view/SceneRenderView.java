@@ -73,7 +73,7 @@ public class SceneRenderView extends BaseViewState {
 
 		if (! this.active) return;
 
-		if (sceneManager.getScene().getCamera() == null) {
+		if (sceneManager.getScene().getCurrentCameraController() == null) {
 			throw new IllegalStateException("No camera is associated to " + this);
 		}
 
@@ -82,10 +82,11 @@ public class SceneRenderView extends BaseViewState {
 		DisplaySystem display = DisplaySystem.getDisplaySystem();
 		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.01f, 1000 );
 		display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
+		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 10000 );
 		display.getRenderer().getCamera().update();
 
 		// Update the camera controller
-		sceneManager.getScene().getCamera().update(tpf);
+		sceneManager.getScene().getCurrentCameraController().update(tpf);
 
 		JmeScene scene = (JmeScene) sceneManager.getScene();
 

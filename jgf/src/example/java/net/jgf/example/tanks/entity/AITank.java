@@ -7,8 +7,8 @@ import net.jgf.config.Configurable;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.ai.Bresenham;
-import net.jgf.example.tanks.ai.TanksMap;
-import net.jgf.example.tanks.ai.TanksMap.Tile;
+import net.jgf.example.tanks.loader.TanksMap;
+import net.jgf.example.tanks.loader.TanksMap.Tile;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.system.Jgf;
 
@@ -91,7 +91,6 @@ public class AITank extends Tank {
 		this.getTarget().y = 0.5f;
 
 		if (FastMath.rand.nextFloat() < 0.01) {
-
 			//fire();
 		}
 
@@ -195,11 +194,13 @@ public class AITank extends Tank {
 		// Account for enemies
 		for (Entity tank : enemies.children()) {
 			Tank enemy = (Tank) tank;
-			Tile tile = map.worldToTile(enemy.getSpatial().getWorldTranslation());
-			round(tile.row, tile.col, 3,  -1, 0);
-			round(tile.row, tile.col, 2,  0, 0);
-			round(tile.row, tile.col, 1,  -1, 0);
-			round(tile.row, tile.col, 0,  0, 1);
+			if (enemy != this) {
+				Tile tile = map.worldToTile(enemy.getSpatial().getWorldTranslation());
+				round(tile.row, tile.col, 3,  -1, 0);
+				round(tile.row, tile.col, 2,  0, 0);
+				round(tile.row, tile.col, 1,  -1, 0);
+				round(tile.row, tile.col, 0,  0, 1);
+			}
 		}
 
 		// Account for bullets

@@ -53,7 +53,7 @@ public class SkyboxRenderView extends BaseViewState {
 
 
 			// Update the camera controller
-			if (sceneManager.getScene().getCamera() != null) {
+			if (sceneManager.getScene().getCurrentCameraController() != null) {
 
 				((HasSky)sceneManager.getScene()).getSky().getRootNode().setLocalTranslation(
 						DisplaySystem.getDisplaySystem().getRenderer().getCamera().getLocation()
@@ -74,7 +74,7 @@ public class SkyboxRenderView extends BaseViewState {
 
 		if (! this.active) return;
 
-		if (sceneManager.getScene().getCamera() == null) return;
+		if (sceneManager.getScene().getCurrentCameraController() == null) return;
 
 		// TODO: Do only when needed
 		//scene.getRootNode().updateRenderState();

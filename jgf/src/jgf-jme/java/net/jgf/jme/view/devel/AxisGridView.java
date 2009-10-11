@@ -284,8 +284,8 @@ public class AxisGridView extends BaseViewState {
 		// Update the camera controller
 		if ((sceneManager != null) &&
 				(sceneManager.getScene() != null) &&
-				(sceneManager.getScene().getCamera() != null)) {
-			sceneManager.getScene().getCamera().update(tpf);
+				(sceneManager.getScene().getCurrentCameraController() != null)) {
+			sceneManager.getScene().getCurrentCameraController().update(tpf);
 		}
 		DisplaySystem.getDisplaySystem().getRenderer().draw(rootNode);
 

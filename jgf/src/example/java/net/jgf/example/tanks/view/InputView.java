@@ -111,7 +111,7 @@ public class InputView extends BaseViewState {
 	public void activate() {
 		super.activate();
 		CursorRenderView cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
-    cursorView.getMouse().registerWithInputHandler( inputHandler );
+		cursorView.getMouse().registerWithInputHandler( inputHandler );
 		inputHandler.addAction(new TankMouseInputAction(cursorView.getMouse()), InputHandler.DEVICE_MOUSE, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
 	}
 

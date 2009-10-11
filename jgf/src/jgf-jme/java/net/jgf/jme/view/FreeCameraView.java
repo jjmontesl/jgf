@@ -96,7 +96,7 @@ public class FreeCameraView extends BaseViewState {
 	}
 
 	public void setAsSceneCamera(Scene scene) {
-		scene.setCamera(spectator.getDefaultCameraController());
+		scene.setCurrentCameraController(spectator.getDefaultCameraController());
 	}
 
 	/* (non-Javadoc)
