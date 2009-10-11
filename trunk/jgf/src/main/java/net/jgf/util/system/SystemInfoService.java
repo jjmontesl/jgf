@@ -152,8 +152,9 @@ public final class SystemInfoService extends BaseService {
 	 * @return
 	 */
 	public static String getSystemInfo() {
-		return "Memory: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) >> 10) + "kB / " + ((Runtime.getRuntime().totalMemory() >> 10)) + "kB" +
+		return "Memory Used: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) >> 10) + "kB" + 
 		" Free: " + (Runtime.getRuntime().freeMemory() >> 10) + "kB" +
+		" Total: " + ((Runtime.getRuntime().totalMemory() >> 10)) + "kB" +
 		" Max: " + (Runtime.getRuntime().maxMemory() >> 10) + "kB" +
 		" Threads: " + Thread.activeCount();
 	}

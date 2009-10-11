@@ -9,7 +9,7 @@ import net.jgf.loader.FileChainLoader;
 import net.jgf.logic.LogicState;
 import net.jgf.logic.action.BaseLogicAction;
 import net.jgf.scene.Scene;
-import net.jgf.scene.SceneManager;
+import net.jgf.scene.SimpleSceneManager;
 import net.jgf.system.Jgf;
 import net.jgf.view.ViewState;
 
@@ -38,7 +38,7 @@ public class NewGameAction extends BaseLogicAction {
 		logger.info ("Starting new tanks game (logic)");
 
 		// Prepare scene
-		SceneManager sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
+		SimpleSceneManager sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SimpleSceneManager.class);
 		FileChainLoader<Scene> sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene", FileChainLoader.class);
 		DefaultJmeScene scene =(DefaultJmeScene) sceneLoader.load(
 				null, "FileChainLoader.resourceUrl=tanks/level/mission1.xml"

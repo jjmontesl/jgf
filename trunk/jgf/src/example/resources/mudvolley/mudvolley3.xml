@@ -75,7 +75,7 @@
 	<!--
 		Scene 
 	 -->
-	<service id="scene/manager" class="net.jgf.scene.SceneManager" depends="engine">
+	<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager" depends="engine">
 			
 			<scene id="scene" class="net.jgf.jme.scene.DefaultJmeScene">
 			
@@ -134,14 +134,18 @@
 				<view id="view/root/level/match" class="net.jgf.view.ViewStateNode"
 					autoLoad="true" autoActivate="true" >
 					
+					<!-- 
 					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley1.view.InputView"
 						autoLoad="true" autoActivate="true" >
 					</view>
+					 -->
 					
+					<!-- 
 					<view id="view/root/level/match/spectator" class="net.jgf.jme.view.FreeCameraView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />
 					</view>
+					 -->
 					
 					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
@@ -156,10 +160,12 @@
 						
 				</view>
 				
+				<!-- 
 				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView"
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
+				 -->
 				
 				<view id="view/root/level/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
@@ -191,6 +197,19 @@
 					</view>
 				
 				</view>
+				
+				<view id="view/root/level/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+					autoLoad="true" autoActivate="true" >
+
+					<key>KEY_F12</key>
+			
+					<view id="view/root/level/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
+						autoLoad="true" autoActivate="false" context="debug">
+						<sceneManager ref="scene/manager" />
+						<updateInterval>5</updateInterval>
+					</view>
+				
+				</view>				
 				
 			</view>				
 			

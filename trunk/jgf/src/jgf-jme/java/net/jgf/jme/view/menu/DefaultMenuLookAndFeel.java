@@ -71,7 +71,9 @@ final class DefaultMenuLookAndFeel {
 
 			//logger.trace("Key pressed (index=" + evt.getTriggerIndex() + ",time=" + evt.getTime() + ",press=" + evt.getTriggerPressed() + ")");
 
-			if (evt.getTriggerPressed() == true) getCurrentWidget().handleInput(evt);
+			if (evt.getTriggerPressed() == true) {
+				if (getCurrentWidget() != null) getCurrentWidget().handleInput(evt);
+			}
 
 		}
 

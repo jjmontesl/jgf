@@ -33,8 +33,8 @@ public interface Scene extends Component {
 
   public void setId(String id);
 
-  public void setCamera(CameraController camera);
+  public void setCurrentCameraController(CameraController camera);
 
-  public CameraController getCamera();
+  public CameraController getCurrentCameraController();
 
 }

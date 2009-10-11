@@ -1,15 +1,24 @@
 
 package net.jgf.jme.view.devel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.jgf.camera.CameraController;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.core.state.BaseState;
 import net.jgf.jme.scene.JmeScene;
+import net.jgf.scene.SceneManager;
+import net.jgf.scenemonitor.StatePropertyPage;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
 
 import com.acarter.scenemonitor.SceneMonitor;
+import com.acarter.scenemonitor.information.A_MonitorInformationPanel;
+import com.acarter.scenemonitor.propertydescriptor.PropertyInformation;
 import com.jme.input.InputHandler;
 import com.jme.renderer.Camera;
 import com.jme.scene.Node;
@@ -30,9 +39,11 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(SceneWorkerView.class);
 
-	protected JmeScene scene;
+	protected SceneManager sceneManager;
+	
+	// public static float DEFAULT_UPDATEINTERVAL = 60.0f; 
 
-	//protected float updateInterval = 60.0f;
+	//	protected float updateInterval = DEFAULT_UPDATEINTERVAL;
 	
 	protected float lastTpf = 0.05f;
 	
@@ -40,6 +51,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	
 	private SceneWorkerAppHandler sceneWorkerHandler;
 	
+	private List<String> registerRefs = new ArrayList<String>();
 	
 	/* (non-Javadoc)
 	 * @see net.jgf.view.BaseViewState#update(float)
@@ -48,7 +60,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	public void update(float tpf) {
 		this.lastTpf = tpf;
 		super.update(tpf);
-		SceneMonitor.getMonitor().updateViewer(tpf);
+		//SceneMonitor.getMonitor().updateViewer(tpf);
 		sceneWorkerHandler.update();
 		if (!SceneMonitor.getMonitor().isVisible()) this.deactivate();
 	}
@@ -60,7 +72,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	public void render(float tpf) {
 		this.lastTpf = tpf;
 		super.render(tpf);
-		SceneMonitor.getMonitor().renderViewer(DisplaySystem.getDisplaySystem().getRenderer());
+		//SceneMonitor.getMonitor().renderViewer(DisplaySystem.getDisplaySystem().getRenderer());
 		sceneWorkerHandler.render();
 	}
 
@@ -71,14 +83,26 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	public void activate() {
 		super.activate();
 		logger.debug ("Activating Scene Worker");
+		
 		SceneWorker.inst().initialiseSceneWorkerAndMonitor();
-		SceneMonitor.getMonitor().registerNode(scene.getRootNode());
-		SceneMonitor.getMonitor().registerNode(Jgf.getApp().getEngine().getViewManager().getRootState(), "ViewStates");
-		//SceneMonitor.getMonitor().setViewerUpdateInterval(updateInterval);
-		//SceneMonitor.getMonitor().showViewer(true);
-		// initialise the application handler so we get tools palette, input handler and rendering
+		sceneManager.getScene().setCurrentCameraController(new CameraController() {
+			public void update (float tpf) {}
+		});
+		
+		// Register SceneMonitor custom property pages
+		A_MonitorInformationPanel mip = SceneMonitor.getMonitor().getMonitorInformationPanel();
+		PropertyInformation propInfo = (PropertyInformation) mip;
+		propInfo.getPropertyPageHandler().registerPropertyPage(BaseState.class, new StatePropertyPage());
+		
+		SceneMonitor.getMonitor().registerNode(((JmeScene)sceneManager.getScene()).getRootNode());
+		for (String ref : registerRefs) {
+			SceneMonitor.getMonitor().registerNode(Jgf.getDirectory().getObjectAs(ref, Object.class), ref);
+		}
+		
+		// Initialise the application handler so we get tools palette, input handler and rendering
         sceneWorkerHandler = new SceneWorkerAppHandler(this);
         sceneWorkerHandler.initialise();
+        //SceneMonitor.getMonitor().showViewer(true);
 	}
 
 
@@ -89,7 +113,10 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	public void deactivate() {
 		logger.debug ("Deactivating Scene Worker");
 		SceneMonitor.getMonitor().showViewer(false);
-		SceneMonitor.getMonitor().unregisterNode(scene.getRootNode());
+		SceneMonitor.getMonitor().unregisterNode(((JmeScene)sceneManager.getScene()).getRootNode());
+		for (String ref : registerRefs) {
+			// TODO: There is currently no way of unregistering objects other than Nodes
+		}
 		super.deactivate();
 	}
 
@@ -112,20 +139,26 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 
 		super.readConfig(config, configPath);
 
-		String sceneRef = config.getString(configPath + "/scene/@ref", null);
-		if (sceneRef != null) {
-			Jgf.getDirectory().register(this, "scene", sceneRef);
+		String sceneManagerRef = config.getString(configPath + "/sceneManager/@ref", null);
+		if (sceneManagerRef != null) {
+			Jgf.getDirectory().register(this, "sceneManager", sceneManagerRef);
 		}
-		//updateInterval = config.getFloat(configPath + "/updateInterval", updateInterval);
+		
+		List<String> refs = config.getList(configPath + "/register/@ref");
+		for (String ref : refs) {
+			registerRefs.add(ref);
+		}
+		
 	}
 
 	/**
 	 * @param scene the scene to set
 	 */
-	public void setScene(JmeScene scene) {
-		if (this.scene != null) SceneMonitor.getMonitor().unregisterNode(this.scene.getRootNode());
-		this.scene = scene;
-		if (scene != null) SceneMonitor.getMonitor().registerNode(scene.getRootNode());
+	public void setSceneManager(SceneManager sceneManager) {
+		if (this.isActive()) {
+			throw new IllegalStateException("Can't set the SceneManager for " + this + " as the view is already running. You need to deactivate it first.");
+		}
+		this.sceneManager = sceneManager;
 	}
 
 	
@@ -152,6 +185,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	 */
 	@Override
 	public InputHandler getInputHandler() {
+		if (this.inputHandler == null) this.inputHandler = new InputHandler();
 		return this.inputHandler;
 	}
 
@@ -160,7 +194,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	 */
 	@Override
 	public Node getRootNode() {
-		return scene.getRootNode();
+		return ((JmeScene)sceneManager.getScene()).getRootNode();
 	}
 
 	/* (non-Javadoc)

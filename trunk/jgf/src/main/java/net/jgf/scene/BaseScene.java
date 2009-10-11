@@ -106,7 +106,7 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 	/**
 	 * @return the camera
 	 */
-	public CameraController getCamera() {
+	public CameraController getCurrentCameraController() {
 		return camera;
 	}
 
@@ -114,7 +114,7 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 	/**
 	 * @param camera the camera to set
 	 */
-	public void setCamera(CameraController camera) {
+	public void setCurrentCameraController(CameraController camera) {
 		this.camera = camera;
 	}
 
@@ -128,7 +128,7 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 
 		if (config.containsKey(configPath + "/camera/@ref")) {
 			String cameraRef = config.getString(configPath + "/camera/@ref");
-			Jgf.getDirectory().register(this, "camera", cameraRef);
+			Jgf.getDirectory().register(this, "currentCameraController", cameraRef);
 		}
 
 	}

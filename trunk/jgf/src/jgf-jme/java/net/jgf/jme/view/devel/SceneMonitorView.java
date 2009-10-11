@@ -4,6 +4,7 @@ package net.jgf.jme.view.devel;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.scene.JmeScene;
+import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
@@ -24,9 +25,11 @@ public final class SceneMonitorView extends BaseViewState {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(SceneMonitorView.class);
 
-	protected JmeScene scene;
+	protected SceneManager sceneManager;
 
-	protected float updateInterval = 60.0f;
+	public static float DEFAULT_UPDATEINTERVAL = 60.0f; 
+
+	protected float updateInterval = DEFAULT_UPDATEINTERVAL;
 
 	/* (non-Javadoc)
 	 * @see net.jgf.view.BaseViewState#update(float)
@@ -55,7 +58,7 @@ public final class SceneMonitorView extends BaseViewState {
 	@Override
 	public void activate() {
 		super.activate();
-		SceneMonitor.getMonitor().registerNode(scene.getRootNode());
+		SceneMonitor.getMonitor().registerNode(((JmeScene)sceneManager.getScene()).getRootNode());
 		SceneMonitor.getMonitor().setViewerUpdateInterval(updateInterval);
 		SceneMonitor.getMonitor().showViewer(true);
 	}
@@ -67,7 +70,7 @@ public final class SceneMonitorView extends BaseViewState {
 	@Override
 	public void deactivate() {
 		SceneMonitor.getMonitor().showViewer(false);
-		SceneMonitor.getMonitor().unregisterNode(scene.getRootNode());
+		SceneMonitor.getMonitor().unregisterNode(((JmeScene)sceneManager.getScene()).getRootNode());
 		super.deactivate();
 	}
 
@@ -90,20 +93,21 @@ public final class SceneMonitorView extends BaseViewState {
 
 		super.readConfig(config, configPath);
 
-		String sceneRef = config.getString(configPath + "/scene/@ref", null);
-		if (sceneRef != null) {
-			Jgf.getDirectory().register(this, "scene", sceneRef);
+		String sceneManagerRef = config.getString(configPath + "/sceneManager/@ref", null);
+		if (sceneManagerRef != null) {
+			Jgf.getDirectory().register(this, "sceneManager", sceneManagerRef);
 		}
-		updateInterval = config.getFloat(configPath + "/updateInterval", updateInterval);
+		updateInterval = config.getFloat(configPath + "/updateInterval", DEFAULT_UPDATEINTERVAL);
 	}
 
 	/**
 	 * @param scene the scene to set
 	 */
-	public void setScene(JmeScene scene) {
-		if (this.scene != null) SceneMonitor.getMonitor().unregisterNode(this.scene.getRootNode());
-		this.scene = scene;
-		if (scene != null) SceneMonitor.getMonitor().registerNode(scene.getRootNode());
+	public void setSceneManager(SceneManager sceneManager) {
+		if (this.isActive()) {
+			throw new IllegalStateException("Can't set the SceneManager for " + this + " as the view is already running. You need to deactivate it first.");
+		}
+		this.sceneManager = sceneManager;
 	}
 
 }

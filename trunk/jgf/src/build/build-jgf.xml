@@ -33,13 +33,61 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<project name="jgf" default="package" basedir=".">
-		
+<project name="jgf" default="package" >
+
 	<description>
-  	Ant Build File for Java Game Framework (JGF)
-  </description>
+  		Ant Build File for Java Game Framework (JGF).
+		This build file is used to build Java Game Framework libraries
+		and distributables (documentation, packages, examples...).
+		A different build file is provided for users to build their
+		own game projects and build deployers for them.
+	</description>
 	
+	<property name="dir.project" value="../.." />
+	
+	<property name="dir.src" value="${dir.project}/src" />
+	<property name="dir.target" value="${dir.project}/target" />
+	
+	<property name="dir.target.javadoc" value="${dir.target}/docs/api" />
+	<property name="dir.target.classes" value="${dir.target}/classes" />
+	
+		
 	<target name="package">
 	</target>
 
+	<target name="javadoc">
+		<javadoc
+			destdir="${dir.target.javadoc}"
+			author="false"
+	        version="true"
+	        use="true"
+	        windowtitle="JGF - Java Game Framework">
+
+		    <fileset dir="${dir.src}" defaultexcludes="yes">
+		    	<include name="main/java/**"/>
+		    	<include name="jgf-jme/java/**"/>
+		    	<include name="jgf-jmephysics/java/**"/>
+		    	<exclude name="example/java/**"/>
+		    </fileset>
+
+			<doctitle><![CDATA[<h1>JGF - Java Game Framework Javadoc</h1>]]></doctitle>
+			
+			<bottom><![CDATA[<i>Copyright &#169; 2008 Jose Juan Montes. All Rights Reserved.</i>]]></bottom>
+	
+			<tag name="todo" scope="all" description="To do:"/>
+			
+			
+			<!--
+			<group title="Group 1 Packages" packages="com.dummy.test.a*"/>
+			<group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
+			-->
+			
+			<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="C:\tmp"/>
+			<!--<link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/> -->
+			
+		</javadoc>
+
+	</target>
+
 </project>
+

@@ -3,45 +3,87 @@
 <!--
 	Java Game Framework Global Configuration File
 	$Id$
- --> 	
+--> 	
+
+<!-- 
+	This is an example configuration file for JGF - Java Game Framework.
+	
+	This file corresponds to a version of the example game MudVolley. One of the examples 
+	included in JGF MudVolley tutorials. Through these tutorials, you will be building a 
+	game.
+	
+	Make sure you run the corresponding MudVolley Game Example before reading the file,
+	so you have a "feeling" of what the aim of this example file is.
+	
+	If you haven't built the project or ran any of the examples, you are strongly
+	encouraged to do so. Check the documentation page online for instructions
+	on how to setup JGF for game development.
+-->
+
+<!-- 
+	This is MudVolley Tutorial Example #1.
+	
+	In this example, a simple scene is set up and two players will be created. Game
+	logic is very simple and just keeps the ball bouncing. There are no rules for
+	scoring yet. 
+	
+	Note that the scene is set up using a custom loader. In many cases, you will use
+	use one of JGF out of the box loaders.
+-->
 
 <jgf>
 
-	<!-- Application configuration -->
+	<!-- Application configuration: every application needs to define this element.
+	     This is the information used by the framework to display as game title,
+	     messages... -->
 	<application>
 	
+		<!-- General application information -->
 		<name>MudVolley JGF Example 1: Introducing JGF</name>
+		<company>JGF</company>
 		<version>1.0</version>
 		<networkProtocolVersion>1.0</networkProtocolVersion>
+		
+
+		<!-- In debug mode more verbose logging is produced, and some extra checks
+			 are performed during runtime. This is a boolean parameter (true|false). -->
 		<debug>true</debug>
 		
+		<!-- Application description: to be used by short listings and command line help -->
 		<description>
-			MudVolley is a Slime Volley clone that shows some features of
-			the Java Game Framework (JGF).
+			MudVolley is a Slime Volley clone that shows some of
+			Java Game Framework (JGF) features.
 		</description>
 		
+		<!-- A reference to the engine service being used. Currently, only JMonkeyEngine is
+		supported. This service is defined below -->
 		<engine ref="engine" />
 		
 	</application>
 	
-	<!-- 
-		Engine service
-	 -->
+	<!-- Engine service. Currently, the only supported game engine is JMonkeyEngine. 
+		 This service is implemented by the net.jgf.jme.engine.JMEEngine class.
+		 You need to provide some parameters too. -->
 	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
 
+		<!-- 'collectStats' parameter causes JMEEngine to collect engine statistics
+		like FPSs, objects drawn, number of textures... In this example,
+		we use variable interpolation to apply the same value for 'debug', defined above.  -->
 		<collectStats>${application/debug}</collectStats>
 		
+		<!--  Reference to the LogicManager service, defined below -->
 		<logicManager ref="logic" />
+		
+		<!--  Reference to the ViewManager service, defined below -->
 		<viewManager ref="view" />
 		
 	</service>
 
 	
-	<!--
-		Scene 
-	 -->
-	<service id="scene/manager" class="net.jgf.scene.SceneManager" depends="engine">
+	<!-- The SceneManager service holds a reference to scenes. The  -->
+	<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager" depends="engine">
 			
+			<!--  -->
 			<scene id="scene" class="net.jgf.jme.scene.DefaultJmeScene">
 			
 				<cameras>

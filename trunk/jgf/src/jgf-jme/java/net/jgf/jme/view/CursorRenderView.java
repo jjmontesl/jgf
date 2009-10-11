@@ -88,10 +88,6 @@ public class CursorRenderView extends BaseViewState {
 
 			rootNode.updateGeometricState(tpf, true);
 
-			// Center the skybox on the camera
-			// TODO: This should not behere, the skybox belongs to other place
-			//scene.getRootNode().getChild("skybox").setLocalTranslation(DisplaySystem.getDisplaySystem().getRenderer().getCamera().getLocation());
-
 	}
 
 	/**

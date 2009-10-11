@@ -1,4 +1,4 @@
-package net.jgf.example.tanks.ai;
+package net.jgf.example.tanks.loader;
 
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
@@ -21,6 +21,10 @@ public class TanksMap {
 		public int raise;
 
 		public String text;
+		
+		public String tag;
+		
+		public int group;
 
 		public boolean obstacle;
 

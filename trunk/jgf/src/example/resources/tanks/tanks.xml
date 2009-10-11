@@ -65,7 +65,7 @@
 		Scene Manager: Default Scene Manager. Don't define the scene as it will be loaded
 		during runtime.
 	 -->
-	<service id="scene/manager" class="net.jgf.scene.SceneManager">
+	<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager">
 	</service>
 	
 	<!--
@@ -280,16 +280,19 @@
 					autoLoad="true" autoActivate="true" >
 					
 					
+					<!-- 
 					<view id="view/root/level/fight/spectator" class="net.jgf.jme.view.FreeCameraView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />
 					</view>
+					 -->
 					 
-					
+					<!--  
 					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
+					 -->
 					
 					<view id="view/root/level/fight/effects" class="net.jgf.example.tanks.view.EffectsView"
 						autoLoad="true" autoActivate="true" >
@@ -302,20 +305,23 @@
 					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
-					</view>					
-					
+					</view>
+
+					<view id="view/root/level/fight/water" class="net.jgf.example.mudvolley1.view.ProjectedWaterView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />		
+					</view>
+
 				</view>
 				
-				 
-				<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" 
+				<view id="view/root/level/grid" class="net.jgf.jme.view.devel.AxisGridView" 
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 					<drawBehind>false</drawBehind>
 					<center>0.0 0.01 0.0</center>
 					<spacing>1</spacing>
 				</view>
-				
-				
+				 
 				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView" 
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
@@ -342,22 +348,25 @@
 			
 					<!-- <view id="view/root/level/ui/scenemonitor" class="net.jgf.jme.view.devel.SceneMonitorView"
 						autoLoad="true" autoActivate="false" context="debug">
-						<scene ref="scene" />
+						<sceneManager ref="scene/manager" />
 						<updateInterval>5</updateInterval>
 					</view>  -->
 					
 					<view id="view/root/level/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
 						autoLoad="true" autoActivate="false" context="debug">
-						<scene ref="scene" />
-						<updateInterval>5</updateInterval>
+						<sceneManager ref="scene/manager" />
+						<register ref="view/root" />
+						<register ref="view/root/level/grid" />
+						<register ref="logic/root" />
 					</view>
 				
 				</view>
 		
+				
 				<view id="view/root/level/cursor" class="net.jgf.jme.view.CursorRenderView"
 					autoLoad="true" autoActivate="true" >
 					<textureUrl>tanks/texture/cursor.png</textureUrl>
-				</view>	
+				</view>
 				
 			</view>				
 			
@@ -382,9 +391,13 @@
 	<service id="menu" class="net.jgf.menu.DefaultMenuSystem">
 
 		<menu id="menu/main" class="net.jgf.menu.DefaultMenu">
-			<item id="menu/main/newgame" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<key>New Game</key>
-				<target ref="menu/newgame" />
+			<item id="menu/newgame/1player" class="net.jgf.menu.items.ActionMenuItem">
+				<key>1 Player Missions</key>
+				<action ref="logic/action/newgame" />
+			</item>
+			<item id="menu/newgame/network" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<key>Network Game</key>
+				<target ref="menu/newgame/network" />
 			</item>
 			<item id="menu/main/settings" class="net.jgf.menu.items.ScreenLinkMenuItem">
 				<key>Settings</key>
@@ -396,25 +409,6 @@
 			</item>
 		</menu>
 
-		<menu id="menu/newgame" class="net.jgf.menu.DefaultMenu">
-			
-			<cancelItem>menu/newgame/back</cancelItem>
-		
-			<item id="menu/newgame/1player" class="net.jgf.menu.items.ActionMenuItem">
-				<key>1 Player Missions</key>
-				<action ref="logic/action/newgame" />
-			</item>
-			<item id="menu/newgame/network" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<key>Network Game</key>
-				<target ref="menu/newgame/network" />
-			</item>
-			<item id="menu/newgame/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
-			<item id="menu/newgame/back" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<key>Back</key>
-				<target ref="menu/main" />
-			</item>			
-		</menu>
-		
 	</service>	
 	
 	<!-- 

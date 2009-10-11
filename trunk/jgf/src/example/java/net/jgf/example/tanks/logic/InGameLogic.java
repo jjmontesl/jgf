@@ -43,14 +43,6 @@ public class InGameLogic extends BaseLogicState {
 		entityManager.update(tpf);
 		sceneManager.update(tpf);
 
-		/*
-		// Waves
-		InteractiveWater water = (InteractiveWater)((JmeScene)(sceneManager.getScene())).getRootNode().getChild("water");
-    water.setPaintMode(PaintMode.PAINT_SOURCE);
-  	if (FastMath.nextRandomFloat() < 0.1) water.dabSomePaint(FastMath.nextRandomInt(0, 40), FastMath.nextRandomInt(0, 40));
-  	water.update(tpf);
-  	*/
-
 	}
 
 
