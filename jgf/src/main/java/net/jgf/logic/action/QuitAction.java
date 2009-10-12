@@ -27,7 +27,7 @@ public class QuitAction extends BaseLogicAction {
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
 	@Override
-	public void perform(String action) {
+	public void perform(Object arg) {
 		Jgf.getApp().dispose();
 	}
 

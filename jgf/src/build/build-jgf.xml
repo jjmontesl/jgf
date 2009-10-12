@@ -45,16 +45,114 @@
 	
 	<property name="dir.project" value="../.." />
 	
+	<property name="app.version" value="0.6" />
+	
 	<property name="dir.src" value="${dir.project}/src" />
 	<property name="dir.target" value="${dir.project}/target" />
 	
+	<property name="dir.lib.jme" value="${dir.project}/../jme/target" />
+	
 	<property name="dir.target.javadoc" value="${dir.target}/docs/api" />
 	<property name="dir.target.classes" value="${dir.target}/classes" />
+	<property name="dir.target.packages" value="${dir.target}/packages" />
 	
 		
-	<target name="package">
+	<path id="classpath.main">
+		<fileset dir="${dir.src}/main/lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${dir.lib.jme}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="classpath.jgf-jme">
+		<path refid="classpath.main" />
+		<fileset dir="${dir.src}/jgf-jme/lib">
+			<include name="*.jar"/>
+		</fileset>
+		<dirset dir="${dir.target.classes}/main" />
+	</path>	
+
+	<path id="classpath.example">
+		<path refid="classpath.jgf-jme" />
+		<dirset dir="${dir.target.classes}/jgf-jme" />
+	</path>		
+
+	<target name="compile">
+		  <mkdir dir="${dir.target.classes}/main"/>
+		  <javac srcdir="${dir.src}/main/java"
+		         destdir="${dir.target.classes}/main"
+		         classpathref="classpath.main"
+		         debug="on"
+		         source="1.5"  />
+		
+		  <mkdir dir="${dir.target.classes}/jgf-jme"/>
+		  <javac srcdir="${dir.src}/jgf-jme/java"
+		         destdir="${dir.target.classes}/jgf-jme"
+		         classpathref="classpath.jgf-jme"
+		         debug="on"
+		         source="1.5"  />
+		
+		  <mkdir dir="${dir.target.classes}/example"/>
+		  <javac srcdir="${dir.src}/example/java"
+		         destdir="${dir.target.classes}/example"
+		         classpathref="classpath.example"
+		         debug="on"
+		         source="1.5"  />		
 	</target>
 
+	<target name="package">
+	
+		<mkdir dir="${dir.target.packages}"/>
+		
+	  <jar destfile="${dir.target.packages}/jgf-core.jar" basedir="${dir.target.classes}/main">
+	    <manifest>
+	      <attribute name="Built-By" value="${user.name}"/>
+	      <attribute name="Implementation-Vendor" value="JGF"/>
+	      <attribute name="Implementation-Title" value="JGF"/>
+	      <attribute name="Implementation-Version" value="${app.version}"/>
+	    </manifest>
+	  </jar>
+		
+	  <jar destfile="${dir.target.packages}/jgf-jme.jar" basedir="${dir.target.classes}/jgf-jme">
+	    <manifest>
+	      <attribute name="Built-By" value="${user.name}"/>
+	      <attribute name="Implementation-Vendor" value="JGF"/>
+	      <attribute name="Implementation-Title" value="JGF JME Extensions"/>
+	      <attribute name="Implementation-Version" value="${app.version}"/>
+	    </manifest>
+	  </jar>
+		
+	  <jar destfile="${dir.target.packages}/jgf-example.jar" basedir="${dir.target.classes}/example">
+	    <manifest>
+	      <attribute name="Built-By" value="${user.name}"/>
+	      <attribute name="Implementation-Vendor" value="JGF"/>
+	      <attribute name="Implementation-Title" value="JGF Examples"/>
+	      <attribute name="Implementation-Version" value="${app.version}"/>
+	    </manifest>
+	  </jar>
+		
+	  <jar destfile="${dir.target.packages}/jgf-example-resources.jar" basedir="${dir.src}/example/resources">
+	    <manifest>
+	      <attribute name="Built-By" value="${user.name}"/>
+	      <attribute name="Implementation-Vendor" value="JGF"/>
+	      <attribute name="Implementation-Title" value="JGF Example Resources"/>
+	      <attribute name="Implementation-Version" value="${app.version}"/>
+	    </manifest>
+	  </jar>
+		
+	  <jar destfile="${dir.target.packages}/jgf-docs.jar" basedir="${dir.target.javadoc}">
+	    <manifest>
+	      <attribute name="Built-By" value="${user.name}"/>
+	      <attribute name="Implementation-Vendor" value="JGF"/>
+	      <attribute name="Implementation-Title" value="JGF JavaDoc"/>
+	      <attribute name="Implementation-Version" value="${app.version}"/>
+	    </manifest>
+	  </jar>			
+		
+	</target>
+	
 	<target name="javadoc">
 		<javadoc
 			destdir="${dir.target.javadoc}"
@@ -86,7 +184,7 @@
 			<!--<link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/> -->
 			
 		</javadoc>
-
+		
 	</target>
 
 </project>

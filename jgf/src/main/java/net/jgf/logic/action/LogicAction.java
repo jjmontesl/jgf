@@ -4,6 +4,6 @@ import net.jgf.logic.LogicState;
 
 public interface LogicAction extends LogicState {
 
-	public void perform(String action);
+	public void perform(Object arg);
 
 }

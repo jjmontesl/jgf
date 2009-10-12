@@ -33,7 +33,7 @@ public class NewGameAction extends BaseLogicAction {
 	 * @see net.jgf.logic.BaseLogicState#activate()
 	 */
 	@Override
-	public void perform(String action) {
+	public void perform(Object arg) {
 
 		logger.info ("Starting new tanks game (logic)");
 

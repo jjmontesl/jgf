@@ -21,6 +21,6 @@ public abstract class BaseLogicAction extends BaseLogicState implements LogicAct
 	}
 
 	@Override
-	public abstract void perform (String string);
+	public abstract void perform (Object arg);
 
 }

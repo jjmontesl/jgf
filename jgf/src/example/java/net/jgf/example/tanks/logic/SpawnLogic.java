@@ -6,11 +6,15 @@ import net.jgf.core.state.StateHelper;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
+import net.jgf.example.tanks.entity.PlayerTank;
 import net.jgf.example.tanks.entity.Tank;
+import net.jgf.example.tanks.loader.TanksMap;
 import net.jgf.example.tanks.view.EffectsView;
 import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
+import net.jgf.jme.view.display.DisplayItemsView;
+import net.jgf.jme.view.display.TextItem;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.system.Jgf;
@@ -131,11 +135,28 @@ public class SpawnLogic extends BaseLogicState {
 
 	}
 
-	public void destroyTank(Tank tank) {
+	public void updateOsd() {
+		TextItem killsTextItem = Jgf.getDirectory().getObjectAs("view/root/level/osd/kills", TextItem.class);
+		DisplayItemsView osdItemsView = Jgf.getDirectory().getObjectAs("view/root/level/osd", DisplayItemsView.class);
+		if (Jgf.getDirectory().containsObject("entity/root/players/player1")) {
+			PlayerTank player = Jgf.getDirectory().getObjectAs("entity/root/players/player1", PlayerTank.class);
+			killsTextItem.setText("Hits: " +  player.getKills());
+			killsTextItem.refreshNode(osdItemsView.getRootNode());
+		}
+	}
+	
+	public void destroyTank(Tank tank, Bullet bullet) {
 
 		if (playerEntityGroup.containsChild(tank)) {
 			tank.withdraw(playerEntityGroup, scene.getRootNode());
 		} else {
+			// Increase points
+			if (bullet.getOwner() instanceof PlayerTank) {
+				PlayerTank player = (PlayerTank) bullet.getOwner();
+				player.setKills(player.getKills() + 1);
+				updateOsd();
+			}
+			
 			tank.withdraw(enemyEntityGroup, scene.getRootNode());
 		}
 		effectsView.addExplosion(tank.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_TANK_TTL);

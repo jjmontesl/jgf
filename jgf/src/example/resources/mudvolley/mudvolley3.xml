@@ -134,11 +134,10 @@
 				<view id="view/root/level/match" class="net.jgf.view.ViewStateNode"
 					autoLoad="true" autoActivate="true" >
 					
-					<!-- 
+					
 					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley1.view.InputView"
 						autoLoad="true" autoActivate="true" >
 					</view>
-					 -->
 					
 					<!-- 
 					<view id="view/root/level/match/spectator" class="net.jgf.jme.view.FreeCameraView"
@@ -160,12 +159,10 @@
 						
 				</view>
 				
-				<!-- 
 				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView"
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
-				 -->
 				
 				<view id="view/root/level/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >

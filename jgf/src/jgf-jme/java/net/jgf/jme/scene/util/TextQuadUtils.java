@@ -42,9 +42,9 @@ public class TextQuadUtils {
 
 	private float fontResolution = 40f;
 
-	private int shadowOffsetX = 2;
+	private int shadowOffsetX = 0;
 
-	private int shadowOffsetY = 2;
+	private int shadowOffsetY = 0;
 
 	private Font font = Font.decode(DEFAULT_FONT);
 

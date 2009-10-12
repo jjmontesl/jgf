@@ -5,6 +5,7 @@ package net.jgf.jme.view.menu;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.config.ConfigurableFactory;
 import net.jgf.menu.MenuController;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
@@ -26,16 +27,16 @@ public class DefaultMenuView extends BaseViewState {
 
 	protected MenuController controller;
 
-	protected DefaultMenuLookAndFeel menuLaf;
+	protected MenuLookAndFeel menuLaf;
 
 	// TODO: Add sound capabilities
+	
+	// TODO: Add mouse input capabilities
 
 	public DefaultMenuView() {
 		controller = new MenuController();
-		menuLaf = new DefaultMenuLookAndFeel(controller);
+		menuLaf = null;
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see net.jgf.view.BaseViewState#input(float)
@@ -45,8 +46,6 @@ public class DefaultMenuView extends BaseViewState {
 		super.input(tpf);
 		menuLaf.input(tpf);
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see net.jgf.view.BaseViewState#load()
@@ -134,6 +133,19 @@ public class DefaultMenuView extends BaseViewState {
 		super.readConfig(config, configPath);
 		String initialMenuRef = config.getString(configPath + "/initialMenu/@ref");
 		Jgf.getDirectory().register(controller, "initialMenu", initialMenuRef);
+		
+		setMenuLaf(ConfigurableFactory.newFromConfig(config, configPath + "/lookAndFeel", MenuLookAndFeel.class));
 	}
 
+	public MenuLookAndFeel getMenuLaf() {
+		return menuLaf;
+	}
+
+	public void setMenuLaf(MenuLookAndFeel menuLaf) {
+		this.menuLaf = menuLaf;
+		this.menuLaf.setController(this.controller);
+	}
+
+	
+	
 }
