@@ -13,8 +13,6 @@ import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
-import com.jme.util.Timer;
-
 /**
  * Indoor Battles level loader.
  * It reads the specified level descriptor and creates a Scene
@@ -65,9 +63,6 @@ public class FileChainLoader<T> extends BaseLoader<T> {
 			Jgf.getDirectory().addObject(subLoader.getId(), subLoader);
 			result = subLoader.load(result, properties);
 		}
-
-		// Restart timer!
-		Timer.getTimer().reset();
 
 		return result;
 

@@ -40,6 +40,8 @@ public class AITank extends Tank {
 	protected EntityGroup bullets;
 
 	protected Tile finalTargetPos;
+	
+	protected float firePerSecond = 1.0f;
 
 
 	/* (non-Javadoc)
@@ -81,7 +83,7 @@ public class AITank extends Tank {
 
 		if (direction.length() > 0.2f) {
 			// Move
-			direction.normalizeLocal().multLocal(0.5f);
+			direction.normalizeLocal().multLocal(0.8f);
 		} else {
 			/// Stand
 			direction.zero();
@@ -90,8 +92,8 @@ public class AITank extends Tank {
 		this.setTarget(targetEntity.getSpatial().getLocalTranslation());
 		this.getTarget().y = 0.5f;
 
-		if (FastMath.rand.nextFloat() < 0.01) {
-			//fire();
+		if (FastMath.rand.nextFloat() < (firePerSecond * tpf)) {
+			fire();
 		}
 
 		super.update(tpf);

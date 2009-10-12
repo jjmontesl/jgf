@@ -61,7 +61,7 @@ public class ControllerAction extends BaseLogicAction {
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
 	@Override
-	public void perform(String action) {
+	public void perform(Object arg) {
 
 		logger.info("Performing action " + this);
 
@@ -69,7 +69,7 @@ public class ControllerAction extends BaseLogicAction {
 
 			if (step.getType() == ActionStepType.runAction) {
 				LogicAction ref = Jgf.getDirectory().getObjectAs(step.getRef(), LogicAction.class);
-				ref.perform(action);
+				ref.perform(arg);
 			} else if (step.getType() == ActionStepType.loadAndActivate) {
 				State state = Jgf.getDirectory().getObjectAs(step.getRef(), State.class);
 				StateHelper.loadAndActivate(state);

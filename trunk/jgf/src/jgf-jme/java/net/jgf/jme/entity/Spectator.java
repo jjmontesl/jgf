@@ -73,7 +73,7 @@ public class Spectator extends DefaultEntity {
 		}
 
 		// Apply mouse input
-		// TODO: This is ñapa: replace from settings
+		// TODO: This is wrong: replace from settings
 		yaw += (-ROTATION_SPEED * deltaX /* * Jgf.getSettings().getView().getMouseSensitivity() */);
 		pitch += (-ROTATION_SPEED * deltaY /* * Jgf.getSettings().getView().getMouseSensitivity() */);
 

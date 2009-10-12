@@ -17,7 +17,7 @@ public class SeparatorWidget extends Widget {
 
 		super.build(item, context);
 
-		context.yPos -= (context.spacing * 0.75f);
+		context.yPos -= (((DefaultMenuLookAndFeel)context.laf).getSpacing() * 0.75f);
 
 	}
 

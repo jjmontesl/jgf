@@ -21,15 +21,18 @@ import com.jme.system.DisplaySystem;
 @Configurable
 public class TextItem extends DisplayItem {
 
+	
 	protected Vector3f center = new Vector3f();
 
 	protected String text = "UNDEFINED";
 
-	protected float size = 0.2f;
-
 	protected float ratio = 1.0f;
 
+	protected float size = 0.2f;
+
 	protected String font = TextQuadUtils.DEFAULT_FONT;
+	
+	protected DisplayItemAlignment align = DisplayItemAlignment.Center; 
 
 	protected Quad quad = null;
 
@@ -46,8 +49,22 @@ public class TextItem extends DisplayItem {
 		setFont(config.getString(configPath + "/font", getFont()));
 		setSize(config.getFloat(configPath + "/size"));
 		setRatio(config.getFloat(configPath + "/ratio", getRatio()));
+		setAlign(DisplayItemAlignment.valueOf(config.getString(configPath + "/align", getAlign().toString())));
 
 	}
+
+
+	public DisplayItemAlignment getAlign() {
+		return align;
+	}
+
+
+
+
+	public void setAlign(DisplayItemAlignment align) {
+		this.align = align;
+	}
+
 
 
 
@@ -68,7 +85,22 @@ public class TextItem extends DisplayItem {
 		Vector3f ortoCenter = new Vector3f(0.5f * displaySize.x, 0.5f * displaySize.y, 0);
 
 		quad = textLabel.getQuad(ratio);
-		quad.getLocalTranslation().set(ortoCenter.x * center.x + ortoCenter.x, ortoCenter.y * center.y + ortoCenter.y, 0 );
+		
+		float xOffset = 0.0f;
+		float yOffset = 0.0f;
+		if ((align == DisplayItemAlignment.Left) ||
+			(align == DisplayItemAlignment.TopLeft) ||
+			(align == DisplayItemAlignment.BottomLeft)) xOffset = (+ (quad.getWidth() / 2)) * (size * displaySize.y);
+		if ((align == DisplayItemAlignment.Right) ||
+			(align == DisplayItemAlignment.TopRight) ||
+			(align == DisplayItemAlignment.BottomRight)) xOffset = (- (quad.getWidth() / 2)) * (size * displaySize.y);
+		if ((align == DisplayItemAlignment.TopLeft) ||
+			(align == DisplayItemAlignment.Top) ||
+			(align == DisplayItemAlignment.TopRight)) yOffset = (- (quad.getHeight() / 2)) * (size * displaySize.y);
+		if ((align == DisplayItemAlignment.BottomLeft) ||
+			(align == DisplayItemAlignment.Bottom) ||
+			(align == DisplayItemAlignment.BottomRight)) yOffset = (+ (quad.getHeight() / 2)) * (size * displaySize.y);
+		quad.getLocalTranslation().set(ortoCenter.x * center.x + ortoCenter.x + xOffset, ortoCenter.y * center.y + ortoCenter.y + yOffset, 0 );
 		quad.getLocalScale().multLocal(size * displaySize.y);
 		//billboard.getLocalTranslation().set(0.0f, 0.0f, 0.0f);
 		//quad.getLocalTranslation().set(center.x, center.y, 0.0f);

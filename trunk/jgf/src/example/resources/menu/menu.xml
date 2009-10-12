@@ -76,7 +76,12 @@
 						autoLoad="true" autoActivate="true" >
 
 				<initialMenu ref="menu/main" />
-
+				<lookAndFeel id="view/root/main/menu/laf" class="net.jgf.jme.view.menu.DefaultMenuLookAndFeel" >
+					<origin>-0.3 0.4 0.0</origin>
+					<size>0.1</size>
+					<font>Verdana PLAIN 40</font>
+					<align>Center</align>
+				</lookAndFeel>
 			</view>
 							
 		</view>

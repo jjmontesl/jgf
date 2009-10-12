@@ -19,6 +19,8 @@ public class PlayerTank extends Tank {
 	private boolean walkUp;
 
 	private boolean walkDown;
+	
+	private int kills = 0;
 
 	@Override
 	public void update(float tpf) {
@@ -35,6 +37,20 @@ public class PlayerTank extends Tank {
 		//fixCursor();
 
 	}
+
+	
+	
+	public int getKills() {
+		return kills;
+	}
+
+
+
+	public void setKills(int kills) {
+		this.kills = kills;
+	}
+
+
 
 	protected void fixCursor() {
 		// Don't let cursor get too away

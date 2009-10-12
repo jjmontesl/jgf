@@ -290,7 +290,7 @@ public abstract class Tank extends SpatialEntity {
 					Bullet bullet = (Bullet) ((TransientSavable<Entity>) hitGeom.getUserData("entity")).getContent();
 
 					// Destroy tank
-					spawnLogic.destroyTank(this);
+					spawnLogic.destroyTank(this, bullet);
 					// Destroy bullet
 					spawnLogic.destroyBullet(bullet);
 

@@ -16,7 +16,7 @@ public abstract class Widget {
 
 	protected boolean isViewValid = false;
 
-	protected DefaultMenuLookAndFeel laf;
+	protected MenuLookAndFeel laf;
 
 	public void build(MenuItem item, MenuRendererContext context) {
 		this.item = item;
@@ -30,13 +30,13 @@ public abstract class Widget {
 		this.isViewValid = false;
 
 		if (evt.getTriggerIndex() == KeyInput.KEY_UP) {
-			laf.controller.previousItem();
+			laf.getController().previousItem();
 		}
 		if (evt.getTriggerIndex() == KeyInput.KEY_DOWN) {
-			laf.controller.nextItem();
+			laf.getController().nextItem();
 		}
 		if (evt.getTriggerIndex() == KeyInput.KEY_SPACE) {
-			laf.controller.useCurrentItem();
+			laf.getController().useCurrentItem();
 		}
 
 		if (laf.getCurrentWidget() != null) laf.getCurrentWidget().setViewValid(false);
@@ -51,7 +51,7 @@ public abstract class Widget {
 	}
 
 	/**
-	 *          the isViewValid to set
+	 * the isViewValid to set
 	 */
 	public void setViewValid(boolean isViewValid) {
 		this.isViewValid = isViewValid;

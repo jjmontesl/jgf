@@ -25,10 +25,12 @@ public class TextWidget extends Widget {
 		super.build(item2, context);
 
 		textItem = new TextItem();
+		textItem.setAlign(((DefaultMenuLookAndFeel)context.laf).getAlign());
+		textItem.setFont(((DefaultMenuLookAndFeel)context.laf).getFont());
 		textItem.setCenter(new Vector3f(context.xPos, context.yPos, 0));
 
 
-		if (laf.controller.getCurrentMenuItem() == item2) {
+		if (laf.getController().getCurrentMenuItem() == item2) {
 			textItem.setText("[" + item2.getKey() + "]");
 		} else {
 			textItem.setText(item2.getKey());
@@ -37,17 +39,17 @@ public class TextWidget extends Widget {
 		float sizeMult = 1.0f;
 		if (item2 instanceof LabelMenuItem) sizeMult = 0.8f;
 		if (item2 instanceof TitleMenuItem) sizeMult = 1.2f;
-		textItem.setSize(context.size * sizeMult);
+		textItem.setSize(((DefaultMenuLookAndFeel)context.laf).getSize() * sizeMult);
 
-		context.laf.display.addItem(textItem);
+		context.laf.getDisplay().addItem(textItem);
 
-		context.yPos -= context.size * sizeMult + context.spacing;
+		context.yPos -= ((DefaultMenuLookAndFeel)context.laf).getSize() * sizeMult + ((DefaultMenuLookAndFeel)context.laf).getSpacing();
 
 	}
 
 	@Override
 	public void destroy() {
-		laf.display.removeItem(textItem);
+		laf.getDisplay().removeItem(textItem);
 		textItem = null;
 	}
 
@@ -56,12 +58,12 @@ public class TextWidget extends Widget {
 
 		if (! isViewValid) {
 
-			if (laf.controller.getCurrentMenuItem() == item) {
+			if (laf.getController().getCurrentMenuItem() == item) {
 				textItem.setText("[" + item.getKey() + "]");
 			} else {
 				textItem.setText(item.getKey());
 			}
-			textItem.refreshNode(laf.display.getRootNode());
+			textItem.refreshNode(laf.getDisplay().getRootNode());
 
 			isViewValid = true;
 		}

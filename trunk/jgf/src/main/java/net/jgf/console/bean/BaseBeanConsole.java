@@ -49,8 +49,10 @@ import org.apache.log4j.Logger;
  * this console holds a list of beans and is able to read it from configuration.</p>
  * <p>These beans can then be exposed through the derived class command interpreter,
  * like the {@link BeanshellConsole} does.</p>
- * <p>If you are creating aIf you do not need this functionality, you can use the
- * parent class {@link BaseConsole}, which doesn't feature bean management.</p>
+ * <p>If you do not need this functionality, you can use the
+ * parent class {@link BaseConsole}, which doesn't feature bean management,
+ * however, you may consider to provide support for beans making them accessible
+ * through your own console implementation, extending this class.</p>
  *
  * @see BeanshellConsole
  * @author jjmontes
