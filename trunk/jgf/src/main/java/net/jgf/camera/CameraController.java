@@ -2,7 +2,6 @@
 package net.jgf.camera;
 
 
-
 import net.jgf.core.component.BaseComponent;
 
 /**

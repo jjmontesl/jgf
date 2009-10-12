@@ -127,7 +127,7 @@ public class Bullet extends SpatialEntity {
 
 			TriMesh mesh = ((TriMesh) geom);
 
-      for (int i = 0; i < 1 /* tris.size() */; i++) {
+      for (int i = 0; i < /*1 */ (tris.size() > 0 ? 1 : 0); i++) {
 
         int triIndex = tris.get(i);
         Vector3f[] vec = new Vector3f[3];

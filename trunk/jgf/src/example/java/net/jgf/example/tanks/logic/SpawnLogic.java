@@ -135,16 +135,6 @@ public class SpawnLogic extends BaseLogicState {
 
 	}
 
-	public void updateOsd() {
-		TextItem killsTextItem = Jgf.getDirectory().getObjectAs("view/root/level/osd/kills", TextItem.class);
-		DisplayItemsView osdItemsView = Jgf.getDirectory().getObjectAs("view/root/level/osd", DisplayItemsView.class);
-		if (Jgf.getDirectory().containsObject("entity/root/players/player1")) {
-			PlayerTank player = Jgf.getDirectory().getObjectAs("entity/root/players/player1", PlayerTank.class);
-			killsTextItem.setText("Hits: " +  player.getKills());
-			killsTextItem.refreshNode(osdItemsView.getRootNode());
-		}
-	}
-	
 	public void destroyTank(Tank tank, Bullet bullet) {
 
 		if (playerEntityGroup.containsChild(tank)) {
@@ -154,7 +144,6 @@ public class SpawnLogic extends BaseLogicState {
 			if (bullet.getOwner() instanceof PlayerTank) {
 				PlayerTank player = (PlayerTank) bullet.getOwner();
 				player.setKills(player.getKills() + 1);
-				updateOsd();
 			}
 			
 			tank.withdraw(enemyEntityGroup, scene.getRootNode());

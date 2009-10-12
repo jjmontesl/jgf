@@ -37,4 +37,10 @@ public class BaseReference implements Reference {
 		this.name = config.getString(configPath + "/name");
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+
 }

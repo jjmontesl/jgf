@@ -5,6 +5,7 @@ package net.jgf.example.tanks.loader;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
@@ -48,7 +49,7 @@ public final class SceneReferencesProcessorLoader extends SceneLoader {
 
 	public class ReferenceProcessor {
 
-		public String[] name;
+		public String regexp;
 
 		public ReferenceProcessorType type;
 
@@ -70,16 +71,14 @@ public final class SceneReferencesProcessorLoader extends SceneLoader {
 
 		int index = 1;
 		String[] names;
-		while (config.containsKey(configPath + "/reference[" + index + "]/@name")) {
-			names = config.getString(configPath + "/reference[" + index + "]/@name").split("\\s+");
-			if (names.length > 0) {
-				ReferenceProcessor proc = new ReferenceProcessor();
-				proc.name = names;
-				proc.type = ReferenceProcessorType.valueOf(config.getString(configPath + "/reference[" + index + "]/@type"));
-				proc.target = config.getString(configPath + "/reference[" + index + "]/@target", null);
-				proc.loader = ConfigurableFactory.newFromConfig(config, configPath + "/reference[" + index + "]/loader", Loader.class);
-				processors.add(proc);
-			}
+		while (config.containsKey(configPath + "/reference[" + index + "]/@regexp")) {
+			//names = config.getString(configPath + "/reference[" + index + "]/@name").split("\\s+");
+			ReferenceProcessor proc = new ReferenceProcessor();
+			proc.regexp = config.getString(configPath + "/reference[" + index + "]/@regexp");
+			proc.type = ReferenceProcessorType.valueOf(config.getString(configPath + "/reference[" + index + "]/@type"));
+			proc.target = config.getString(configPath + "/reference[" + index + "]/@target", null);
+			proc.loader = ConfigurableFactory.newFromConfig(config, configPath + "/reference[" + index + "]/loader", Loader.class);
+			processors.add(proc);
 			index++;
 		};
 
@@ -105,10 +104,15 @@ public final class SceneReferencesProcessorLoader extends SceneLoader {
 	}
 
 	protected void processReference(JmeScene scene, Reference ref, LoadProperties properties) {
+		
 		// Check if it matches any processor
 		for (ReferenceProcessor proc : processors) {
 
-			if (ArrayUtils.contains(proc.name, ref.getName())) {
+			// Check if it matches
+			
+			boolean matches = Pattern.matches(proc.regexp, ref.getName());
+			
+			if (matches) {
 				// Process it
 				if (proc.type == ReferenceProcessorType.model) {
 

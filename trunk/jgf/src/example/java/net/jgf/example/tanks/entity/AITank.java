@@ -41,7 +41,9 @@ public class AITank extends Tank {
 
 	protected Tile finalTargetPos;
 	
-	protected float firePerSecond = 1.0f;
+	protected float firePerSecond = 0.2f;
+	
+	protected float maxSpeed = 0.0f;
 
 
 	/* (non-Javadoc)
@@ -83,7 +85,7 @@ public class AITank extends Tank {
 
 		if (direction.length() > 0.2f) {
 			// Move
-			direction.normalizeLocal().multLocal(0.8f);
+			direction.normalizeLocal().multLocal(maxSpeed);
 		} else {
 			/// Stand
 			direction.zero();
