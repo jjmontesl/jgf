@@ -168,7 +168,7 @@
 				autoLoad="true" autoActivate="true" >
 				
 				<unloadOnFinish>true</unloadOnFinish>
-				<!-- 
+
 				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
 					autoLoad="true" autoActivate="true" >
 				
@@ -242,7 +242,6 @@
 					
 				</view>
 				
-				 -->
 				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
 					<action ref="logic/action/showmenu" />
@@ -263,13 +262,26 @@
 						<textureUrl>tanks/texture/logo/war-pigs.png</textureUrl>
 						<size>2.0</size>
 					</item>
+						
+					<item id="view/root/main/background/tanks" class="net.jgf.jme.view.display.ImageItem">
+						<center>-0.5 -0.3 0.0</center>
+						<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
+						<size>0.50</size>
+					</item>
 					
+					<item id="view/root/main/background/title" class="net.jgf.jme.view.display.TextItem">
+						<center>-0.5 -0.6 0.0</center>
+						<size>0.1</size>
+						<font>Verdana BOLD 40</font>
+						<text>T a n k s</text>
+					</item>	
+						
 				</view>
 				
 				<view id="view/root/main/menu" class="net.jgf.jme.view.menu.DefaultMenuView"
 						autoLoad="true" autoActivate="true" >
 					<lookAndFeel id="view/root/main/menu/laf" class="net.jgf.jme.view.menu.DefaultMenuLookAndFeel" >
-						<origin>0.90 0.0 0.0</origin>
+						<origin>0.90 0.6 0.0</origin>
 						<size>0.08</size>
 						<font>Verdana PLAIN 40</font>
 						<align>Right</align>
@@ -328,12 +340,20 @@
 							<text>Hits: 0</text>
 							<align>TopLeft</align>
 						</item>
+						<item id="view/root/level/osd/time" class="net.jgf.jme.view.display.TextItem">
+							<center>-0.95 0.85 0.0</center>
+							<size>0.05</size>
+							<font>Verdana PLAIN 40</font>
+							<text>Time: 00:00</text>
+							<align>TopLeft</align>
+						</item>
+						
 					</view>					
 
 				</view>
 				
 				<view id="view/root/level/grid" class="net.jgf.jme.view.devel.AxisGridView" 
-					autoLoad="true" autoActivate="true" >
+					autoLoad="false" autoActivate="false" >
 					<sceneManager ref="scene/manager" />
 					<drawBehind>false</drawBehind>
 					<center>0.0 0.01 0.0</center>

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.example.tanks.camera.TanksCamera;
 import net.jgf.example.tanks.loader.TanksMap.Tile;
 import net.jgf.jme.camera.StaticCamera;
 import net.jgf.jme.refs.SpatialReference;
@@ -106,13 +107,19 @@ public final class TanksSceneLoader extends SceneLoader {
 				new Vector3f(0.5f * width, 0, 0.49f * height)
 		));
 		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/test", scene.getCameraControllers().getCameraController("scene/camera/test"));
+		scene.getCameraControllers().addCameraController(new TanksCamera("scene/camera/tanks"));
+		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/tanks", scene.getCameraControllers().getCameraController("scene/camera/tanks"));
 
 		fieldNode.attachChild(floorNode);
 		fieldNode.attachChild(obstaclesNode);
 
-	    fieldNode.getLocalTranslation().addLocal(0, 0, 0);
+	    //fieldNode.getLocalTranslation().addLocal(0, 0, 0);
+	    //fieldNode.setLocalTranslation(new Vector3f(-map.width / 2, 0, -map.height / 2));
 	    // TODO: Study how collisions and rendering are affected by the hierarchy of bounds
-	    //fieldNode.updateGeometricState(0, true);
+	    fieldNode.updateGeometricState(0, true);
+	    
+	    // center fieldnode
+	    
 	    fieldNode.lock();
 	    fieldNode.lockMeshes();
 	
@@ -151,6 +158,9 @@ public final class TanksSceneLoader extends SceneLoader {
 			// Walls
 			if ((tile.text.charAt(0) >= '0') && (tile.text.charAt(0) <= '9')) {
 				tile.raise = Integer.parseInt(String.valueOf(tile.text.charAt(0)));
+			}
+			if (tile.text.charAt(0) == '-') {
+				tile.raise = -10;
 			}
 
 			// Obstacles
@@ -276,6 +286,8 @@ public final class TanksSceneLoader extends SceneLoader {
 
 		Set<Integer> generatedBlocks = new HashSet<Integer>();
 		
+		int referenceIndex = 1;
+		
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 			
@@ -292,13 +304,19 @@ public final class TanksSceneLoader extends SceneLoader {
 					char valChar = tile.tag.charAt(0);
 					if ( ((valChar >= 'a') && (valChar <= 'z')) ||
 						 ((valChar >= 'A') && (valChar <= 'Z')) ) {
-						Node referenceNode = new Node("referenceNode-" + valChar);
+						Node referenceNode = new Node("referenceNode-" + referenceIndex);
 						referenceNode.setLocalTranslation(new Vector3f(0.5f + tile.col, 0.5f * tile.raise, 0.5f + tile.row));
-						SpatialReference reference = new SpatialReference(String.valueOf(valChar), referenceNode);
+						SpatialReference reference = null;
+						if ((valChar == 'x' || valChar == 'z')) {
+							reference = new SpatialReference(tile.tag, referenceNode);
+						} else {
+							reference = new SpatialReference(tile.tag+"_"+referenceIndex, referenceNode);
+						}
 	
 						scene.getReferences().addReference(reference);
+						referenceIndex++;
 	
-					    if (tile.raise >= 1) {
+					    if (tile.raise > 1) {
 					    	floorNode.setModelBound(null);
 					    	floorNode.attachChild(reference.getSpatial());
 					    } else {
