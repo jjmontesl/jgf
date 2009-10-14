@@ -91,6 +91,7 @@ public class DisplayItemsView extends BaseViewState {
 		super.render(tpf);
 
 		DisplaySystem.getDisplaySystem().getRenderer().draw(rootNode);
+		DisplaySystem.getDisplaySystem().getRenderer().renderQueue();
 
 	}
 

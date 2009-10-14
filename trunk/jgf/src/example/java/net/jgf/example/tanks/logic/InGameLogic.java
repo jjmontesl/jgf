@@ -4,6 +4,7 @@ package net.jgf.example.tanks.logic;
 import net.jgf.config.Configurable;
 import net.jgf.entity.EntityManager;
 import net.jgf.example.tanks.entity.PlayerTank;
+import net.jgf.jme.scene.JmeScene;
 import net.jgf.jme.view.display.DisplayItemsView;
 import net.jgf.jme.view.display.TextItem;
 import net.jgf.logic.BaseLogicState;
@@ -11,6 +12,11 @@ import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
+
+import com.jme.scene.Node;
+import com.jme.scene.state.LightState;
+import com.jme.scene.state.LightUtil;
+import com.jme.scene.state.RenderState.StateType;
 
 
 /**
@@ -35,6 +41,8 @@ public class InGameLogic extends BaseLogicState {
 	
 	TextItem timeTextItem;
 	
+	PlayerTank player;
+	
 	float timeElapsed;
 	
 	float gameTime;
@@ -51,7 +59,22 @@ public class InGameLogic extends BaseLogicState {
 		killsTextItem = Jgf.getDirectory().getObjectAs("view/root/level/osd/kills", TextItem.class);
 		timeTextItem = Jgf.getDirectory().getObjectAs("view/root/level/osd/time", TextItem.class);
 		osdItemsView = Jgf.getDirectory().getObjectAs("view/root/level/osd", DisplayItemsView.class);
+		Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
 	}
+	
+	
+
+	public PlayerTank getPlayer() {
+		return player;
+	}
+
+
+
+	public void setPlayer(PlayerTank player) {
+		this.player = player;
+	}
+
+
 
 	public void updateOsd(float tpf) {
 		
@@ -59,9 +82,8 @@ public class InGameLogic extends BaseLogicState {
 		if (timeElapsed > 1.0f) {
 			
 			timeElapsed = 0;
-			if (Jgf.getDirectory().containsObject("entity/root/players/player1")) {
+			if (player != null) {
 				
-				PlayerTank player = Jgf.getDirectory().getObjectAs("entity/root/players/player1", PlayerTank.class);
 				killsTextItem.setText("Hits: " +  player.getKills());
 				
 				int timeMinutes = (int) (gameTime / 60);
@@ -83,7 +105,10 @@ public class InGameLogic extends BaseLogicState {
 		gameTime += tpf;
 		entityManager.update(tpf);
 		sceneManager.update(tpf);
+		
+		// TODO: This is part of the view, should be in the view state
 		updateOsd(tpf);
+		
 	}
 
 

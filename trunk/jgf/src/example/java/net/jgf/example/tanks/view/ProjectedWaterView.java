@@ -1,5 +1,5 @@
 
-package net.jgf.example.mudvolley1.view;
+package net.jgf.example.tanks.view;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.IllegalStateException;
@@ -31,6 +31,8 @@ public class ProjectedWaterView extends BaseViewState {
     
     protected BasicPassManager pManager;
     
+	DefaultJmeScene scene;
+    
     Node rootNode;
 
     @Override
@@ -50,12 +52,8 @@ public class ProjectedWaterView extends BaseViewState {
     	
     	setupFog();
 
-    	DefaultJmeScene scene = (DefaultJmeScene) Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class).getScene();
+    	scene = (DefaultJmeScene) Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class).getScene();
     	
-        Node reflectedNode = new Node();
-        //reflectedNode.attachChild(scene.getSky().getRootNode());
-        //reflectedNode.attachChild((Node) scene.getRootNode().getChild("fieldNode"));
-
 
         waterEffectRenderPass = new WaterRenderPass(DisplaySystem.getDisplaySystem().getRenderer().getCamera(), 4, true, true);
         waterEffectRenderPass.setClipBias(0.5f);
@@ -124,7 +122,6 @@ public class ProjectedWaterView extends BaseViewState {
 
 		if (! this.active) return;
 		
-		DefaultJmeScene scene = (DefaultJmeScene) Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class).getScene();
 		if (scene.getCurrentCameraController() == null) {
 			throw new IllegalStateException("No camera is associated to " + this);
 		}

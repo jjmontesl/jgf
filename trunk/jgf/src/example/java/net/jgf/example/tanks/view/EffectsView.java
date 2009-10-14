@@ -121,6 +121,9 @@ public class EffectsView extends BaseViewState {
 	@Override
 	public void update(float tpf) {
 		super.update(tpf);
+		
+		// TODO: This shouldn't be here, it's not an effect
+		scene.getRootNode().sortLights();
 
 		// Update smokes
 		for (Iterator<SmokeEffect> iterator = smokes.iterator(); iterator.hasNext();) {

@@ -73,12 +73,30 @@ public class EntityPoolLoader extends EntityLoader {
 		return entity;
 	}
 
+	public void preload(int count, String properties) {
+		for (int i = 0; i < count; i ++) {
+			Entity entity = load(null, properties);
+			this.returnToPool(entity);
+		}
+	}
+	
+	public void preload(int count, LoadProperties properties) {
+		for (int i = 0; i < count; i ++) {
+			Entity entity = load(null, properties);
+			this.returnToPool(entity);
+		}
+	}
 
 	public void returnToPool(Entity item) {
 
 		boolean found = false;
 
-		// TODO: Diagnostics mode: check if entity returned is deactivated and unloaded!
+		// TODO: Diagnostics mode: check if entity returned is deactivated!
+		if (Jgf.getApp().isDebug()) {
+			if (item.isActive()) {
+				throw new IllegalStateException("Tried to return an active entity to EntityPool " + this + ". Entities returned must be inactive.");
+			}
+		}
 
 		for (EntityPool pool : pools) {
 

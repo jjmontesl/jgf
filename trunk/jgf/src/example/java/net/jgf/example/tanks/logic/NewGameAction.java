@@ -3,9 +3,11 @@ package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.state.StateHelper;
+import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
+import net.jgf.loader.entity.pool.EntityPoolLoader;
 import net.jgf.logic.LogicState;
 import net.jgf.logic.action.BaseLogicAction;
 import net.jgf.scene.Scene;
@@ -62,6 +64,10 @@ public class NewGameAction extends BaseLogicAction {
 		// Prepare entities
 		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
 		StateHelper.loadAndActivate(rootEntity);
+
+		
+		EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
+		entityLoader.preload(60, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
 
 		// Activate next view and logic
 		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);

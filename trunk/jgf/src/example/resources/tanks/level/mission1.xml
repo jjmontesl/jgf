@@ -145,7 +145,7 @@
 					<property name="ConverterLoader.resourceUrl" value="tanks/model/lamppost/lamppost.dae" />
 				</loader>
 			</reference>
-			
+
 			<reference regexp="T.*" type="model">
 				<loader id="!scene.referencesProcessor.fir" class="net.jgf.loader.ReferenceLoader">
 					<property name="ReferenceLoader.loader" value="loader/model" />
