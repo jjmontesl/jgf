@@ -30,11 +30,24 @@ public class TanksCamera extends JmeCamera {
 	
 	public TanksCamera() {
 		super();
+		Jgf.getDirectory().register(this, "target", "entity/root/players/player1");
 	}
 
 
 	public TanksCamera(String id) {
 		super(id);
+		Jgf.getDirectory().register(this, "target", "entity/root/players/player1");
+	}
+
+
+	
+	public SpatialEntity getTarget() {
+		return target;
+	}
+
+
+	public void setTarget(SpatialEntity target) {
+		this.target = target;
 	}
 
 
@@ -44,8 +57,7 @@ public class TanksCamera extends JmeCamera {
 	@Override
 	public void update(float tpf) {
 
-		if (Jgf.getDirectory().containsObject("entity/root/players/player1")) {
-			target = Jgf.getDirectory().getObjectAs("entity/root/players/player1", SpatialEntity.class);
+		if (target != null) {
 			
 			Vector3f lookAtPos = target.getSpatial().getWorldTranslation().clone();
 			lookAtPos.y = 0.5f;

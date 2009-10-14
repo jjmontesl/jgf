@@ -50,11 +50,14 @@
 	<property name="dir.src" value="${dir.project}/src" />
 	<property name="dir.target" value="${dir.project}/target" />
 	
+	<property name="dir.src.project-skel" value="${dir.src}/project-skel" />
 	<property name="dir.lib.jme" value="${dir.project}/../jme/target" />
 	
 	<property name="dir.target.javadoc" value="${dir.target}/docs/api" />
 	<property name="dir.target.classes" value="${dir.target}/classes" />
 	<property name="dir.target.packages" value="${dir.target}/packages" />
+	<property name="dir.target.project-skel" value="${dir.target}/project-skel" />
+	<property name="dir.target.dist" value="${dir.target}/dist" />
 	
 		
 	<path id="classpath.main">
@@ -79,6 +82,10 @@
 		<dirset dir="${dir.target.classes}/jgf-jme" />
 	</path>		
 
+	<target name="clean">
+		<delete dir="${dir.target}" />
+	</target>
+	
 	<target name="compile">
 		  <mkdir dir="${dir.target.classes}/main"/>
 		  <javac srcdir="${dir.src}/main/java"
@@ -101,8 +108,34 @@
 		         debug="on"
 		         source="1.5"  />		
 	</target>
+	
+	<target name="project-skel" depends="package" >
+		
+		<mkdir dir="${dir.target.project-skel}" />
+		
+		<copy todir="${dir.target.project-skel}">
+		    <fileset dir="${dir.src.project-skel}" />
+		</copy>
+		
+		<copy todir="${dir.target.project-skel}/src/mygame/lib/jme">
+		    <fileset dir="${dir.lib.jme}" />
+		</copy>
+		<copy todir="${dir.target.project-skel}/src/mygame/lib/jgf">
+		    <fileset dir="${dir.src}/main/lib" />
+		</copy>
+		<copy todir="${dir.target.project-skel}/src/mygame/lib/jgf">
+		    <fileset dir="${dir.src}/jgf-jme/lib" />
+		</copy>
+		<copy todir="${dir.target.project-skel}/src/mygame/lib/jgf">
+		    <fileset dir="${dir.target.packages}" >
+		    		<include name="jgf-core.jar" />
+		    		<include name="jgf-jme.jar" />
+			</fileset>
+		</copy>		
+		
+	</target>
 
-	<target name="package">
+	<target name="package" depends="compile,javadoc">
 	
 		<mkdir dir="${dir.target.packages}"/>
 		
@@ -149,7 +182,7 @@
 	      <attribute name="Implementation-Title" value="JGF JavaDoc"/>
 	      <attribute name="Implementation-Version" value="${app.version}"/>
 	    </manifest>
-	  </jar>			
+	  </jar>
 		
 	</target>
 	

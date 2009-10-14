@@ -3,6 +3,7 @@ package net.jgf.jme.view.menu;
 
 
 
+import java.awt.GraphicsEnvironment;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -21,9 +22,12 @@ import net.jgf.menu.items.LabelMenuItem;
 import net.jgf.menu.items.MenuItem;
 import net.jgf.menu.items.ScreenLinkMenuItem;
 import net.jgf.menu.items.SeparatorMenuItem;
+import net.jgf.menu.items.SettingMenuItem;
 import net.jgf.menu.items.TitleMenuItem;
+import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jme.input.InputHandler;
@@ -124,6 +128,12 @@ public final class DefaultMenuLookAndFeel extends BaseViewState implements MenuL
 		widgetTypeMap.put(TitleMenuItem.class, TextWidget.class);
 		widgetTypeMap.put(ScreenLinkMenuItem.class, TextWidget.class);
 		widgetTypeMap.put(ActionMenuItem.class, TextWidget.class);
+		widgetTypeMap.put(SettingMenuItem.class, TextWidget.class);
+		
+		if (Jgf.getApp().isDebug()) {
+			String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+			logger.debug("Available Font Family Names: " + StringUtils.join(fonts, ", "));
+		}
 
 	}
 

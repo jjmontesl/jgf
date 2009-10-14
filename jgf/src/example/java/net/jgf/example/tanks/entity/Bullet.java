@@ -139,9 +139,11 @@ public class Bullet extends SpatialEntity {
             v.addLocal(mesh.getWorldTranslation());
         }
 
-				triangle = new Triangle(vec[0], vec[1], vec[2]);
+		triangle = new Triangle(vec[0], vec[1], vec[2]);
 
-			}
+	  }
+      
+      if (tris.size() > 0) {
 
 			Vector3f exactHit = new Vector3f();
 			ray.intersectWhere(triangle, exactHit);
@@ -157,7 +159,7 @@ public class Bullet extends SpatialEntity {
 			q.fromAngleAxis(FastMath.PI, triangle.getNormal());
 			q.mult(trip.bounceDirection.clone(), trip.bounceDirection); // Overwriting temporal value of bounceDirection
 
-
+      		}
 		}
 
 		// We need to update this as bullet position will be immediately used in collisions: beware pooled entities!

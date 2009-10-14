@@ -13,7 +13,9 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Quad;
+import com.jme.scene.state.BlendState;
 import com.jme.scene.state.TextureState;
+import com.jme.scene.state.BlendState.TestFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.resource.ResourceLocatorTool;
@@ -64,17 +66,30 @@ public class ImageItem extends DisplayItem {
 		quad.setTextureCombineMode(TextureCombineMode.Replace);
 
 		// Prepare some resources
-    Texture imageTexture = TextureManager.loadTexture(
+		Texture imageTexture = TextureManager.loadTexture(
     	ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, getTextureUrl()),
 			Texture.MinificationFilter.BilinearNearestMipMap,
 			Texture.MagnificationFilter.Bilinear);
-  	TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-    ts.setTexture(imageTexture, 0);
-    ts.setEnabled(true);
-    quad.setRenderState(ts);
+	  	TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+	    ts.setTexture(imageTexture, 0);
+	    ts.setEnabled(true);
+	    quad.setRenderState(ts);
 
-    // TODO: FIXME: size is dependant on image real size and therefore on screen size!
-    float imageHeight = getSize() * ts.getTexture().getImage().getHeight();
+	    /*
+	    quad.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+	    quad.updateGeometricState(0, true);
+		*/
+	    
+		BlendState as = DisplaySystem.getDisplaySystem().getRenderer()
+				.createBlendState();
+		as.setBlendEnabled(true);
+		as.setTestEnabled(true);
+		as.setTestFunction(TestFunction.GreaterThan);
+		as.setEnabled(true);
+		quad.setRenderState(as);
+	    
+	    // TODO: FIXME: size is dependant on image real size and therefore on screen size!
+	    float imageHeight = getSize() * ts.getTexture().getImage().getHeight();
 		float imageWidth = getSize() * ts.getTexture().getImage().getWidth();
 		quad.resize(imageWidth, imageHeight);
 

@@ -16,5 +16,5 @@ public class LoadProperties extends HashMap<String, String> {
 	public LoadProperties(int initialCapacity) {
 		super(initialCapacity);
 	}
-
+	
 }

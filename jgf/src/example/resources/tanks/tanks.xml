@@ -9,10 +9,10 @@
 	<!-- Application configuration -->
 	<application>
 	
-		<name>Tanks</name>
+		<name>Taunklet</name>
 		<version>1.0</version>
 		<networkProtocolVersion>1.0</networkProtocolVersion>
-		<debug>true</debug>
+		<debug>false</debug>
 		
 		<description>
 			Java Game Framework: Tanks Example Game
@@ -35,6 +35,75 @@
 		
 	</service>
 	
+	
+	<service id="settings" class="net.jgf.settings.SettingsManager">
+		
+		<caseSensitive>true</caseSensitive>
+	
+		<settings>
+			<setting id="settings.network.dedicatedServer" class="java.lang.Boolean"  
+					 label="Dedicated Server" default="false" />
+			<setting id="video.gamma" class="java.lang.Float"
+					 label="Video Gamma" default="1.0f" />
+			
+			<setting id="settings.input.mouse.accel" class="java.lang.Float" 
+					 label="Mouse Accel" default="0.0f" />
+			<setting id="settings.input.mouse.sensitivity" class="java.lang.Float" 
+					 label="Mouse Accel" default="0.0f" />					 
+
+			<setting id="settings.input.key.up" class="net.jgf.config.ConfigKey" 
+					 label="Move Up" default="KEY_W" />
+			<setting id="settings.input.key.down" class="net.jgf.config.ConfigKey" 
+					 label="Move Down" default="KEY_S" />
+			<setting id="settings.input.key.left" class="net.jgf.config.ConfigKey" 
+					 label="Move Left" default="KEY_A" />
+			<setting id="settings.input.key.right" class="net.jgf.config.ConfigKey" 
+					 label="Move Right" default="KEY_D" />
+					 
+			<setting id="settings.input.key.screenshot" class="net.jgf.config.ConfigKey" 
+					 label="Move Right" default="KEY_F1" />					 
+			<setting id="settings.input.key.console" class="net.jgf.config.ConfigKey" 
+					 label="Move Right" default="KEY_TILDE" />
+			
+			<setting id="settings.game.level" class="net.jgf.config.ConfigEnum"
+					 label="Difficulty Level" default="medium">
+					 <value key="easy" label="Easy" />
+					 <value key="medium" label="Medium" />
+					 <value key="hard" label="Hard" />
+			</setting>
+			
+			<setting id="settings.player.name" class="net.jgf.config.ConfigString" 
+					 label="Player Name" default="Unnamed" />
+			
+		</settings>
+	
+	</service>
+	
+	<!-- 
+	<service id="settingsStorage" class="net.jgf.settings.storage.PropertiesFileSettingsStorage">
+		<path>$HOME/taunklet.properties</path>
+		<settings ref="settings" />
+	</service>
+	 -->	
+	
+	<service id="console" class="net.jgf.console.bean.BeanshellConsole" >
+
+		<bean name="game" class="net.jgf.console.bean.NetworkedGameBean" />
+		<bean name="tools" class="net.jgf.console.bean.DefaultToolsBean" />
+		<bean name="settings" class="net.jgf.console.bean.SettingsBean" />
+
+	</service>
+	
+	<!-- 
+	<service id="commandLine" class="net.jgf.cli.DefaultCliProcessor">
+		<allowConsoleExpressions>true</allowConsoleExpressions>
+	</service>
+
+	<service id="minimalSettings" class="net.jgf.settings.dialog.StandardGameDialog">
+		<image>texture/logo/indoorbattles-dialog.png</image>
+		<displayCondition>onFailureOrHardwareChange</displayCondition>
+	</service>
+	 -->
 	
 	<!-- 
 		Entity Manager: Just create the groups as entities are 
@@ -107,8 +176,6 @@
 				<key>FileChainLoader.resourceUrl</key>
 				<value>tanks/entity/bullet.xml</value>
 				<maxInstances>200</maxInstances>
-				<!--  TODO: Sort preloading out -->
-				<preloadInstances>50</preloadInstances>
  			</pool>
 			
 		</loader>		
@@ -169,12 +236,13 @@
 				
 				<unloadOnFinish>true</unloadOnFinish>
 
+				<!-- 
 				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
 					autoLoad="true" autoActivate="true" >
 				
 					<fadeInTime>3.0</fadeInTime>
 					<fadeOutTime>0.8</fadeOutTime>
-					<autoFadeOutTime>2.0</autoFadeOutTime>
+					<autoFadeOutTime>3.0</autoFadeOutTime>
 					<allowKeyToSkip>true</allowKeyToSkip>
 					<color>0.0 0.0 0.0</color>
 					
@@ -235,12 +303,13 @@
 							<center>-0.00 -0.3 0.0</center>
 							<size>0.25</size>
 							<font>Verdana BOLD 40</font>
-							<text>T a n k s</text>
+							<text>T a u n k l e t</text>
 						</item>	
 						
 					</view>
 					
 				</view>
+				-->
 				
 				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
@@ -273,7 +342,7 @@
 						<center>-0.5 -0.6 0.0</center>
 						<size>0.1</size>
 						<font>Verdana BOLD 40</font>
-						<text>T a n k s</text>
+						<text>T a u n k l e t</text>
 					</item>	
 						
 				</view>
@@ -325,7 +394,7 @@
 						<sceneManager ref="scene/manager" />		
 					</view>
 
-					<view id="view/root/level/fight/water" class="net.jgf.example.mudvolley1.view.ProjectedWaterView"
+					<view id="view/root/level/fight/water" class="net.jgf.example.tanks.view.ProjectedWaterView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
@@ -445,6 +514,35 @@
 				<key>Quit</key>
 				<action ref="logic/action/quit" />
 			</item>
+		</menu>
+
+		<menu id="menu/settings" class="net.jgf.menu.DefaultMenu">
+			
+			<item id="menu/settings/title" class="net.jgf.menu.items.TitleMenuItem">
+				<key>Taunklet Settings</key>
+			</item>
+		
+			<item id="menu/settings/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
+		
+			<item id="menu/settings/up" class="net.jgf.menu.items.SettingMenuItem">
+				<setting ref="input.up" />
+			</item>
+			<item id="menu/settings/down" class="net.jgf.menu.items.SettingMenuItem">
+				<setting ref="input.down" />
+			</item>
+			<item id="menu/settings/left" class="net.jgf.menu.items.SettingMenuItem">
+				<setting ref="input.left" />
+			</item>
+			<item id="menu/settings/right" class="net.jgf.menu.items.SettingMenuItem">
+				<setting ref="input.right" />
+			</item>
+
+			<item id="menu/settings/sep02" class="net.jgf.menu.items.SeparatorMenuItem" />
+
+			<item id="menu/settings/back" class="net.jgf.menu.items.ScreenLinkMenuItem">
+				<key>Back</key>
+				<target ref="menu/main" />
+			</item>	
 		</menu>
 
 	</service>	

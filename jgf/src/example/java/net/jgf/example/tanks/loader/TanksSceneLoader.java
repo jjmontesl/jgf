@@ -21,14 +21,19 @@ import org.apache.log4j.Logger;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
+import com.jme.light.PointLight;
+import com.jme.light.SimpleLightNode;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Box;
+import com.jme.scene.state.LightState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.TextureState;
+import com.jme.scene.state.RenderState.StateType;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.Timer;
@@ -96,9 +101,9 @@ public final class TanksSceneLoader extends SceneLoader {
 		groupTiles (map);
 	    generateTerrain (map, floorNode, obstaclesNode, scene, ts);
 
-		floorNode.setCullHint(CullHint.Never);
-		floorNode.setModelBound(new BoundingBox());
-		//floorNode.updateModelBound();
+		//floorNode.setCullHint(CullHint.Never);
+		//floorNode.setModelBound(new BoundingBox());
+		floorNode.updateModelBound();
 
 		// TODO: Create camera in the loader
 		scene.getCameraControllers().addCameraController(new StaticCamera(
@@ -274,7 +279,7 @@ public final class TanksSceneLoader extends SceneLoader {
 		    if (tile.raise > 0) {
 		    	obstaclesNode.attachChild(block);
 		    } else {
-		    	floorNode.setModelBound(null);
+		    	//floorNode.setModelBound(null);
 		    	floorNode.attachChild(block);
 
 		    }
@@ -284,6 +289,12 @@ public final class TanksSceneLoader extends SceneLoader {
 	
 	private void generateTerrain(TanksMap map, Node floorNode, Node obstaclesNode, DefaultJmeScene scene, TextureState ts) {
 
+		
+		LightState ls1 = (LightState) scene.getRootNode().getRenderState(StateType.Light);
+		ls1.detachAll();
+		scene.getRootNode().updateRenderState();
+		
+		
 		Set<Integer> generatedBlocks = new HashSet<Integer>();
 		
 		int referenceIndex = 1;
@@ -312,12 +323,33 @@ public final class TanksSceneLoader extends SceneLoader {
 						} else {
 							reference = new SpatialReference(tile.tag+"_"+referenceIndex, referenceNode);
 						}
+						
+						
+						PointLight light = new PointLight();
+						//light.setLocation(referenceNode.getWorldTranslation().add(0, 1.5f, 0));
+						LightState ls = (LightState) scene.getRootNode().getRenderState(StateType.Light);
+						//if (ls.getLightList().size() < 6) {
+							ls.attach(light);
+							light.setEnabled(true);
+							light.setAttenuate(true);
+							light.setConstant(/* FastMath.rand.nextFloat() */.1f);
+							light.setLinear(/* FastMath.rand.nextFloat()* */.01f);
+							light.setQuadratic(/* FastMath.rand.nextFloat() */.1f);
+							light.setAmbient(ColorRGBA.randomColor());
+							light.setDiffuse(ColorRGBA.randomColor());
+							scene.getRootNode().updateRenderState();
+					        SimpleLightNode ln = new SimpleLightNode("ln" + i, light);
+					        ln.setLocalTranslation(referenceNode.getWorldTranslation().add(0, 1.5f, 0));
+					        scene.getRootNode().attachChild(ln);
+					        
+						//}
+						 
 	
 						scene.getReferences().addReference(reference);
 						referenceIndex++;
 	
 					    if (tile.raise > 1) {
-					    	floorNode.setModelBound(null);
+					    	//floorNode.setModelBound(null);
 					    	floorNode.attachChild(reference.getSpatial());
 					    } else {
 					    	obstaclesNode.attachChild(reference.getSpatial());

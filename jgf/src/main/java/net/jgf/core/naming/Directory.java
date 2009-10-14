@@ -40,6 +40,7 @@ import java.util.Set;
 
 import net.jgf.config.ConfigException;
 import net.jgf.core.service.ServiceException;
+import net.jgf.system.Jgf;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -115,6 +116,10 @@ public final class Directory {
 		if (reference == null) {
 			throw new ConfigException("Tried to remove a non existent object named '" + id + "' from " + this);
 		}
+		
+		// Update the registered objects
+		registry.update(id, null);
+		
 		return reference.get();
 
 	}
@@ -167,6 +172,12 @@ public final class Directory {
 
 		retrievalCount++;
 
+		/*
+		if (Jgf.getApp().isDebug()) {
+			logger.info("Retrieving object with id: " + id);
+		}
+		*/
+		
 		if (id==null) {
 			throw new ServiceException("Trying to retrieve object with name 'null'");
 		}

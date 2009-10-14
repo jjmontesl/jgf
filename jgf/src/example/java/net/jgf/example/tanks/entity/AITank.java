@@ -41,9 +41,11 @@ public class AITank extends Tank {
 
 	protected Tile finalTargetPos;
 	
-	protected float firePerSecond = 0.2f;
+	protected float firePerSecond = 0.0f;
 	
-	protected float maxSpeed = 0.0f;
+	protected float maxSpeed = 0.8f;
+	
+	protected float actionDistance = 20.0f;
 
 
 	/* (non-Javadoc)
@@ -63,18 +65,16 @@ public class AITank extends Tank {
 	public void update(float tpf) {
 
 		if (targetEntity != null) {
-
-			boolean calculate = false;
-			calculate = true;
-
-			if (calculate) {
-
-				// Evaluate target
-				evaluate();
-				Tile to = findTarget();
-				targetPos.set(map.tileToWorld(to));
-
+			
+			if (targetEntity.getSpatial().getWorldTranslation().distanceSquared(this.getSpatial().getWorldTranslation()) > (actionDistance * actionDistance)) {
+				return;
 			}
+
+			// Evaluate target
+			evaluate();
+			Tile to = findTarget();
+			targetPos.set(map.tileToWorld(to));
+
 
 			direction.set(targetPos).subtractLocal(spatial.getLocalTranslation());
 			direction.y = 0;
@@ -91,8 +91,10 @@ public class AITank extends Tank {
 			direction.zero();
 		}
 
-		this.setTarget(targetEntity.getSpatial().getLocalTranslation());
-		this.getTarget().y = 0.5f;
+		if (targetEntity != null) {
+			this.setTarget(targetEntity.getSpatial().getLocalTranslation());
+			this.getTarget().y = 0.5f;
+		}
 
 		if (FastMath.rand.nextFloat() < (firePerSecond * tpf)) {
 			fire();
@@ -229,9 +231,11 @@ public class AITank extends Tank {
 	private void round(int row, int col, int r, int value, int danger) {
 		for (int i = row - r; i <= row + r; i ++) {
 			for (int j = col - r; j <= col + r; j++) {
-				if ((i >= 0) && (i < map.getHeight()) && (j >= 0) && (j < map.getWidth())) {
-					map.getTile(i, j).value += value;
-					map.getTile(i, j).dontGo += danger;
+				if ( ((i-row)*(i-row)) + ((j-col)*(j-col)) < (r * r)) { 
+					if ((i >= 0) && (i < map.getHeight()) && (j >= 0) && (j < map.getWidth())) {
+						map.getTile(i, j).value += value;
+						map.getTile(i, j).dontGo += danger;
+					}
 				}
 			}
 		}

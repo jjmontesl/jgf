@@ -115,6 +115,8 @@ final class Registry {
 	 */
 	void register(Object target, String field, String id) {
 
+		logger.debug("Registering field " + field + " for id " + id + " on object " + target);
+		
 		if (StringUtils.isBlank(field)) {
 			throw new ConfigException("Tried to register object " + target + " for id '" + id + "' for a null or blank field");
 		}
