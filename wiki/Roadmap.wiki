@@ -4,17 +4,17 @@
 
 JGF has not been released for public usage. Here are the steps ahead in its development.
 
-*0.8 beta (first public release)*
+*1.0 (first public release)*
 
-  * Finish the console system.
+  * Finish console system. 
+  * Finish build scripts.
   * Implement startup, settings and configuration services.
-  * Implement the network system and architecture.
-  * Review and solve the TODO list and TODO code notes when possible.
-
-* Later on *
-
+  * Review and solve source code TODO tasks where possible.
   * Add missing documentation and review licence notes.
-  * Complete Wiki and tutorials.
+  * Update Wiki and tutorials.
 
+*1.1*
+
+  * Network system and architecture.
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
