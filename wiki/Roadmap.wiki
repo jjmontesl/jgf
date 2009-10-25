@@ -2,7 +2,7 @@
 
 = JGF - Roadmap =
 
-JGF has not been released for public usage. Here are the steps ahead in its development.
+Please note that JGF is not ready for production usage. Some important features are still missing.
 
 *1.0 (first public release)*
 
