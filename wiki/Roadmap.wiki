@@ -15,6 +15,6 @@ Please note that JGF is not ready for production usage. Some important features 
 
 *1.1*
 
-  * Network system and architecture.
+  * Network system.
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
