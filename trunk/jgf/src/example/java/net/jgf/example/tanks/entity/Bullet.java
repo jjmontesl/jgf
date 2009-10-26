@@ -1,10 +1,11 @@
 package net.jgf.example.tanks.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.state.StateObserver;
 import net.jgf.entity.Entity;
-import net.jgf.example.tanks.entity.util.ProjectileTrip;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.model.util.TransientSavable;
@@ -39,7 +40,7 @@ public class Bullet extends SpatialEntity {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(Bullet.class);
 
-	public final static float BULLET_SPEED = 3.2f;
+	public final static float BULLET_SPEED = 3.3f;
 
 	public static final float BULLET_TTL = 30.0f;
 
@@ -102,6 +103,11 @@ public class Bullet extends SpatialEntity {
 		this.getSpatial().setUserData("entity", null);
 	}
 
+	
+	@Override
+	public void activate() {
+		super.activate();
+	}
 
 
 	public void startFrom(Vector3f position, Vector3f direction) {

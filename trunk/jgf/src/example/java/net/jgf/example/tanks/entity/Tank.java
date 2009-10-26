@@ -1,5 +1,8 @@
 package net.jgf.example.tanks.entity;
 
+import net.jgf.core.state.StateLifecycleEvent;
+import net.jgf.core.state.StateObserver;
+import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.TanksSettings;
@@ -21,7 +24,7 @@ import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
-public abstract class Tank extends SpatialEntity {
+public abstract class Tank extends SpatialEntity implements StateObserver {
 
 	/**
 	 * Class logger
@@ -37,7 +40,7 @@ public abstract class Tank extends SpatialEntity {
 
 	protected float speedRel;
 
-	protected float fireDelay = 0.200f;
+	protected float fireDelay = 0.250f;
 
 	protected float fireHold;
 
@@ -62,6 +65,10 @@ public abstract class Tank extends SpatialEntity {
 	private final CollisionResults obstaclesResults = new TriangleCollisionResults();
 	
 	private EntityGroup enemyEntities;
+	
+	private int simultaneousBullets = 5;
+	
+	private int currentBullets = 0;
 
 	Spatial hull;
 
@@ -225,18 +232,36 @@ public abstract class Tank extends SpatialEntity {
 		// We don't contain logic to spawn other entities, as they could live longer than this entity
 		// An additional logic class is used
 		// TODO: On networked game this is likely to change
-		if (fireHold < 0) {
+		
+		if ((fireHold < 0) && (currentBullets < simultaneousBullets)) {
 
 			Bullet bullet = spawnLogic.spawnBullet(canon.getWorldTranslation().clone(), canon.getWorldRotation().clone());
 			bullet.setOwner(this);
 
 			audioItem.play();
 			fireHold = fireDelay;
+			
+			bullet.addStateObserver(this);
+			currentBullets++;
+			
 			return true;
 		} else {
 			return false;
 		}
 
+	}
+
+	
+	
+	/**
+	 * This listens for bullet deactivation, and increments the number
+	 * of bullets available for this tank.
+	 */
+	@Override
+	public void onStateLifecycle(StateLifecycleEvent evt) {
+		if (evt.getType() == LifecycleEventType.Deactivate) {
+			currentBullets--;
+		}
 	}
 
 	/**
@@ -245,16 +270,11 @@ public abstract class Tank extends SpatialEntity {
 	 */
 	protected void updateWeapons(float tpf) {
 
-		// Fire (there is a delay to limit the bullets per second)
-
-		if (fireHold < 0) {
-			if (firing) {
-				boolean fired = fire();
-				if (fired) firing = false;
-			}
-		} else {
-			fireHold = fireHold - tpf;
+		fireHold = fireHold - tpf;
+		if (firing) {
+			fire();
 		}
+		firing = false;
 
 	}
 

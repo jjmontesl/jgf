@@ -31,7 +31,7 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	 */
 	//protected ArrayList<T> children = new ArrayList<T>();
 
-	// TODO: A CopyOnWriteArrayList is being used!
+	// TODO: A CopyOnWriteArrayList is being used! is it ok?
 	protected List<T> children = new CopyOnWriteArrayList<T>();
 
 

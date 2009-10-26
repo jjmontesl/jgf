@@ -6,12 +6,15 @@
 package net.jgf.core.state;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.core.component.BaseComponent;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
+import net.jgf.system.Jgf;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -35,7 +38,7 @@ public abstract class BaseState extends BaseComponent implements State {
 	protected boolean autoActivate;
 
 	protected ArrayList<StateObserver> stateObservers;
-
+	
 	public BaseState() {
 		this(null);
 	}
@@ -58,7 +61,9 @@ public abstract class BaseState extends BaseComponent implements State {
 	 */
 	@Override
 	public void activate() {
+		
 		if (!this.loaded) throw new IllegalStateException("Activating unloaded state " + this);
+		
 		BaseState.logger.debug("Activating " + this);
 		this.active = true;
 
@@ -75,10 +80,13 @@ public abstract class BaseState extends BaseComponent implements State {
 	 */
 	@Override
 	public void deactivate() {
+		
+		logger.debug("Deactivating " + this);
+		
 		if (!this.loaded) throw new IllegalStateException("Deactivating unloaded " + this);
+		
 		this.active = false;
 
-		BaseState.logger.debug("Deactivating " + this);
 
 		// Notify observers
 		for (StateObserver observer : stateObservers) {
@@ -113,6 +121,7 @@ public abstract class BaseState extends BaseComponent implements State {
 	@Override
 	public void load() {
 		BaseState.logger.debug("Loading " + this);
+		
 		if (StringUtils.isBlank(this.getId())) {
 			throw new ConfigException("Illegal blank id in state " + this + " (detected at State.load())");
 		}
@@ -126,6 +135,10 @@ public abstract class BaseState extends BaseComponent implements State {
 	@Override
 	public void unload() {
 		BaseState.logger.debug("Unloading " + this);
+		
+		// TODO: Document this behaviour
+		if (!this.loaded) return;
+		
 		if (this.active) this.deactivate();
 		this.loaded = false;
 	}
@@ -171,6 +184,11 @@ public abstract class BaseState extends BaseComponent implements State {
 		this.stateObservers.remove(observer);
 	}
 
+	@Override
+	public void clearStateObservers() {
+		this.stateObservers.clear();
+	}
+	
 	/**
 	 * @return the autoActivate
 	 */

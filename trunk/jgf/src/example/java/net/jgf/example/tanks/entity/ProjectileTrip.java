@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.jgf.example.tanks.entity.util;
+package net.jgf.example.tanks.entity;
 
 import com.jme.math.LineSegment;
 import com.jme.math.Vector3f;

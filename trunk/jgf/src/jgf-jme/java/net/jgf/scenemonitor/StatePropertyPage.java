@@ -13,7 +13,9 @@ import com.acarter.propertytable.PropertySection;
 import com.acarter.propertytable.PropertySectionState;
 import com.acarter.propertytable.PropertyTable;
 import com.acarter.propertytable.propertyobject.BooleanPropertyObject;
+import com.acarter.propertytable.propertyobject.StringPropertyObject;
 import com.acarter.propertytable.propertyobject.BooleanPropertyObject.I_BooleanPropertyObjectListener;
+import com.acarter.propertytable.propertyobject.StringPropertyObject.I_StringPropertyObjectListener;
 import com.acarter.scenemonitor.propertydescriptor.A_PropertyPage;
 
 /**
@@ -26,6 +28,7 @@ public class StatePropertyPage extends A_PropertyPage {
 	/**
 	 * Class logger
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(StatePropertyPage.class);
 
 	protected State state;
@@ -34,11 +37,18 @@ public class StatePropertyPage extends A_PropertyPage {
 		super();
 		
 		// Define properties
+		PropertySection objectSection = new PropertySection("Object");
 		PropertySection stateSection = new PropertySection("State");
+		
+		objectSection.addProperty(new Property("Class", new StringPropertyObject()));
+		objectSection.setState(PropertySectionState.EXPANDED);
+		
 		stateSection.addProperty(new Property("Active", new BooleanPropertyObject()));
 		stateSection.addProperty(new Property("Loaded", new BooleanPropertyObject()));
 		stateSection.setState(PropertySectionState.EXPANDED);
-		model.addPropertySection(0, stateSection);
+		
+		model.addPropertySection(0, objectSection);
+		model.addPropertySection(1, stateSection);
 		
 	}
 
@@ -58,6 +68,15 @@ public class StatePropertyPage extends A_PropertyPage {
     }
 
     protected void updateListeners(final State state) {
+    	
+    	StringPropertyObject tclass = (StringPropertyObject)model.getPropertySection("Object").getProperty("Class").getPropertyObject();
+    	tclass.SetListener(new I_StringPropertyObjectListener() {
+    		public String readValue() {
+    			return state.getClass().getCanonicalName();
+    		}
+    		public void saveValue(String value) {
+    		}
+    	});        
             
         BooleanPropertyObject active = (BooleanPropertyObject)model.getPropertySection("State").getProperty("Active").getPropertyObject();
         active.SetListener(new I_BooleanPropertyObjectListener() {
@@ -85,7 +104,9 @@ public class StatePropertyPage extends A_PropertyPage {
                 	state.unload();
                 }
             }
-    });     
+        });     
+        
+        
     }
     
 

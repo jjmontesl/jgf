@@ -12,7 +12,7 @@
 		<name>Taunklet</name>
 		<version>1.0</version>
 		<networkProtocolVersion>1.0</networkProtocolVersion>
-		<debug>false</debug>
+		<debug>true</debug>
 		
 		<description>
 			Java Game Framework: Tanks Example Game
@@ -21,6 +21,16 @@
 		<engine ref="engine" />
 		
 	</application>
+
+	<!-- 
+		Logging configuration
+	 -->
+	<service id="logging" class="net.jgf.util.system.LoggingConfigService">
+		<logger name="com.jme.scene.Node" level="WARN" />
+		<logger name="com.jme.scene.Point" level="WARN" />
+		<logger name="com.jme.scene.Line" level="WARN" />
+		<logger name="net.jgf.loader.FileChainLoader" level="WARN" />				
+	</service>
 	
 	<!-- 
 		Engine service
@@ -73,7 +83,7 @@
 			</setting>
 			
 			<setting id="settings.player.name" class="net.jgf.config.ConfigString" 
-					 label="Player Name" default="Unnamed" />
+					 label="Player Name" default="UnnamedTank" />
 			
 		</settings>
 	
@@ -160,6 +170,14 @@
 			<property name="TanksSceneLoader.sceneManager" value="scene/manager" />
 		</loader>
 		
+		<loader id="loader/scene/referencesprocessor" class="net.jgf.example.tanks.loader.SceneReferencesProcessorLoader">
+			<reference regexp="a.*" type="entity" target="entity/root/enemies">
+				<loader id="!loader/scene/referencesprocessor/enemy-a" class="net.jgf.loader.ReferenceLoader" >
+					<property name="ReferenceLoader.loader" value="loader/entity" />
+					<property name="FileChainLoader.resourceUrl" value="tanks/entity/tank-a.xml" />
+				</loader>
+			</reference>
+		</loader>
 		
 		<!--  The EntityLoader used is a FileChainLoader: reads a chain of loaders from a file -->
 		<loader id="loader/entity" class="net.jgf.loader.FileChainLoader">
@@ -195,10 +213,14 @@
 				<logic id="logic/action/newgame" class="net.jgf.logic.action.control.ControllerAction" >
 					<step type="deactivateAndUnload" ref="view/root/main" />
 					<step type="runAction" ref="logic/action/newgame/init" />
+					<step type="runAction" ref="logic/action/restart" />
 				</logic>
 				
 				<logic id="logic/action/newgame/init" class="net.jgf.example.tanks.logic.NewGameAction" >
 				</logic>
+				
+				<logic id="logic/action/restart" class="net.jgf.example.tanks.logic.RestartAction" >
+				</logic>				
 				
 				<logic id="logic/action/showmenu" class="net.jgf.logic.action.control.ControllerAction" >
 					<step type="loadAndActivate" ref="view/root/main" />
@@ -217,6 +239,10 @@
 				<logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic"
 					autoLoad="true" autoActivate="true" > 
 				</logic>
+				
+				<logic id="logic/root/ingame/mission" class="net.jgf.example.tanks.logic.MissionLogic"
+					autoLoad="true" autoActivate="true" >
+				</logic>				
 			
 			</logic>
 			
@@ -329,7 +355,7 @@
 					<item id="view/root/main/background/warpigs" class="net.jgf.jme.view.display.ImageItem">
 						<center>0.0 0.0 0.0</center>
 						<textureUrl>tanks/texture/logo/war-pigs.png</textureUrl>
-						<size>2.0</size>
+						<size>1.0</size>
 					</item>
 						
 					<item id="view/root/main/background/tanks" class="net.jgf.jme.view.display.ImageItem">
@@ -399,27 +425,75 @@
 						<sceneManager ref="scene/manager" />		
 					</view>
 					
-					<view id="view/root/level/osd" class="net.jgf.jme.view.display.DisplayItemsView" 
+					<view id="view/root/level/fight/viewupdate" class="net.jgf.example.tanks.view.TanksView"
+						autoLoad="true" autoActivate="true" >
+					</view>
+					
+				</view>
+
+				<view id="view/root/level/failed" class="net.jgf.view.ViewStateNode"
+						autoLoad="true" autoActivate="false">
+
+					<view id="view/root/level/failed/banner" class="net.jgf.jme.view.display.DisplayItemsView" 
 						autoLoad="true" autoActivate="true">
 						
-						<item id="view/root/level/osd/kills" class="net.jgf.jme.view.display.TextItem">
-							<center>-0.95 0.95 0.0</center>
+						<item id="view/root/level/failed/banner/background" class="net.jgf.jme.view.display.ImageItem">
+							<center>-0.0 0.0 0.0</center>
+							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
+							<size>0.5</size>
+						</item>					
+						<item id="view/root/level/failed/banner/text" class="net.jgf.jme.view.display.TextItem">
+							<center>-0.0 0.0 0.0</center>
+							<size>0.15</size>
+							<font>Verdana PLAIN 40</font>
+							<text>Mission Failed</text>
+							<align>Center</align>
+						</item>
+						<item id="view/root/level/failed/banner/press" class="net.jgf.jme.view.display.TextItem">
+							<center>0.9 -0.9 0.0</center>
 							<size>0.05</size>
 							<font>Verdana PLAIN 40</font>
-							<text>Hits: 0</text>
-							<align>TopLeft</align>
+							<text>Press SPACE</text>
+							<align>BottomRight</align>
 						</item>
-						<item id="view/root/level/osd/time" class="net.jgf.jme.view.display.TextItem">
-							<center>-0.95 0.85 0.0</center>
-							<size>0.05</size>
-							<font>Verdana PLAIN 40</font>
-							<text>Time: 00:00</text>
-							<align>TopLeft</align>
-						</item>
+	
+					</view>
+					
+					<view id="view/root/level/failed/action" class="net.jgf.jme.view.ActionInputView" 
+						autoLoad="true" autoActivate="true" >
+
+						<action key="KEY_SPACE" ref="logic/action/restart" />
 						
 					</view>					
-
+					
 				</view>
+
+				<view id="view/root/level/osd" class="net.jgf.jme.view.display.DisplayItemsView" 
+					autoLoad="true" autoActivate="true">
+					
+					<item id="view/root/level/osd/kills" class="net.jgf.jme.view.display.TextItem">
+						<center>-0.95 0.95 0.0</center>
+						<size>0.05</size>
+						<font>Verdana PLAIN 40</font>
+						<text>Hits: 0</text>
+						<align>TopLeft</align>
+					</item>
+					<item id="view/root/level/osd/time" class="net.jgf.jme.view.display.TextItem">
+						<center>-0.95 0.85 0.0</center>
+						<size>0.05</size>
+						<font>Verdana PLAIN 40</font>
+						<text>Time: 00:00</text>
+						<align>TopLeft</align>
+					</item>
+					<item id="view/root/level/osd/tanks" class="net.jgf.jme.view.display.TextItem">
+						<center>-0.95 0.75 0.0</center>
+						<size>0.05</size>
+						<font>Verdana PLAIN 40</font>
+						<text>Tanks: -</text>
+						<align>TopLeft</align>
+					</item>
+					
+				</view>		
 				
 				<view id="view/root/level/grid" class="net.jgf.jme.view.devel.AxisGridView" 
 					autoLoad="false" autoActivate="false" >
@@ -443,7 +517,7 @@
 						autoLoad="true" autoActivate="false" >
 						<graphWidth>1.0</graphWidth>
 						<graphHeight>0.20</graphHeight>
-						<graphAlpha>0.5</graphAlpha>
+						<graphAlpha>0.8</graphAlpha>
 					</view>
 				
 				</view>
@@ -551,7 +625,7 @@
 		System Information Service
 	 -->
 	<service id="systemInfo" class="net.jgf.util.system.SystemInfoService" context="debug">
-		<reportInterval>5000</reportInterval>
+		<reportInterval>20000</reportInterval>
 	</service>
 	
 </jgf>

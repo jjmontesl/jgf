@@ -42,7 +42,9 @@ public class FileChainLoader<T> extends BaseLoader<T> {
 			throw new ConfigException("Loader " + this + " needs to receive a valid 'FileChainLoader.resourceUrl' property");
 		}
 
-		logger.info("Loading " + object + " from " + resourceUrl);
+		if (logger.isInfoEnabled()) {
+			logger.info("Loading " + resourceUrl + " to " + object);
+		}
 
 		// Read descriptor
 		Config config = new Config(resourceUrl);

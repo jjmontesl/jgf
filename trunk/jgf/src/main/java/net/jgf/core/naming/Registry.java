@@ -38,6 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.jgf.config.ConfigException;
@@ -66,12 +67,14 @@ final class Registry {
 	 */
 	private class RegistrySetter {
 
-		WeakReference<Object> target;
+		WeakReference<Object> targetWeakRef;
 		String field;
+		String targetToString;
 
 		public RegistrySetter(Object target, String fieldName) {
-			this.target = new WeakReference<Object>(target);
 			this.field = fieldName;
+			this.targetWeakRef = new WeakReference<Object>(target);
+			this.targetToString = target.toString();
 		}
 
 	}
@@ -88,7 +91,7 @@ final class Registry {
 
 		public RegistrySetter getSetter(Object object, String fieldName) {
 			for (RegistrySetter setter : setters) {
-				if ((object == setter.target) && (fieldName == setter.field)) {
+				if ((object == setter.targetWeakRef) && (fieldName == setter.field)) {
 					return setter;
 				}
 			}
@@ -122,14 +125,15 @@ final class Registry {
 		}
 
 		// Add the entry
+		RegistrySetter setter = null;
 		RegistryEntry entry = entries.get(id);
 		if (entry == null) {
 			entry = new RegistryEntry(id);
-			RegistrySetter setter = new RegistrySetter(target, field);
+			setter = new RegistrySetter(target, field);
 			entry.setters.add(setter);
 			entries.put(id, entry);
 		} else {
-			RegistrySetter setter = entry.getSetter(target, field);
+			setter = entry.getSetter(target, field);
 			if (setter == null) {
 				setter = new RegistrySetter(target, field);
 				entry.setters.add(setter);
@@ -141,27 +145,51 @@ final class Registry {
 
 		// Provide an initial update (even if it is null)
 		if (Jgf.getDirectory().containsObject(id)) {
-			updateObject(target, field,  Jgf.getDirectory().getObjectAs(id, Object.class));
+			updateObject(setter, Jgf.getDirectory().getObjectAs(id, Object.class));
 		} else {
-			updateObject(target, field,  null);
+			updateObject(setter, null);
 		}
 
 	}
 
+	public synchronized void unregister(Object object, String field) {
+		
+		logger.debug("Unregistering field " + field + " on object " + object);
+		
+		if (StringUtils.isBlank(field)) {
+			throw new ConfigException("Tried to unregister object " + object + " for a null or blank field");
+		}
+
+		// TODO: There should be a list of registered objects, instead of walking the list
+		
+		for (RegistryEntry entry : entries.values()) {
+			Iterator<RegistrySetter> it = entry.setters.iterator();
+			while (it.hasNext()) {
+				RegistrySetter setter = (RegistrySetter) it.next();
+				if ((setter.field == field) && (setter.targetWeakRef.get() == object)) {
+					it.remove();
+				}
+			}
+		}
+		
+	}
+	
 	void update(String id, Object value) {
 
 		RegistryEntry entry = entries.get(id);
 		if (entry != null) {
 			for (RegistrySetter setter : entry.setters) {
-				Object target = setter.target.get();
-				updateObject(target, setter.field, value);
+				updateObject(setter, value);
 			}
 		}
 
 	}
 
-	private void updateObject(Object target, String field, Object value) {
-
+	private void updateObject(RegistrySetter setter, Object value) {
+		
+		Object target = setter.targetWeakRef.get();
+		String field = setter.field;
+		
 		if (target != null) {
 
 			String setterName = "set" + String.valueOf(field.charAt(0)).toUpperCase();
@@ -198,8 +226,8 @@ final class Registry {
 			}
 
 		} else {
-			// We should never find a null in a weak reference: everything should be unregistered first
-			throw new ConfigException("Null reference for target object when injecting a Directory object " + value + " into field '" + field + "' (the registered object no longer exists but it wasn't unregistered)");
+			// Everything should be unregistered
+			throw new ConfigException("Null reference for target object when injecting a Directory object " + value + " into field '" + field + "' (the registered object no longer exists but it wasn't unregistered, registered object was: " + setter.targetToString + ")");
 		}
 
 	}

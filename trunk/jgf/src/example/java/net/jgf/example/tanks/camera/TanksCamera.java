@@ -26,11 +26,11 @@ public class TanksCamera extends JmeCamera {
 
 	protected SpatialEntity target;
 
+	protected Vector3f lastTarget = new Vector3f();
 	
 	
 	public TanksCamera() {
-		super();
-		Jgf.getDirectory().register(this, "target", "entity/root/players/player1");
+		this(null);
 	}
 
 
@@ -58,18 +58,19 @@ public class TanksCamera extends JmeCamera {
 	public void update(float tpf) {
 
 		if (target != null) {
-			
-			Vector3f lookAtPos = target.getSpatial().getWorldTranslation().clone();
-			lookAtPos.y = 0.5f;
-			lookAtPos.z = lookAtPos.z - 0.5f;
-			lookAt.interpolate(lookAtPos, 1.2f * tpf);
-
-			Vector3f targetPos = target.getSpatial().getWorldTranslation().clone();
-			targetPos.y = 22.0f + 5.0f * (FastMath.sqrt(lookAtPos.distance(lookAt)));
-			targetPos.z = targetPos.z + 3.5f;
-			location.interpolate(targetPos, 0.7f * tpf);
-			
+			lastTarget.set(target.getSpatial().getWorldTranslation());
 		}
+			
+		Vector3f lookAtPos = lastTarget.clone();
+		lookAtPos.y = 0.5f;
+		lookAtPos.z = lookAtPos.z - 0.5f;
+		lookAt.interpolate(lookAtPos, 1.2f * tpf);
+
+		Vector3f targetPos = lastTarget.clone();
+		targetPos.y = 22.0f + 5.0f * (FastMath.sqrt(lookAtPos.distance(lookAt)));
+		targetPos.z = targetPos.z + 3.5f;
+		location.interpolate(targetPos, 0.7f * tpf);
+
 
 		getCamera().setLocation(location);
 		getCamera().lookAt(lookAt, Vector3f.UNIT_Y);

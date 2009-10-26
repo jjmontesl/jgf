@@ -6,11 +6,11 @@ import com.jme.math.Vector3f;
 
 public class TanksMap {
 
-	protected int width;
+	public int width;
 
-	protected int height;
+	public int height;
 
-	String rawData;
+	public String rawData;
 
 	public static class Tile {
 
@@ -34,7 +34,7 @@ public class TanksMap {
 
 	}
 
-	protected Tile[][] tiles;
+	public Tile[][] tiles;
 
 	/**
 	 * @param tiles the tiles to set
@@ -48,14 +48,6 @@ public class TanksMap {
 		this.width = width;
 		this.height = height;
 		tiles = new Tile[height][width];
-	}
-
-	public Tile getTile(int row, int col) {
-		return tiles[row][col];
-	}
-
-	public void setTile(int row, int col, Tile tile) {
-		tiles[row][col] = tile;
 	}
 
 	/**

@@ -63,7 +63,7 @@ public class ControllerAction extends BaseLogicAction {
 	@Override
 	public void perform(Object arg) {
 
-		logger.info("Performing action " + this);
+		logger.debug("Performing action " + this);
 
 		for (ActionStep step : steps) {
 

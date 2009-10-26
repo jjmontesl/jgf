@@ -10,6 +10,12 @@ import com.acarter.jmejtree.JMEJTreeIcon;
 
 public class StateTreeNode implements ComposableTreeNode {
 
+		StateNode<?> node = null;
+	
+		public StateTreeNode(Object node) {
+			//this.node = node;
+		}
+	
         public Object getChild(Object parent, int index) {
                 
         	Object result = null;

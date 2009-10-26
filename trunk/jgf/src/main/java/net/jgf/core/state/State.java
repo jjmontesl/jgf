@@ -62,6 +62,8 @@ public interface State extends Component {
 	public void addStateObserver(StateObserver observer);
 
 	public void removeStateObserver(StateObserver observer);
+	
+	public void clearStateObservers();
 
 	public boolean isAutoActivate();
 

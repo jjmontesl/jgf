@@ -8,11 +8,14 @@ import net.jgf.camera.CameraController;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.state.BaseState;
+import net.jgf.core.state.StateNode;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
 import net.jgf.scenemonitor.StatePropertyPage;
+import net.jgf.scenemonitor.StateTreeNode;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
+import net.jgf.view.ViewStateNode;
 
 import org.apache.log4j.Logger;
 
@@ -25,7 +28,7 @@ import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
 import com.sceneworker.SceneWorker;
 import com.sceneworker.app.ISceneWorkerApp;
-import com.sceneworker.app.SceneWorkerAppHandler;
+import com.sceneworker.app.SceneWorkerAppController;
 
 /**
  */
@@ -36,7 +39,6 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	/**
 	 * Class logger
 	 */
-	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(SceneWorkerView.class);
 
 	protected SceneManager sceneManager;
@@ -49,7 +51,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	
 	protected InputHandler inputHandler;
 	
-	private SceneWorkerAppHandler sceneWorkerHandler;
+	private SceneWorkerAppController sceneWorkerAppController;
 	
 	private List<String> registerRefs = new ArrayList<String>();
 	
@@ -61,8 +63,10 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 		this.lastTpf = tpf;
 		super.update(tpf);
 		//SceneMonitor.getMonitor().updateViewer(tpf);
-		sceneWorkerHandler.update();
-		if (!SceneMonitor.getMonitor().isVisible()) this.deactivate();
+		sceneWorkerAppController.update();
+		if (this.inputHandler == null) inputHandler.update(tpf);
+		// TODO: Check for deactivation!
+		//if (!SceneMonitor.getMonitor().isVisible()) this.deactivate();
 	}
 
 	/* (non-Javadoc)
@@ -73,7 +77,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 		this.lastTpf = tpf;
 		super.render(tpf);
 		//SceneMonitor.getMonitor().renderViewer(DisplaySystem.getDisplaySystem().getRenderer());
-		sceneWorkerHandler.render();
+		sceneWorkerAppController.render();
 	}
 
 	/* (non-Javadoc)
@@ -94,14 +98,17 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 		PropertyInformation propInfo = (PropertyInformation) mip;
 		propInfo.getPropertyPageHandler().registerPropertyPage(BaseState.class, new StatePropertyPage());
 		
+		/*SceneWorker.inst().addTreeRepresentationBinding(StateNode.class, StateTreeNode.class);
+		SceneWorker.inst().addTreeRepresentationBinding(ViewStateNode.class, StateTreeNode.class);*/
+		
 		SceneMonitor.getMonitor().registerNode(((JmeScene)sceneManager.getScene()).getRootNode());
 		for (String ref : registerRefs) {
 			SceneMonitor.getMonitor().registerNode(Jgf.getDirectory().getObjectAs(ref, Object.class), ref);
 		}
 		
 		// Initialise the application handler so we get tools palette, input handler and rendering
-        sceneWorkerHandler = new SceneWorkerAppHandler(this);
-        sceneWorkerHandler.initialise();
+		sceneWorkerAppController = new SceneWorkerAppController(this);
+		sceneWorkerAppController.initialise();
         //SceneMonitor.getMonitor().showViewer(true);
 	}
 
@@ -113,10 +120,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	public void deactivate() {
 		logger.debug ("Deactivating Scene Worker");
 		SceneMonitor.getMonitor().showViewer(false);
-		SceneMonitor.getMonitor().unregisterNode(((JmeScene)sceneManager.getScene()).getRootNode());
-		for (String ref : registerRefs) {
-			// TODO: There is currently no way of unregistering objects other than Nodes
-		}
+		SceneWorker.inst().deactivate();
 		super.deactivate();
 	}
 
@@ -128,7 +132,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	@Override
 	public void unload() {
 		super.unload();
-		SceneMonitor.getMonitor().cleanup();
+		SceneWorker.inst().unload();
 	}
 
 	/**
@@ -204,15 +208,5 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	public float getTimePerFrame() {
 		return this.lastTpf;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.sceneworker.app.ISceneWorkerApp#setInputHandler(com.jme.input.InputHandler)
-	 */
-	@Override
-	public void setInputHandler(InputHandler inputHandler) {
-		this.inputHandler = inputHandler;
-	}
-	
-	
 
 }

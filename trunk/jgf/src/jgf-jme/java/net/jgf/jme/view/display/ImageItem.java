@@ -88,13 +88,19 @@ public class ImageItem extends DisplayItem {
 		as.setEnabled(true);
 		quad.setRenderState(as);
 	    
-	    // TODO: FIXME: size is dependant on image real size and therefore on screen size!
-	    float imageHeight = getSize() * ts.getTexture().getImage().getHeight();
-		float imageWidth = getSize() * ts.getTexture().getImage().getWidth();
+		Vector2f displaySize = new Vector2f(DisplaySystem.getDisplaySystem().getRenderer().getWidth(), DisplaySystem.getDisplaySystem().getRenderer().getHeight());
+
+		// TODO: FIXME: size is dependant on image real size and therefore on screen size!
+	    //float imageHeight = getSize() * ts.getTexture().getImage().getHeight();
+		//float imageWidth = getSize() * ts.getTexture().getImage().getWidth();
+		
+		// TODO: This uses screen height as scale reference, no matter what aspect ratio screen has.
+		float imageHeight = getSize() * displaySize.y;
+		float imageWidth = getSize() * displaySize.y / ts.getTexture().getImage().getHeight() * ts.getTexture().getImage().getWidth();
+		
 		quad.resize(imageWidth, imageHeight);
 
 
-		Vector2f displaySize = new Vector2f(DisplaySystem.getDisplaySystem().getRenderer().getWidth(), DisplaySystem.getDisplaySystem().getRenderer().getHeight());
 		Vector3f ortoCenter = new Vector3f(0.5f * displaySize.x, 0.5f * displaySize.y, 0);
 		quad.getLocalTranslation().set(ortoCenter.x * center.x + ortoCenter.x, ortoCenter.y * center.y + ortoCenter.y, 0 );
 
