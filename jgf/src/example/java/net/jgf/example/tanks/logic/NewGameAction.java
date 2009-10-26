@@ -55,25 +55,10 @@ public class NewGameAction extends BaseLogicAction {
 		// Set a camera
 		//SceneRenderView sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level/fight/scene", SceneRenderView.class);
 		//sceneRenderView.setCamera(scene.getCameraControllers().getCameraController("scene/camera/test"));
-
-		// Spawn player
-		SpawnLogic spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
-		StateHelper.loadAndActivate(spawnLogic);
-		spawnLogic.spawnPlayer();
-
-		// Prepare entities
-		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
-		StateHelper.loadAndActivate(rootEntity);
-
+		
 		
 		EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
 		entityLoader.preload(60, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
-
-		// Activate next view and logic
-		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
-		StateHelper.loadAndActivate(inGameLogic);
-		ViewState levelView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
-		StateHelper.loadAndActivate(levelView);
 
 	}
 

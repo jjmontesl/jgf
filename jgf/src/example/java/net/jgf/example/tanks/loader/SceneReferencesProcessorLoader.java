@@ -147,17 +147,21 @@ public final class SceneReferencesProcessorLoader extends SceneLoader {
 
 					// TODO: Copy prefs! NO! In this one we need to override! Solve this!
 					SpatialEntity entity = (SpatialEntity) proc.loader.load(null, new LoadProperties());
-					Node anchor = (Node) ((SpatialReference) ref).getSpatial();
+					Node refnode = ((Node) ((SpatialReference) ref).getSpatial());
+					
+					Node anchor = new Node(refnode.getName() + "-anchor");
+					anchor.getLocalTranslation().set(refnode.getLocalTranslation());
+					anchor.getLocalRotation().set(refnode.getLocalRotation());
+					anchor.getLocalScale().set(refnode.getLocalScale());
 
 					anchor.attachChild(entity.getSpatial());
 					entity.setSpatial(anchor);
 					scene.getRootNode().attachChild(anchor);
 
-					anchor.lock();
+					anchor.unlock();
 					anchor.updateRenderState();
 					anchor.updateWorldVectors(true);
 					anchor.updateModelBound();
-					anchor.unlock();
 
 					// TODO: This needs to be customizable?
 					EntityGroup group = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);

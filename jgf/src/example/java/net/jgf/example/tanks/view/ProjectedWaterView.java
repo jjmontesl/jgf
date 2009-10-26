@@ -8,6 +8,7 @@ import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
+import com.jme.math.FastMath;
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -18,8 +19,8 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.FogState;
 import com.jme.system.DisplaySystem;
+import com.jmex.effects.water.HeightGenerator;
 import com.jmex.effects.water.ProjectedGrid;
-import com.jmex.effects.water.WaterHeightGenerator;
 import com.jmex.effects.water.WaterRenderPass;
 
 @Configurable
@@ -62,18 +63,17 @@ public class ProjectedWaterView extends BaseViewState {
         waterEffectRenderPass.setWaterPlane(new Plane(new Vector3f(0.0f, 1.0f,
                 0.0f), 0.0f));
 
-        projectedGrid = new ProjectedGrid("ProjectedGrid", DisplaySystem.getDisplaySystem().getRenderer().getCamera(), 20, 15, 0.01f,
-                new WaterHeightGenerator());
+        projectedGrid = new ProjectedGrid("ProjectedGrid", DisplaySystem.getDisplaySystem().getRenderer().getCamera(), 30, 20, 0.01f,
+                //new WaterHeightGenerator());
+        		new HeightGenerator() {
+        			public float getHeight( float x, float z, float time ) {
+        				return
+        				FastMath.sin(x*0.8f+time*3.0f)+FastMath.cos(z*1f+time*4.0f)*2.5f;
+        			}
+        		} );        
         projectedGrid.setLocalScale(new Vector3f(1.0f, 0.2f, 1.0f));
         projectedGrid.setLocalTranslation(new Vector3f(0.0f, -2.0f, 0.0f));
-        // or implement your own waves like this(or in a separate class)...
-        // projectedGrid = new ProjectedGrid( "ProjectedGrid", cam, 50, 50,
-        // 0.01f, new HeightGenerator() {
-        // public float getHeight( float x, float z, float time ) {
-        // return
-        // FastMath.sin(x*0.05f+time*2.0f)+FastMath.cos(z*0.1f+time*4.0f)*2;
-        // }
-        // } );
+
 
         waterEffectRenderPass.setWaterEffectOnSpatial(projectedGrid);
         ((Node) scene.getRootNode()).attachChild(projectedGrid);
@@ -89,28 +89,6 @@ public class ProjectedWaterView extends BaseViewState {
         rootNode.setCullHint(Spatial.CullHint.Never);
         rootNode.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
     }
-
-	/**
-	 * Scene geometry update.
-	 */
-	@Override
-	public void update(float tpf) {
-
-			if (! this.active) return;
-
-			// Update the camera controller
-			/*
-			if (sceneManager.getScene().getCurrentCameraController() != null) {
-
-				((HasSky)sceneManager.getScene()).getSky().getRootNode().setLocalTranslation(
-						DisplaySystem.getDisplaySystem().getRenderer().getCamera().getLocation()
-				);
-				((HasSky)sceneManager.getScene()).getSky().getRootNode().updateGeometricState(tpf, true);
-			}
-			*/
-
-
-	}
 
 	/**
 	 * Draws the level (and debug info, if needed).

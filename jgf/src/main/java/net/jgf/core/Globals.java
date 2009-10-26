@@ -60,6 +60,6 @@ public class Globals {
 	/**
 	 * Default log level.
 	 */
-	public final static Level LOG_LEVEL = Level.DEBUG;
+	public final static Level LOG_LEVEL = Level.INFO;
 
 }

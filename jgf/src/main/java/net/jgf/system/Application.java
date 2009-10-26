@@ -35,6 +35,7 @@ package net.jgf.system;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import net.jgf.config.Config;
@@ -111,7 +112,7 @@ public final class Application {
 	/**
 	 * JGF Components of the application.
 	 */
-	private HashMap<String, Service> services;
+	private LinkedHashMap<String, Service> services;
 
 	/**
 	 * Global directory of components and objects.
@@ -140,7 +141,7 @@ public final class Application {
 	public Application(String configUrl, String[] args) {
 		this.args = args;
 		this.configUrl = configUrl;
-		this.services = new HashMap<String, Service>(Application.DEFAULT_SERVICES_SIZE);
+		this.services = new LinkedHashMap<String, Service>(Application.DEFAULT_SERVICES_SIZE);
 	}
 
 

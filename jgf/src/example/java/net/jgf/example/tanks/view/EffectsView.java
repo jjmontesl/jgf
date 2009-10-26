@@ -22,6 +22,7 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.TriMesh;
 import com.jme.scene.Spatial.CullHint;
+import com.jme.scene.Spatial.LightCombineMode;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
@@ -153,6 +154,7 @@ public class EffectsView extends BaseViewState {
 			explosion.ttl -= tpf;
 			if (explosion.ttl > 0) {
 				float scaleTpf = tpf * ((explosion.ttl) * (explosion.ttl) * 1.0f);
+				explosion.node.setLightCombineMode(LightCombineMode.Off);
 				explosion.node.getLocalScale().addLocal(scaleTpf, scaleTpf, scaleTpf);
 
 				explosion.node.getLocalRotation().multLocal(explosion.rotation);

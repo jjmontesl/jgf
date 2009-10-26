@@ -39,15 +39,19 @@ public class AITank extends Tank {
 
 	protected EntityGroup bullets;
 
-	protected Tile finalTargetPos;
+	protected float firePerSecond = 0.6f;
 	
-	protected float firePerSecond = 0.0f;
+	protected float maxSpeed = 0.7f;
 	
-	protected float maxSpeed = 0.8f;
-	
-	protected float actionDistance = 20.0f;
+	protected float actionDistance = 19.0f;
 
-
+	protected Vector3f originalPosition = null;
+	
+	protected Tile originalTile = null; 
+	
+	protected float nextEval;
+	
+	
 	/* (non-Javadoc)
 	 * @see net.jgf.example.tanks.entity.Tank#load()
 	 */
@@ -60,6 +64,21 @@ public class AITank extends Tank {
 		bullets = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
 		map = (TanksMap)scene.getProperties().get("map");
 	}
+	
+	@Override
+	public void unload() {
+		super.unload();
+		Jgf.getDirectory().unregister(this, "targetEntity");
+	}
+
+	@Override
+	public void activate() {
+		super.activate();
+		originalPosition = spatial.getWorldTranslation().clone();
+		originalTile = map.worldToTile(originalPosition);
+	}
+
+
 
 	@Override
 	public void update(float tpf) {
@@ -71,11 +90,38 @@ public class AITank extends Tank {
 			}
 
 			// Evaluate target
-			evaluate();
-			Tile to = findTarget();
-			targetPos.set(map.tileToWorld(to));
-
-
+			
+			nextEval -= tpf;
+			if (nextEval < 0) {
+				nextEval = FastMath.nextRandomFloat() * 0.3f;
+			
+				evaluate();
+				
+				Tile to = findTarget();
+				if (to != null) {
+					targetPos.set(map.tileToWorld(to));
+				} else {
+					// If there is no target, go to last target
+					
+					if (targetPos.x < 0.5f && targetPos.y < 0.5f && targetPos.z < 0.5f) {
+						targetPos.set(spatial.getWorldTranslation()); 
+					}
+					
+					if (spatial.getWorldTranslation().distanceSquared(targetPos) < 4.0f) {
+						// Last target reached. Choose new target to patrol.
+						while (to == null) {
+							int tX = originalTile.col + FastMath.nextRandomInt(-5, 5);
+							int tY = originalTile.row + FastMath.nextRandomInt(-5, 5);
+							Tile cTile = map.tiles[tY][tX];
+							if (cTile.obstacle != false) to = cTile;
+						}
+						targetPos.set(map.tileToWorld(to));
+					} 
+					
+				}
+			
+			}
+				
 			direction.set(targetPos).subtractLocal(spatial.getLocalTranslation());
 			direction.y = 0;
 
@@ -106,14 +152,19 @@ public class AITank extends Tank {
 
 	private Tile findTarget() {
 
-		int bestValue = -9999999;
+		int bestValue = 1;
 		LinkedList<Tile> candidates = new LinkedList<Tile>();
 		for (int i = 0; i < map.getHeight(); i++) {
 			for (int j = 0; j < map.getWidth(); j++) {
-				Tile tile = map.getTile(i, j);
-				if ((!tile.obstacle) && (tile.dontGo <= 0) && (tile.value >= bestValue)) {
-					if (tile.value > bestValue) candidates.clear();
-					bestValue = tile.value;
+				Tile tile = map.tiles[i][j];
+				
+				int dist = ((tile.row - originalTile.row) * (tile.row - originalTile.row)) +
+					   ((tile.col - originalTile.col) * (tile.col - originalTile.col));
+				
+				
+				if ((dist <= 36) && (!tile.obstacle) && (tile.dontGo <= 0) && (Math.abs(bestValue - tile.value) >= 2)) {
+					//if (tile.value > bestValue) candidates.clear();
+					if (tile.value > bestValue) bestValue = tile.value;
 					candidates.add(tile);
 				}
 			}
@@ -141,7 +192,7 @@ public class AITank extends Tank {
 			Vector3f posCandidate = map.tileToWorld(tile);
 			Vector3f posTank = targetPos.clone();
 			posTank.setY(0.5f);
-			float tDist = posCandidate.subtractLocal(posTank).lengthSquared();
+			float tDist = posCandidate.subtractLocal(spatial.getWorldTranslation()).lengthSquared();
 			if (tDist < dist) {
 				dist = tDist;
 				selTile = tile;
@@ -173,11 +224,12 @@ public class AITank extends Tank {
 		// Initial settings
 		for (int i = 0; i < map.getHeight(); i++) {
 			for (int j = 0; j < map.getWidth(); j++) {
-				map.getTile(i, j).value = 9;
-				map.getTile(i, j).dontGo = 0;
-				if (map.getTile(i,j).obstacle) {
+				Tile tile = map.tiles[i][j];
+				tile.value = 9;
+				tile.dontGo = 0;
+				if (tile.obstacle) {
 					round(i, j, 1,  -1, 0);
-					round(i, j, 0,  0, 1);
+					round(i, j, 1,  -2, 1);
 				}
 			}
 		}
@@ -186,15 +238,14 @@ public class AITank extends Tank {
 		for (Entity player : players.children()) {
 			PlayerTank tank = (PlayerTank) player;
 			Tile tile = map.worldToTile(tank.getSpatial().getWorldTranslation());
-			round(tile.row, tile.col, 8,  0, 0);
-			round(tile.row, tile.col, 7,  0, 0);
-			round(tile.row, tile.col, 6,  0, 0);
-			round(tile.row, tile.col, 5,  0, 0);
-			round(tile.row, tile.col, 4,  0, 0);
+			round(tile.row, tile.col, 8,  2, 0);
+			round(tile.row, tile.col, 7,  2, 0);
+			round(tile.row, tile.col, 6,  2, 0);
+			round(tile.row, tile.col, 5,  2, 0);
+			round(tile.row, tile.col, 4,  2, 0);
 			round(tile.row, tile.col, 3,  1, 0);
-			round(tile.row, tile.col, 2,  -1, 0);
-			round(tile.row, tile.col, 1,  0, 1);
-			round(tile.row, tile.col, 0,  0, 1);
+			round(tile.row, tile.col, 2,  -4, 1);
+			round(tile.row, tile.col, 1,  -5, 1);
 		}
 
 		// Account for enemies
@@ -203,12 +254,21 @@ public class AITank extends Tank {
 			if (enemy != this) {
 				Tile tile = map.worldToTile(enemy.getSpatial().getWorldTranslation());
 				round(tile.row, tile.col, 3,  -1, 0);
-				round(tile.row, tile.col, 2,  0, 0);
-				round(tile.row, tile.col, 1,  -1, 0);
-				round(tile.row, tile.col, 0,  0, 1);
+				round(tile.row, tile.col, 2,  -2, 1);
+				round(tile.row, tile.col, 1,  -3, 1);
 			}
 		}
 
+		// Obstacles
+		for (int i = 0; i < map.height; i++) {
+			for (int j = 0; j < map.width; j++) {
+				if (map.tiles[i][j].obstacle) {
+					round(i, j, 1,  -2, 0);
+					round(i, j, 0,  0, 1);
+				}
+			}
+		}
+		
 		// Account for bullets
 		for (Entity bulletX : bullets.children()) {
 			Bullet bullet = (Bullet) bulletX;
@@ -217,11 +277,12 @@ public class AITank extends Tank {
 			Bresenham line = new Bresenham();
 			line.plot(tile.col, tile.row, hit.col, hit.row);
 
-			while (line.next()) {
+			int count = 0;
+			while (line.next() && count < 5) {
 				//logger.info("Painting " + line.getY() + "," + line.getX());
-				round (line.getY(), line.getX(), 2,  -2, 0);
-				round (line.getY(), line.getX(), 1, -2, 1);
-				round (line.getY(), line.getX(), 0, 0, 1);
+				count++;
+				round (line.getY(), line.getX(), 2,  -1, 0);
+				round (line.getY(), line.getX(), 1, -99, 5);
 			}
 		}
 
@@ -229,16 +290,19 @@ public class AITank extends Tank {
 	}
 
 	private void round(int row, int col, int r, int value, int danger) {
+		
 		for (int i = row - r; i <= row + r; i ++) {
 			for (int j = col - r; j <= col + r; j++) {
-				if ( ((i-row)*(i-row)) + ((j-col)*(j-col)) < (r * r)) { 
-					if ((i >= 0) && (i < map.getHeight()) && (j >= 0) && (j < map.getWidth())) {
-						map.getTile(i, j).value += value;
-						map.getTile(i, j).dontGo += danger;
+				if ((i >= 0) && (i < map.height) && (j >= 0) && (j < map.width)) {
+					if ( ((i-row)*(i-row)) + ((j-col)*(j-col)) <= (r * r)) { 
+						Tile tile = map.tiles[i][j];
+						tile.value += value;
+						tile.dontGo += danger;
 					}
 				}
 			}
 		}
+		
 	}
 
 }

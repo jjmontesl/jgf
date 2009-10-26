@@ -1,0 +1,46 @@
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>./lib</jar>
+  <outfile>../../../target/taunklet/taunklet.exe</outfile>
+  <errTitle>Game Error</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon></icon>
+  <singleInstance>
+    <mutexName>taunklet</mutexName>
+    <windowTitle></windowTitle>
+  </singleInstance>
+  <classPath>
+    <mainClass>net.jgf.example.tanks.Tanks</mainClass>
+    <cp>lib/*.jar</cp>
+    <cp>data</cp>
+  </classPath>
+  <jre>
+    <path></path>
+    <minVersion>1.5.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <initialHeapSize>128000</initialHeapSize>
+    <maxHeapSize>512000</maxHeapSize>
+    <opt>-Djava.library.path=lib</opt>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>1.0-initial</txtFileVersion>
+    <fileDescription>Taunklet (JGF Example Game)</fileDescription>
+    <copyright>JGF 2009</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>1.0-initial</txtProductVersion>
+    <productName>Taunklet</productName>
+    <companyName>JGF</companyName>
+    <internalName>taunklet</internalName>
+    <originalFilename>taunklet.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>

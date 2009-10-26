@@ -6,6 +6,10 @@ import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
 
+import com.jme.system.DisplaySystem;
+import com.jme.util.Debug;
+import com.jme.util.Timer;
+import com.jme.util.stat.StatCollector;
 import com.jmex.game.state.GameState;
 import com.jmex.game.state.StatisticsGameState;
 
@@ -47,6 +51,8 @@ public final class StatsView extends BaseViewState {
 	@Override
 	public void render(float tpf) {
 		gameState.render(tpf);
+		// TODO: Is this advisable or needed?
+		//DisplaySystem.getDisplaySystem().getRenderer().renderQueue();
 	}
 
 	/**
@@ -82,8 +88,21 @@ public final class StatsView extends BaseViewState {
 
 		// TODO: Parameterize StatisticsGameState from config
 		gameState = new StatisticsGameState(this.id + "-sgs", graphWidth, graphHeight, graphAlpha, true);
-		gameState.setActive(true);
 
+	}
+
+	
+	
+	@Override
+	public void activate() {
+		super.activate();
+		gameState.setActive(true);
+	}
+
+	@Override
+	public void deactivate() {
+		super.deactivate();
+		gameState.setActive(false);
 	}
 
 	/**

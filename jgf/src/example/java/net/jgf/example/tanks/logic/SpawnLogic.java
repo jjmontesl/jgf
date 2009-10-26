@@ -100,7 +100,8 @@ public class SpawnLogic extends BaseLogicState {
 		// TODO: Choose an empty one
 
 		Bullet bullet = (Bullet) entityLoader.load(null, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
-		bullet.setId("bullet" + bullets++);
+		bullet.setId("!bullet" + bullets++);
+		bullet.clearStateObservers();
 
 		// TODO: Model Bounds don't quite belong to logic...
 		// maybe to the entity or better yet, to loader
@@ -130,6 +131,7 @@ public class SpawnLogic extends BaseLogicState {
 		effectsView.addExplosion(bullet.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_BULLET_TTL);
 
 		StateHelper.deactivateAndUnload(bullet);
+		bullet.clearStateObservers();
 
 		entityLoader.returnToPool(bullet);
 

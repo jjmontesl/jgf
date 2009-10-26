@@ -45,6 +45,9 @@ public class CursorRenderView extends BaseViewState {
 	@Override
 	public void load() {
 
+		
+		if (this.loaded) return;
+		
 		super.load();
 
 		mouse = new AbsoluteMouse("MouseInput", DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem.getDisplaySystem().getHeight());
@@ -76,6 +79,15 @@ public class CursorRenderView extends BaseViewState {
     rootNode.updateRenderState();
     rootNode.updateModelBound();
 
+	}
+
+	
+	
+	@Override
+	public void unload() {
+		super.unload();
+		rootNode.detachChild(mouse);
+		mouse = null;
 	}
 
 	/**

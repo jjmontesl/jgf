@@ -3,6 +3,7 @@ package net.jgf.example.tanks.loader;
 
 
 
+import java.nio.FloatBuffer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,13 +22,13 @@ import org.apache.log4j.Logger;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
+import com.jme.image.Texture.WrapMode;
 import com.jme.light.PointLight;
 import com.jme.light.SimpleLightNode;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
-import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
@@ -50,7 +51,7 @@ public final class TanksSceneLoader extends SceneLoader {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(TanksSceneLoader.class);
 
-	public static int EXTENT_LIMIT = 6;
+	public static int EXTENT_LIMIT = 5;
 	
 	protected int width;
 
@@ -85,7 +86,9 @@ public final class TanksSceneLoader extends SceneLoader {
 	    	ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, "mudvolley/texture/hardwoodfloor.jpg"),
 				Texture.MinificationFilter.NearestNeighborLinearMipMap,
 				Texture.MagnificationFilter.NearestNeighbor);
-	  	TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+	  	
+	    floorTexture.setWrap(WrapMode.Repeat);
+	    TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
 	    ts.setTexture(floorTexture, 0);
 	    ts.setEnabled(true);
 	
@@ -155,7 +158,7 @@ public final class TanksSceneLoader extends SceneLoader {
 			Tile tile = new Tile();
 			tile.col = col;
 			tile.row = row;
-			map.setTile(row, col, tile);
+			map.tiles[row][col] = tile;
 
 			tile.raise = 0;
 			tile.text = dataArray[i];
@@ -190,7 +193,7 @@ public final class TanksSceneLoader extends SceneLoader {
 		
 		for (int i = 0; i < extentRow; i ++) {
 			for (int j = 0; j < extentCol; j++) {
-				Tile testTile = map.getTile(tile.row + i, tile.col + j);
+				Tile testTile = map.tiles[tile.row + i][tile.col + j];
 				if ((testTile.raise != tile.raise) ||
 				    (testTile.group != 0)) return false;
 			}
@@ -231,7 +234,7 @@ public final class TanksSceneLoader extends SceneLoader {
 		// Tag them
 		for (int i = 0; i < extentRow; i ++) {
 			for (int j = 0; j < extentCol; j++) {
-				map.getTile(tile.row + i, tile.col + j).group = group;
+				map.tiles[tile.row + i][tile.col + j].group = group;
 			}
 		}
 		
@@ -242,7 +245,7 @@ public final class TanksSceneLoader extends SceneLoader {
 		int group = 1;
 		for (int i = 0; i < map.height; i++) {
 			for (int j = 0; j < map.width; j++) {
-				Tile tile = map.getTile(i, j);
+				Tile tile = map.tiles[i][j];
 				if (tile.group == 0) {
 					// Group this block
 					groupTile (map, tile, group);
@@ -259,16 +262,43 @@ public final class TanksSceneLoader extends SceneLoader {
 		int minCol = tile.col;
 		int minRow = tile.row;
 		
+		
 		// Find corners
-		for (maxRow = minRow; ((maxRow < map.height) && (map.getTile(maxRow, minCol).group == tile.group)); maxRow++);
-		for (maxCol = minCol; ((maxCol < map.width) && (map.getTile(minRow, maxCol).group == tile.group)); maxCol++);
+		for (maxRow = minRow; ((maxRow < map.height) && (map.tiles[maxRow][minCol].group == tile.group)); maxRow++);
+		for (maxCol = minCol; ((maxCol < map.width) && (map.tiles[minRow][maxCol].group == tile.group)); maxCol++);
 		maxCol--;
 		maxRow--;
+
 		
 		if (tile.raise > -1.5f) {
 			int random_floor = 0 - (FastMath.nextRandomInt(2, 6));
 		    Box block = new Box("block_" + minRow + "_" + minCol,
 		    		new Vector3f(minCol, random_floor, minRow), new Vector3f(maxCol + 1, 0.5f * tile.raise, maxRow + 1));
+		    
+		    // Adjust texture coords
+			float texScale = 0.5f;
+			
+			float texMinY = texScale * minRow;
+			float texMaxY = texScale * (maxRow + 1);
+			float texMinX = texScale * minCol;
+			float texMaxX = texScale * (maxCol + 1);
+			/*texMaxY = texMaxY - texMinY;
+			texMinY = 0;
+			texMaxX = texMaxX - texMinX;
+			texMinX = 0;*/
+			
+		    float[] textureData = {
+		        1, 0, 0, 0, 0, 1, 1, 1, // back
+		        1, 0, 0, 0, 0, 1, 1, 1, // right
+		        1, 0, 0, 0, 0, 1, 1, 1, // front
+		        1, 0, 0, 0, 0, 1, 1, 1, // left
+		        texMinX, texMinY, texMinX, texMaxY, texMaxX, texMaxY, texMaxX, texMinY, // top
+		        texMinX, texMinY, texMinX, texMaxY, texMaxX, texMaxY, texMaxX, texMinY   // bottom
+		    };
+		    FloatBuffer tex = block.getTextureCoords().get(0).coords;
+            tex.clear();
+            tex.put(textureData);
+		    
 		    block.clearRenderState(RenderState.RS_TEXTURE);
 		    block.setTextureCombineMode(TextureCombineMode.Replace);
 		    block.setModelBound(new BoundingBox());
@@ -302,7 +332,7 @@ public final class TanksSceneLoader extends SceneLoader {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 			
-				Tile tile = map.getTile(i, j);
+				Tile tile = map.tiles[i][j];
 				
 				// Blocks
 				if (!generatedBlocks.contains(tile.group)) {
@@ -332,9 +362,9 @@ public final class TanksSceneLoader extends SceneLoader {
 							ls.attach(light);
 							light.setEnabled(true);
 							light.setAttenuate(true);
-							light.setConstant(/* FastMath.rand.nextFloat() */.1f);
-							light.setLinear(/* FastMath.rand.nextFloat()* */.01f);
-							light.setQuadratic(/* FastMath.rand.nextFloat() */.1f);
+							light.setConstant(.1f);
+							light.setLinear(.01f);
+							light.setQuadratic(.1f);
 							light.setAmbient(ColorRGBA.randomColor());
 							light.setDiffuse(ColorRGBA.randomColor());
 							scene.getRootNode().updateRenderState();
@@ -343,7 +373,6 @@ public final class TanksSceneLoader extends SceneLoader {
 					        scene.getRootNode().attachChild(ln);
 					        
 						//}
-						 
 	
 						scene.getReferences().addReference(reference);
 						referenceIndex++;

@@ -55,11 +55,12 @@ public abstract class SpatialEntity extends BaseEntity {
 	 */
 	public void integrate(EntityGroup parentEntity, Node parentNode, Vector3f location) {
 		parentEntity.attachChild(this);
-		this.setId(parentEntity.getId() + "/" + this.getId());
+		// If entity name starts with !, we don't add it to the directory
+		this.setId( (this.getId().startsWith("!") ? "!" : "") + parentEntity.getId() + "/" + this.getId());
 		net.jgf.system.Jgf.getDirectory().addObject(this.getId(), this);
 
 		parentNode.attachChild(this.getSpatial());
-		if (location != null) getSpatial().setLocalTranslation(location);
+		if (location != null) getSpatial().getLocalTranslation().set(location);
 	}
 
 	public void withdraw(EntityGroup parentEntity, Node parentNode) {

@@ -267,5 +267,10 @@ public final class Directory {
 	public synchronized void register(Object object, String field, String id) {
 		registry.register(object, field, id);
 	}
+	
+	public synchronized void unregister(Object object, String field) {
+		registry.unregister(object, field);
+	}
+	
 
 }
