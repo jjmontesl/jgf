@@ -34,12 +34,15 @@
 package net.jgf.console.bean;
 
 import java.util.List;
+import java.util.Map.Entry;
 
+import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.UnsupportedOperationException;
 import net.jgf.core.component.Component;
 
+import org.apache.commons.collections.iterators.EntrySetMapIterator;
 import org.apache.log4j.Logger;
 
 import bsh.EvalError;
@@ -94,19 +97,6 @@ public class BeanshellConsole extends BaseBeanConsole {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.jgf.console.Console#setBean(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public void addBean(Component bean) {
-
-		super.addBean(bean);
-
-		if (interpreter != null) {
-			registerBean(bean);
-		}
-	}
-
-	/* (non-Javadoc)
 	 * @see net.jgf.console.Console#complete(java.lang.String)
 	 */
 	@Override
@@ -121,19 +111,19 @@ public class BeanshellConsole extends BaseBeanConsole {
 	@Override
 	public void initialize() {
 		interpreter = new Interpreter();
-		for (Component bean : beans.values()) {
-			registerBean(bean);
+		for (Entry<String, Object> bean : beans.entrySet()) {
+			registerBean(bean.getKey(), bean.getValue());
 		}
 	}
 
 	/**
 	 * Registers a bean with the interpreter.
 	 */
-	private void registerBean(Component bean) {
+	private void registerBean(String id, Object bean) {
 		try {
-			interpreter.set(bean.getId(), bean);
+			interpreter.set(id, bean);
 		} catch (EvalError e) {
-			throw new ConfigException("Could not set the bean " + bean.getId() + " to the console beanshell intepreter", e);
+			throw new ConfigException("Could not set the bean " + id + " to the console beanshell intepreter", e);
 		}
 	}
 
@@ -145,7 +135,5 @@ public class BeanshellConsole extends BaseBeanConsole {
 		interpreter = null;
 		super.dispose();
 	}
-
-
 
 }

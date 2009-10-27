@@ -43,13 +43,12 @@ import org.apache.log4j.Logger;
 
 /**
  * <p>This is a default implementation of #{@link net.jgf.console.Console}
- * that takes care of the line buffer and of Console observers. Derived classes must
+ * that takes care of the line buffer and of Console observers. Derived classes need to
  * implement the command processing and functionality.</p>
  *
  * @author jjmontes
  * @version $Revision$
  */
-// TODO: The buffer should be part of a DefaultConsoleObserver
 public abstract class BaseConsole extends BaseService implements Console {
 
 	/**

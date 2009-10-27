@@ -1,6 +1,6 @@
 /*
  * JGF - Java Game Framework
- * $Id$
+ * $Id: BeanshellConsole.java 24 2008-11-06 02:56:56Z jjmontes $
  *
  * Copyright (c) 2008, JGF - Java Game Framework
  * All rights reserved.
@@ -31,30 +31,56 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.jgf.core;
 
-import org.apache.log4j.Level;
+package net.jgf.console.bean;
+
+
+import java.util.Set;
+
+import net.jgf.config.Config;
+import net.jgf.config.ConfigException;
+import net.jgf.config.Configurable;
+import net.jgf.config.ConfigurableFactory;
+import net.jgf.settings.Settings;
+import net.jgf.system.Jgf;
+
+import org.apache.log4j.Logger;
 
 /**
- * <p>JGF globals.</p>
- * <p>This class provides JGF with default values for some variables.</p>
+ * Implements the console commands.
  */
-public class Globals {
+@Configurable
+public class SettingsBean {
 
 	/**
-	 * The JGF library version.
+	 * Class logger
 	 */
-	public static final String JGF_VERSION = "1.0a";
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(ToolsBean.class);
 
-	/**
-	 * JGF library name.
-	 */
-	public static final String JGF_TITLE = "Java Game Framework";
+	Settings settings;
+	
+	public String get(String key) {
+		return settings.getString(key);
+	}
+	
+	public void set(String key) {
+	}
+	
+	public void readConfig(Config config, String configPath) {
+		
+		String settingsRef = config.getString(configPath + "/settings/@ref");
+		Jgf.getDirectory().register(this, "settings", settingsRef);
+		
+	}
 
+	public Settings getSettings() {
+		return settings;
+	}
 
-	/**
-	 * Log pattern for the default logger. This is a log4j pattern.
-	 */
-	public final static String LOG_PATTERN = "%d{ISO8601} %t %5p [%c{1}] %m%n";
-
+	public void setSettings(Settings settings) {
+		this.settings = settings;
+	}
+	
+	
 }

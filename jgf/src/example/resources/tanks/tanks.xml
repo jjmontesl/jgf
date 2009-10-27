@@ -96,12 +96,14 @@
 	</service>
 	 -->	
 	
-	<service id="console" class="net.jgf.console.bean.BeanshellConsole" >
-
-		<bean name="game" class="net.jgf.console.bean.NetworkedGameBean" />
-		<bean name="tools" class="net.jgf.console.bean.DefaultToolsBean" />
-		<bean name="settings" class="net.jgf.console.bean.SettingsBean" />
-
+	<service id="console" class="net.jgf.console.StreamConsoleWrapper">
+		<service id="console/wrapped" class="net.jgf.console.bean.BeanshellConsole" >
+	
+			<bean name="settings" class="net.jgf.console.bean.SettingsBean" >
+				<settings ref="settings" />
+			</bean>
+			
+		</service>
 	</service>
 	
 	<!-- 
@@ -550,6 +552,19 @@
 				</view>
 				
 			</view>				
+			
+			<!-- Console View state that serves as interface to use the Console system -->
+			<view id="view/root/consolekey" class="net.jgf.jme.view.ToggleInputView"
+				autoLoad="true" autoActivate="true">
+
+				<key>KEY_TAB</key>
+
+				<view id="view/root/console" class="net.jgf.jme.view.ConsoleView"
+					autoLoad="true" autoActivate="true">
+					<console ref="console" />
+				</view>
+				
+			</view>
 			
 		</view>
 			

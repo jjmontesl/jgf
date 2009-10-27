@@ -133,6 +133,7 @@ public class SettingsManager extends BaseService implements Settings {
 		settings.put(item.getKey(), item);
 	}
 
+	
 	public void setValue(String key, String value) throws ConfigException {
 		// TODO: Implement!
 		throw new ConfigException("Cannot set values to this Settings (not implemented yet)");
