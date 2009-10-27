@@ -156,7 +156,11 @@ public final class Application {
 		// Using internal logging config (no log4j.xml file)
 		LevelRangeFilter filter = new LevelRangeFilter();
 		filter.setLevelMax(Level.FATAL);
-		filter.setLevelMin(Globals.LOG_LEVEL);
+		if (this.isDebug()) {
+			filter.setLevelMin(Level.DEBUG);
+		} else {
+			filter.setLevelMin(Level.INFO);
+		}
 
 		// Logging pattern
 		// TODO: Accept a log pattern from environment variable

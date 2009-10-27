@@ -35,24 +35,28 @@ package net.jgf.console.bean;
 
 import java.util.Hashtable;
 
+import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
+import net.jgf.config.ConfigurableFactory;
 import net.jgf.console.BaseConsole;
 import net.jgf.console.Console;
 import net.jgf.core.component.Component;
 import net.jgf.core.service.ServiceException;
+import net.jgf.jme.config.JmeConfigHelper;
+import net.jgf.jme.view.ActionInputView.ActionInputKey;
+import net.jgf.system.Jgf;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * <p>BaseBeanConsole adds bean management functionality to the console. In other words,
- * this console holds a list of beans and is able to read it from configuration.</p>
- * <p>These beans can then be exposed through the derived class command interpreter,
- * like the {@link BeanshellConsole} does.</p>
- * <p>If you do not need this functionality, you can use the
- * parent class {@link BaseConsole}, which doesn't feature bean management,
- * however, you may consider to provide support for beans making them accessible
- * through your own console implementation, extending this class.</p>
+ * <p>BaseBeanConsole adds bean management functionality to the console.</p>
+ * <p>In other words,
+ * this console holds a list of beans and is able to read it from configuration.
+ * These beans can then be exposed through the derived class command interpreter,
+ * like {@link BeanshellConsole} does.</p>
+ * <p>If you do not need this functionality, you can extend the
+ * base class {@link BaseConsole}, which doesn't include this feature.</p>
  *
  * @see BeanshellConsole
  * @author jjmontes
@@ -68,22 +72,22 @@ public abstract class BaseBeanConsole extends BaseConsole implements Console {
 	/**
 	 * The set of beans that are published in this console
 	 */
-	protected Hashtable<String, Component> beans;
+	protected Hashtable<String, Object> beans;
 
 
 	/**
 	 * Constructor.
 	 */
 	public BaseBeanConsole() throws ServiceException {
-		beans = new Hashtable<String, Component>();
+		beans = new Hashtable<String, Object>();
 	}
 
 
 	/**
 	 * Returns a bean from the list of beans managed by this console.
 	 */
-	public Component getBean(String beanId) {
-		Component result = beans.get(beanId);
+	public Object getBean(String beanId) {
+		Object result = beans.get(beanId);
 		if (result == null) {
 			throw new ConfigException("Tried to retrieve a non existing with id '" + beanId + "' from console " + this);
 		}
@@ -94,17 +98,33 @@ public abstract class BaseBeanConsole extends BaseConsole implements Console {
 	 * Adds a bean to the list of beans managed by this console, for it to be exposed
 	 * by the console and therefore be accessible through the console commands.
 	 */
-	public void addBean(Component component) {
-		if (component == null) {
-			throw new ConfigException("Tried to add a null component to the bean list of console " + this);
+	public void addBean(String id, Object bean) {
+		if (bean == null) {
+			throw new ConfigException("Tried to add a null object to the bean list of console " + this);
 		}
-		if (StringUtils.isBlank(component.getId())) {
-			throw new ConfigException("Tried to add a component (" + component + ") with a blank id to the list of console " + this);
+		if (StringUtils.isBlank(id)) {
+			throw new ConfigException("Tried to add object (" + bean + ") with a blank id to the bean list of console " + this);
 		}
-		if (beans.containsKey(component.getId())) {
-			throw new ConfigException("Tried to add an already existin bean '" + component + "' from console " + this);
+		if (beans.containsKey(id)) {
+			throw new ConfigException("Tried to add an already existin bean '" + bean + "' from console " + this);
 		}
-		beans.put(component.getId(), component);
+		beans.put(id, bean);
+	}
+	
+	@Override
+	public void readConfig(Config config, String configPath) {
+		super.readConfig(config, configPath);
+		
+		int index = 1;
+		while (config.containsKey(configPath + "/bean[" + index + "]/@name")) {
+			
+			String id = config.getString(configPath + "/bean[" + index + "]/@name");
+			Object bean = ConfigurableFactory.newFromConfig(config, configPath + "/bean[" + index + "]", Object.class);
+			addBean(id, bean);
+			
+			index++;
+		}
+		
 	}
 
 }

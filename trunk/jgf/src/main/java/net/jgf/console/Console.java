@@ -35,23 +35,34 @@ package net.jgf.console;
 
 import java.util.List;
 
+import net.jgf.console.bean.BeanshellConsole;
 import net.jgf.core.UnsupportedOperationException;
 import net.jgf.core.service.Service;
+import net.jgf.jme.view.ConsoleView;
 
 /**
- * <p>The console component holds the console buffer and the input history.</p>
- * <p>It is line-based, and therefore it does not accept input as a
- * stream (one key at once), and it doesn't hold the current input line.</p>
- * <p>This interface is not related to the graphical aspect of the console.</p>
- * <p>Subclasses may implement different console services, like autocomplete,
- * different interpreters, etc...</p>
- * <p>Applications should avoid calling issuing
- * commands directly (as the actual console
+ * <p>The console interface provides access to a
+ * command interpreter that allows end-users to perform different actions
+ * on the application, and also holds a console text buffer and input history.</p>
+ * <p>Subclasses may implement different console features like autocomplete or
+ * different languages.</p>
+ * <p>Applications should avoid issuing commands to the console (as the actual console
  * language is not specified by this interface).</p>
-
+ * <p><b>Note:</b> This interface is not related to the graphical aspect of the console.
+ * For a simple example of a graphical interface to the console refer to
+ * {@link ConsoleView}</p>.
+ * <p><b>Note:</b> The console interface is line-based, and therefore it does not accept a
+ * stream (one key at a time), and it doesn't hold the current input line. If you need
+ * a stream-based console you can use ${link {@link StreamConsoleWrapper}.</p>
+ * <p><b>Note:</b> A working Beanshell console implementation is provided ({@link BeanshellConsole}).</p>
+ * <p><b>Note:</b> Users wanting to implement a custom console may wish to extend the console
+ * base class {@link BaseConsole}.</p>
+ * 
+ * @see BeanshellConsole
+ * @see ConsoleView
+ * @see StreamConsoleWrapper
  * @author jjmontes
  */
-// TODO: This interface shouldn't be a service
 public interface Console extends Service {
 
 	/**

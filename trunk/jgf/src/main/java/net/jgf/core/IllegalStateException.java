@@ -35,7 +35,7 @@ package net.jgf.core;
 
 /**
  * <p>This exception is thrown when the user attempts to perform an operation on a
- * service or component while the service is not in a valid state to perform
+ * service or component that is not in a valid state to perform
  * that operation.</p>
  *
  * @author jjmontes
