@@ -61,10 +61,11 @@ public class SettingsBean {
 	Settings settings;
 	
 	public String get(String key) {
-		return settings.getString(key);
+		return settings.getValue(key);
 	}
 	
-	public void set(String key) {
+	public void set(String key, String value) {
+		settings.setValue(key, value);
 	}
 	
 	public void readConfig(Config config, String configPath) {
