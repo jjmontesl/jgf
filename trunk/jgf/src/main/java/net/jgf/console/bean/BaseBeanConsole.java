@@ -118,9 +118,9 @@ public abstract class BaseBeanConsole extends BaseConsole implements Console {
 		int index = 1;
 		while (config.containsKey(configPath + "/bean[" + index + "]/@name")) {
 			
-			String id = config.getString(configPath + "/bean[" + index + "]/@name");
+			String name = config.getString(configPath + "/bean[" + index + "]/@name");
 			Object bean = ConfigurableFactory.newFromConfig(config, configPath + "/bean[" + index + "]", Object.class);
-			addBean(id, bean);
+			addBean(name, bean);
 			
 			index++;
 		}

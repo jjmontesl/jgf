@@ -51,40 +51,40 @@
 		<caseSensitive>true</caseSensitive>
 	
 		<settings>
-			<setting id="settings.network.dedicatedServer" class="java.lang.Boolean"  
+			<setting name="network.dedicatedServer" class="net.jgf.settings.BooleanSetting"  
 					 label="Dedicated Server" default="false" />
-			<setting id="video.gamma" class="java.lang.Float"
+			<setting name="video.gamma" class="net.jgf.settings.FloatSetting"
 					 label="Video Gamma" default="1.0f" />
-			
-			<setting id="settings.input.mouse.accel" class="java.lang.Float" 
+			<!-- 
+			<setting name="input.mouse.accel" class="java.lang.Float" 
 					 label="Mouse Accel" default="0.0f" />
-			<setting id="settings.input.mouse.sensitivity" class="java.lang.Float" 
+			<setting name="input.mouse.sensitivity" class="java.lang.Float" 
 					 label="Mouse Accel" default="0.0f" />					 
 
-			<setting id="settings.input.key.up" class="net.jgf.config.ConfigKey" 
+			<setting name="input.key.up" class="net.jgf.config.ConfigKey" 
 					 label="Move Up" default="KEY_W" />
-			<setting id="settings.input.key.down" class="net.jgf.config.ConfigKey" 
+			<setting name="input.key.down" class="net.jgf.config.ConfigKey" 
 					 label="Move Down" default="KEY_S" />
-			<setting id="settings.input.key.left" class="net.jgf.config.ConfigKey" 
+			<setting name="input.key.left" class="net.jgf.config.ConfigKey" 
 					 label="Move Left" default="KEY_A" />
-			<setting id="settings.input.key.right" class="net.jgf.config.ConfigKey" 
+			<setting name="input.key.right" class="net.jgf.config.ConfigKey" 
 					 label="Move Right" default="KEY_D" />
 					 
-			<setting id="settings.input.key.screenshot" class="net.jgf.config.ConfigKey" 
+			<setting name="input.key.screenshot" class="net.jgf.config.ConfigKey" 
 					 label="Move Right" default="KEY_F1" />					 
-			<setting id="settings.input.key.console" class="net.jgf.config.ConfigKey" 
+			<setting name="input.key.console" class="net.jgf.config.ConfigKey" 
 					 label="Move Right" default="KEY_TILDE" />
 			
-			<setting id="settings.game.level" class="net.jgf.config.ConfigEnum"
+			<setting name="game.level" class="net.jgf.config.ConfigEnum"
 					 label="Difficulty Level" default="medium">
 					 <value key="easy" label="Easy" />
 					 <value key="medium" label="Medium" />
 					 <value key="hard" label="Hard" />
 			</setting>
 			
-			<setting id="settings.player.name" class="net.jgf.config.ConfigString" 
+			<setting id="player.name" class="net.jgf.config.ConfigString" 
 					 label="Player Name" default="UnnamedTank" />
-			
+			 -->
 		</settings>
 	
 	</service>
@@ -554,13 +554,13 @@
 			</view>				
 			
 			<!-- Console View state that serves as interface to use the Console system -->
-			<view id="view/root/consolekey" class="net.jgf.jme.view.ToggleInputView"
+			<view id="view/root/console/switch" class="net.jgf.jme.view.ToggleInputView"
 				autoLoad="true" autoActivate="true">
 
 				<key>KEY_TAB</key>
 
 				<view id="view/root/console" class="net.jgf.jme.view.ConsoleView"
-					autoLoad="true" autoActivate="true">
+					autoLoad="true" autoActivate="false">
 					<console ref="console" />
 				</view>
 				

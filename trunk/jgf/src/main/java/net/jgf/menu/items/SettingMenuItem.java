@@ -4,7 +4,7 @@ package net.jgf.menu.items;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.menu.MenuController;
-import net.jgf.settings.SettingsItem;
+import net.jgf.settings.Setting;
 
 
 /**
@@ -15,7 +15,7 @@ import net.jgf.settings.SettingsItem;
 @Configurable
 public class SettingMenuItem extends BaseMenuItem {
 
-	protected SettingsItem setting;
+	protected Setting setting;
 	
 	/**
 	 * Configures this object from Config.
