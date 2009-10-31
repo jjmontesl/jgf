@@ -1,8 +1,11 @@
 
 package net.jgf.view;
 
+import org.apache.log4j.Logger;
+
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.example.tanks.logic.RestartAction;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
 
@@ -13,6 +16,11 @@ import net.jgf.system.Jgf;
 @Configurable
 public class ActionView extends BaseViewState {
 
+	/**
+	 * Class logger
+	 */
+	private static final Logger logger = Logger.getLogger(ActionView.class);
+	
 	protected LogicAction action;
 
 	/**
@@ -34,7 +42,11 @@ public class ActionView extends BaseViewState {
 		super.update(tpf);
 
 		// Perform action
-		action.perform(null);
+		if (action != null) {
+			action.perform(null);
+		} else {
+			logger.warn ("Null action found when performing action at " + this);
+		}
 
 		this.deactivate();
 	}

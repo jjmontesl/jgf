@@ -76,6 +76,7 @@ public class DisplayItemsView extends BaseViewState {
 
 			super.update(tpf);
 			rootNode.updateGeometricState(tpf, true);
+			rootNode.updateRenderState();
 
 	}
 

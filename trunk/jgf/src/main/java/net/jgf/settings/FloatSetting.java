@@ -8,17 +8,17 @@ import net.jgf.system.Jgf;
  * Map of stored settings
  */
 @Configurable
-public class FloatSetting extends Setting {
+public class FloatSetting extends Setting<Float> {
 
 	Float value;
 
-	public void setValue(String value) {
+	public void setStringValue(String value) {
 		this.value = Float.parseFloat(value);
 	}
 	
-	public String getValue() {
+	public String getStringValue() {
 		if (value == null) {
-			setValue(this.getDefaultValue());
+			setStringValue(this.getDefaultValue());
 		}
 		return String.format("%.2f", value);
 	}
@@ -27,5 +27,11 @@ public class FloatSetting extends Setting {
 	public void readConfig(Config config, String configPath) {
 		super.readConfig(config, configPath);
 	}
-	
+
+	@Override
+	public Float getValue() {
+		return value;
+	}
+
+
 }

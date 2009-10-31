@@ -17,9 +17,9 @@ public abstract class DefaultDynamicEntity extends DynamicEntity implements HasR
 
 	// 	TODO: Implement
 
-	CameraControllerSet cameras;
+	private CameraControllerSet cameras;
 
-	ReferenceSet references;
+	private ReferenceSet references;
 
 	public DefaultDynamicEntity() {
 		this(null);
@@ -27,15 +27,14 @@ public abstract class DefaultDynamicEntity extends DynamicEntity implements HasR
 
 	public DefaultDynamicEntity(String id) {
 		super(id);
-		cameras = new CameraControllerSet();
-		references = new ReferenceSet();
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see net.jgf.refs.HasReferences#getReferences()
 	 */
 	@Override
 	public ReferenceSet getReferences() {
+		if (references == null) references = new ReferenceSet();
 		return references;
 	}
 
@@ -44,6 +43,7 @@ public abstract class DefaultDynamicEntity extends DynamicEntity implements HasR
 	 */
 	@Override
 	public CameraControllerSet getCameraControllers() {
+		if (cameras == null) cameras = new CameraControllerSet();
 		return cameras;
 	}
 

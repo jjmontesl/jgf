@@ -31,8 +31,8 @@ public class StateHelper {
 	}
 
 	public static void deactivateAndUnload(State state) {
-		state.deactivate();
-		state.unload();
+		if (state.isActive()) state.deactivate();
+		if (state.isLoaded()) state.unload();
 	}
 
 	public static void loadAndActivate (String stateId) {

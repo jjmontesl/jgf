@@ -119,7 +119,7 @@ public class BeanshellConsole extends BaseBeanConsole {
 	/**
 	 * Registers a bean with the interpreter.
 	 */
-	private void registerBean(String id, Object bean) {
+	protected void registerBean(String id, Object bean) {
 		try {
 			interpreter.set(id, bean);
 		} catch (EvalError e) {

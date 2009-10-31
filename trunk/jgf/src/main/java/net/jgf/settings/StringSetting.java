@@ -8,19 +8,19 @@ import net.jgf.system.Jgf;
  * Map of stored settings
  */
 @Configurable
-public class BooleanSetting extends Setting {
+public class StringSetting extends Setting<String> {
 
-	Boolean value;
+	String value;
 
 	public void setStringValue(String value) {
-		this.value = Boolean.parseBoolean(value);
+		this.value = value;
 	}
 	
 	public String getStringValue() {
 		if (value == null) {
 			setStringValue(this.getDefaultValue());
 		}
-		return Boolean.toString(value);
+		return value;
 	}
 	
 	@Override
@@ -29,10 +29,9 @@ public class BooleanSetting extends Setting {
 	}
 
 	@Override
-	public Object getValue() {
+	public String getValue() {
 		return value;
 	}
-	
-	
-	
+
+
 }

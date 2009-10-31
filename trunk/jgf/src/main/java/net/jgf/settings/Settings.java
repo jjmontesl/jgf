@@ -1,9 +1,7 @@
 
 package net.jgf.settings;
 
-import java.util.Set;
-
-import net.jgf.config.ConfigException;
+import java.util.Enumeration;
 
 /**
  * Common interface to access settings.
@@ -12,13 +10,9 @@ import net.jgf.config.ConfigException;
  */
 public interface Settings {
 
-	public String getValue(String key);
+	public Setting<?> getSetting(String key);
 
-	public void setValue(String key, String value);
-
-	public Set<String> getKeys();
-
-	public boolean containsKey(String key);
+	public Enumeration<Setting<?>> getSettings();
 
 }
 

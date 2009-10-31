@@ -4,6 +4,7 @@ package net.jgf.jme.view.display;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.config.JmeConfigHelper;
+import net.jgf.jme.view.display.DisplayItem.DisplayItemAlignment;
 
 import com.jme.image.Texture;
 import com.jme.math.Vector2f;
@@ -19,6 +20,7 @@ import com.jme.scene.state.BlendState.TestFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.resource.ResourceLocatorTool;
+import com.sceneworker.app.globals.cacheobjects.RootNodeCacheObject;
 
 /**
  *
@@ -35,6 +37,8 @@ public class ImageItem extends DisplayItem {
 	protected float size = 1.0f;
 
 	private Quad quad;
+	
+	protected DisplayItemAlignment align = DisplayItemAlignment.Center;
 
 	/**
 	 * Configures this object from Config.
@@ -47,7 +51,20 @@ public class ImageItem extends DisplayItem {
 		setCenter(JmeConfigHelper.getVector3f(config, configPath + "/center"));
 		setTextureUrl(config.getString(configPath + "/textureUrl"));
 		setSize(config.getFloat(configPath + "/size"));
+		setAlign(DisplayItemAlignment.valueOf(config.getString(configPath + "/align", getAlign().toString())));
 
+	}
+
+
+
+	public DisplayItemAlignment getAlign() {
+		return align;
+	}
+
+
+
+	public void setAlign(DisplayItemAlignment align) {
+		this.align = align;
 	}
 
 
@@ -71,6 +88,7 @@ public class ImageItem extends DisplayItem {
 			Texture.MinificationFilter.BilinearNearestMipMap,
 			Texture.MagnificationFilter.Bilinear);
 	  	TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+	  	ts.clearTextures();
 	    ts.setTexture(imageTexture, 0);
 	    ts.setEnabled(true);
 	    quad.setRenderState(ts);
@@ -101,13 +119,30 @@ public class ImageItem extends DisplayItem {
 		quad.resize(imageWidth, imageHeight);
 
 
+		float xOffset = 0.0f;
+		float yOffset = 0.0f;
+		if ((align == DisplayItemAlignment.Left) ||
+			(align == DisplayItemAlignment.TopLeft) ||
+			(align == DisplayItemAlignment.BottomLeft)) xOffset = (+ (quad.getWidth() / 2)) * (size * displaySize.y);
+		if ((align == DisplayItemAlignment.Right) ||
+			(align == DisplayItemAlignment.TopRight) ||
+			(align == DisplayItemAlignment.BottomRight)) xOffset = (- (quad.getWidth() / 2)) * (size * displaySize.y);
+		if ((align == DisplayItemAlignment.TopLeft) ||
+			(align == DisplayItemAlignment.Top) ||
+			(align == DisplayItemAlignment.TopRight)) yOffset = (- (quad.getHeight() / 2)) * (size * displaySize.y);
+		if ((align == DisplayItemAlignment.BottomLeft) ||
+			(align == DisplayItemAlignment.Bottom) ||
+			(align == DisplayItemAlignment.BottomRight)) yOffset = (+ (quad.getHeight() / 2)) * (size * displaySize.y);
 		Vector3f ortoCenter = new Vector3f(0.5f * displaySize.x, 0.5f * displaySize.y, 0);
 		quad.getLocalTranslation().set(ortoCenter.x * center.x + ortoCenter.x, ortoCenter.y * center.y + ortoCenter.y, 0 );
 
 		quad.updateRenderState();
+		quad.updateGeometricState(0, true);
 
 		display.attachChild(quad);
-
+		display.updateRenderState();
+		
+		
 	}
 
 	/* (non-Javadoc)

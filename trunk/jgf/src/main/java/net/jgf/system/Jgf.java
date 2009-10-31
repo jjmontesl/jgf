@@ -38,49 +38,60 @@ import net.jgf.core.naming.Directory;
 import org.apache.log4j.Logger;
 
 /**
- * <p>This class is a singleton used to globalize the main application objects.
- * It holds references to objects but does not create any of them.</p>
- * <p>The most common method of this class is {@link Jgf#getDirectory()},
- * which provides access to the directory that holds references to the
- * framework components that you will be using.</p>
+ * <p>
+ * This class is a singleton used to globalize the main application objects. It
+ * holds references to framework core objects.
+ * </p>
+ * <p>
+ * The most used method of this class is {@link Jgf#getDirectory()}, which
+ * provides access to the directory that holds references to the framework
+ * components that applications will be using.
+ * </p>
+ * 
+ * @version 1.0
+ * @author jjmontes
  */
-public class Jgf {
+public final class Jgf {
 
-	/**
-	 * Class logger
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(Application.class);
+    /**
+     * Class logger.
+     */
+    @SuppressWarnings("unused")
+    private static final Logger logger = Logger.getLogger(Application.class);
 
+    /**
+     * Reference to the JGF {@link Application}.
+     */
+    static Application app;
 
-	/**
-	 * Reference to the {@link Application}.
-	 */
-	static Application app = null;
+    /**
+     * Private constructor in order to avoid instantiation.
+     */
+    private Jgf() {
+        // Constructor should do nothing
+    }
 
-	/**
-	 * Private constructor to avoid instantiation.
-	 */
-	private Jgf() {
-		// Constructor should do nothing
-	}
+    /**
+     * Returns the JGF Application object.
+     * 
+     * @return the application.
+     * @see Application
+     */
+    public static Application getApp() {
+        return app;
+    }
 
-	/**
-	 * Returns the Application object.
-	 * @return the app
-	 */
-	public static Application getApp() {
-		return app;
-	}
-
-	/**
-	 * Returns the JGF Directory of the application. The Directory provides access to the
-	 * framework components and services.
-	 * @return the Directory.
-	 * @see Directory
-	 */
-	public static Directory getDirectory() {
-		return app.getDirectory();
-	}
+    /**
+     * <p>
+     * Returns the JGF Directory of the application. The Directory provides
+     * access to the framework components and services.
+     * </p>
+     * 
+     * @return the directory.
+     * @see Directory
+     */
+    public static Directory getDirectory() {
+        return app.getDirectory();
+    }
 
 }

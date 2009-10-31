@@ -31,7 +31,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package net.jgf.menu;
 
 import java.util.List;
@@ -39,11 +38,20 @@ import java.util.List;
 import net.jgf.core.component.Component;
 import net.jgf.menu.items.MenuItem;
 
+
+/**
+ * <p>The Menu class represents a menu of the menu system. A menu can contain several items like "options",
+ * "separators", "titles"... these items are then used to form menus.</p>
+ * 
+ * @version 1.0
+ * @author jjmontes
+ */
 public interface Menu extends Component {
 
-	/**
-	 * @return the items
-	 */
-	public List<MenuItem> getItems();
+    /**
+     * Returns the list of items (i.e. options, titles, separators) contained in this Menu.
+     * @return the items
+     */
+    List<MenuItem> getItems();
 
 }
