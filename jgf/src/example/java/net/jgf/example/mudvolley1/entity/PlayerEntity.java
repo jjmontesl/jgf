@@ -43,6 +43,7 @@ public class PlayerEntity extends SpatialEntity {
 			spatial.getLocalTranslation().y = 0;
 		}
 
+		// Limit player location to its game area
 		if (FastMath.abs(spatial.getLocalTranslation().x) > (MudSettings.FIELD_WIDTH - MudSettings.PLAYER_RADIUS)) {
 			spatial.getLocalTranslation().x = ((MudSettings.FIELD_WIDTH - MudSettings.PLAYER_RADIUS) * side);
 		}

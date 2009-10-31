@@ -7,14 +7,14 @@ import net.jgf.menu.MenuController;
 /**
  *
  * @author jjmontes
- * @version $Revision$
+ * @version 1.0
  */
 public interface MenuItem extends Component {
 
-	public void perform(MenuController controller);
+	void perform(MenuController controller);
 
-	public boolean isNavigable();
+	boolean isNavigable();
 
-	public String getKey();
+	String getKey();
 
 }

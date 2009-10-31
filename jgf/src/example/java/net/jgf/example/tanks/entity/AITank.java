@@ -52,6 +52,22 @@ public class AITank extends Tank {
 	protected float nextEval;
 	
 	
+	public float getFirePerSecond() {
+		return firePerSecond;
+	}
+
+	public void setFirePerSecond(float firePerSecond) {
+		this.firePerSecond = firePerSecond;
+	}
+
+	public float getMaxSpeed() {
+		return maxSpeed;
+	}
+
+	public void setMaxSpeed(float maxSpeed) {
+		this.maxSpeed = maxSpeed;
+	}
+
 	/* (non-Javadoc)
 	 * @see net.jgf.example.tanks.entity.Tank#load()
 	 */
@@ -93,7 +109,7 @@ public class AITank extends Tank {
 			
 			nextEval -= tpf;
 			if (nextEval < 0) {
-				nextEval = FastMath.nextRandomFloat() * 0.3f;
+				nextEval = FastMath.nextRandomFloat() * 0.2f;
 			
 				evaluate();
 				

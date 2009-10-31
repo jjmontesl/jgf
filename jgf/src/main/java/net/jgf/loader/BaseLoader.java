@@ -37,6 +37,15 @@ public abstract class BaseLoader<E> extends BaseComponent implements Loader<E> {
 		return load(base, map);
 	}
 
+	/**
+	 * <p>Combines the set of properties passed with this loader's
+	 * configuration properties, favouring the passed properties when
+	 * there's a conflict.</p>
+	 * <p>This method is used by loaders to mix their configuration properties 
+	 * with the set of properties in the loading context, which allows
+	 * chaining loaders while permitting overriding of properties.</p>
+	 * @param passedProperties
+	 */
 	protected void combineProperties(LoadProperties passedProperties) {
 		for (Entry<String, String> entry : defaultProperties.entrySet()) {
 			if (! passedProperties.containsKey(entry.getKey())) passedProperties.put(entry.getKey(), entry.getValue());

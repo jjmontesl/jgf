@@ -2,15 +2,13 @@ package net.jgf.settings;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.system.Jgf;
+import net.jgf.core.component.BaseComponent;
 
 /**
  * Map of stored settings
  */
 @Configurable
-public abstract class Setting {
-
-	String name;
+public abstract class Setting<T> extends BaseComponent {
 
 	String label;
 	
@@ -21,21 +19,10 @@ public abstract class Setting {
 		super();
 	}
 	
-	public Setting(String name, String label, String defaultValue) {
-		super();
-		
-		this.name = name;
+	public Setting(String id, String label, String defaultValue) {
+		super(id);
 		this.label = label;
 		this.setDefaultValue(defaultValue);
-		
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getLabel() {
@@ -54,14 +41,15 @@ public abstract class Setting {
 		this.defaultValue = defaultValue;
 	}
 
-	public abstract void setValue(String value);
+	public abstract void setStringValue(String value);
 	
-	public abstract String getValue();
+	public abstract String getStringValue();
 	
+	public abstract T getValue();
 	
 	public void readConfig(Config config, String configPath) {
 		
-		this.setName(config.getString(configPath + "/@name"));
+		super.readConfig(config, configPath);
 		this.setLabel(config.getString(configPath + "/@label"));
 		this.setDefaultValue(config.getString(configPath + "/@default"));
 		

@@ -1,6 +1,6 @@
 /*
  * JGF - Java Game Framework
- * $Id$
+ * $Id: BeanshellConsole.java 24 2008-11-06 02:56:56Z jjmontes $
  *
  * Copyright (c) 2008, JGF - Java Game Framework
  * All rights reserved.
@@ -31,30 +31,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.jgf.camera;
 
-import net.jgf.core.component.BaseComponent;
+package net.jgf.console.bean;
+
+
+import java.util.Set;
+
+import net.jgf.config.Config;
+import net.jgf.config.ConfigException;
+import net.jgf.config.Configurable;
+import net.jgf.config.ConfigurableFactory;
+import net.jgf.settings.Settings;
+import net.jgf.system.Jgf;
+import net.jgf.util.system.NamingUtils;
+
+import org.apache.log4j.Logger;
 
 /**
- * <p>A camera controller manages a camera in the scene. Many cameras
- * can be defined in the scene or in entities. The active camera
- * is used to render the scene.</p>
- * <p>Only the active camera controller is updated during the game loop.</p> 
+ * Implements the console commands.
  */
-public abstract class CameraController extends BaseComponent {
-
-
-	public CameraController() {
-		super();
-	}
-
-	public CameraController(String id)  {
-		super(id);
-	}
+@Configurable
+public class JgfToolsConsoleBean {
 
 	/**
-	 * Updates the camera using its controller
+	 * Class logger
 	 */
-	public abstract void update(float tpf);
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(ToolsBean.class);
+
+	
+	public void readConfig(Config config, String configPath) {
+		
+	}
+
+	public void directoryDump() {
+		logger.info("JGF Directory Dump: \n" + NamingUtils.directoryReport());
+	}
+	
 	
 }

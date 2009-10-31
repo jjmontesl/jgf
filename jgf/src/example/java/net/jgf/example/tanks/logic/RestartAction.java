@@ -21,6 +21,7 @@ import net.jgf.view.ViewState;
 import org.apache.log4j.Logger;
 
 import com.jme.scene.Node;
+import com.jme.system.DisplaySystem;
 
 
 /**
@@ -84,6 +85,7 @@ public class RestartAction extends BaseLogicAction {
 		// Clear banner
 		ViewState failedView = Jgf.getDirectory().getObjectAs("view/root/level/failed", ViewState.class);
 		failedView.deactivate();
+		
 
 	}
 

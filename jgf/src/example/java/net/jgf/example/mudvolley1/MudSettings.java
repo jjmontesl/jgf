@@ -30,7 +30,7 @@ public class MudSettings {
 
 	public final static float BALL_GRAVITY = -36f;
 
-	public final static float BALL_BOUNCE = 24f;
+	public final static float BALL_BOUNCE = 22f;
 
 	public final static float BALL_ROTATION = 0.15f;
 }

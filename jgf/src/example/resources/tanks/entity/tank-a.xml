@@ -14,15 +14,14 @@
 			<property name="EntityCreatorLoader.entityClass" value="net.jgf.example.tanks.entity.AITank" />
 		</loader>
 		
-		<!-- 
-		<loader id="!entity.attributes" class="net.jgf.loader.AttributeMapperLoader" >
-			<property name="AttributeMapperLoader.speed" value="10.0" />
-			<property name="AttributeMapperLoader.maxBullets" value="1" />
+		<loader id="!entity.attributes" class="net.jgf.loader.AttributeLoader" >
+			<property name="AttributeLoader.maxSpeed" value="0.9" />
+			<property name="AttributeLoader.firePerSecond" value="0.6" />
+			<property name="AttributeLoader.simultaneousBullets" value="4" />
 		</loader>
-		 -->
 
 		<loader id="!entity.model" class="net.jgf.jme.loader.entity.EntityModelLoader" >
-			<property name="ConverterLoader.resourceUrl" value="tanks/model/enemy/greentank.dae" />
+			<property name="ConverterLoader.resourceUrl" value="tanks/model/enemy-green/greentank.dae" />
 		</loader>
 		
 	</loader>

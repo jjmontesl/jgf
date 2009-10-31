@@ -47,6 +47,8 @@ public class InputView extends BaseViewState {
 
 			//logger.info("Key pressed (index=" + evt.getTriggerIndex() + ",time=" + evt.getTime() + ",press=" + evt.getTriggerPressed() + ")");
 
+			if (player1 == null) return;
+			
 			if (evt.getTriggerIndex() == KeyInput.KEY_A) player1.setWalkLeft(evt.getTriggerPressed());
 			if (evt.getTriggerIndex() == KeyInput.KEY_D) player1.setWalkRight(evt.getTriggerPressed());
 			if (evt.getTriggerIndex() == KeyInput.KEY_W) player1.setWalkUp(evt.getTriggerPressed());
@@ -70,6 +72,8 @@ public class InputView extends BaseViewState {
 
 		public void performAction(InputActionEvent evt) {
 
+			if (player1 == null) return;
+			
 			//logger.info("Key pressed (index=" + evt.getTriggerIndex() + ",time=" + evt.getTime() + ",press=" + evt.getTriggerPressed() + ")");
 			mouse.getLocalTranslation();
 
@@ -100,7 +104,7 @@ public class InputView extends BaseViewState {
 
 		super.load();
 
-		player1 = Jgf.getDirectory().getObjectAs("entity/root/players/player1", PlayerTank.class);
+		Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
 
 		inputHandler = new InputHandler();
 		inputHandler.addAction(new KeyInputAction(), InputHandler.DEVICE_KEYBOARD, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
@@ -125,5 +129,15 @@ public class InputView extends BaseViewState {
 		inputHandler.update(tpf);
 
 	}
+
+	public PlayerTank getPlayer() {
+		return player1;
+	}
+
+	public void setPlayer(PlayerTank player) {
+		this.player1 = player;
+	}
+	
+	
 
 }

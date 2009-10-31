@@ -8,7 +8,6 @@ import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
-import com.jme.math.FastMath;
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -19,8 +18,8 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.FogState;
 import com.jme.system.DisplaySystem;
-import com.jmex.effects.water.HeightGenerator;
 import com.jmex.effects.water.ProjectedGrid;
+import com.jmex.effects.water.WaterHeightGenerator;
 import com.jmex.effects.water.WaterRenderPass;
 
 @Configurable
@@ -64,13 +63,13 @@ public class ProjectedWaterView extends BaseViewState {
                 0.0f), 0.0f));
 
         projectedGrid = new ProjectedGrid("ProjectedGrid", DisplaySystem.getDisplaySystem().getRenderer().getCamera(), 30, 20, 0.01f,
-                //new WaterHeightGenerator());
-        		new HeightGenerator() {
+                new WaterHeightGenerator());
+        		/*new HeightGenerator() {
         			public float getHeight( float x, float z, float time ) {
         				return
         				FastMath.sin(x*0.8f+time*3.0f)+FastMath.cos(z*1f+time*4.0f)*2.5f;
         			}
-        		} );        
+        		} );*/        
         projectedGrid.setLocalScale(new Vector3f(1.0f, 0.2f, 1.0f));
         projectedGrid.setLocalTranslation(new Vector3f(0.0f, -2.0f, 0.0f));
 
@@ -104,6 +103,9 @@ public class ProjectedWaterView extends BaseViewState {
 			throw new IllegalStateException("No camera is associated to " + this);
 		}
 
+		// Update the camera controller
+		scene.getCurrentCameraController().update(tpf);
+
 		// Set up default camera (only if not dedicated)
 		// TODO: Delegate this to the camera! not the place! to EACH camera
 		DisplaySystem display = DisplaySystem.getDisplaySystem();
@@ -111,9 +113,6 @@ public class ProjectedWaterView extends BaseViewState {
 		display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 800 );
 		//display.getRenderer().getCamera().setFrustumPerspective( 45.0f, (float) display.getWidth() / (float) display.getHeight(), 0.1f, 10000 );
 		display.getRenderer().getCamera().update();
-
-		// Update the camera controller
-		scene.getCurrentCameraController().update(tpf);
 
 		// Have the PassManager render.
 		pManager.renderPasses(DisplaySystem.getDisplaySystem().getRenderer());

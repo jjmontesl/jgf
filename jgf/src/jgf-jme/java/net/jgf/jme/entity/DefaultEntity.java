@@ -17,9 +17,9 @@ import net.jgf.refs.ReferenceSet;
  */
 public abstract class DefaultEntity extends SpatialEntity implements HasReferences, HasCameras {
 
-	CameraControllerSet cameras;
+	private CameraControllerSet cameras;
 
-	ReferenceSet references;
+	private ReferenceSet references;
 
 	public DefaultEntity() {
 		this(null);
@@ -27,8 +27,6 @@ public abstract class DefaultEntity extends SpatialEntity implements HasReferenc
 
 	public DefaultEntity(String id) {
 		super(id);
-		cameras = new CameraControllerSet();
-		references = new ReferenceSet();
 	}
 
 	/* (non-Javadoc)
@@ -36,6 +34,7 @@ public abstract class DefaultEntity extends SpatialEntity implements HasReferenc
 	 */
 	@Override
 	public ReferenceSet getReferences() {
+		if (references == null) references = new ReferenceSet();
 		return references;
 	}
 
@@ -44,6 +43,7 @@ public abstract class DefaultEntity extends SpatialEntity implements HasReferenc
 	 */
 	@Override
 	public CameraControllerSet getCameraControllers() {
+		if (cameras == null) cameras = new CameraControllerSet();
 		return cameras;
 	}
 

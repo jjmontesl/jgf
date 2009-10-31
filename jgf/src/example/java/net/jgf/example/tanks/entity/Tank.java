@@ -390,4 +390,14 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		this.target.set(target);
 	}
 
+	public int getSimultaneousBullets() {
+		return simultaneousBullets;
+	}
+
+	public void setSimultaneousBullets(int simultaneousBullets) {
+		this.simultaneousBullets = simultaneousBullets;
+	}
+
+	
+	
 }

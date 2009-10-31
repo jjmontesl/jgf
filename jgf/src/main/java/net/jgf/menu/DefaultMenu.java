@@ -29,6 +29,15 @@ public class DefaultMenu extends BaseComponent implements Menu {
 
 	protected List<MenuItem> items;
 
+
+	/**
+	 * Builds a new {@link DefaultMenu} component.
+	 */
+	public DefaultMenu() {
+		super();
+		items = new ArrayList<MenuItem>();
+    }
+	
 	/**
 	 * Configures this object from Config.
 	 */
@@ -53,10 +62,6 @@ public class DefaultMenu extends BaseComponent implements Menu {
 	}
 
 
-	public DefaultMenu() {
-		super();
-		items = new ArrayList<MenuItem>();
-	}
 
 
 

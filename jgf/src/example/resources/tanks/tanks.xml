@@ -51,40 +51,42 @@
 		<caseSensitive>true</caseSensitive>
 	
 		<settings>
-			<setting name="network.dedicatedServer" class="net.jgf.settings.BooleanSetting"  
+		
+			<setting id="settings/network/dedicatedServer" class="net.jgf.settings.BooleanSetting"  
 					 label="Dedicated Server" default="false" />
-			<setting name="video.gamma" class="net.jgf.settings.FloatSetting"
+			<setting id="settings/video/gamma" class="net.jgf.settings.FloatSetting"
 					 label="Video Gamma" default="1.0f" />
-			<!-- 
-			<setting name="input.mouse.accel" class="java.lang.Float" 
+			
+			<setting id="settings/input/mouse/accel" class="net.jgf.settings.FloatSetting" 
 					 label="Mouse Accel" default="0.0f" />
-			<setting name="input.mouse.sensitivity" class="java.lang.Float" 
+			<setting id="settings/input/mouse/sensitivity" class="net.jgf.settings.FloatSetting" 
 					 label="Mouse Accel" default="0.0f" />					 
 
-			<setting name="input.key.up" class="net.jgf.config.ConfigKey" 
+			<setting id="settings/input/key/up" class="net.jgf.jme.settings.KeySetting" 
 					 label="Move Up" default="KEY_W" />
-			<setting name="input.key.down" class="net.jgf.config.ConfigKey" 
+			<setting id="settings/input/key/down" class="net.jgf.jme.settings.KeySetting" 
 					 label="Move Down" default="KEY_S" />
-			<setting name="input.key.left" class="net.jgf.config.ConfigKey" 
+			<setting id="settings/input/key/left" class="net.jgf.jme.settings.KeySetting" 
 					 label="Move Left" default="KEY_A" />
-			<setting name="input.key.right" class="net.jgf.config.ConfigKey" 
+			<setting id="settings/input/key/right" class="net.jgf.jme.settings.KeySetting" 
 					 label="Move Right" default="KEY_D" />
 					 
-			<setting name="input.key.screenshot" class="net.jgf.config.ConfigKey" 
+			<setting id="settings/input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
 					 label="Move Right" default="KEY_F1" />					 
-			<setting name="input.key.console" class="net.jgf.config.ConfigKey" 
-					 label="Move Right" default="KEY_TILDE" />
+			<setting id="settings/input/key/console" class="net.jgf.jme.settings.KeySetting" 
+					 label="Move Right" default="KEY_TAB" />
 			
-			<setting name="game.level" class="net.jgf.config.ConfigEnum"
-					 label="Difficulty Level" default="medium">
+			<!-- <setting id="settings/game/level" class="net.jgf.settings.EnumSetting"
+					 label="Difficulty Level" default="medium" enumClass="net.jgf.example.tanks.game.Difficulty" >
 					 <value key="easy" label="Easy" />
 					 <value key="medium" label="Medium" />
 					 <value key="hard" label="Hard" />
 			</setting>
-			
-			<setting id="player.name" class="net.jgf.config.ConfigString" 
-					 label="Player Name" default="UnnamedTank" />
 			 -->
+			
+			<setting id="settings/player/name" class="net.jgf.settings.StringSetting" 
+					 label="Player Name" default="UnnamedTank" />
+			  
 		</settings>
 	
 	</service>
@@ -96,11 +98,17 @@
 	</service>
 	 -->	
 	
+
+	
+	
+	
 	<service id="console" class="net.jgf.console.StreamConsoleWrapper">
 		<service id="console/wrapped" class="net.jgf.console.bean.BeanshellConsole" >
 	
 			<bean name="settings" class="net.jgf.console.bean.SettingsBean" >
 				<settings ref="settings" />
+			</bean>
+			<bean name="jgf" class="net.jgf.console.bean.JgfToolsConsoleBean" >
 			</bean>
 			
 		</service>
@@ -179,6 +187,12 @@
 					<property name="FileChainLoader.resourceUrl" value="tanks/entity/tank-a.xml" />
 				</loader>
 			</reference>
+			<reference regexp="b.*" type="entity" target="entity/root/enemies">
+				<loader id="!loader/scene/referencesprocessor/enemy-a" class="net.jgf.loader.ReferenceLoader" >
+					<property name="ReferenceLoader.loader" value="loader/entity" />
+					<property name="FileChainLoader.resourceUrl" value="tanks/entity/tank-b.xml" />
+				</loader>
+			</reference>			
 		</loader>
 		
 		<!--  The EntityLoader used is a FileChainLoader: reads a chain of loaders from a file -->
@@ -224,7 +238,11 @@
 				<logic id="logic/action/restart" class="net.jgf.example.tanks.logic.RestartAction" >
 				</logic>				
 				
+				<logic id="logic/action/menuscene" class="net.jgf.example.tanks.logic.MenuSceneAction" >
+				</logic>
+				
 				<logic id="logic/action/showmenu" class="net.jgf.logic.action.control.ControllerAction" >
+					<step type="runAction" ref="logic/action/menuscene" />
 					<step type="loadAndActivate" ref="view/root/main" />
 				</logic>
 				
@@ -351,25 +369,35 @@
 			<view id="view/root/main" class="net.jgf.view.ViewStateNode"
 				autoLoad="false" autoActivate="false" >
 				
+				<view id="view/root/main/scene" class="net.jgf.example.tanks.view.ProjectedWaterView"
+					autoLoad="true" autoActivate="true" >
+					<sceneManager ref="scene/manager" />		
+				</view>
+				
+				<view id="view/root/main/scene/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+					autoLoad="true" autoActivate="true" >
+					<sceneManager ref="scene/manager" />		
+				</view>
+				
 				<view id="view/root/main/background" class="net.jgf.jme.view.display.DisplayItemsView" 
 					autoLoad="true" autoActivate="true">
 					
-					<item id="view/root/main/background/warpigs" class="net.jgf.jme.view.display.ImageItem">
+					<!-- <item id="view/root/main/background/warpigs" class="net.jgf.jme.view.display.ImageItem">
 						<center>0.0 0.0 0.0</center>
 						<textureUrl>tanks/texture/logo/war-pigs.png</textureUrl>
 						<size>1.0</size>
-					</item>
+					</item>  -->
 						
 					<item id="view/root/main/background/tanks" class="net.jgf.jme.view.display.ImageItem">
-						<center>-0.5 -0.3 0.0</center>
+						<center>0.7 -0.7 0.0</center>
 						<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
-						<size>0.50</size>
+						<size>0.25</size>
 					</item>
 					
 					<item id="view/root/main/background/title" class="net.jgf.jme.view.display.TextItem">
-						<center>-0.5 -0.6 0.0</center>
-						<size>0.1</size>
-						<font>Verdana BOLD 40</font>
+						<center>0.7 -0.8 0.0</center>
+						<size>0.050</size>
+						<font>Verdana BOLD 48</font>
 						<text>T a u n k l e t</text>
 					</item>	
 						
@@ -400,7 +428,7 @@
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />
 					</view>
-					 -->
+					-->
 					 
 					<!--  
 					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView"
@@ -464,7 +492,7 @@
 					<view id="view/root/level/failed/action" class="net.jgf.jme.view.ActionInputView" 
 						autoLoad="true" autoActivate="true" >
 
-						<action key="KEY_SPACE" ref="logic/action/restart" />
+						<action ref="logic/action/restart" key="KEY_SPACE" />
 						
 					</view>					
 					

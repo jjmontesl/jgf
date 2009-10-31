@@ -36,18 +36,16 @@ public class NamingUtils {
 		Directory directory = Jgf.getDirectory();
 		StringBuilder report = new StringBuilder();
 
-		report.append("Directory ").append(directory).append("\n");
-		report.append("Size: ").append(directory.getSize()).append("\n");
-		report.append("Peak size: ").append(directory.getPeakSize()).append("\n");
-		report.append("Retrieval count: ").append(directory.getRetrievalCount()).append("\n");
-
-		Set<String> keys = directory.getKeys();
+		Set<String> keys = directory.getIds();
 		SortedSet<String> sortedKeys = new TreeSet<String>(keys);
 
 		for (String key : sortedKeys) {
 			Object object = directory.getObjectAs(key, Object.class);
 			report.append("  ").append(key).append("\n    ").append(object.toString()).append("\n");
 		}
+		report.append("Directory ").append(directory).append("\n");
+		report.append("Size: ").append(directory.getSize()).append("\n");
+		report.append("Peak size: ").append(directory.getPeakSize()).append("\n");
 
 		return report.toString();
 	}

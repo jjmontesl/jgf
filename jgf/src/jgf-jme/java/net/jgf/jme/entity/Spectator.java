@@ -50,7 +50,7 @@ public class Spectator extends DefaultEntity {
 	public Spectator(String id) {
 		super(id);
 		this.spatial = new Node("spectatorNode");
-		this.cameras.addCameraController(new SpatialCamera(DEFAULT_CAMERA_ID, this.spatial));
+		this.getCameraControllers().addCameraController(new SpatialCamera(DEFAULT_CAMERA_ID, this.spatial));
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class Spectator extends DefaultEntity {
 	}
 
 	public CameraController getDefaultCameraController() {
-		return cameras.getCameraController(DEFAULT_CAMERA_ID);
+		return getCameraControllers().getCameraController(DEFAULT_CAMERA_ID);
 	}
 
 
