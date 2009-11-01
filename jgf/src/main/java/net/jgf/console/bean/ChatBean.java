@@ -1,35 +1,60 @@
 package net.jgf.console.bean;
 
-import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.network.server.ChatConnector;
-import net.jgf.system.Jgf;
+import net.jgf.messaging.MESSAGE_EVENT_CATEGORY;
+import net.jgf.messaging.MESSAGE_EVENT_TYPE;
+import net.jgf.messaging.MessageEvent;
+import net.jgf.messaging.MessageEventKey;
+import net.jgf.messaging.MessageEventObserver;
+import net.jgf.messaging.MessagingException;
+import net.jgf.messaging.PostOffice;
+import net.jgf.messaging.payloads.JGFChatMessage;
+import net.jgf.network.messages.JGNChatMessage;
 
+import org.apache.log4j.Logger;
+
+/**
+ * This bean handles chat messages that are sent and received via the console.
+ * @author Schrijver
+ * @version 1.0
+ */
 @Configurable
-public class ChatBean {
+public class ChatBean implements MessageEventObserver {
 
-    private ChatConnector connector;
+    /**
+     * Class logger.
+     */
+    @SuppressWarnings("unused")
+    private static final Logger logger = Logger.getLogger(ChatBean.class);
 
-    public void readConfig(Config config, String configPath) {
-
-        String connectorRef = config.getString(configPath + "/connector/@ref");
-        Jgf.getDirectory().register(this, "chatConnector", connectorRef);
-
+    /**
+     * Constructor.
+     */
+    public ChatBean() {
+        try {
+            PostOffice.registerMessageEventObserver(
+                    new MessageEventKey(MESSAGE_EVENT_TYPE.RECEIVED, MESSAGE_EVENT_CATEGORY.CHAT), this);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
-    
     /**
-     * @return the connector
+     * Send the specified message to the ChatConnector.
+     * @param text Body of the message.
      */
-    public final ChatConnector getChatConnector() {
-        return connector;
+    public void send(String text) {
+        JGFChatMessage message = new JGFChatMessage();
+        message.setText(text);
+        PostOffice.fireMessageEvent(new MessageEvent(new MessageEventKey(MESSAGE_EVENT_TYPE.SEND,
+                MESSAGE_EVENT_CATEGORY.CHAT), message));
     }
 
-    
-    /**
-     * @param connector the connector to set
-     */
-    public final void setChatConnector(ChatConnector connector) {
-        this.connector = connector;
+    @Override
+    public void handleMessageEvent(MessageEvent messageEvent) {
+        if (messageEvent.getMessageEventKey().getMessageEventType() == MESSAGE_EVENT_TYPE.RECEIVED) {
+            logger.debug("chat message received: "
+                    + ((JGFChatMessage) messageEvent.getMessageEventPayload()).getText());
+        }
     }
 }

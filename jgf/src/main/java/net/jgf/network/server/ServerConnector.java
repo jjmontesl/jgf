@@ -5,6 +5,13 @@ import java.net.InetSocketAddress;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.core.component.BaseComponent;
+import net.jgf.messages.BaseJGFMessage;
+import net.jgf.messaging.MESSAGE_EVENT_TYPE;
+import net.jgf.messaging.MessageEvent;
+import net.jgf.messaging.MessageEventObserver;
+import net.jgf.messaging.PostOffice;
+import net.jgf.network.messages.JGNMessage;
 import net.jgf.translators.TranslatorMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,9 +28,10 @@ import com.captiveimagination.jgn.test.chat.NamedChatMessage;
  * If connections to different servers are needed, more instances of this class
  * need to be added to the config.
  * @author Schrijver
+ * @version 1.0
  */
 @Configurable
-public class ServerConnector extends BaseConnector implements MessageListener {
+public class ServerConnector extends BaseConnector implements MessageEventObserver, MessageListener {
 
     private JGNClient client;
 
@@ -38,6 +46,12 @@ public class ServerConnector extends BaseConnector implements MessageListener {
     private Integer   timeout             = 5000;
 
     private Integer   maxPackets          = 60;
+    
+    /**
+     * Constructor.
+     */
+    public ServerConnector() {
+    }
 
     @Override
     public void readConfig(Config config, String configPath) {
@@ -45,27 +59,27 @@ public class ServerConnector extends BaseConnector implements MessageListener {
         super.readConfig(config, configPath);
 
         String baReliable = config.getString(configPath + "/bindaddress[@type='reliable']");
-        if (baReliable != null && StringUtils.isNotEmpty(baReliable)) {
+        if (StringUtils.isNotEmpty(baReliable)) {
             bindAddressReliable = baReliable;
         }
         String bpReliable = config.getString(configPath + "/bindport[@type='reliable']");
-        if (bpReliable != null && StringUtils.isNotEmpty(bpReliable)) {
+        if (StringUtils.isNotEmpty(bpReliable)) {
             bindPortReliable = new Integer(bpReliable);
         }
         String baFast = config.getString(configPath + "/bindaddress[@type='fast']");
-        if (baFast != null && StringUtils.isNotEmpty(baFast)) {
+        if (StringUtils.isNotEmpty(baFast)) {
             bindAddressFast = baFast;
         }
         String bpFast = config.getString(configPath + "/bindport[@type='fast']");
-        if (bpFast != null && StringUtils.isNotEmpty(bpFast)) {
+        if (StringUtils.isNotEmpty(bpFast)) {
             bindPortFast = new Integer(bpFast);
         }
         String to = config.getString(configPath + "/timeout");
-        if (to != null && StringUtils.isNotEmpty(to)) {
+        if (StringUtils.isNotEmpty(to)) {
             timeout = new Integer(to);
         }
         String mPackets = config.getString(configPath + "/maxpackets");
-        if (mPackets != null && StringUtils.isNotEmpty(mPackets)) {
+        if (StringUtils.isNotEmpty(mPackets)) {
             maxPackets = new Integer(mPackets);
         }
     }
@@ -193,8 +207,8 @@ public class ServerConnector extends BaseConnector implements MessageListener {
 
     @Override
     public void messageReceived(Message message) {
-        // TODO Auto-generated method stub
-        
+        BaseJGFMessage jgfMessage = (BaseJGFMessage) TranslatorMap.translate(message);
+        PostOffice.fireMessageEvent(null);
     }
 
     @Override
@@ -204,20 +218,26 @@ public class ServerConnector extends BaseConnector implements MessageListener {
     }
 
     @Override
-    public void sendMessage(JGFMessage jgfMessage) {
-        JGNMessage jgnMessage = (JGNMessage)TranslatorMap.translate(jgfMessage);
+    public void handleMessageEvent(MessageEvent messageEvent) {
+        if (messageEvent.getMessageEventKey().getMessageEventType() == MESSAGE_EVENT_TYPE.SEND) {
+            sendMessage((BaseJGFMessage) messageEvent.getMessageEventPayload());
+        }
+    }
+    
+    private void sendMessage(BaseJGFMessage jgfMessage) {
+        JGNMessage jgnMessage = (JGNMessage) TranslatorMap.translate(jgfMessage);
         switch (jgfMessage.getCategory()) {
-            case BROADCAST: {
+            case BROADCAST: 
                 client.broadcast(jgnMessage);
                 break;
-            }
-            case P2P: {
+            case P2P: 
                 client.sendToPlayer(jgnMessage, jgfMessage.getPlayerId());
                 break;
-            }
-            case SERVER: {
+            case SERVER: 
                 client.sendToServer(jgnMessage);
-            }
+                break;
+            default: 
+                break;
         }
     }
 }

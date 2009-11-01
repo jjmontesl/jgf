@@ -1,6 +1,5 @@
-package net.jgf.console.bean;
+package net.jgf.network.messages;
 
-import net.jgf.network.server.JGNMessage;
 
 public class JGNChatMessage extends JGNMessage {
 

@@ -8,7 +8,7 @@ public final class TranslatorMap {
 
 	private TranslatorMap() {
 		translatorsByKey.put("net.jgf.console.bean.JGNChatMessage", new net.jgf.translators.network.TranslateJGNChatMessageToJGFChatMessage());
-		translatorsByKey.put("net.jgf.network.server.JGFChatMessage", new net.jgf.translators.network.TranslateJGFChatMessageToJGNChatMessage());
+		translatorsByKey.put("net.jgf.messages.JGFChatMessage", new net.jgf.translators.network.TranslateJGFChatMessageToJGNChatMessage());
 	}
 
 	public static Object translate(Object beanToTranslate) {
