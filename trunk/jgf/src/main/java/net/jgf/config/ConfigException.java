@@ -35,35 +35,44 @@ package net.jgf.config;
 
 import net.jgf.core.JgfRuntimeException;
 
-
 /**
- * <p>General Gaming Framework configuration exception.</p>
- * <p>This is a RuntimeException, and therefore it doesn't need to be captured.</p>
+ * <p>
+ * General Gaming Framework configuration exception.
+ * </p>
+ * <p>
+ * This is a RuntimeException, and therefore it doesn't need to be catched.
+ * </p>
+ * 
  * @author jjmontes
- * @version $Revision$
+ * @version 1.0
  */
 public class ConfigException extends JgfRuntimeException {
 
-	/**
-	 * The serialVersionUID of this Exception
-	 */
-	private static final long serialVersionUID = 4325218818170184700L;
+    /**
+     * The serialVersionUID of this Exception.
+     */
+    private static final long serialVersionUID = 4325218818170184700L;
 
-	/**
-	 * Builds a new exception using the specified message.
-	 * @param message the message to be associated with this Exception
-	 */
-	public ConfigException(String message) {
-		super(message);
-	}
+    /**
+     * Builds a new exception using the specified message.
+     * 
+     * @param message
+     *            the message to be associated with this Exception.
+     */
+    public ConfigException(String message) {
+        super(message);
+    }
 
-	/**
-	 * Builds a new exception with the specified message and nested exception
-	 * @param message the message to be associated with this Exception
-	 * @param throwable a nested Throwable that is the cause of this exception
-	 */
-	public ConfigException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
+    /**
+     * Builds a new exception with the specified message and nested exception.
+     * 
+     * @param message
+     *            the message to be associated with this Exception.
+     * @param throwable
+     *            a nested Throwable that is the cause of this exception.
+     */
+    public ConfigException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
 
 }
