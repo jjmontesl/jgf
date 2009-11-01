@@ -57,7 +57,7 @@ public class JgfToolsConsoleBean {
 	 * Class logger
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(ToolsBean.class);
+	private static final Logger logger = Logger.getLogger(JgfToolsConsoleBean.class);
 
 	
 	public void readConfig(Config config, String configPath) {

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+	<!--
+	Java Game Framework Global Configuration File
+	$Id$
+ -->
+
+<jgf>
+
+	<!-- Application configuration -->
+	<application>
+
+		<!--
+			Name of the application. Will appear in the Window Title and
+			messages.
+		-->
+		<name>Java Game Framework: Console Test</name>
+
+		<!-- Application version -->
+		<version>1.0</version>
+
+		<!-- Network protool -->
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+
+		<!-- Debug mode -->
+		<debug>true</debug>
+
+		<!-- Engine reference -->
+		<engine ref="engine" />
+
+	</application>
+
+	<!-- 
+		Engine Component
+	 -->
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<!-- Enable jME collection of rendering statistics -->
+		<collectStats>${application/debug}</collectStats>
+
+		<!-- Service reference to the Logic Manager -->
+		<logicManager ref="logic" />
+
+		<!-- Service reference to the State Manager -->
+		<viewManager ref="view" />
+
+	</service>
+
+	<!-- 
+		Console
+	 -->
+	<service id="chatconsole" class="net.jgf.console.StreamConsoleWrapper">
+		<service id="chatconsole/wrapped" class="net.jgf.console.bean.BeanshellConsole">
+			<bean name="chatbean" class="net.jgf.console.bean.ChatBean">
+				<connector ref="network/server/chat" />
+			</bean>
+		</service>
+	</service>
+
+	<!-- 
+		Network
+	 -->
+	<service id="network" class="net.jgf.network.NetworkManager">
+		<!--
+			The server connector provides a channel to send messages out to
+			clients, and to receive client messages. It represents the
+			incoming/outgoing queue of messages through each 'channel'. It keeps
+			a list of connected clients. If JGN is used, I guess this would be
+			one integration point.
+		-->
+		<connector id="network/server" class="net.jgf.network.server.ServerConnector">
+			<bindaddress type="reliable">127.0.0.1</bindaddress>
+			<bindport type="reliable">10000</bindport>
+			<bindaddress type="fast">127.0.0.1</bindaddress>
+			<bindport type="fast">20000</bindport>
+			<timeout>5000</timeout>
+			<maxpackets>60</maxpackets>
+		</connector>
+
+		<!--
+			This would process chat messages from clients and send them to other
+			clients. It would keep the list of chat channels and their users,
+			etc...
+		-->
+		<connector id="network/server/chat" class="net.jgf.network.server.ChatConnector">
+			<connector ref="network/server">
+			</connector>
+		</connector>
+	</service>
+
+	<!-- 
+		Logic Manager
+	 -->
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+
+		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
+		</logic>
+
+	</service>
+
+	<!-- 
+		State Manager
+	 -->
+	<service id="view" class="net.jgf.view.DefaultViewManager"
+		depends="engine">
+
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
+
+			<!-- Background sample scene -->
+			<view id="view/root/box" class="net.jgf.example.box.BoxView"
+				autoLoad="true" autoActivate="true">
+			</view>
+
+			<!--
+				Console View state that serves as interface to use the Console
+				system
+			-->
+			<view id="view/root/consolekey" class="net.jgf.jme.view.ToggleInputView"
+				autoLoad="true" autoActivate="true">
+
+				<key>KEY_BACKSLASH</key>
+
+				<view id="view/root/chatconsole" class="net.jgf.jme.view.ConsoleView"
+					autoLoad="true" autoActivate="true">
+					<console ref="chatconsole" />
+				</view>
+
+			</view>
+
+
+		</view>
+
+	</service>
+
+</jgf>
+ 
+
+
