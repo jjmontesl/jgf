@@ -39,24 +39,38 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Defines whether a class provides a method that initializes an object from configuration.</p>
- * <p>A class must be annotated with {@link Configurable} if it is going to be used from
- * the configuration file.</p>
- * <p>Classes annotated with this interface must provide a configuration
- * method with signature <tt>void readConfig(Config config, String configPath)</tt>.</p>
- * <p>Configuration and path are not to be stored, as they are not reusable.</p>
- * <p>Note that most JGF base objects implement this method, and therefore
- * <tt>super.readConfig(...)</tt> should normally be called when overriding this method.</p>
+ * <p>
+ * Defines whether a class provides a method that initializes an object from
+ * configuration.
+ * </p>
+ * <p>
+ * A class must be annotated with {@link Configurable} if it is going to be used
+ * from the configuration file.
+ * </p>
+ * <p>
+ * Classes annotated with this interface must provide a configuration method
+ * with signature <tt>void readConfig(Config config, String configPath)</tt>.
+ * </p>
+ * <p>
+ * Configuration and path are not to be stored, as they are not reusable.
+ * </p>
+ * <p>
+ * Note that most JGF base objects implement this method, and therefore
+ * <tt>super.readConfig(...)</tt> should normally be called when overriding this
+ * method.
+ * </p>
+ * 
  * @see ConfigurableFactory
+ * @version 1.0
  * @author jjmontes
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Configurable {
 
-	/**
-	 * Name of the method that configures a component from configuration.
-	 */
-	public static final String READCONFIG_METHOD_NAME = "readConfig";
+    /**
+     * Name of the method that configures a component from configuration.
+     */
+    static final String READCONFIG_METHOD_NAME = "readConfig";
 
 }
