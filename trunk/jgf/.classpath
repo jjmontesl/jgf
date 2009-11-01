@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/apart/java"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/jgf-jme/java"/>
 	<classpathentry kind="src" path="src/jgf-jmephysics/java"/>
 	<classpathentry kind="src" path="src/example/java"/>
 	<classpathentry kind="src" path="src/example/resources"/>
 	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/jgf-tools/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="src/main/lib/bsh-core-2.0b4.jar"/>
 	<classpathentry kind="lib" path="src/main/lib/commons-beanutils-bean-collections.jar"/>
@@ -34,5 +34,7 @@
 	<classpathentry kind="lib" path="src/jgf-jme/lib/sm_properties_jme2.jar"/>
 	<classpathentry kind="lib" path="src/test/lib/junit-4.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jmephysics2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jgn"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ant"/>
 	<classpathentry kind="output" path="target/classes-eclipse"/>
 </classpath>

@@ -56,7 +56,7 @@ public class SettingsBean {
 	 * Class logger
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(ToolsBean.class);
+	private static final Logger logger = Logger.getLogger(SettingsBean.class);
 
 	Settings settings;
 	
