@@ -5,40 +5,20 @@ import java.io.IOException;
 import net.jgf.core.component.BaseComponent;
 
 /**
- * Base class for the connectors.
+ * Base interface for the connectors.
  * @author Schrijver
- *
+ * @version 0.1
  */
 public abstract class BaseConnector extends BaseComponent {
 
-    private ConnectorObserver observer;
-
-    /**
-     * set the observer for this Connector. Currently, only one oberserver is allowed.
-     * @param observer
-     */
-    public void setConnectorObserver(ConnectorObserver observer) {
-        this.observer = observer;
-    }
-
-    /**
-     * get the observer for this Connector. Currently, only one oberserver is allowed.
-     * @param observer
-     */
-    public ConnectorObserver getConnectorObserver() {
-        return observer;
-    }
-    
     /**
      * Connect this connector.
-     * @throws IOException 
+     * @throws IOException
      */
     public abstract void connect() throws IOException;
-    
+
     /**
      * Disconnect this connector.
      */
     public abstract void disconnect();
-    
-    public abstract void sendMessage(JGFMessage message);
 }

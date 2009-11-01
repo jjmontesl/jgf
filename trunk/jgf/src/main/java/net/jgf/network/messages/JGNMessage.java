@@ -1,4 +1,4 @@
-package net.jgf.network.server;
+package net.jgf.network.messages;
 
 import com.captiveimagination.jgn.message.Message;
 import com.captiveimagination.jgn.message.type.PlayerMessage;

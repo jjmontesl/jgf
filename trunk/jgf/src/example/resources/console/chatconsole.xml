@@ -52,7 +52,6 @@
 	<service id="chatconsole" class="net.jgf.console.StreamConsoleWrapper">
 		<service id="chatconsole/wrapped" class="net.jgf.console.bean.BeanshellConsole">
 			<bean name="chatbean" class="net.jgf.console.bean.ChatBean">
-				<connector ref="network/server/chat" />
 			</bean>
 		</service>
 	</service>
@@ -75,16 +74,6 @@
 			<bindport type="fast">20000</bindport>
 			<timeout>5000</timeout>
 			<maxpackets>60</maxpackets>
-		</connector>
-
-		<!--
-			This would process chat messages from clients and send them to other
-			clients. It would keep the list of chat channels and their users,
-			etc...
-		-->
-		<connector id="network/server/chat" class="net.jgf.network.server.ChatConnector">
-			<connector ref="network/server">
-			</connector>
 		</connector>
 	</service>
 
