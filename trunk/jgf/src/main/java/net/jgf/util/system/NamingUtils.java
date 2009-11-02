@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * Thread safe??
+ * TODO: Is this thread safe??
  * @author jjmontes
  */
 public class NamingUtils {

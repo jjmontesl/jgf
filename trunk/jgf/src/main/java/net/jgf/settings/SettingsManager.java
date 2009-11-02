@@ -1,6 +1,6 @@
 package net.jgf.settings;
 
-import java.util.Enumeration;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -9,7 +9,6 @@ import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
-import net.jgf.system.Application;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
@@ -44,7 +43,7 @@ public final class SettingsManager extends BaseService implements Settings {
      * Class logger
      */
     @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(Application.class);
+    private static final Logger logger = Logger.getLogger(SettingsManager.class);
 
     /**
      * StandardSettingsManager table initial capacity
@@ -130,8 +129,8 @@ public final class SettingsManager extends BaseService implements Settings {
     }
 
     @Override
-    public Enumeration<Setting< ? >> getSettings() {
-        Enumeration<Setting< ? >> res = settings.elements();
+    public Collection<Setting< ? >> getSettings() {
+        Collection<Setting< ? >> res = settings.values();
         return res;
     }
 
