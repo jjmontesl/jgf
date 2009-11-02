@@ -1,7 +1,7 @@
 
 package net.jgf.settings;
 
-import java.util.Enumeration;
+import java.util.Collection;
 
 /**
  * Common interface to access settings.
@@ -12,7 +12,7 @@ public interface Settings {
 
 	public Setting<?> getSetting(String key);
 
-	public Enumeration<Setting<?>> getSettings();
+	public Collection<Setting<?>> getSettings();
 	
 	/**
 	 * Registers an object that will be updated on setting changes.

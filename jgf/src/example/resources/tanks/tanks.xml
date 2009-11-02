@@ -79,6 +79,11 @@
         </settings>
     
     </service>
+    
+    <service id="settingsStorage" class="net.jgf.settings.storage.PropertiesStorage">
+        <path>$USER_HOME/taunklet.properties</path>
+        <settings ref="settings" />
+    </service>
 	
 	<!-- 
 		Engine service
@@ -92,18 +97,6 @@
 		<viewManager ref="view" />
 		
 	</service>
-	
-	
-	<!-- 
-	<service id="settingsStorage" class="net.jgf.settings.storage.PropertiesFileSettingsStorage">
-		<path>$HOME/taunklet.properties</path>
-		<settings ref="settings" />
-	</service>
-	 -->	
-	
-
-	
-	
 	
 	<service id="console" class="net.jgf.console.StreamConsoleWrapper">
 		<service id="console/wrapped" class="net.jgf.console.bean.BeanshellConsole" >
