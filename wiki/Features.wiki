@@ -27,7 +27,7 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
   * Settings management (defaults, typing...).
   * Settings storage.
 
-  * Configuration Dialog for initial settings (_to be done_)_.
+  * Configuration Dialog for initial settings (_to be done_).
   * Command Line Options parsing service, which allows to set settings and other framework parameters based on the command line arguments passed to the application (_to be done_).
 
 *Menu System*
