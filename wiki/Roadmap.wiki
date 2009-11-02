@@ -16,5 +16,17 @@ Please note that JGF is not ready for production usage. Some important features 
 *1.1*
 
   * Network system.
+  * Complete missing / partially implemented features.
+  * Normalize loading process (allowing for loading screens).
+  * Include loader resource caching/saving.
+  * Improve entity and model pooling systems.
+
+*Future...*
+
+  * More console languages
+  * More console aspects
+  * Better 2D display system
+  * More loaders and development tools
+  * Consider including a GUI system or improve the Menu system
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
