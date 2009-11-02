@@ -47,12 +47,15 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
 
 JGF is designed to be extensible. Base classes are provided for most of the components you'll need to implement to code your game. And you can always provide new functionality writing your custom components if you need.
 
-  * JGF includes and provides components that easily allow you to add development tools to your game:
-    * JME Scene Debugger (bounding volumes viewing, normals viewing, wireframe mode...).
-    * Physics Debugger.
-    * Scene Monitor / Scene Worker (for scene graph inspecting).
-    * Framework components information.
-    * Java VM metrics reports.
+*Development*
+
+JGF includes and provides components that easily allow you to add development tools to your game:
+
+  * JME Scene Debugger (bounding volumes viewing, normals viewing, wireframe mode...).
+  * Physics Debugger.
+  * Scene Monitor / Scene Worker (for scene graph inspecting).
+  * Framework components information.
+  * Java VM metrics reports.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-debug-1.png
 
