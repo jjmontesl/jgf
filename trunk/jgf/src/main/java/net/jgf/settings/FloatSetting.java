@@ -14,6 +14,7 @@ public class FloatSetting extends Setting<Float> {
 
 	public void setStringValue(String value) {
 		this.value = Float.parseFloat(value);
+		manager.update(this.id, this.value);
 	}
 	
 	public String getStringValue() {
@@ -30,6 +31,9 @@ public class FloatSetting extends Setting<Float> {
 
 	@Override
 	public Float getValue() {
+        if (value == null) {
+            setStringValue(this.getDefaultValue());
+        }
 		return value;
 	}
 

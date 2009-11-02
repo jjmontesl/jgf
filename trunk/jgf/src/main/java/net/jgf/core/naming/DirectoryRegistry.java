@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
 
 /**
  * <p>
- * The Registry holds object registrations with the directory, and updates
+ * The DirectoryRegistry holds object registrations with the directory, and updates
  * registered objects about changes done to directory entries.
  * </p>
  * <p>
@@ -63,20 +63,20 @@ import org.apache.log4j.Logger;
  * </p>
  * </p>
  * <p>
- * Note that this class is not synchronized itself, but only one Registry exists
- * per Directory and the Registry itself is never made accessible outside the
+ * Note that this class is not synchronized itself, but only one DirectoryRegistry exists
+ * per Directory and the DirectoryRegistry itself is never made accessible outside the
  * Directory.
  * </p>
  * 
  * @author jjmontes
  * @version 1.0
  */
-final class Registry {
+final class DirectoryRegistry {
 
     /**
      * Class logger.
      */
-    private static final Logger logger = Logger.getLogger(Registry.class);
+    private static final Logger logger = Logger.getLogger(DirectoryRegistry.class);
 
     /**
      * A Registry Setter entry, which includes a field name and a WeakReference
@@ -135,7 +135,7 @@ final class Registry {
     /**
      * Builds a Registry instance.
      */
-    Registry() {
+    DirectoryRegistry() {
         super();
     }
 

@@ -35,67 +35,92 @@ package net.jgf.core.component;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.jme.config.JmeConfigHelper;
+import net.jgf.jme.view.ActionInputView.ActionInputKey;
+import net.jgf.settings.Settings;
+import net.jgf.system.Jgf;
 
 /**
- * <p>This is the base class for objects of type {@link Component}.</p>
- *
+ * <p>
+ * This is the base class for objects of type {@link Component}.
+ * </p>
+ * 
  * @see Component
  * @author jjmontes
  */
 public class BaseComponent implements Component {
 
-	/**
-	 * Component id.
-	 */
-	protected String id;
+    /**
+     * Component id.
+     */
+    protected String id;
 
-	/**
-	 * Builds a new Component with a null id.
-	 */
-	public BaseComponent() {
-		super();
-	}
+    /**
+     * Builds a new Component with a null id.
+     */
+    public BaseComponent() {
+        super();
+    }
 
-	/**
-	 * Builds a new Component with the given id.
-	 */
-	public BaseComponent(String id) {
-		super();
-		this.id = id;
-	}
+    /**
+     * Builds a new Component with the given id.
+     */
+    public BaseComponent(String id) {
+        super();
+        this.id = id;
+    }
 
-	/**
-	 * Returns the component's id.
-	 */
-	@Override
-	public String getId() {
-		return id;
-	}
+    /**
+     * Returns the component's id.
+     */
+    @Override
+    public String getId() {
+        return id;
+    }
 
-	/**
-	 * Sets the component's id.
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    /**
+     * Sets the component's id.
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * Configures this object from Config.
-	 * @see Configurable
-	 */
-	public void readConfig(Config config, String configPath) {
+    /**
+     * Configures this object from Config.
+     * 
+     * @see Configurable
+     */
+    public void readConfig(Config config, String configPath) {
 
-		this.id = config.getString(configPath + "/@id");
+        this.id = config.getString(configPath + "/@id");
 
-	}
+        // Al components provide settings injection defined at XML
+        if (config.containsKey(configPath + "/settings/@ref")) {
+            String settingsRef = config.getString(configPath + "/settings/@ref");
+            Settings settings = Jgf.getDirectory().getObjectAs(settingsRef, Settings.class);
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return this.getClass().getSimpleName() + "[id=" + id +"]";
-	}
+            int index = 1;
+            while (config.containsKey(configPath + "/settings/setting[" + index + "]/@field")) {
+                String field = config.getString(configPath + "/settings/setting[" + index
+                        + "]/@field");
+                String ref = config.getString(configPath + "/settings/setting[" + index + "]/@ref");
+                settings.register(this, field, ref);
 
+                index++;
+            }
+
+        }
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "[id=" + id + "]";
+    }
 
 }

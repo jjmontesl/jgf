@@ -21,7 +21,7 @@
 		</loader>
 
 		<loader id="!entity.model" class="net.jgf.jme.loader.entity.EntityModelLoader" >
-			<property name="ConverterLoader.resourceUrl" value="tanks/model/enemy-yellow/yellowtank.dae" />
+			<property name="ConverterLoader.resourceUrl" value="tanks/model/enemyyellow/yellowtank.dae" />
 		</loader>
 		
 	</loader>
