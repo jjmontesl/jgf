@@ -132,7 +132,7 @@ public final class Directory {
      * Directory registry, which sets references to objects that have asked for
      * them.
      */
-    private Registry registry;
+    private DirectoryRegistry registry;
 
     /**
      * <p>Builds a directory. JGF build the Directory internally: users shouldn't need
@@ -143,7 +143,7 @@ public final class Directory {
     public Directory() {
         peakSize = 0;
         retrievalCount = 0;
-        registry = new Registry();
+        registry = new DirectoryRegistry();
         objects = new Hashtable<String, WeakReference<Object>>(
                   DIRECTORY_DEFAULT_SIZE);
     }

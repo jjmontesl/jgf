@@ -16,39 +16,45 @@ import com.jme.input.KeyInput;
 @Configurable
 public class KeySetting extends Setting<Integer> {
 
-	Integer value;
+    Integer value;
 
-	public void setStringValue(String value) {
-		this.value = TypeParserHelper.valueOfKeyInput(value);
-	}
-	
-	public String getStringValue() {
-		if (value == null) {
-			setStringValue(this.getDefaultValue());
-		}
-		
-		String stringValue = "";
-		Field[] fields = KeyInput.class.getFields();
-		for (Field field : fields) {
-			try {
-				if (field.getType() == int.class) {
-					if (field.getInt(null) == value.intValue()) stringValue = field.getName();
-				}
-			}  catch (IllegalAccessException e) {
-				throw new ConfigException("Could not access KeyInput '" + field.getName() + "' parsing KeyInput value", e);
-			}
-		}
-		
-		return stringValue;
-	}
-	
-	@Override
-	public void readConfig(Config config, String configPath) {
-		super.readConfig(config, configPath);
-	}
+    public void setStringValue(String value) {
+        this.value = TypeParserHelper.valueOfKeyInput(value);
+        getManager().update(this.id, this.value);
+    }
 
-	@Override
-	public Integer getValue() {
-		return value;
-	}
+    public String getStringValue() {
+        if (value == null) {
+            setStringValue(this.getDefaultValue());
+        }
+
+        String stringValue = "";
+        Field[] fields = KeyInput.class.getFields();
+        for (Field field : fields) {
+            try {
+                if (field.getType() == int.class) {
+                    if (field.getInt(null) == value.intValue())
+                        stringValue = field.getName();
+                }
+            } catch (IllegalAccessException e) {
+                throw new ConfigException("Could not access KeyInput '" + field.getName()
+                        + "' parsing KeyInput value", e);
+            }
+        }
+
+        return stringValue;
+    }
+
+    @Override
+    public void readConfig(Config config, String configPath) {
+        super.readConfig(config, configPath);
+    }
+
+    @Override
+    public Integer getValue() {
+        if (value == null) {
+            setStringValue(this.getDefaultValue());
+        }
+        return value;
+    }
 }

@@ -14,6 +14,7 @@ public abstract class Setting<T> extends BaseComponent {
 	
 	String defaultValue;
 	
+	SettingsManager manager;
 
 	public Setting() {
 		super();
@@ -47,7 +48,15 @@ public abstract class Setting<T> extends BaseComponent {
 	
 	public abstract T getValue();
 	
-	public void readConfig(Config config, String configPath) {
+	void setManager(SettingsManager manager) {
+	    this.manager = manager;
+	}
+	
+	public SettingsManager getManager() {
+        return manager;
+    }
+
+    public void readConfig(Config config, String configPath) {
 		
 		super.readConfig(config, configPath);
 		this.setLabel(config.getString(configPath + "/@label"));

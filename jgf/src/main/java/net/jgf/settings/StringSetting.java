@@ -10,28 +10,31 @@ import net.jgf.system.Jgf;
 @Configurable
 public class StringSetting extends Setting<String> {
 
-	String value;
+    String value;
 
-	public void setStringValue(String value) {
-		this.value = value;
-	}
-	
-	public String getStringValue() {
-		if (value == null) {
-			setStringValue(this.getDefaultValue());
-		}
-		return value;
-	}
-	
-	@Override
-	public void readConfig(Config config, String configPath) {
-		super.readConfig(config, configPath);
-	}
+    public void setStringValue(String value) {
+        this.value = value;
+        manager.update(this.id, this.value);
+    }
 
-	@Override
-	public String getValue() {
-		return value;
-	}
+    public String getStringValue() {
+        if (value == null) {
+            setStringValue(this.getDefaultValue());
+        }
+        return value;
+    }
 
+    @Override
+    public void readConfig(Config config, String configPath) {
+        super.readConfig(config, configPath);
+    }
+
+    @Override
+    public String getValue() {
+        if (value == null) {
+            setStringValue(this.getDefaultValue());
+        }
+        return value;
+    }
 
 }

@@ -1,4 +1,3 @@
-
 package net.jgf.jme.view.display;
 
 import net.jgf.config.Config;
@@ -14,212 +13,196 @@ import com.jme.scene.shape.Quad;
 import com.jme.system.DisplaySystem;
 
 /**
- *
+ * 
  * @author jjmontes
  * @version $Revision$
  */
 @Configurable
 public class TextItem extends DisplayItem {
 
-	
-	protected Vector3f center = new Vector3f();
+    protected Vector3f center = new Vector3f();
 
-	protected String text = "UNDEFINED";
+    protected String text = "UNDEFINED";
 
-	protected float ratio = 1.0f;
+    protected float ratio = 1.0f;
 
-	protected float size = 0.2f;
+    protected float size = 0.2f;
 
-	protected String font = TextQuadUtils.DEFAULT_FONT;
-	
-	protected DisplayItemAlignment align = DisplayItemAlignment.Center; 
+    protected String font = TextQuadUtils.DEFAULT_FONT;
 
-	protected Quad quad = null;
+    protected DisplayItemAlignment align = DisplayItemAlignment.Center;
 
-	/**
-	 * Configures this object from Config.
-	 */
-	@Override
-	public void readConfig(Config config, String configPath) {
+    protected Quad quad = null;
 
-		super.readConfig(config, configPath);
+    /**
+     * Configures this object from Config.
+     */
+    @Override
+    public void readConfig(Config config, String configPath) {
 
-		setCenter(JmeConfigHelper.getVector3f(config, configPath + "/center"));
-		setText(config.getString(configPath + "/text"));
-		setFont(config.getString(configPath + "/font", getFont()));
-		setSize(config.getFloat(configPath + "/size"));
-		setRatio(config.getFloat(configPath + "/ratio", getRatio()));
-		setAlign(DisplayItemAlignment.valueOf(config.getString(configPath + "/align", getAlign().toString())));
+        super.readConfig(config, configPath);
 
-	}
+        setCenter(JmeConfigHelper.getVector3f(config, configPath + "/center"));
+        setText(config.getString(configPath + "/text", getText()));
+        setFont(config.getString(configPath + "/font", getFont()));
+        setSize(config.getFloat(configPath + "/size", getSize()));
+        setRatio(config.getFloat(configPath + "/ratio", getRatio()));
+        setAlign(DisplayItemAlignment.valueOf(config.getString(configPath + "/align", getAlign()
+                .toString())));
 
+    }
 
-	public DisplayItemAlignment getAlign() {
-		return align;
-	}
+    public DisplayItemAlignment getAlign() {
+        return align;
+    }
 
+    public void setAlign(DisplayItemAlignment align) {
+        this.align = align;
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.jgf.jme.view.display.DisplayItem#load(com.jme.scene.Node)
+     */
+    @Override
+    public void refreshNode(Node display) {
 
+        // TODO: Review this refreshing strategy... should be usable for HUDs
+        // too
+        if (quad != null)
+            display.detachChild(quad);
+        // TODO: Remove texture? Check if this is done somewhere
 
-	public void setAlign(DisplayItemAlignment align) {
-		this.align = align;
-	}
+        TextQuadUtils textLabel = new TextQuadUtils(text.trim());
+        textLabel.setFont(font);
 
+        Vector2f displaySize = new Vector2f(DisplaySystem.getDisplaySystem().getRenderer()
+                .getWidth(), DisplaySystem.getDisplaySystem().getRenderer().getHeight());
+        Vector3f ortoCenter = new Vector3f(0.5f * displaySize.x, 0.5f * displaySize.y, 0);
 
+        quad = textLabel.getQuad(ratio);
 
+        float xOffset = 0.0f;
+        float yOffset = 0.0f;
+        if ((align == DisplayItemAlignment.Left) || (align == DisplayItemAlignment.TopLeft)
+                || (align == DisplayItemAlignment.BottomLeft))
+            xOffset = (+(quad.getWidth() / 2)) * (size * displaySize.y);
+        if ((align == DisplayItemAlignment.Right) || (align == DisplayItemAlignment.TopRight)
+                || (align == DisplayItemAlignment.BottomRight))
+            xOffset = (-(quad.getWidth() / 2)) * (size * displaySize.y);
+        if ((align == DisplayItemAlignment.TopLeft) || (align == DisplayItemAlignment.Top)
+                || (align == DisplayItemAlignment.TopRight))
+            yOffset = (-(quad.getHeight() / 2)) * (size * displaySize.y);
+        if ((align == DisplayItemAlignment.BottomLeft) || (align == DisplayItemAlignment.Bottom)
+                || (align == DisplayItemAlignment.BottomRight))
+            yOffset = (+(quad.getHeight() / 2)) * (size * displaySize.y);
+        quad.getLocalTranslation().set(ortoCenter.x * center.x + ortoCenter.x + xOffset,
+                ortoCenter.y * center.y + ortoCenter.y + yOffset, 0);
+        quad.getLocalScale().multLocal(size * displaySize.y);
+        // billboard.getLocalTranslation().set(0.0f, 0.0f, 0.0f);
+        // quad.getLocalTranslation().set(center.x, center.y, 0.0f);
 
-	/* (non-Javadoc)
-	 * @see net.jgf.jme.view.display.DisplayItem#load(com.jme.scene.Node)
-	 */
-	@Override
-	public void refreshNode(Node display) {
+        quad.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 
-		// TODO: Review this refreshing strategy... should be usable for HUDs too
-		if (quad != null) display.detachChild(quad);
-		// TODO: Remove texture? Check if this is done somewhere
+        quad.updateRenderState();
+        quad.updateGeometricState(0, true);
 
-		TextQuadUtils textLabel = new TextQuadUtils(text.trim());
-		textLabel.setFont(font);
+        display.attachChild(quad);
 
-		Vector2f displaySize = new Vector2f(DisplaySystem.getDisplaySystem().getRenderer().getWidth(), DisplaySystem.getDisplaySystem().getRenderer().getHeight());
-		Vector3f ortoCenter = new Vector3f(0.5f * displaySize.x, 0.5f * displaySize.y, 0);
+    }
 
-		quad = textLabel.getQuad(ratio);
-		
-		float xOffset = 0.0f;
-		float yOffset = 0.0f;
-		if ((align == DisplayItemAlignment.Left) ||
-			(align == DisplayItemAlignment.TopLeft) ||
-			(align == DisplayItemAlignment.BottomLeft)) xOffset = (+ (quad.getWidth() / 2)) * (size * displaySize.y);
-		if ((align == DisplayItemAlignment.Right) ||
-			(align == DisplayItemAlignment.TopRight) ||
-			(align == DisplayItemAlignment.BottomRight)) xOffset = (- (quad.getWidth() / 2)) * (size * displaySize.y);
-		if ((align == DisplayItemAlignment.TopLeft) ||
-			(align == DisplayItemAlignment.Top) ||
-			(align == DisplayItemAlignment.TopRight)) yOffset = (- (quad.getHeight() / 2)) * (size * displaySize.y);
-		if ((align == DisplayItemAlignment.BottomLeft) ||
-			(align == DisplayItemAlignment.Bottom) ||
-			(align == DisplayItemAlignment.BottomRight)) yOffset = (+ (quad.getHeight() / 2)) * (size * displaySize.y);
-		quad.getLocalTranslation().set(ortoCenter.x * center.x + ortoCenter.x + xOffset, ortoCenter.y * center.y + ortoCenter.y + yOffset, 0 );
-		quad.getLocalScale().multLocal(size * displaySize.y);
-		//billboard.getLocalTranslation().set(0.0f, 0.0f, 0.0f);
-		//quad.getLocalTranslation().set(center.x, center.y, 0.0f);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.jgf.jme.view.display.DisplayItem#destroyNode(com.jme.scene.Node)
+     */
+    @Override
+    public void destroyNode(Node display) {
+        // TODO: destroy textures, etc.?
+        display.detachChild(quad);
+    }
 
-		quad.setRenderQueueMode(Renderer.QUEUE_ORTHO);
+    /**
+     * @return the center
+     */
+    public Vector3f getCenter() {
+        return center;
+    }
 
-		quad.updateRenderState();
-		quad.updateGeometricState(0, true);
+    /**
+     * @param center
+     *            the center to set
+     */
+    public void setCenter(Vector3f center) {
+        this.center = center;
+    }
 
-		display.attachChild(quad);
+    /**
+     * @return the text
+     */
+    public String getText() {
+        return text;
+    }
 
-	}
+    /**
+     * @param text
+     *            the text to set
+     */
+    public void setText(String text) {
+        this.text = text;
+    }
 
+    /**
+     * @return the size
+     */
+    public float getSize() {
+        return size;
+    }
 
+    /**
+     * @param size
+     *            the size to set
+     */
+    public void setSize(float size) {
+        this.size = size;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.jgf.jme.view.display.DisplayItem#destroyNode(com.jme.scene.Node)
-	 */
-	@Override
-	public void destroyNode(Node display) {
-		// TODO: destroy textures, etc.?
-		display.detachChild(quad);
-	}
+    /**
+     * @return the ratio
+     */
+    public float getRatio() {
+        return ratio;
+    }
 
+    /**
+     * @param ratio
+     *            the ratio to set
+     */
+    public void setRatio(float ratio) {
+        this.ratio = ratio;
+    }
 
+    /**
+     * @return the font
+     */
+    public String getFont() {
+        return font;
+    }
 
-	/**
-	 * @return the center
-	 */
-	public Vector3f getCenter() {
-		return center;
-	}
+    /**
+     * @param font
+     *            the font to set
+     */
+    public void setFont(String font) {
+        this.font = font;
+    }
 
-	/**
-	 * @param center the center to set
-	 */
-	public void setCenter(Vector3f center) {
-		this.center = center;
-	}
-
-
-
-	/**
-	 * @return the text
-	 */
-	public String getText() {
-		return text;
-	}
-
-
-
-	/**
-	 * @param text the text to set
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
-
-
-
-	/**
-	 * @return the size
-	 */
-	public float getSize() {
-		return size;
-	}
-
-	/**
-	 * @param size the size to set
-	 */
-	public void setSize(float size) {
-		this.size = size;
-	}
-
-
-
-	/**
-	 * @return the ratio
-	 */
-	public float getRatio() {
-		return ratio;
-	}
-
-
-
-	/**
-	 * @param ratio the ratio to set
-	 */
-	public void setRatio(float ratio) {
-		this.ratio = ratio;
-	}
-
-
-
-	/**
-	 * @return the font
-	 */
-	public String getFont() {
-		return font;
-	}
-
-
-
-	/**
-	 * @param font the font to set
-	 */
-	public void setFont(String font) {
-		this.font = font;
-	}
-
-
-
-	/**
-	 * @return the quad
-	 */
-	public Quad getQuad() {
-		return quad;
-	}
-
-
+    /**
+     * @return the quad
+     */
+    public Quad getQuad() {
+        return quad;
+    }
 
 }

@@ -31,6 +31,54 @@
 		<logger name="com.jme.scene.Line" level="WARN" />
 		<logger name="net.jgf.loader.FileChainLoader" level="WARN" />				
 	</service>
+
+    <!-- 
+        Settings configuration
+     -->
+    <service id="settings" class="net.jgf.settings.SettingsManager">
+        
+        <caseSensitive>true</caseSensitive>
+    
+        <settings>
+        
+            <setting id="settings/network/dedicatedServer" class="net.jgf.settings.BooleanSetting"  
+                     label="Dedicated Server" default="false" />
+            <setting id="settings/video/gamma" class="net.jgf.settings.FloatSetting"
+                     label="Video Gamma" default="1.0f" />
+            
+            <setting id="settings/input/mouse/accel" class="net.jgf.settings.FloatSetting" 
+                     label="Mouse Accel" default="0.0f" />
+            <setting id="settings/input/mouse/sensitivity" class="net.jgf.settings.FloatSetting" 
+                     label="Mouse Accel" default="0.0f" />                   
+
+            <setting id="settings/input/key/up" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Up" default="KEY_W" />
+            <setting id="settings/input/key/down" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Down" default="KEY_S" />
+            <setting id="settings/input/key/left" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Left" default="KEY_A" />
+            <setting id="settings/input/key/right" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Right" default="KEY_D" />
+                     
+            <setting id="settings/input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
+                     label="Screenshot" default="KEY_F1" />                  
+            <setting id="settings/input/key/console" class="net.jgf.jme.settings.KeySetting" 
+                     label="Console" default="KEY_TAB" />
+            
+            <!-- <setting id="settings/game/level" class="net.jgf.settings.EnumSetting"
+                     label="Difficulty Level" default="medium" enumClass="net.jgf.example.tanks.game.Difficulty" >
+                     <value key="easy" label="Easy" />
+                     <value key="medium" label="Medium" />
+                     <value key="hard" label="Hard" />
+            </setting>
+             -->
+            
+            <setting id="settings/player/name" class="net.jgf.settings.StringSetting" 
+                     label="Player Name" default="UnnamedTank" />
+              
+        </settings>
+    
+    </service>
 	
 	<!-- 
 		Engine service
@@ -45,51 +93,6 @@
 		
 	</service>
 	
-	
-	<service id="settings" class="net.jgf.settings.SettingsManager">
-		
-		<caseSensitive>true</caseSensitive>
-	
-		<settings>
-		
-			<setting id="settings/network/dedicatedServer" class="net.jgf.settings.BooleanSetting"  
-					 label="Dedicated Server" default="false" />
-			<setting id="settings/video/gamma" class="net.jgf.settings.FloatSetting"
-					 label="Video Gamma" default="1.0f" />
-			
-			<setting id="settings/input/mouse/accel" class="net.jgf.settings.FloatSetting" 
-					 label="Mouse Accel" default="0.0f" />
-			<setting id="settings/input/mouse/sensitivity" class="net.jgf.settings.FloatSetting" 
-					 label="Mouse Accel" default="0.0f" />					 
-
-			<setting id="settings/input/key/up" class="net.jgf.jme.settings.KeySetting" 
-					 label="Move Up" default="KEY_W" />
-			<setting id="settings/input/key/down" class="net.jgf.jme.settings.KeySetting" 
-					 label="Move Down" default="KEY_S" />
-			<setting id="settings/input/key/left" class="net.jgf.jme.settings.KeySetting" 
-					 label="Move Left" default="KEY_A" />
-			<setting id="settings/input/key/right" class="net.jgf.jme.settings.KeySetting" 
-					 label="Move Right" default="KEY_D" />
-					 
-			<setting id="settings/input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
-					 label="Move Right" default="KEY_F1" />					 
-			<setting id="settings/input/key/console" class="net.jgf.jme.settings.KeySetting" 
-					 label="Move Right" default="KEY_TAB" />
-			
-			<!-- <setting id="settings/game/level" class="net.jgf.settings.EnumSetting"
-					 label="Difficulty Level" default="medium" enumClass="net.jgf.example.tanks.game.Difficulty" >
-					 <value key="easy" label="Easy" />
-					 <value key="medium" label="Medium" />
-					 <value key="hard" label="Hard" />
-			</setting>
-			 -->
-			
-			<setting id="settings/player/name" class="net.jgf.settings.StringSetting" 
-					 label="Player Name" default="UnnamedTank" />
-			  
-		</settings>
-	
-	</service>
 	
 	<!-- 
 	<service id="settingsStorage" class="net.jgf.settings.storage.PropertiesFileSettingsStorage">
@@ -119,7 +122,7 @@
 		<allowConsoleExpressions>true</allowConsoleExpressions>
 	</service>
 
-	<service id="minimalSettings" class="net.jgf.settings.dialog.StandardGameDialog">
+	<service id="minimalSettings" class="net.jgf.k.dialog.StandardGameDialog">
 		<image>texture/logo/indoorbattles-dialog.png</image>
 		<displayCondition>onFailureOrHardwareChange</displayCondition>
 	</service>
@@ -408,7 +411,7 @@
 					<lookAndFeel id="view/root/main/menu/laf" class="net.jgf.jme.view.menu.DefaultMenuLookAndFeel" >
 						<origin>0.90 0.6 0.0</origin>
 						<size>0.08</size>
-						<font>Verdana PLAIN 40</font>
+						<font>Verdana PLAIN 48</font>
 						<align>Right</align>
 					</lookAndFeel>
 					<initialMenu ref="menu/main" />
@@ -443,6 +446,12 @@
 					
 					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView"
 						autoLoad="true" autoActivate="true" >
+					   <settings ref="settings">
+						  <setting ref="settings/input/key/up" field="keyUp"  />
+						  <setting ref="settings/input/key/down" field="keyDown" />
+						  <setting ref="settings/input/key/left" field="keyLeft" />
+						  <setting ref="settings/input/key/right" field="keyRight" /> 
+					   </settings>
 					</view>
 					
 					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
@@ -516,10 +525,14 @@
 						<align>TopLeft</align>
 					</item>
 					<item id="view/root/level/osd/tanks" class="net.jgf.jme.view.display.TextItem">
+					   <settings ref="settings" >
+					       <setting ref="settings/player/name" field="text" />
+					   </settings>
+					
 						<center>-0.95 0.75 0.0</center>
 						<size>0.05</size>
 						<font>Verdana PLAIN 40</font>
-						<text>Tanks: -</text>
+						<!-- <text>Tanks: -</text>  -->
 						<align>TopLeft</align>
 					</item>
 					

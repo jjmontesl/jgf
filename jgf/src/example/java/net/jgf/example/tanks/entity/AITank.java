@@ -1,4 +1,3 @@
-
 package net.jgf.example.tanks.entity;
 
 import java.util.LinkedList;
@@ -23,302 +22,298 @@ import com.jme.math.Vector3f;
 @Configurable
 public class AITank extends Tank {
 
-	private static final Logger logger = Logger.getLogger(AITank.class);
+    private static final Logger logger = Logger.getLogger(AITank.class);
 
-	protected Vector3f targetPos = new Vector3f();
+    protected Vector3f targetPos = new Vector3f();
 
-	protected SpatialEntity targetEntity = null;
+    protected SpatialEntity targetEntity = null;
 
-	protected TanksMap map;
+    protected TanksMap map;
 
-	protected Path path;
+    protected Path path;
 
-	protected EntityGroup players;
+    protected EntityGroup players;
 
-	protected EntityGroup enemies;
+    protected EntityGroup enemies;
 
-	protected EntityGroup bullets;
+    protected EntityGroup bullets;
 
-	protected float firePerSecond = 0.6f;
-	
-	protected float maxSpeed = 0.7f;
-	
-	protected float actionDistance = 19.0f;
+    protected float firePerSecond = 0.6f;
 
-	protected Vector3f originalPosition = null;
-	
-	protected Tile originalTile = null; 
-	
-	protected float nextEval;
-	
-	
-	public float getFirePerSecond() {
-		return firePerSecond;
-	}
+    protected float maxSpeed = 0.7f;
 
-	public void setFirePerSecond(float firePerSecond) {
-		this.firePerSecond = firePerSecond;
-	}
+    protected float actionDistance = 19.0f;
 
-	public float getMaxSpeed() {
-		return maxSpeed;
-	}
+    protected Vector3f originalPosition = null;
 
-	public void setMaxSpeed(float maxSpeed) {
-		this.maxSpeed = maxSpeed;
-	}
+    protected Tile originalTile = null;
 
-	/* (non-Javadoc)
-	 * @see net.jgf.example.tanks.entity.Tank#load()
-	 */
-	@Override
-	public void load() {
-		super.load();
-		Jgf.getDirectory().register(this, "targetEntity", "entity/root/players/player1");
-		players = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
-		enemies = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
-		bullets = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
-		map = (TanksMap)scene.getProperties().get("map");
-	}
-	
-	@Override
-	public void unload() {
-		super.unload();
-		Jgf.getDirectory().unregister(this, "targetEntity");
-	}
+    protected float nextEval;
+    
+    protected Bresenham line = new Bresenham();; 
 
-	@Override
-	public void activate() {
-		super.activate();
-		originalPosition = spatial.getWorldTranslation().clone();
-		originalTile = map.worldToTile(originalPosition);
-	}
+    public float getFirePerSecond() {
+        return firePerSecond;
+    }
 
+    public void setFirePerSecond(float firePerSecond) {
+        this.firePerSecond = firePerSecond;
+    }
 
+    public float getMaxSpeed() {
+        return maxSpeed;
+    }
 
-	@Override
-	public void update(float tpf) {
+    public void setMaxSpeed(float maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
 
-		if (targetEntity != null) {
-			
-			if (targetEntity.getSpatial().getWorldTranslation().distanceSquared(this.getSpatial().getWorldTranslation()) > (actionDistance * actionDistance)) {
-				return;
-			}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.jgf.example.tanks.entity.Tank#load()
+     */
+    @Override
+    public void load() {
+        super.load();
+        Jgf.getDirectory().register(this, "targetEntity", "entity/root/players/player1");
+        players = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
+        enemies = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
+        bullets = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
+        map = (TanksMap) scene.getProperties().get("map");
+    }
 
-			// Evaluate target
-			
-			nextEval -= tpf;
-			if (nextEval < 0) {
-				nextEval = FastMath.nextRandomFloat() * 0.2f;
-			
-				evaluate();
-				
-				Tile to = findTarget();
-				if (to != null) {
-					targetPos.set(map.tileToWorld(to));
-				} else {
-					// If there is no target, go to last target
-					
-					if (targetPos.x < 0.5f && targetPos.y < 0.5f && targetPos.z < 0.5f) {
-						targetPos.set(spatial.getWorldTranslation()); 
-					}
-					
-					if (spatial.getWorldTranslation().distanceSquared(targetPos) < 4.0f) {
-						// Last target reached. Choose new target to patrol.
-						while (to == null) {
-							int tX = originalTile.col + FastMath.nextRandomInt(-5, 5);
-							int tY = originalTile.row + FastMath.nextRandomInt(-5, 5);
-							Tile cTile = map.tiles[tY][tX];
-							if (cTile.obstacle != false) to = cTile;
-						}
-						targetPos.set(map.tileToWorld(to));
-					} 
-					
-				}
-			
-			}
-				
-			direction.set(targetPos).subtractLocal(spatial.getLocalTranslation());
-			direction.y = 0;
+    @Override
+    public void unload() {
+        super.unload();
+        Jgf.getDirectory().unregister(this, "targetEntity");
+    }
 
-		} else {
-			direction.zero();
-		}
+    @Override
+    public void activate() {
+        super.activate();
+        originalPosition = spatial.getWorldTranslation().clone();
+        originalTile = map.worldToTile(originalPosition);
+    }
 
-		if (direction.length() > 0.2f) {
-			// Move
-			direction.normalizeLocal().multLocal(maxSpeed);
-		} else {
-			/// Stand
-			direction.zero();
-		}
+    @Override
+    public void update(float tpf) {
 
-		if (targetEntity != null) {
-			this.setTarget(targetEntity.getSpatial().getLocalTranslation());
-			this.getTarget().y = 0.5f;
-		}
+        if (targetEntity != null) {
 
-		if (FastMath.rand.nextFloat() < (firePerSecond * tpf)) {
-			fire();
-		}
+            if (targetEntity.getSpatial().getWorldTranslation().distanceSquared(
+                    this.getSpatial().getWorldTranslation()) > (actionDistance * actionDistance)) {
+                return;
+            }
 
-		super.update(tpf);
+            // Evaluate target
 
-	}
+            nextEval -= tpf;
+            if (nextEval < 0) {
+                nextEval = FastMath.nextRandomFloat() * 0.2f;
 
-	private Tile findTarget() {
+                evaluate();
 
-		int bestValue = 1;
-		LinkedList<Tile> candidates = new LinkedList<Tile>();
-		for (int i = 0; i < map.getHeight(); i++) {
-			for (int j = 0; j < map.getWidth(); j++) {
-				Tile tile = map.tiles[i][j];
-				
-				int dist = ((tile.row - originalTile.row) * (tile.row - originalTile.row)) +
-					   ((tile.col - originalTile.col) * (tile.col - originalTile.col));
-				
-				
-				if ((dist <= 36) && (!tile.obstacle) && (tile.dontGo <= 0) && (Math.abs(bestValue - tile.value) >= 2)) {
-					//if (tile.value > bestValue) candidates.clear();
-					if (tile.value > bestValue) bestValue = tile.value;
-					candidates.add(tile);
-				}
-			}
-		}
+                Tile to = findTarget();
+                if (to != null) {
+                    targetPos.set(map.tileToWorld(to));
+                } else {
+                    // If there is no target, go to last target
 
-		//logger.info("Sorting " + candidates.size() + " candidates");
+                    if (targetPos.x < 0.5f && targetPos.y < 0.5f && targetPos.z < 0.5f) {
+                        targetPos.set(spatial.getWorldTranslation());
+                    }
 
+                    if (spatial.getWorldTranslation().distanceSquared(targetPos) < 4.0f) {
+                        // Last target reached. Choose new target to patrol.
+                        while (to == null) {
+                            int tX = originalTile.col + FastMath.nextRandomInt(-5, 5);
+                            int tY = originalTile.row + FastMath.nextRandomInt(-5, 5);
+                            Tile cTile = map.tiles[tY][tX];
+                            if (cTile.obstacle != false)
+                                to = cTile;
+                        }
+                        targetPos.set(map.tileToWorld(to));
+                    }
 
-		/*
-		String debug="";
-		for (int i = 0; i < map.getHeight(); i++) {
-			for (int j = 0; j < map.getWidth(); j++) {
-				Tile tile = map.getTile(i, j);
-				if (tile.dontGo > 0) debug = debug + "- ";
-					else debug = debug + (tile.value > 9 ? "A" : tile.value) + " ";
-			}
-			debug = debug + "\n";
-		}
-		*/
-		//logger.info ("\n" + debug);
+                }
 
-		float dist = Float.MAX_VALUE;
-		Tile selTile = null;
-		for (Tile tile : candidates) {
-			Vector3f posCandidate = map.tileToWorld(tile);
-			Vector3f posTank = targetPos.clone();
-			posTank.setY(0.5f);
-			float tDist = posCandidate.subtractLocal(spatial.getWorldTranslation()).lengthSquared();
-			if (tDist < dist) {
-				dist = tDist;
-				selTile = tile;
-			}
-		}
+            }
 
-		return (selTile);
-	}
+            direction.set(targetPos).subtractLocal(spatial.getLocalTranslation());
+            direction.y = 0;
 
-	/**
-	 * @return the targetEntity
-	 */
-	public SpatialEntity getTargetEntity() {
-		return targetEntity;
-	}
+        } else {
+            direction.zero();
+        }
 
-	/**
-	 * @param targetEntity the targetEntity to set
-	 */
-	public void setTargetEntity(SpatialEntity targetEntity) {
-		this.targetEntity = targetEntity;
-	}
+        if (direction.length() > 0.2f) {
+            // Move
+            direction.normalizeLocal().multLocal(maxSpeed);
+        } else {
+            // / Stand
+            direction.zero();
+        }
 
-	/**
-	 * Fill the value and danger values of all tiles
-	 */
-	public void evaluate() {
+        if (targetEntity != null) {
+            this.setTarget(targetEntity.getSpatial().getLocalTranslation());
+            this.getTarget().y = 0.5f;
+        }
 
-		// Initial settings
-		for (int i = 0; i < map.getHeight(); i++) {
-			for (int j = 0; j < map.getWidth(); j++) {
-				Tile tile = map.tiles[i][j];
-				tile.value = 9;
-				tile.dontGo = 0;
-				if (tile.obstacle) {
-					round(i, j, 1,  -1, 0);
-					round(i, j, 1,  -2, 1);
-				}
-			}
-		}
+        if (FastMath.rand.nextFloat() < (firePerSecond * tpf)) {
+            fire();
+        }
 
-		// Account for player
-		for (Entity player : players.children()) {
-			PlayerTank tank = (PlayerTank) player;
-			Tile tile = map.worldToTile(tank.getSpatial().getWorldTranslation());
-			round(tile.row, tile.col, 8,  2, 0);
-			round(tile.row, tile.col, 7,  2, 0);
-			round(tile.row, tile.col, 6,  2, 0);
-			round(tile.row, tile.col, 5,  2, 0);
-			round(tile.row, tile.col, 4,  2, 0);
-			round(tile.row, tile.col, 3,  1, 0);
-			round(tile.row, tile.col, 2,  -4, 1);
-			round(tile.row, tile.col, 1,  -5, 1);
-		}
+        super.update(tpf);
 
-		// Account for enemies
-		for (Entity tank : enemies.children()) {
-			Tank enemy = (Tank) tank;
-			if (enemy != this) {
-				Tile tile = map.worldToTile(enemy.getSpatial().getWorldTranslation());
-				round(tile.row, tile.col, 3,  -1, 0);
-				round(tile.row, tile.col, 2,  -2, 1);
-				round(tile.row, tile.col, 1,  -3, 1);
-			}
-		}
+    }
 
-		// Obstacles
-		for (int i = 0; i < map.height; i++) {
-			for (int j = 0; j < map.width; j++) {
-				if (map.tiles[i][j].obstacle) {
-					round(i, j, 1,  -2, 0);
-					round(i, j, 0,  0, 1);
-				}
-			}
-		}
-		
-		// Account for bullets
-		for (Entity bulletX : bullets.children()) {
-			Bullet bullet = (Bullet) bulletX;
-			Tile tile = map.worldToTile(bullet.getSpatial().getWorldTranslation());
-			Tile hit = map.worldToTile(bullet.getTrip().hitPosition);
-			Bresenham line = new Bresenham();
-			line.plot(tile.col, tile.row, hit.col, hit.row);
+    private Tile findTarget() {
 
-			int count = 0;
-			while (line.next() && count < 5) {
-				//logger.info("Painting " + line.getY() + "," + line.getX());
-				count++;
-				round (line.getY(), line.getX(), 2,  -1, 0);
-				round (line.getY(), line.getX(), 1, -99, 5);
-			}
-		}
+        int bestValue = 1;
+        LinkedList<Tile> candidates = new LinkedList<Tile>();
+        for (int i = 0; i < map.getHeight(); i++) {
+            for (int j = 0; j < map.getWidth(); j++) {
+                Tile tile = map.tiles[i][j];
 
+                int dist = ((tile.row - originalTile.row) * (tile.row - originalTile.row))
+                        + ((tile.col - originalTile.col) * (tile.col - originalTile.col));
 
-	}
+                if ((dist <= 36) && (!tile.obstacle) && (tile.dontGo <= 0)
+                        && (Math.abs(bestValue - tile.value) >= 2)) {
+                    // if (tile.value > bestValue) candidates.clear();
+                    if (tile.value > bestValue)
+                        bestValue = tile.value;
+                    candidates.add(tile);
+                }
+            }
+        }
 
-	private void round(int row, int col, int r, int value, int danger) {
-		
-		for (int i = row - r; i <= row + r; i ++) {
-			for (int j = col - r; j <= col + r; j++) {
-				if ((i >= 0) && (i < map.height) && (j >= 0) && (j < map.width)) {
-					if ( ((i-row)*(i-row)) + ((j-col)*(j-col)) <= (r * r)) { 
-						Tile tile = map.tiles[i][j];
-						tile.value += value;
-						tile.dontGo += danger;
-					}
-				}
-			}
-		}
-		
-	}
+        // logger.info("Sorting " + candidates.size() + " candidates");
+
+        /*
+         * String debug=""; for (int i = 0; i < map.getHeight(); i++) { for (int
+         * j = 0; j < map.getWidth(); j++) { Tile tile = map.getTile(i, j); if
+         * (tile.dontGo > 0) debug = debug + "- "; else debug = debug +
+         * (tile.value > 9 ? "A" : tile.value) + " "; } debug = debug + "\n"; }
+         */
+        // logger.info ("\n" + debug);
+        float dist = Float.MAX_VALUE;
+        Tile selTile = null;
+        for (Tile tile : candidates) {
+            Vector3f posCandidate = map.tileToWorld(tile);
+            Vector3f posTank = targetPos.clone();
+            posTank.setY(0.5f);
+            float tDist = posCandidate.subtractLocal(spatial.getWorldTranslation()).lengthSquared();
+            if (tDist < dist) {
+                dist = tDist;
+                selTile = tile;
+            }
+        }
+
+        return (selTile);
+    }
+
+    /**
+     * @return the targetEntity
+     */
+    public SpatialEntity getTargetEntity() {
+        return targetEntity;
+    }
+
+    /**
+     * @param targetEntity
+     *            the targetEntity to set
+     */
+    public void setTargetEntity(SpatialEntity targetEntity) {
+        this.targetEntity = targetEntity;
+    }
+
+    /**
+     * Fill the value and danger values of all tiles
+     */
+    public void evaluate() {
+
+        // Initial settings
+        for (int i = 0; i < map.getHeight(); i++) {
+            for (int j = 0; j < map.getWidth(); j++) {
+                Tile tile = map.tiles[i][j];
+                tile.value = 9;
+                tile.dontGo = 0;
+                if (tile.obstacle) {
+                    round(i, j, 1, -1, 0);
+                    round(i, j, 1, -2, 1);
+                }
+            }
+        }
+
+        // Account for player
+        for (Entity player : players.children()) {
+            PlayerTank tank = (PlayerTank) player;
+            Tile tile = map.worldToTile(tank.getSpatial().getWorldTranslation());
+            round(tile.row, tile.col, 8, 2, 0);
+            round(tile.row, tile.col, 7, 2, 0);
+            round(tile.row, tile.col, 6, 2, 0);
+            round(tile.row, tile.col, 5, 2, 0);
+            round(tile.row, tile.col, 4, 2, 0);
+            round(tile.row, tile.col, 3, 1, 0);
+            round(tile.row, tile.col, 2, -4, 1);
+            round(tile.row, tile.col, 1, -5, 1);
+        }
+
+        // Account for enemies
+        for (Entity tank : enemies.children()) {
+            Tank enemy = (Tank) tank;
+            if (enemy != this) {
+                Tile tile = map.worldToTile(enemy.getSpatial().getWorldTranslation());
+                round(tile.row, tile.col, 3, -1, 0);
+                round(tile.row, tile.col, 2, -2, 1);
+                round(tile.row, tile.col, 1, -3, 1);
+            }
+        }
+
+        // Obstacles
+        for (int i = 0; i < map.height; i++) {
+            for (int j = 0; j < map.width; j++) {
+                if (map.tiles[i][j].obstacle) {
+                    round(i, j, 1, -2, 0);
+                    round(i, j, 0, 0, 1);
+                }
+            }
+        }
+
+        // Account for bullets
+        for (Entity bulletX : bullets.children()) {
+            Bullet bullet = (Bullet) bulletX;
+            Tile tile = map.worldToTile(bullet.getSpatial().getWorldTranslation());
+            Tile hit = map.worldToTile(bullet.getTrip().hitPosition);
+            line.plot(tile.col, tile.row, hit.col, hit.row);
+
+            int count = 0;
+            while (line.next() && count < 5) {
+                // logger.info("Painting " + line.getY() + "," + line.getX());
+                count++;
+                round(line.getY(), line.getX(), 2, -1, 0);
+                round(line.getY(), line.getX(), 1, -99, 5);
+            }
+        }
+
+    }
+
+    private void round(int row, int col, int r, int value, int danger) {
+
+        for (int i = row - r; i <= row + r; i++) {
+            for (int j = col - r; j <= col + r; j++) {
+                if ((i >= 0) && (i < map.height) && (j >= 0) && (j < map.width)) {
+                    if (((i - row) * (i - row)) + ((j - col) * (j - col)) <= (r * r)) {
+                        Tile tile = map.tiles[i][j];
+                        tile.value += value;
+                        tile.dontGo += danger;
+                    }
+                }
+            }
+        }
+
+    }
 
 }

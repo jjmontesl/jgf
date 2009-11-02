@@ -14,6 +14,7 @@ public class BooleanSetting extends Setting {
 
 	public void setStringValue(String value) {
 		this.value = Boolean.parseBoolean(value);
+		manager.update(this.id, this.value);
 	}
 	
 	public String getStringValue() {
@@ -30,6 +31,9 @@ public class BooleanSetting extends Setting {
 
 	@Override
 	public Object getValue() {
+        if (value == null) {
+            setStringValue(this.getDefaultValue());
+        }
 		return value;
 	}
 	

@@ -34,9 +34,10 @@
 package net.jgf.system;
 
 import java.net.URISyntaxException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
@@ -61,364 +62,416 @@ import com.jme.util.resource.ResourceLocatorTool;
 import com.jme.util.resource.SimpleResourceLocator;
 
 /**
- * <p>This class represents the main Java Game Framework application, and
- * that handles  the application startup.</p>
- * <p>Users are expected to create an instance of this class and just
- * call its start method.</p>
- * <p><pre>
-	public static void main(String[] args) throws Exception {
-
-	  &nbsp; Application app = new Application("path/config.xml", args);
-	  &nbsp; app.start();
-
-	} </p></pre>
- * <p>This object requires a reference to the Engine service, which is started at the end of
- * the startup process. This class also holds the list of services configured and
- * the component directory.</p>
- * <p>Once the framework is started, this object can always be accessed through the static method
- * {@link net.jgf.system.Jgf#getApp()}.</p>
- *
+ * <p>
+ * This class represents the main Java Game Framework application, and that
+ * handles the application startup.
+ * </p>
+ * <p>
+ * Users are expected to create an instance of this class and just call its
+ * start method.
+ * </p>
+ * <p>
+ * <pre>
+ * public static void main(String[] args) throws Exception {
+ * 
+ * 	    Application app = new Application(&quot;path/config.xml&quot;, args);
+ * 	    app.start();
+ * }
+ * </pre>
+ * </p>
+ * <p>
+ * This object requires a reference to the Engine service, which is started at
+ * the end of the startup process. This class also holds the list of services
+ * configured and the component directory.
+ * </p>
+ * <p>
+ * Once the framework is started, this object can always be accessed through the
+ * static method {@link net.jgf.system.Jgf#getApp()}.
+ * </p>
+ * 
  * @see Jgf
  * @author jjmontes
  */
 public final class Application {
 
-	/**
-	 * Class logger.
-	 */
-	private static final Logger logger = Logger.getLogger(Application.class);
-
-	/**
-	 * Initial size of the services list.
-	 */
-	private static final int DEFAULT_SERVICES_SIZE = 32;
-
-	/**
-	 * Application name.
-	 */
-	private String name;
-
-	/**
-	 * Application version, defaults to "1.0". This is not the same as the JGF version.
-	 * @see Globals#JGF_VERSION
-	 */
-	private String version = "1.0";
-
-	/**
-	 * JGF running in debug mode.
-	 */
-	private boolean debug = false;
-
-	/**
-	 * JGF Components of the application.
-	 */
-	private LinkedHashMap<String, Service> services;
-
-	/**
-	 * Global directory of components and objects.
-	 */
-	private Directory directory;
-
-	/**
-	 * The command line arguments.
-	 */
-	private String[] args;
-
-	/**
-	 * The URL to the configuration file.
-	 */
-	private String configUrl;
-
-	/**
-	 * The Engine used.
-	 */
-	private Engine engine;
-
-
-	/**
-	 * Creates a new Application object from the given configuration URL and command line arguments.
-	 */
-	public Application(String configUrl, String[] args) {
-		this.args = args;
-		this.configUrl = configUrl;
-		this.services = new LinkedHashMap<String, Service>(Application.DEFAULT_SERVICES_SIZE);
-	}
-
-
-
-	/**
-	 * Initializes the logging system.
-	 */
-	private void initLogging() {
-
-		// Init log4j
-
-		// Using internal logging config (no log4j.xml file)
-		LevelRangeFilter filter = new LevelRangeFilter();
-		filter.setLevelMax(Level.FATAL);
-		if (this.isDebug()) {
-			filter.setLevelMin(Level.DEBUG);
-		} else {
-			filter.setLevelMin(Level.INFO);
-		}
-
-		// Logging pattern
-		// TODO: Accept a log pattern from environment variable
-		String logPattern = Globals.LOG_PATTERN;
-
-		// Logging to console
-		Appender consoleAppender = new ConsoleAppender(new PatternLayout(logPattern));
-		consoleAppender.addFilter( filter );
-		BasicConfigurator.configure(consoleAppender);
-
-		// Installing JUL to Log4j Bridge
-		JULLoggingBridge.install();
-
-		// Filter some verbose categories
-		/*
-		Logger.getLogger("org.apache.commons.digester.Digester").setLevel(Level.FATAL);
-		Logger.getLogger("org.apache.commons.digester.Digester.sax").setLevel(Level.INFO);
-		Logger.getLogger("org.apache.commons.beanutils.MethodUtils").setLevel(Level.INFO);
-		Logger.getLogger("org.apache.commons.beanutils.BeanUtils").setLevel(Level.INFO);
-		Logger.getLogger("org.apache.commons.beanutils.ConvertUtils").setLevel(Level.INFO);
-		Logger.getLogger("org.apache.commons.vfs.impl.StandardFileSystemManager").setLevel(Level.INFO);
-		*/
-	}
-
-	/**
-	 * Initializes the resource locator.
-	 */
-	private void initResourceLocator() throws ServiceException {
-
-		// Initialize the resource locator
-		try {
-			ResourceLocatorTool.addResourceLocator("config", new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
-			ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE, new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
-			ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_MODEL, new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
-			ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_AUDIO, new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
-
-		} catch (URISyntaxException e) {
-			throw new ServiceException("Could not set resource locator for properties.", e);
-		}
-	}
-
-	/**
-	 * Starts a JGF application reading configuration from the configuration file
-	 */
-	private void bootApplication() throws ServiceException {
-
-		// Initialize JGF
-		Jgf.app = this;
-
-		// Init logging
-		initLogging();
-
-		// Init resource management
-		logger.debug("Initializing resource locator tool");
-		initResourceLocator();
-
-		// Init directory
-		logger.debug("Initializing naming");
-		directory = new Directory();
-
-		// Configure
-		logger.debug("Processing configuration");
-		logger.info ("Reading configuration file " + configUrl);
-
-		Config config = new Config(configUrl);
-		readConfig(config);
-
-		logger.info(this.name + " " + this.version + " starting (" + Globals.JGF_TITLE + " " + Globals.JGF_VERSION + ")");
-
-		if (this.isDebug()) {
-			logger.info("JGF Framework is configured in DEBUG mode");
-		}
-
-		// Initialize components
-		logger.debug("Initializing services");
-		for (Service service : services.values()) {
-			// TODO: When to initialize? Dependencies...?
-			logger.debug("Initializing service " + service);
-			service.initialize();
-		}
-
-	}
-
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#finalize()
-	 */
-	@Override
-	public void finalize() {
-		this.dispose();
-	}
-
-	/**
-	 * <p>Prepares the application to be closed, triggering shutdown, which
-	 * calls "dispose" on all services.</p>
-	 */
-	public void dispose() {
-		// Initialize components
-		logger.info("Finalizing JGF application");
-		for (Service service : services.values()) {
-			// TODO: When to dispose? Dependencies...?
-			logger.debug("Disposing service " + service);
-			service.dispose();
-		}
-		logger.debug("Directory retrievals: " + directory.getRetrievalCount() + " Peak size: " + directory.getPeakSize());
-	}
-
-	/**
-	 * </p>Starts the application.</p>
-	 * <p>This is the method that users are expected to call in order to initialize the game.</p>
-	 */
-	public void start() {
-
-		// Init framework
-		bootApplication();
-
-		// Start
-		logger.info("Starting engine");
-		if (engine == null) {
-			throw new ConfigException("No engine defined for the JGF application");
-		}
-		engine.start();
-
-		logger.debug("Directory contains " + directory);
-
-		logger.info("Bootup process in thread " + Thread.currentThread() + " finished");
-
-	}
-
-	/**
-	 * Configures this object from the configuration.
-	 * @see Configurable
-	 */
-	public void readConfig (Config config) throws ConfigException {
-
-		this.setName(config.getString("application/name"));
-		this.setVersion(config.getString("application/version", this.version));
-		this.setDebug(config.getBoolean("application/debug", false));
-
-		Jgf.getDirectory().register(this, "engine", config.getString("application/engine/@ref"));
-
-		// Build and register services
-		List<Service> servicesList = ConfigurableFactory.newListFromConfig(config, "service", Service.class);
-		for (Service service : servicesList) {
-			this.addService(service);
-		}
-
-	}
-
-	/**
-	 * Retrieves and returns the Engine component using the config element "application/engine[@ref]".
-	 * @return the Engine component.
-	 */
-	public Engine getEngine() {
-		return engine;
-	}
-
-
-	/**
-	 * Returns this application name
-	 */
-	public String getName() {
-		return name;
-	}
-
-
-
-	/**
-	 * Indicates whether JGF is running in debug mode
-	 */
-	public boolean isDebug() {
-		return debug;
-	}
-
-
-
-	/**
-	 * <p>Returns the application version (which is not the same as the JGF version).</p>
-	 * <p>Application version defaults to 1.0.</p>
-	 * @see Globals#JGF_VERSION
-	 */
-	public String getVersion() {
-		return version;
-	}
-
-
-
-	/**
-	 * <p>Sets the application version (which is not the same as the JGF version).</p>
-	 * <p>Application version defaults to 1.0.</p>
-	 * @see Globals#JGF_VERSION
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-
-
-
-
-	/**
-	 * Sets the application name.
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-
-	/**
-	 * Sets the debug mode for JGF.
-	 */
-	public void setDebug(boolean debug) {
-		this.debug = true;
-	}
-
-
-
-	/**
-	 * Adds a service to the application services.
-	 * @see net.jgf.core.naming.Directory#addService(net.jgf.core.service.Service)
-	 */
-	public void addService(Service service) {
-		services.put(service.getId(), service);
-		directory.addObject(service.getId(), service);
-	}
-
-
-	/**
-	 * <p>Returns the naming directory used by this application (note that it is easier
-	 * to access this through the {@link Jgf#getDirectory()}) static method.</p>
-	 *
-	 */
-	public Directory getDirectory() {
-		return directory;
-	}
-
-
-
-	/**
-	 * Returns the command line arguments that were passed to this application.
-	 * @see CommandLineArgumentsService
-	 */
-	public String[] getArgs() {
-		return args;
-	}
-
-
-
-	/**
-	 * @param engine the engine to set
-	 */
-	public void setEngine(Engine engine) {
-		this.engine = engine;
-	}
-
-
+    /**
+     * Class logger.
+     */
+    private static final Logger logger = Logger.getLogger(Application.class);
+
+    /**
+     * Initial size of the services list.
+     */
+    private static final int DEFAULT_SERVICES_SIZE = 32;
+
+    /**
+     * Application name.
+     */
+    private String name;
+
+    /**
+     * Application version, defaults to "1.0". This is not the same as the JGF
+     * version.
+     * 
+     * @see Globals#JGF_VERSION
+     */
+    private String version = "1.0";
+
+    /**
+     * JGF running in debug mode.
+     */
+    private boolean debug;
+
+    /**
+     * JGF Components of the application.
+     */
+    private Map<String, Service> services;
+
+    /**
+     * Global directory of components and objects.
+     */
+    private Directory directory;
+
+    /**
+     * The command line arguments.
+     */
+    private String[] args;
+
+    /**
+     * The URL to the configuration file.
+     */
+    private String configUrl;
+
+    /**
+     * The Engine used.
+     */
+    private Engine engine;
+
+    /**
+     * Creates a new Application object from the given configuration URL and
+     * command line arguments.
+     * @param configUrl the location of the JGF configuration file to read.
+     * @param args the command line arguments. 
+     */
+    public Application(String configUrl, String[] args) {
+        this.args = args;
+        this.configUrl = configUrl;
+        this.services = new LinkedHashMap<String, Service>(Application.DEFAULT_SERVICES_SIZE);
+    }
+
+    /**
+     * Initializes the logging system.
+     */
+    private void initLogging() {
+
+        // Init log4j
+
+        // Using internal logging config (no log4j.xml file)
+        LevelRangeFilter filter = new LevelRangeFilter();
+        filter.setLevelMax(Level.FATAL);
+        // TODO: Only way of overriding this will be log4j.xml? maybe --debug at
+        // command line? later in the component
+        filter.setLevelMin(Level.INFO);
+
+        // Logging pattern
+        // TODO: Accept a log pattern from environment variable
+        String logPattern = Globals.LOG_PATTERN;
+
+        // Logging to console
+        Appender consoleAppender = new ConsoleAppender(new PatternLayout(logPattern));
+        consoleAppender.addFilter(filter);
+        BasicConfigurator.configure(consoleAppender);
+
+        // Installing JUL to Log4j Bridge
+        JULLoggingBridge.install();
+
+        // Filter some verbose categories
+        /*
+         * Logger.getLogger("org.apache.commons.digester.Digester").setLevel(Level
+         * .FATAL);
+         * Logger.getLogger("org.apache.commons.digester.Digester.sax").
+         * setLevel(Level.INFO);
+         * Logger.getLogger("org.apache.commons.beanutils.MethodUtils"
+         * ).setLevel(Level.INFO);
+         * Logger.getLogger("org.apache.commons.beanutils.BeanUtils"
+         * ).setLevel(Level.INFO);
+         * Logger.getLogger("org.apache.commons.beanutils.ConvertUtils"
+         * ).setLevel(Level.INFO);
+         * Logger.getLogger("org.apache.commons.vfs.impl.StandardFileSystemManager"
+         * ).setLevel(Level.INFO);
+         */
+    }
+
+    /**
+     * Initializes the resource locator.
+     */
+    private void initResourceLocator() {
+
+        // Initialize the resource locator
+        try {
+            ResourceLocatorTool.addResourceLocator("config", new SimpleResourceLocator(ClassLoader
+                    .getSystemResource(".")));
+            ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE,
+                    new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
+            ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_MODEL,
+                    new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
+            ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_AUDIO,
+                    new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
+
+        } catch (URISyntaxException e) {
+            throw new ServiceException("Could not set resource locator for properties.", e);
+        }
+    }
+
+    /**
+     * Starts a JGF application reading configuration from the configuration
+     * file.
+     */
+    private void bootApplication() {
+
+        // Initialize JGF
+        Jgf.app = this;
+
+        // Init logging
+        initLogging();
+
+        // Init resource management
+        logger.debug("Initializing resource locator tool");
+        initResourceLocator();
+
+        // Init directory
+        logger.debug("Initializing naming");
+        directory = new Directory();
+
+        // Configure
+        logger.debug("Processing configuration");
+        logger.info("Reading configuration file " + configUrl);
+
+        Config config = new Config(configUrl);
+        readConfig(config);
+
+        logger.info(this.name + " " + this.version + " starting (" + Globals.JGF_TITLE + " "
+                + Globals.JGF_VERSION + ")");
+
+        if (this.isDebug()) {
+            logger.info("JGF Framework is configured in DEBUG mode");
+        }
+
+        // Initialize components
+        logger.debug("Initializing services");
+        for (Service service : services.values()) {
+            // TODO: When to initialize? Dependencies...?
+            logger.debug("Initializing service " + service);
+            service.initialize();
+        }
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void finalize() {
+        this.dispose();
+    }
+
+    /**
+     * <p>
+     * Prepares the application to be closed, triggering shutdown, which calls
+     * "dispose" on all services.
+     * </p>
+     */
+    public void dispose() {
+        // Initialize components
+        logger.info("Finalizing JGF application");
+        for (Service service : services.values()) {
+            // TODO: When to dispose? Dependencies...?
+            logger.debug("Disposing service " + service);
+            service.dispose();
+        }
+        logger.debug("Directory retrievals: " + directory.getRetrievalCount() + " Peak size: "
+                + directory.getPeakSize());
+    }
+
+    /**
+     * <p>Starts the application.</p>
+     * <p>
+     * This is the method that users are expected to call in order to initialize
+     * the game.
+     * </p>
+     */
+    public void start() {
+
+        // Init framework
+        bootApplication();
+
+        // Start
+        logger.info("Starting engine");
+        if (engine == null) {
+            throw new ConfigException("No engine defined for the JGF application");
+        }
+        engine.start();
+
+        logger.debug("Directory contains " + directory);
+
+        logger.info("Bootup process in thread " + Thread.currentThread() + " finished");
+
+    }
+
+    /**
+     * Configures this object from the configuration.
+     * 
+     * @param config the configuration object to be processed.
+     * @see Configurable
+     */
+    public void readConfig(Config config) {
+
+        this.setName(config.getString("application/name"));
+        this.setVersion(config.getString("application/version", this.version));
+        this.setDebug(config.getBoolean("application/debug", false));
+
+        Jgf.getDirectory().register(this, "engine", config.getString("application/engine/@ref"));
+
+        // Build and register services
+        
+        /*
+        List<Service> servicesList = ConfigurableFactory.newListFromConfig(config, "service",
+                Service.class);
+        for (Service service : servicesList) {
+            this.addService(service);
+        }
+        */
+        
+
+        // This way we early add services to the directory
+        List<String> elementIds = config.getList("service" + "/@id");
+        for (String elementId : elementIds) {
+            Service element = ConfigurableFactory.newFromConfig(config, "service" + "[@id='" + elementId
+                    + "']", Service.class);
+            this.addService(element);
+        }
+
+
+    }
+
+    /**
+     * Retrieves and returns the Engine component using the config element
+     * "application/engine[@ref]".
+     * 
+     * @return the Engine component.
+     */
+    public Engine getEngine() {
+        return engine;
+    }
+
+    /**
+     * Returns this application name.
+     * @return the application name (usually defined in the configuration file).
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Indicates whether JGF is running in debug mode.
+     * @return true if the framework runs in debug mode.
+     */
+    public boolean isDebug() {
+        return debug;
+    }
+
+    /**
+     * <p>
+     * Returns the application version (which is not the same as the JGF
+     * version).
+     * </p>
+     * <p>
+     * Application version defaults to 1.0.
+     * </p>
+     * 
+     * @see Globals#JGF_VERSION
+     * @return the application version (usually defined in the configuration file).
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * <p>
+     * Sets the application version (which is not the same as the JGF version).
+     * </p>
+     * <p>
+     * Application version defaults to 1.0.
+     * </p>
+     * 
+     * @see Globals#JGF_VERSION
+     * @param version the application version.
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    /**
+     * Sets the application name.
+     * @param name the application name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * <p>Sets the debug mode for JGF. This is only read at initialization time by some services,
+     * so it needs to be configured in JGF configuration file. Behaviour is undefined if
+     * this is changed after.</p>
+     * @param debug flag that indicates if JGF runs in debug mode.
+     */
+    public void setDebug(boolean debug) {
+        this.debug = true;
+    }
+
+    /**
+     * Adds a service to the application services.
+     * 
+     * @see net.jgf.core.naming.Directory#addService(net.jgf.core.service.Service)
+     * @param service the framework service to add.
+     */
+    public void addService(Service service) {
+        services.put(service.getId(), service);
+        directory.addObject(service.getId(), service);
+    }
+
+    /**
+     * <p>
+     * Returns the naming directory used by this application (note that it is
+     * easier to access this through the {@link Jgf#getDirectory()}) static
+     * method.
+     * </p>
+     * 
+     * @see Directory
+     * @see Jgf#getDirectory()
+     * @return the naming directory.
+     */
+    public Directory getDirectory() {
+        return directory;
+    }
+
+    /**
+     * Returns the command line arguments that were passed to this application.
+     * 
+     * @see CommandLineArgumentsService
+     * @return an array of strings containing the program command line arguments.
+     */
+    public String[] getArgs() {
+        return args;
+    }
+
+    /**
+     * Sets the reference to the JGF Engine to use (i.e. JMonkeyEngine binding).
+     * @param engine
+     *            the engine to set
+     */
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
 
 }
-
-
