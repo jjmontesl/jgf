@@ -1,4 +1,3 @@
-
 package net.jgf.jme.audio;
 
 import java.util.HashMap;
@@ -14,57 +13,67 @@ import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
+import com.jmex.audio.AudioSystem;
 
 /**
-
+ * 
  * @author jjmontes
  * @version $Revision$
  */
 @Configurable
 public final class SimpleSoundService extends BaseService {
 
-	/**
-	 * Class logger
-	 */
-	private static final Logger logger = Logger.getLogger(SimpleSoundService.class);
+    /**
+     * Class logger
+     */
+    private static final Logger logger = Logger.getLogger(SimpleSoundService.class);
 
-	protected Map<String, AudioItem> audioItems;
+    protected Map<String, AudioItem> audioItems;
 
+    public SimpleSoundService() {
+        super();
+        audioItems = new HashMap<String, AudioItem>();
+    }
 
+    /**
+     * Configures additional rules for the commons-digester library.
+     */
+    @Override
+    public void readConfig(Config config, String configPath) {
+        super.readConfig(config, configPath);
 
+        List<AudioItem> audioItemsTemp = ConfigurableFactory.newListFromConfig(config, configPath
+                + "/audio", AudioItem.class);
+        for (AudioItem audioItem : audioItemsTemp) {
+            this.addAudioItem(audioItem);
+            Jgf.getDirectory().addObject(audioItem.getId(), audioItem);
+        }
 
-	public SimpleSoundService() {
-		super();
-		audioItems = new HashMap<String, AudioItem>();
-	}
+    }
 
-	/**
-	 * Configures additional rules for the commons-digester library.
-	 */
-	@Override
-	public void readConfig(Config config, String configPath) {
-		super.readConfig(config, configPath);
+    public void addAudioItem(AudioItem item) {
+        if (audioItems.containsKey(item.getId())) {
+            throw new ConfigException("Tried to add AudioItem with an existing name '"
+                    + item.getId() + "' to " + this);
+        }
+        audioItems.put(item.getId(), item);
+    }
 
-		List<AudioItem> audioItemsTemp = ConfigurableFactory.newListFromConfig(config, configPath + "/audio", AudioItem.class);
-		for (AudioItem audioItem : audioItemsTemp) {
-			this.addAudioItem(audioItem);
-			Jgf.getDirectory().addObject(audioItem.getId(), audioItem);
-		}
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + "[id=" + this.getId() + ", audioItems=" + audioItems.size()
+                + "]";
+    }
 
-	}
+    @Override
+    public void dispose() {
+        AudioSystem.getSystem().getMusicQueue().clearTracks();
+        for (AudioItem item : audioItems.values()) {
+            item.cleanup();
+        }
+        super.dispose();
+    }
 
-	public void addAudioItem(AudioItem item) {
-		if (audioItems.containsKey(item.getId())) {
-			throw new ConfigException("Tried to add AudioItem with an existing name '" + item.getId() + "' to " + this);
-		}
-		audioItems.put(item.getId(), item);
-	}
-
-	@Override
-	public String toString() {
-		return this.getClass().getSimpleName() + "[id=" + id +", audioItems=" + audioItems.size() + "]";
-	}
-
-
-
+    
+    
 }

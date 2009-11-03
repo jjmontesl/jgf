@@ -35,25 +35,66 @@ package net.jgf.core.component;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.jme.config.JmeConfigHelper;
-import net.jgf.jme.view.ActionInputView.ActionInputKey;
 import net.jgf.settings.Settings;
 import net.jgf.system.Jgf;
 
 /**
  * <p>
- * This is the base class for objects of type {@link Component}.
+ * This serves as base class for objects of type {@link Component}. A high number
+ * of JGF classes are components, including all view states, entities, logic
+ * states, services and more. Components are identified by an id string.
  * </p>
+ * <p>
+ * This base class provides a XML config file reading capabilities, which will
+ * set the component id (as defined in the XML node through the "id" attribute).
+ * </p>
+ * <p>
+ * This class also provides JGF settings support. Settings dependencies can be
+ * defined in XML. The configured component is then registered with the settings
+ * component to receive updates for setting changes.
+ * </p>
+ * <p>
+ * This is an example of a component configured using BaseComponent reading
+ * capabilities (taken from the example game "Taunklet"). Here, the InputView
+ * uses settings registering to receive the values defined in the settings
+ * component:
+ * 
+ * <pre>
+ * &#064;code
+ * &lt;view id=&quot;view/root/level/fight/input&quot; class=&quot;net.jgf.example.tanks.view.InputView&quot; &gt;
+ *     &lt;settings ref=&quot;settings&quot;&gt;
+ *         &lt;setting ref=&quot;settings/input/key/up&quot; field=&quot;keyUp&quot;  /&gt;
+ *         &lt;setting ref=&quot;settings/input/key/down&quot; field=&quot;keyDown&quot; /&gt;
+ *         &lt;setting ref=&quot;settings/input/key/left&quot; field=&quot;keyLeft&quot; /&gt;
+ *         &lt;setting ref=&quot;settings/input/key/right&quot; field=&quot;keyRight&quot; /&gt;
+ *     &lt;/settings&gt;
+ * &lt;/view&gt;
+ * }
+ * </pre>
+ * 
+ * </p>
+ * <p>
+ * This class has been designed to be extended, although users often will prefer
+ * to extend one of its children classes (depending on the type of component
+ * that needs to be created). If you need to create a component (a View State,
+ * Entity, Logic State or other), check the API first for an appropriate base
+ * class as one probably exists.
+ * </p>
+ * <p>When extending BaseComponent or any of its derivated classes,
+ * remember to call <tt>super.readConfig(...)</tt> at the beginning of your
+ * readConfig() method to ensure that all attributes are processed.</p>
  * 
  * @see Component
- * @author jjmontes
+ * @version 1.0
+ * @author Jose Juan Montes
  */
-public class BaseComponent implements Component {
+@Configurable
+public abstract class BaseComponent implements Component {
 
     /**
      * Component id.
      */
-    protected String id;
+    private String id;
 
     /**
      * Builds a new Component with a null id.
@@ -64,6 +105,7 @@ public class BaseComponent implements Component {
 
     /**
      * Builds a new Component with the given id.
+     * @param id The component id.
      */
     public BaseComponent(String id) {
         super();
@@ -72,6 +114,7 @@ public class BaseComponent implements Component {
 
     /**
      * Returns the component's id.
+     * @return The component id.
      */
     @Override
     public String getId() {
@@ -80,14 +123,21 @@ public class BaseComponent implements Component {
 
     /**
      * Sets the component's id.
+     * @param id The component id.
      */
     public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * Configures this object from Config.
+     * <p>Configures this object from JGF XML configuration.</p>
+     * <p>If you extend BaseComponent or any of its derivated classes,
+     * remember to always call <tt>super.readConfig(...)</tt> to ensure
+     * that common attributes are read from config.
+     * </p>
      * 
+     * @param config The JGF configuration object to read from.
+     * @param configPath The XML XPath reference (in the config) to the object being configured.
      * @see Configurable
      */
     public void readConfig(Config config, String configPath) {
@@ -113,10 +163,8 @@ public class BaseComponent implements Component {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String toString() {

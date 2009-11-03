@@ -5,11 +5,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.core.component.BaseComponent;
+import net.jgf.example.mudvolley1.loader.MudVolleyPlayerEntityLoader;
 
 public abstract class BaseLoader<E> extends BaseComponent implements Loader<E> {
+    
+    /**
+     * Class logger
+     */
+    private static final Logger logger = Logger.getLogger(BaseLoader.class);
 
 	protected Map<String, String> defaultProperties;
 
@@ -24,19 +33,28 @@ public abstract class BaseLoader<E> extends BaseComponent implements Loader<E> {
 	}
 
 	public E load(E base, String... properties) {
+	    
+	    logger.debug("Loader " + this + " loading over " + base);
+	    
 		LoadProperties map = new LoadProperties(properties.length);
 		for (String property : properties) {
-			int pos = property.indexOf('=');
-			if ((pos > property.length() - 2) || (pos < 1)) {
-				throw new ConfigException("Invalid property (key=value) found when loading " + this + " from a list of properties");
-			}
-			String key = property.substring(0, pos);
-			String value = property.substring(pos + 1);
-			map.put(key, value);
+		    if (StringUtils.isNotBlank(property)) {
+    			int pos = property.indexOf('=');
+    			if ((pos > property.length() - 2) || (pos < 1)) {
+    				throw new ConfigException("Invalid property (key=value) found when loading " + this + " from a list of properties: " + property);
+    			}
+    			String key = property.substring(0, pos);
+    			String value = property.substring(pos + 1);
+    			map.put(key, value);
+		    }
 		}
 		return load(base, map);
 	}
 
+	public E load(E base) {
+	    return load(base, new LoadProperties());
+	}
+	
 	/**
 	 * <p>Combines the set of properties passed with this loader's
 	 * configuration properties, favouring the passed properties when

@@ -87,7 +87,7 @@ public class EntityPool extends BaseComponent {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "[id=" + id +",items=" + this.getSize() + "]";
+		return this.getClass().getSimpleName() + "[id=" + this.getId() +",items=" + this.getSize() + "]";
 	}
 
 	/**

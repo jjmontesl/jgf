@@ -14,7 +14,7 @@ public class BooleanSetting extends Setting {
 
 	public void setStringValue(String value) {
 		this.value = Boolean.parseBoolean(value);
-		manager.update(this.id, this.value);
+		manager.update(this.getId(), this.value);
 	}
 	
 	public String getStringValue() {

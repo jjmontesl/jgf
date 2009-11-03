@@ -14,7 +14,7 @@ public class StringSetting extends Setting<String> {
 
     public void setStringValue(String value) {
         this.value = value;
-        manager.update(this.id, this.value);
+        manager.update(this.getId(), this.value);
     }
 
     public String getStringValue() {

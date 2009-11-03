@@ -73,7 +73,7 @@ public class FaderViewNode extends BaseViewStateNode {
 		rootNode.detachAllChildren();
 
 		// Now we'll create our Fader and add
-		fader = new Fader("Fader-" + this.id, DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem.getDisplaySystem().getHeight(), color, fadeInTime);
+		fader = new Fader("Fader-" + this.getId(), DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem.getDisplaySystem().getHeight(), color, fadeInTime);
 		fader.setAlpha(1.0f);
 		rootNode.attachChild(fader);
 

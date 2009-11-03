@@ -48,14 +48,15 @@ import org.apache.log4j.Logger;
  * sent to JUL are handled by JGF logging system.
  * </p>
  * 
+ * @version 1.0
  * @author Christian Stein
- * @author jjmontes
+ * @author Jose Juan Montes
  */
-public class JULLoggingBridge extends Handler {
+public final class JULLoggingBridge extends Handler {
 
-    protected final boolean classname;
+    private final boolean classname;
 
-    protected final boolean format;
+    private final boolean format;
 
     /**
      * Resets the entire JUL logging system and adds a single JulLoggingBridge
@@ -133,7 +134,7 @@ public class JULLoggingBridge extends Handler {
      * Returns {@code Level.ALL} as this cares about discarding log statements.
      */
     @Override
-    public final synchronized Level getLevel() {
+    public synchronized Level getLevel() {
         return Level.ALL;
     }
 

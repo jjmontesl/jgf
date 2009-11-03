@@ -15,7 +15,7 @@ public class FloatSetting extends Setting<Float> {
     public void setStringValue(String value) {
         // TODO: Hack to allow commas instead of periods for decimal separator
         this.value = Float.parseFloat(value.replace(',', '.'));
-        manager.update(this.id, this.value);
+        manager.update(this.getId(), this.value);
     }
 
     public String getStringValue() {

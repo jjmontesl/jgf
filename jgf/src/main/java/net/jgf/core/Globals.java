@@ -33,28 +33,34 @@
 
 package net.jgf.core;
 
-import org.apache.log4j.Level;
 
 /**
- * <p>JGF globals.</p>
- * <p>This class provides JGF with default values for some variables.</p>
+ * <p>
+ * JGF globals.
+ * </p>
+ * <p>
+ * This class provides JGF with default values for some variables like framework
+ * title and version.
+ * </p>
+ * 
+ * @version 1.0
+ * @author Jose Juan Montes
  */
 public class Globals {
 
-	/**
-	 * The JGF library version.
-	 */
-	public static final String JGF_VERSION = "1.0a";
+    /**
+     * The JGF library version.
+     */
+    public static final String JGF_VERSION = "1.0a";
 
-	/**
-	 * JGF library name.
-	 */
-	public static final String JGF_TITLE = "Java Game Framework";
+    /**
+     * JGF library name.
+     */
+    public static final String JGF_TITLE = "Java Game Framework";
 
-
-	/**
-	 * Log pattern for the default logger. This is a log4j pattern.
-	 */
-	public final static String LOG_PATTERN = "%d{ISO8601} %t %5p [%c{1}] %m%n";
+    /**
+     * Log pattern for the default logger. This is a log4j pattern.
+     */
+    public static final String LOG_PATTERN = "%d{ISO8601} %t %5p [%c{1}] %m%n";
 
 }

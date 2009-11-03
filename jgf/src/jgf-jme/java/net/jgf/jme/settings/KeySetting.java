@@ -20,7 +20,7 @@ public class KeySetting extends Setting<Integer> {
 
     public void setStringValue(String value) {
         this.value = TypeParserHelper.valueOfKeyInput(value);
-        getManager().update(this.id, this.value);
+        getManager().update(this.getId(), this.value);
     }
 
     public String getStringValue() {
