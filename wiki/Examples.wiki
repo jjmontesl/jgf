@@ -42,7 +42,7 @@ Remember that components can always be extended or replaced if the default ones 
 
 ==JGF Base Project Skeleton==
 
-A base JGF project with a basic structure is provided to make starting a new project a cut-and-paste matter. Including Ant build script and libraries.
+JGF base project skeleton makes starting a new JGF project a cut-and-paste matter. Includes Ant build script and libraries.
 
 ==Tanks Game==
 
