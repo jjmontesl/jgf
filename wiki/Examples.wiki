@@ -8,9 +8,9 @@ In the meanwhile, have a look at the configuration file for the JGF MudVolley tu
 
 [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/mudvolley/mudvolley1.xml /trunk/jgf/src/example/resources/mudvolley/mudvolley1.xml]
 
-And also inspect other files from the examples, like the classes involed:
+And also inspect other files from the examples, like the (few) classes involved:
 
-[http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example /trunk/jgf/src/example/java/net/jgf/example]
+[http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example /trunk/jgf/src/example/java/net/jgf/example/mudvolley1]
 
 <wiki:toc max_depth="2" />
 
