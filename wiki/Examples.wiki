@@ -4,9 +4,9 @@
 
 This section is yet to be built.
 
-In the meanwhile, have a look at the !MudVolley Example 3 configuration file:
+In the meanwhile, have a look at the configuration file for the JGF MudVolley tutorial 1:
 
-[http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml /trunk/jgf/src/example/resources/mudvolley/mudvolley3.xml]
+[http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/mudvolley/mudvolley1.xml /trunk/jgf/src/example/resources/mudvolley/mudvolley1.xml]
 
 And also inspect other files from the examples, like the classes involed:
 
@@ -33,20 +33,23 @@ The !MudVolley Tutorials are the main JGF tutorials. Through this courses you wi
 
 The following applications are included to test different components and to serve as examples.
 
-  * [Box] - The simplest minimum example of a JGF application.
+  * Box - The simplest example of a JGF application ([http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/box/box.xml config] - ).
 
-  * [Console] - How to use JGF console.
-  * [Fader] - How to use the !FaderView node to apply a fade-in and fade-out effect.
-  * [GameStateWrapper] - Wraps JME !GameStates into JGF !ViewStates.
-  * [Menu] - Tests the (simple) default menu system.
+  * Console - How to use JGF console ([http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/console/console.xml config] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example/box code]).
+  * Display - Example of the DisplaySystem, which allows to easily define simple HUDs and text ([http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/display/display.xml config] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example/display code]).
+  * Fader - How to use the !FaderView node to apply a fade-in and fade-out effect ([http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/fader/fader.xml config] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example/fader code]).
+  * GameStateWrapper - Wraps JME !GameStates into JGF !ViewStates ([http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/gamestatewrapper/gamestatewrapper.xml config] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example/gamestatewrapper code]).
+  * Menu - Tests the (simple) default menu system ([http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/menu/menu.xml config] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf/src/example/java/net/jgf/example/menu code]).
 
-==JGF Base Game Structure==
+Remember that components can always be extended or replaced if the default ones don't fit your needs.
 
-A base game with a basic structure is provided to make starting a new project a cut-and-paste matter (_TO BE DONE_).
+==JGF Base Project Skeleton==
+
+A base JGF project with a basic structure is provided to make starting a new project a cut-and-paste matter. Including Ant build script and libraries.
 
 ==Tanks Game==
 
-A complete game is provided with with JGF: [Tanks]. Follow the link to find out the details.
+A complete game is provided with with JGF: [Tanks Taunklet]. Follow the link to learn more about it.
 
 
 [http://code.google.com/p/jgf/ JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
