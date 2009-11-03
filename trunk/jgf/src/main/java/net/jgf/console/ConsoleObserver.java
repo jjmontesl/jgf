@@ -34,17 +34,31 @@
 package net.jgf.console;
 
 /**
- * <p>A console observer is notified every time a line is added to the console it
+ * <p>
+ * A console observer is notified every time a line is added to the console it
  * observers. Observers are added to a console using the
- * {@link Console#addConsoleObserver(ConsoleObserver)}.</p>
- * <p>This is the interface that console observers implement.</p>
+ * {@link Console#addConsoleObserver(ConsoleObserver)}.
+ * </p>
+ * <p>
+ * This is the interface that console observers need to implement.
+ * </p>
+ * 
+ * @version 1.0
+ * @author jjmontes
  */
 public interface ConsoleObserver {
 
-	/**
-	 * This method is called by the Console every time a line is added to the buffer.
-	 * @param line The line added.
-	 */
-	public void lineAdded(Console console, String line);
+    /**
+     * <p>
+     * This method is called by a console every time a line is added to the
+     * buffer, no notify observers.
+     * </p>
+     * 
+     * @param console
+     *            The console component that causes the event.
+     * @param line
+     *            The line added.
+     */
+    void lineAdded(Console console, String line);
 
 }

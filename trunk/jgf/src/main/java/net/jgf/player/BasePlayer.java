@@ -46,7 +46,7 @@ public abstract class BasePlayer extends BaseComponent implements Player {
 
 		super.readConfig(config, configPath);
 
-		this.name = config.getString(configPath + "/@name", this.id);
+		this.name = config.getString(configPath + "/@name", this.getId());
 
 	}
 
@@ -100,7 +100,7 @@ public abstract class BasePlayer extends BaseComponent implements Player {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "[id = " + this.id + "]";
+		return this.getClass().getSimpleName() + "[id = " + this.getId() + "]";
 	}
 
 }

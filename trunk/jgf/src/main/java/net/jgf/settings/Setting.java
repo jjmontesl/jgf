@@ -63,5 +63,9 @@ public abstract class Setting<T> extends BaseComponent {
 		this.setDefaultValue(config.getString(configPath + "/@default"));
 		
 	}
+    
+    public void reset() {
+        this.setStringValue(this.getDefaultValue());
+    }
 	
 }

@@ -16,12 +16,16 @@ import org.apache.log4j.Logger;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
+import com.jme.math.FastMath;
+import com.jme.math.Plane;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial.CullHint;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Box;
+import com.jme.scene.shape.Quad;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.TextureState;
@@ -82,6 +86,10 @@ public final class MudVolleySceneLoader extends SceneLoader {
     ts.setEnabled(true);
 
     Box floor = new Box("floorBox", new Vector3f(- MudSettings.FIELD_WIDTH - 2, -5, -8), new Vector3f(MudSettings.FIELD_WIDTH + 2, 0, 8));
+    /*
+    Quad floor = new Quad("floorQuad", 100, 100);
+    floor.setLocalRotation(new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_X));
+    */
     floor.clearRenderState(RenderState.RS_TEXTURE);
     //quad.setLightCombineMode(Spatial.LightCombineMode.Off);
     floor.setTextureCombineMode(TextureCombineMode.Replace);

@@ -87,7 +87,7 @@ public final class StatsView extends BaseViewState {
 		super.load();
 
 		// TODO: Parameterize StatisticsGameState from config
-		gameState = new StatisticsGameState(this.id + "-sgs", graphWidth, graphHeight, graphAlpha, true);
+		gameState = new StatisticsGameState(this.getId() + "-sgs", graphWidth, graphHeight, graphAlpha, true);
 
 	}
 

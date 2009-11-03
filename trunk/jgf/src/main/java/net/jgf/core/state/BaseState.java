@@ -148,7 +148,7 @@ public abstract class BaseState extends BaseComponent implements State {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "[id=" + this.id + ",loaded=" + this.loaded + ",active=" + this.active + "]";
+		return this.getClass().getSimpleName() + "[id=" + this.getId() + ",loaded=" + this.loaded + ",active=" + this.active + "]";
 	}
 
 

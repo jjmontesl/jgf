@@ -79,6 +79,16 @@ public final class TypeParserHelper  {
 		return result;
 	}
 
-
+	public static float valueOfFloat(String value) {
+	    return Float.parseFloat(value);
+	}
+	
+	public static int valueOfInt(String value) {
+        return Integer.parseInt(value);
+    }
+	
+	public static boolean valueOfBoolean(String value) {
+        return Boolean.parseBoolean(value);
+    }
 
 }

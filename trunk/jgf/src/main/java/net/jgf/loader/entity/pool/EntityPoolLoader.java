@@ -138,7 +138,7 @@ public class EntityPoolLoader extends EntityLoader {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "[id=" + id +",pools=" + pools.size() + "]";
+		return this.getClass().getSimpleName() + "[id=" + this.getId() +",pools=" + pools.size() + "]";
 	}
 
 	/**

@@ -86,7 +86,7 @@ public final class GameStateWrapperView extends BaseViewState {
 		}
 
 		if (! GameState.class.isAssignableFrom(gamestateClass)) {
-			throw new ConfigException ("Component " + this.id + " references a class " + className + " which is not a GameState");
+			throw new ConfigException ("Component " + this.getId() + " references a class " + className + " which is not a GameState");
 		}
 
 		try {

@@ -28,6 +28,12 @@ import org.apache.log4j.Logger;
 @Configurable
 public final class PropertiesStorage extends BaseService {
 
+    // TODO: Add support to store only a subset of settings (i.e. profile based)?
+    
+    // TODO: Add support to choose a different file at write time?
+    
+    // TODO: Add support to store XML settings format
+    
     /**
      * Class logger
      */
@@ -107,6 +113,8 @@ public final class PropertiesStorage extends BaseService {
     public void writeSettings() {
         
         // Resolve the properties path
+        
+        // TODO: Write settings in alphabetical order
         
         String epath = expandPath(this.path);
         logger.info("Writing settings to file: " + epath);

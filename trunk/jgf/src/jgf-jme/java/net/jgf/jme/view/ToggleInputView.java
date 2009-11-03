@@ -56,7 +56,7 @@ public final class ToggleInputView extends BaseViewState {
 	@Override
 	public void input(float tpf) {
 
-	    if (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.id + "]", false)) {
+	    if (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.getId() + "]", false)) {
 	    		if (view.isActive())  {
 	    			view.deactivate();
 	    		} else  {
@@ -94,7 +94,7 @@ public final class ToggleInputView extends BaseViewState {
 		if (key == 0) {
 			throw new ConfigException("No key was specified for " + this + " (detected on loading)");
 		} else {
-			KeyBindingManager.getKeyBindingManager().set("toggle[" + this.id + "]", key);
+			KeyBindingManager.getKeyBindingManager().set("toggle[" + this.getId() + "]", key);
 		}
 
 	}

@@ -280,7 +280,7 @@ public final class JMEEngine extends BaseEngine {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "[id=" + id +",timerCap=" + timerCap + ",collecStats=" + collectStats + "]";
+		return this.getClass().getSimpleName() + "[id=" + this.getId() +",timerCap=" + timerCap + ",collecStats=" + collectStats + "]";
 	}
 
 }
