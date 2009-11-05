@@ -1,15 +1,14 @@
 package net.jgf.console.bean;
 
+import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.messaging.MESSAGE_EVENT_CATEGORY;
-import net.jgf.messaging.MESSAGE_EVENT_TYPE;
-import net.jgf.messaging.MessageEvent;
-import net.jgf.messaging.MessageEventKey;
-import net.jgf.messaging.MessageEventObserver;
-import net.jgf.messaging.MessagingException;
-import net.jgf.messaging.PostOffice;
+import net.jgf.messaging.BaseJGFMessage;
+import net.jgf.messaging.MessageBroker;
+import net.jgf.messaging.MessageNotifications;
+import net.jgf.messaging.MessagePublisher;
+import net.jgf.messaging.MessageSubscriber;
 import net.jgf.messaging.payloads.JGFChatMessage;
-import net.jgf.network.messages.JGNChatMessage;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -19,24 +18,21 @@ import org.apache.log4j.Logger;
  * @version 1.0
  */
 @Configurable
-public class ChatBean implements MessageEventObserver {
+public class ChatBean implements MessageSubscriber, MessagePublisher {
 
     /**
      * Class logger.
      */
-    @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(ChatBean.class);
 
+    private String id;
+    
+    private MessageBroker messageBroker;
+    
     /**
      * Constructor.
      */
     public ChatBean() {
-        try {
-            PostOffice.registerMessageEventObserver(
-                    new MessageEventKey(MESSAGE_EVENT_TYPE.RECEIVED, MESSAGE_EVENT_CATEGORY.CHAT), this);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -45,16 +41,59 @@ public class ChatBean implements MessageEventObserver {
      */
     public void send(String text) {
         JGFChatMessage message = new JGFChatMessage();
+        message.setTopic("chat_send");
         message.setText(text);
-        PostOffice.fireMessageEvent(new MessageEvent(new MessageEventKey(MESSAGE_EVENT_TYPE.SEND,
-                MESSAGE_EVENT_CATEGORY.CHAT), message));
+        if (messageBroker == null) {
+            logger.error("No messagebroker defined.");
+        } else {
+            messageBroker.publishMessage(message, id);
+        }
+    }
+    
+    /**
+     * Reads the config from the xml.
+     * @param config handle to the config.
+     * @param configPath current xpath.
+     */
+    public void readConfig(Config config, String configPath) {
+        this.id = config.getString(configPath + "/@name");
+        if (config.containsKey(configPath + "/messagebroker/@ref")) {
+            String messageBrokerRef = config.getString(configPath + "/messagebroker/@ref");
+            messageBroker = Jgf.getDirectory().getObjectAs(messageBrokerRef, MessageBroker.class);
+            messageBroker.registerMessagePublisher(this);
+            int index = 1;
+            while (config.containsKey(configPath + "/messagebroker/subscription[" + index + "]/@topic")) {
+                String topic = config.getString(configPath + "/messagebroker/subscription[" + index + "]/@topic");
+                messageBroker.registerMessageSubscriber(this, topic);
+                index++;
+            }
+        }
     }
 
     @Override
-    public void handleMessageEvent(MessageEvent messageEvent) {
-        if (messageEvent.getMessageEventKey().getMessageEventType() == MESSAGE_EVENT_TYPE.RECEIVED) {
-            logger.debug("chat message received: "
-                    + ((JGFChatMessage) messageEvent.getMessageEventPayload()).getText());
+    public void receiveMessage(BaseJGFMessage message) {
+        logger.debug("chat message received: "
+                + ((JGFChatMessage) message).getText());
+    }
+
+    @Override
+    public void receiveNotification(BaseJGFMessage message, MessageNotifications notification) {
+        if (notification == MessageNotifications.NO_SUBSCRIBERS) {
+            logger.debug("No subscribers defined");
         }
+    }
+
+    
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 }

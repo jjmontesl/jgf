@@ -1,14 +1,15 @@
-package net.jgf.translators;
+package net.jgf.network.translators;
 
 import java.util.LinkedHashMap;
+import net.jgf.translators.Translator;
 
 public final class TranslatorMap {
 
 	private static final LinkedHashMap <String, Translator> translatorsByKey = new LinkedHashMap <String, Translator>();
 
 	private TranslatorMap() {
-		translatorsByKey.put("net.jgf.console.bean.JGNChatMessage", new net.jgf.translators.network.TranslateJGNChatMessageToJGFChatMessage());
-		translatorsByKey.put("net.jgf.messages.JGFChatMessage", new net.jgf.translators.network.TranslateJGFChatMessageToJGNChatMessage());
+		translatorsByKey.put("net.jgf.network.messages.JGNChatMessage", new net.jgf.network.translators.TranslateJGNChatMessageToJGFChatMessage());
+		translatorsByKey.put("net.jgf.messaging.payloads.JGFChatMessage", new net.jgf.network.translators.TranslateJGFChatMessageToJGNChatMessage());
 	}
 
 	public static Object translate(Object beanToTranslate) {

@@ -45,6 +45,9 @@
 		<viewManager ref="view" />
 
 	</service>
+	
+	<service id="messagebroker" class="net.jgf.messaging.MessageBroker">
+	</service>
 
 	<!-- 
 		Console
@@ -52,29 +55,11 @@
 	<service id="chatconsole" class="net.jgf.console.StreamConsoleWrapper">
 		<service id="chatconsole/wrapped" class="net.jgf.console.bean.BeanshellConsole">
 			<bean name="chatbean" class="net.jgf.console.bean.ChatBean">
+				<messagebroker ref="messagebroker">
+					<subscription topic="chat_received" />
+				</messagebroker>
 			</bean>
 		</service>
-	</service>
-
-	<!-- 
-		Network
-	 -->
-	<service id="network" class="net.jgf.network.NetworkManager">
-		<!--
-			The server connector provides a channel to send messages out to
-			clients, and to receive client messages. It represents the
-			incoming/outgoing queue of messages through each 'channel'. It keeps
-			a list of connected clients. If JGN is used, I guess this would be
-			one integration point.
-		-->
-		<connector id="network/server" class="net.jgf.network.server.ServerConnector">
-			<bindaddress type="reliable">127.0.0.1</bindaddress>
-			<bindport type="reliable">10000</bindport>
-			<bindaddress type="fast">127.0.0.1</bindaddress>
-			<bindport type="fast">20000</bindport>
-			<timeout>5000</timeout>
-			<maxpackets>60</maxpackets>
-		</connector>
 	</service>
 
 	<!-- 

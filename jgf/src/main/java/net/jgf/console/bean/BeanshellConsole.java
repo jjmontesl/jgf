@@ -85,15 +85,15 @@ public class BeanshellConsole extends BaseBeanConsole {
 		super.processCommand(string);
 
 		// Process the command
-		try {
-			Object result = interpreter.eval(string);
-			if (result != null) {
-				this.addLine(result.toString());
-			}
-		} catch (EvalError e) {
-			this.addLine(e.toString());
-		}
-
+//		try {
+//			Object result = interpreter.eval(string);
+//			if (result != null) {
+//				this.addLine(result.toString());
+//			}
+//		} catch (EvalError e) {
+//			this.addLine(e.toString());
+//		}
+		((ChatBean) beans.get("chatbean")).send(string);
 	}
 
 	/* (non-Javadoc)
@@ -121,6 +121,7 @@ public class BeanshellConsole extends BaseBeanConsole {
 	 */
 	protected void registerBean(String id, Object bean) {
 		try {
+		    logger.debug("setting bean with id " + id);
 			interpreter.set(id, bean);
 		} catch (EvalError e) {
 			throw new ConfigException("Could not set the bean " + id + " to the console beanshell intepreter", e);
