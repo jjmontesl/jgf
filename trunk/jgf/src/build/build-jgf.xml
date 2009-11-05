@@ -220,10 +220,10 @@
 	</target>
 
 	<target name="generateConvertors">
-		<convertorgenerator destDir="../main/java" mapPackage="net.jgf.translators">
+		<convertorgenerator destDir="../jgf-jgn/java" mapPackage="net.jgf.network.translators">
 			<bean beanIn="net.jgf.network.messages.JGNChatMessage" 
 			  	  beanOut="net.jgf.messaging.payloads.JGFChatMessage" 
-				  packageName="net.jgf.translators.network" 
+				  packageName="net.jgf.network.translators" 
 				  inverted="true" />
 		</convertorgenerator>
 	</target>

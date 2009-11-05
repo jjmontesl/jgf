@@ -1,6 +1,6 @@
 package net.jgf.messaging.payloads;
 
-import net.jgf.messages.BaseJGFMessage;
+import net.jgf.messaging.BaseJGFMessage;
 
 /**
  * Message meant for chatting. This message is destined for the network layer.

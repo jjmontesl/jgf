@@ -67,6 +67,7 @@ public class GenerateBeanTranslatorTask extends Task {
     private void writeTranslatorMapheaders(FileWriter writer) throws IOException {
         writer.write("package " + mapPackage);
         writer.write(";\n\nimport java.util.LinkedHashMap");
+        writer.write(";\nimport net.jgf.translators.Translator");
         writer.write(";\n\npublic final class TranslatorMap {\n\n");
         writer.write("\tprivate static final LinkedHashMap <String, Translator> translatorsByKey = new LinkedHashMap <String, Translator>();\n\n");
         writer.write("\tprivate TranslatorMap() {\n");

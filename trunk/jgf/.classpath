@@ -7,6 +7,7 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/jgf-tools/java"/>
 	<classpathentry kind="src" path="src/example/resources"/>
+	<classpathentry kind="src" path="src/jgf-jgn/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="src/main/lib/bsh-core-2.0b4.jar"/>
 	<classpathentry kind="lib" path="src/main/lib/commons-beanutils-bean-collections.jar"/>
@@ -35,5 +36,6 @@
 	<classpathentry kind="lib" path="src/test/lib/junit-4.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jmephysics2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ant"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jgn"/>
 	<classpathentry kind="output" path="target/classes-eclipse"/>
 </classpath>
