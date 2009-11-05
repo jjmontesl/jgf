@@ -237,7 +237,7 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
     public void messageReceived(Message message) {
         BaseJGFMessage jgfMessage = (BaseJGFMessage) TranslatorMap.translate(message);
         jgfMessage.setTopic("network_received");
-        messageBroker.publishMessage(jgfMessage, this.id);
+        messageBroker.publishMessage(jgfMessage, this.getId());
     }
 
     @Override
