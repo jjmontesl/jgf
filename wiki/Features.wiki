@@ -30,6 +30,12 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
   * Configuration Dialog for initial settings (_to be done_).
   * Command Line Options parsing service, which allows to set settings and other framework parameters based on the command line arguments passed to the application (_to be done_).
 
+*Messaging System*
+  * Used for communication between components.
+  * Uses publish/subscribe where multiple subscribers can subscribe to the same message topic.
+  * Uses a message broker to filter the messages based on the topic.
+  * Decouples the components, the publishers don't need to know about the subscribers and vice versa.
+
 *Menu System*
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-menu-1.png
