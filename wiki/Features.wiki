@@ -35,6 +35,7 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
   * Uses publish/subscribe where multiple subscribers can subscribe to the same message topic.
   * Uses a message broker to filter the messages based on the topic.
   * Decouples the components, the publishers don't need to know about the subscribers and vice versa.
+  * Makes adding new components much easier since the subscriptions are done via the configuration XML.
 
 *Menu System*
 
