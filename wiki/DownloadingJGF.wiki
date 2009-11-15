@@ -40,7 +40,7 @@ You will need to configure this project as a Java project in your Development En
 
 5) At this time you should be able to build (compile) the project.
 
-6) Because JGF currently uses JMonkeyEngine, at runtime some native libraries are needed (as with any other JME project). You will need to reference the native libraries. If you have any doubt about this, you should ensure you can run JavaMonkeyEngine applications and tests (again, check [http://www.jmonkeyengine.com/wiki/doku.php?id=the_tutorials_-_jme_2 JME2 Tutorials Page] if you are not able to run JME applications). You should then be able to run the following JGF example:
+6) Because JGF currently uses JMonkeyEngine, at runtime some native libraries are needed (as with any other JME project). You will need to reference the native libraries. If you have any doubt about this, you should ensure you can run JMonkeyEngine applications and tests (again, check [http://www.jmonkeyengine.com/wiki/doku.php?id=the_tutorials_-_jme_2 JME2 Tutorials Page] if you are not able to run JME applications). You should then be able to run the following JGF example:
 
   net.jgf.example.box.Box
 
