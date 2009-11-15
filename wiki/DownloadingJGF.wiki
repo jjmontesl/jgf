@@ -48,11 +48,11 @@ You will need to configure this project as a Java project in your Development En
 
 8) Visit [http://groups.google.com/group/jgf-users JGF Users List] or [http://www.jmonkeyengine.com/forum/index.php?topic=9495.30 JGF at JME Forums] and let us know you succeeded ;-).
 
-
-
 _(Eclipse project files are included along with source code, but you may need to correct some of the project library dependencies and project dependencies (on JME) to suit your environment)_
 
+= What now? =
 
+Check the [GettingStarted Getting Started] or the [Examples] page for more information.
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
