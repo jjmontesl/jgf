@@ -45,21 +45,8 @@
 		<viewManager ref="view" />
 
 	</service>
-	
-	<service id="messagebroker" class="net.jgf.messaging.MessageBroker">
-	</service>
 
-	<!-- 
-		Console
-	 -->
-	<service id="chatconsole" class="net.jgf.console.StreamConsoleWrapper">
-		<service id="chatconsole/wrapped" class="net.jgf.console.bean.BeanshellConsole">
-			<bean name="chatbean" class="net.jgf.console.bean.ChatBean">
-				<messagebroker ref="messagebroker">
-					<subscription topic="chat_received" />
-				</messagebroker>
-			</bean>
-		</service>
+	<service id="messagebroker" class="net.jgf.messaging.MessageBroker">
 	</service>
 
 	<!-- 
@@ -68,8 +55,38 @@
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 
 		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
+			<logic id="logic/root/chat" class="net.jgf.chat.ChatLogicState"
+				autoLoad="true" autoActivate="true">
+				<messagebroker ref="messagebroker">
+					<subscription topic="chat_received" />
+				</messagebroker>
+			</logic>
 		</logic>
 
+	</service>
+
+	<!-- 
+		Network Manager
+	 -->
+	<service id="network" class="net.jgf.network.NetworkManager">
+		<!--
+			The server connector provides a channel to send messages out to
+			clients, and to receive client messages. It represents the
+			incoming/outgoing queue of messages through each 'channel'. It keeps
+			a list of connected clients. If JGN is used, I guess this would be
+			one integration point.
+		-->
+		<connector id="network/server" class="net.jgf.network.server.ServerConnector">
+			<bindaddress type="reliable">127.0.0.1</bindaddress>
+			<bindport type="reliable">10000</bindport>
+			<bindaddress type="fast">127.0.0.1</bindaddress>
+			<bindport type="fast">20000</bindport>
+			<timeout>5000</timeout>
+			<maxpackets>60</maxpackets>
+			<messagebroker ref="messagebroker">
+				<subscription topic="chat_send" />
+			</messagebroker>
+		</connector>
 	</service>
 
 	<!-- 
@@ -86,17 +103,16 @@
 			</view>
 
 			<!--
-				Console View state that serves as interface to use the Console
-				system
+				Chat View state that serves as interface to use the Console system
 			-->
-			<view id="view/root/consolekey" class="net.jgf.jme.view.ToggleInputView"
+			<view id="view/root/chatkey" class="net.jgf.jme.view.ToggleInputView"
 				autoLoad="true" autoActivate="true">
 
 				<key>KEY_BACKSLASH</key>
 
-				<view id="view/root/chatconsole" class="net.jgf.jme.view.ConsoleView"
+				<view id="view/root/chat" class="net.jgf.chat.ChatViewState"
 					autoLoad="true" autoActivate="true">
-					<console ref="chatconsole" />
+					<logic ref="logic/root/chat" />
 				</view>
 
 			</view>

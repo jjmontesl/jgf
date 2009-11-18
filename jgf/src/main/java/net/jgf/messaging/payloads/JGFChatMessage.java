@@ -8,6 +8,7 @@ import net.jgf.messaging.BaseJGFMessage;
  * @version 1.0
  */
 public class JGFChatMessage extends BaseJGFMessage {
+    
     private String roomId;
     private String text;
     
@@ -42,5 +43,10 @@ public class JGFChatMessage extends BaseJGFMessage {
      */
     public final void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String getMessageCategory() {
+        return "chat";
     }
 }

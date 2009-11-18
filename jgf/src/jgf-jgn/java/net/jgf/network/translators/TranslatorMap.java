@@ -7,7 +7,7 @@ public final class TranslatorMap {
 
 	private static final LinkedHashMap <String, Translator> translatorsByKey = new LinkedHashMap <String, Translator>();
 
-	private TranslatorMap() {
+	static {
 		translatorsByKey.put("net.jgf.network.messages.JGNChatMessage", new net.jgf.network.translators.TranslateJGNChatMessageToJGFChatMessage());
 		translatorsByKey.put("net.jgf.messaging.payloads.JGFChatMessage", new net.jgf.network.translators.TranslateJGFChatMessageToJGNChatMessage());
 	}

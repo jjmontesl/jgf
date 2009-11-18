@@ -11,6 +11,7 @@ import net.jgf.messaging.MessageBroker;
 import net.jgf.messaging.MessageNotifications;
 import net.jgf.messaging.MessagePublisher;
 import net.jgf.messaging.MessageSubscriber;
+import net.jgf.messaging.payloads.JGFChatMessage;
 import net.jgf.network.translators.TranslatorMap;
 import net.jgf.system.Jgf;
 
@@ -37,23 +38,23 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
     /**
      * Class logger.
      */
-    private static final Logger logger = Logger.getLogger(ChatBean.class);
+    private static final Logger logger              = Logger.getLogger(ChatBean.class);
 
-    private JGNClient     client;
+    private JGNClient           client;
 
-    private String        bindAddressReliable = "127.0.0.1";
+    private String              bindAddressReliable = "127.0.0.1";
 
-    private Integer       bindPortReliable    = 10000;
+    private Integer             bindPortReliable    = 10000;
 
-    private String        bindAddressFast     = "127.0.0.1";
+    private String              bindAddressFast     = "127.0.0.1";
 
-    private Integer       bindPortFast        = 20000;
+    private Integer             bindPortFast        = 20000;
 
-    private Integer       timeout             = 5000;
+    private Integer             timeout             = 5000;
 
-    private Integer       maxPackets          = 60;
+    private Integer             maxPackets          = 60;
 
-    private MessageBroker messageBroker;
+    private MessageBroker       messageBroker;
 
     /**
      * Constructor.
@@ -236,7 +237,7 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
     @Override
     public void messageReceived(Message message) {
         BaseJGFMessage jgfMessage = (BaseJGFMessage) TranslatorMap.translate(message);
-        jgfMessage.setTopic("network_received");
+        jgfMessage.setTopic(jgfMessage.getMessageCategory() + "_received");
         messageBroker.publishMessage(jgfMessage, this.getId());
     }
 
@@ -247,7 +248,10 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
     }
 
     private void sendMessage(BaseJGFMessage jgfMessage) {
-
+        //TODO: Actually send the message to the server.
+        ((JGFChatMessage) jgfMessage).setText("loopback - " + ((JGFChatMessage) jgfMessage).getText());
+        Message jgnMessage = (Message) TranslatorMap.translate(jgfMessage);
+        messageReceived(jgnMessage);
     }
 
     @Override

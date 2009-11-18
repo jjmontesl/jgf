@@ -5,7 +5,7 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: custom
+    Checkstyle-Configuration: JGF CheckStyle
     Description: none
 -->
 <module name="Checker">
@@ -96,7 +96,6 @@
     </module>
     <module name="InnerAssignment"/>
     <module name="JUnitTestCase"/>
-    <module name="MagicNumber"/>
     <module name="MissingCtor"/>
     <module name="MissingSwitchDefault"/>
     <module name="ModifiedControlVariable"/>
