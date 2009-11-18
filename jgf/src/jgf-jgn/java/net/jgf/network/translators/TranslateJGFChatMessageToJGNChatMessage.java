@@ -27,6 +27,7 @@ public final class TranslateJGFChatMessageToJGNChatMessage implements net.jgf.tr
 //
 
 //====Missing in net.jgf.messaging.payloads.JGFChatMessage
+//getMessageCategory has no setter in net.jgf.network.messages.JGNChatMessage
 //getTopic has no setter in net.jgf.network.messages.JGNChatMessage
 //getClass has no setter in net.jgf.network.messages.JGNChatMessage
 //
