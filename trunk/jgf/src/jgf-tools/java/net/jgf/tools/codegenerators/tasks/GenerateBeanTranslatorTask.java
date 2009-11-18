@@ -70,7 +70,7 @@ public class GenerateBeanTranslatorTask extends Task {
         writer.write(";\nimport net.jgf.translators.Translator");
         writer.write(";\n\npublic final class TranslatorMap {\n\n");
         writer.write("\tprivate static final LinkedHashMap <String, Translator> translatorsByKey = new LinkedHashMap <String, Translator>();\n\n");
-        writer.write("\tprivate TranslatorMap() {\n");
+        writer.write("\tstatic {\n");
     }
     
     private void writeTranslatorMapFooter(FileWriter writer) throws IOException {

@@ -43,4 +43,10 @@ public abstract class BaseJGFMessage {
         return topic;
     }
     
+    /**
+     * Returns the category of the message.
+     * @return the category.
+     */
+    public abstract String getMessageCategory();
+    
 }

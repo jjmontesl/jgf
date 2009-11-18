@@ -72,7 +72,7 @@ public class ChatBean implements MessageSubscriber, MessagePublisher {
 
     @Override
     public void receiveMessage(BaseJGFMessage message) {
-        logger.debug("chat message received: "
+        logger.info("chat message received: "
                 + ((JGFChatMessage) message).getText());
     }
 
