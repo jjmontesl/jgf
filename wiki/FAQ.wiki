@@ -2,6 +2,8 @@
 
 = JGF Frequently Asked Questions =
 
+<wiki:toc max_depth="4" />
+
 == General ==
 
 === What is the current state of development? ===
@@ -11,5 +13,25 @@ JGF is not yet ready for public usage. Major changes are expected to the API and
 === Is jMonkeyEngine the only game engine usable with JGF ===
 
 Currently it is. While writing implementations for other engines is _in theory_ possible, this is not a trivial task. Currently jMonkeyEngine is the only engine supported by JGF. Also, note that JGF itself doesn't require a 3D engine, and is _in theory_ extensible to support 2D engines as well.
+
+== Logging ==
+
+=== JME spatial classes like Node keep logging too much ===
+
+The LoggigConfigService can filter particular loggers. Adding the following configuration at the beginning of a JGF configuration file will filter some common verbose loggers:
+
+{{{
+<!-- 
+Logging configuration
+ -->
+<service id="logging" class="net.jgf.util.system.LoggingConfigService">
+	<logger name="com.jme.scene.Node" level="WARN" />
+	<logger name="com.jme.scene.Point" level="WARN" />
+	<logger name="com.jme.scene.Line" level="WARN" />
+	<logger name="net.jgf.loader.FileChainLoader" level="WARN" />				
+</service>
+}}}
+
+----
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source] - [FAQ]
