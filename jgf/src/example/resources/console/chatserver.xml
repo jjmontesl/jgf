@@ -55,12 +55,6 @@
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 
 		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
-			<logic id="logic/root/chat" class="net.jgf.chat.ChatLogicState"
-				autoLoad="true" autoActivate="true">
-				<messagebroker ref="messagebroker">
-					<subscription topic="chat_received" />
-				</messagebroker>
-			</logic>
 		</logic>
 
 	</service>
@@ -76,52 +70,25 @@
 			a list of connected clients. If JGN is used, I guess this would be
 			one integration point.
 		-->
-		<connector id="network/client" class="net.jgf.network.client.ClientConnector">
+		<connector id="network/server" class="net.jgf.network.server.ServerConnector">
 			<bindaddress type="reliable">127.0.0.1</bindaddress>
 			<bindport type="reliable">20000</bindport>
 			<bindaddress type="fast">127.0.0.1</bindaddress>
 			<bindport type="fast">10000</bindport>
-			<timeout>10000</timeout>
+			<timeout>5000</timeout>
 			<maxpackets>60</maxpackets>
 			<messagebroker ref="messagebroker">
-				<subscription topic="chat_send" />
+				<subscription topic="chat_received" />
 			</messagebroker>
 		</connector>
 	</service>
-
+	
 	<!-- 
 		State Manager
 	 -->
-	<service id="view" class="net.jgf.view.DefaultViewManager"
+	<service id="view" class="net.jgf.view.EmptyViewManager"
 		depends="engine">
-
-		<view id="view/root" class="net.jgf.view.ViewStateNode">
-
-			<!-- Background sample scene -->
-			<view id="view/root/box" class="net.jgf.example.box.BoxView"
-				autoLoad="true" autoActivate="true">
-			</view>
-
-			<!--
-				Chat View state that serves as interface to use the Console system
-			-->
-			<view id="view/root/chatkey" class="net.jgf.jme.view.ToggleInputView"
-				autoLoad="true" autoActivate="true">
-
-				<key>KEY_BACKSLASH</key>
-
-				<view id="view/root/chat" class="net.jgf.chat.ChatViewState"
-					autoLoad="true" autoActivate="true">
-					<logic ref="logic/root/chat" />
-				</view>
-
-			</view>
-
-
-		</view>
-
 	</service>
-
 </jgf>
  
 

@@ -10,6 +10,7 @@ import net.jgf.core.JgfRuntimeException;
 import net.jgf.core.service.BaseService;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Main class for the messaging system. This is where all the observers are
@@ -19,6 +20,11 @@ import org.apache.commons.lang.StringUtils;
  */
 @Configurable
 public final class MessageBroker extends BaseService {
+
+    /**
+     * Class logger.
+     */
+    private static final Logger logger = Logger.getLogger(MessageBroker.class);
 
     /**
      * Subscribers are mapped to the topic they are subscribing. It is possible
@@ -83,9 +89,12 @@ public final class MessageBroker extends BaseService {
         if (StringUtils.isEmpty(message.getTopic())) {
             throw new JgfRuntimeException("No topic in message from publisher " + publisherKey);
         }
+        logger.info("topic: " + message.getTopic());
         List < MessageSubscriber > subscriberList = subscriptions.get(message.getTopic());
         if (subscriberList != null && subscriberList.size() > 0) {
+            logger.info(subscriberList.size() + " subscribers found.");
             for (MessageSubscriber subscriber : subscriberList) {
+                logger.info("sending message to subscriber " + subscriber.getClass().getName());
                 subscriber.receiveMessage(message);
             }
         } else {

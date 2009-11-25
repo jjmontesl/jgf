@@ -85,15 +85,14 @@ public class BeanshellConsole extends BaseBeanConsole {
 		super.processCommand(string);
 
 		// Process the command
-//		try {
-//			Object result = interpreter.eval(string);
-//			if (result != null) {
-//				this.addLine(result.toString());
-//			}
-//		} catch (EvalError e) {
-//			this.addLine(e.toString());
-//		}
-		((ChatBean) beans.get("chatbean")).send(string);
+		try {
+			Object result = interpreter.eval(string);
+			if (result != null) {
+				this.addLine(result.toString());
+			}
+		} catch (EvalError e) {
+			this.addLine(e.toString());
+		}
 	}
 
 	/* (non-Javadoc)

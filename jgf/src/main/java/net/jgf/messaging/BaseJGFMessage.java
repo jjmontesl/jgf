@@ -12,6 +12,8 @@ public abstract class BaseJGFMessage {
     
     private String topic;
     
+    private short playerId;
+    
     /**
      * @return the id
      */
@@ -48,5 +50,23 @@ public abstract class BaseJGFMessage {
      * @return the category.
      */
     public abstract String getMessageCategory();
+
+
+    
+    /**
+     * @return the playerId
+     */
+    public short getPlayerId() {
+        return playerId;
+    }
+
+
+    
+    /**
+     * @param playerId the playerId to set
+     */
+    public void setPlayerId(short playerId) {
+        this.playerId = playerId;
+    }
     
 }

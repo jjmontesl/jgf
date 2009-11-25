@@ -7,14 +7,13 @@ import org.apache.log4j.Logger;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.console.bean.ChatBean;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.messaging.BaseJGFMessage;
+import net.jgf.messaging.JGFChatMessage;
 import net.jgf.messaging.MessageBroker;
 import net.jgf.messaging.MessageNotifications;
 import net.jgf.messaging.MessagePublisher;
 import net.jgf.messaging.MessageSubscriber;
-import net.jgf.messaging.payloads.JGFChatMessage;
 import net.jgf.system.Jgf;
 
 /**
@@ -78,7 +77,7 @@ public class ChatLogicState extends BaseLogicState implements MessageSubscriber,
      */
     public void acceptChar(char character) {
         int charInt = (int) character;
-        System.out.println("character = " + charInt);
+        //System.out.println("character = " + charInt);
         switch (charInt) {
             case 0:
                 break;
@@ -175,6 +174,7 @@ public class ChatLogicState extends BaseLogicState implements MessageSubscriber,
 
     @Override
     public void receiveMessage(BaseJGFMessage message) {
+        logger.info("message received: " + ((JGFChatMessage) message).getText());
         history.add(((JGFChatMessage) message).getText());
         chatObserver.lineAdded();
     }

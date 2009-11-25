@@ -1,10 +1,9 @@
-package net.jgf.network.server;
+package net.jgf.network.client;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.UnknownHostException;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
@@ -23,50 +22,48 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.captiveimagination.jgn.JGN;
+import com.captiveimagination.jgn.clientserver.JGNClient;
 import com.captiveimagination.jgn.clientserver.JGNConnection;
 import com.captiveimagination.jgn.clientserver.JGNConnectionListener;
-import com.captiveimagination.jgn.clientserver.JGNServer;
 import com.captiveimagination.jgn.event.MessageListener;
 import com.captiveimagination.jgn.message.Message;
 
 /**
- * Responsible for listening to client connections.
+ * Responsible for setting up and maintaining the connection to a single server.
+ * If connections to different servers are needed, more instances of this class
+ * need to be added to the config.
  * @author Schrijver
  * @version 1.0
  */
 @Configurable
-public class ServerConnector extends BaseConnector implements MessagePublisher, MessageSubscriber, MessageListener,
+public class ClientConnector extends BaseConnector implements MessagePublisher, MessageSubscriber, MessageListener,
         JGNConnectionListener {
 
     /**
      * Class logger.
      */
-    private static final Logger   logger              = Logger.getLogger(ServerConnector.class);
+    private static final Logger logger              = Logger.getLogger(ClientConnector.class);
 
-    private String                bindAddressReliable = "127.0.0.1";
+    private JGNClient           client;
 
-    private Integer               bindPortReliable    = 10000;
+    private String              bindAddressReliable = "127.0.0.1";
 
-    private String                bindAddressFast     = "127.0.0.1";
+    private Integer             bindPortReliable    = 10000;
 
-    private Integer               bindPortFast        = 20000;
+    private String              bindAddressFast     = "127.0.0.1";
 
-    private Integer               timeout             = 5000;
+    private Integer             bindPortFast        = 20000;
 
-    private Integer               maxPackets          = 60;
+    private Integer             timeout             = 5000;
 
-    private MessageBroker         messageBroker;
+    private Integer             maxPackets          = 60;
 
-    private JGNServer             server;
-
-    private Map < Short, String > clientIds           = new HashMap < Short, String >();
-
-    private Map < String, Short > playerIds           = new HashMap < String, Short >();
+    private MessageBroker       messageBroker;
 
     /**
      * Constructor.
      */
-    public ServerConnector() {
+    public ClientConnector() {
     }
 
     @Override
@@ -198,46 +195,51 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
 
     @Override
     public void connect() throws IOException {
-        JGN.register(JGNChatMessage.class);
+        try {
+            JGN.register(JGNChatMessage.class);
+            // client = new JGNClient();
+            client = new JGNClient(new InetSocketAddress(InetAddress.getLocalHost(), 0), new InetSocketAddress(
+                    InetAddress.getLocalHost(), 0));
+            client.addMessageListener(this);
+            client.addServerConnectionListener(this);
+            JGN.createThread(client).start();
 
-        InetSocketAddress reliableAddress = null;
-        InetSocketAddress fastAddress = null;
+            InetSocketAddress reliableServerAddress = null;
+            InetSocketAddress fastServerAddress = null;
 
-        // localhost needs a different approach for some reason.
-        if (bindAddressReliable.equals("127.0.0.1")) {
-            reliableAddress = new InetSocketAddress(InetAddress.getLocalHost(), bindPortReliable);
-        } else {
-            reliableAddress = new InetSocketAddress(InetAddress.getByName(bindAddressReliable), bindPortReliable);
+            // localhost needs a different approach for some reason.
+            if (bindAddressReliable.equals("127.0.0.1")) {
+                reliableServerAddress = new InetSocketAddress(InetAddress.getLocalHost(), bindPortReliable);
+            } else {
+                reliableServerAddress = new InetSocketAddress(InetAddress.getByName(bindAddressReliable),
+                        bindPortReliable);
+            }
+            
+            // localhost needs a different approach for some reason.
+            if (bindAddressReliable.equals("127.0.0.1")) {
+                fastServerAddress = new InetSocketAddress(InetAddress.getLocalHost(), bindPortFast);
+            } else {
+                fastServerAddress = new InetSocketAddress(InetAddress.getByName(bindAddressFast), bindPortFast);
+            }
+
+            client.connectAndWait(reliableServerAddress, fastServerAddress, timeout);
+            System.out.println("client is connected.");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new IOException("Unable to connect, connection timed out.", e);
         }
-
-        // localhost needs a different approach for some reason.
-        if (bindAddressReliable.equals("127.0.0.1")) {
-            fastAddress = new InetSocketAddress(InetAddress.getLocalHost(), bindPortFast);
-        } else {
-            fastAddress = new InetSocketAddress(InetAddress.getByName(bindAddressFast), bindPortFast);
-        }
-
-        server = new JGNServer(reliableAddress, fastAddress);
-        server.addMessageListener(this);
-        server.addClientConnectionListener(this);
-
-        JGN.createThread(server).start();
     }
 
     @Override
     public void disconnect() {
-        for (short clientId : clientIds.keySet()) {
-            try {
-                String playerId = clientIds.get(clientId);
-                server.disconnect(clientId);
-                clientIds.remove(clientId);
-                playerIds.remove(playerId);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            client.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         try {
-            server.close();
+            client.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -257,11 +259,9 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
 
     @Override
     public void messageReceived(Message message) {
-        if (message instanceof JGNMessage) {
-            JGNMessage jgnMessage = (JGNMessage) message;
-            BaseJGFMessage jgfMessage = (BaseJGFMessage) TranslatorMap.translate(jgnMessage);
-            logger.info("message received with category " + jgfMessage.getMessageCategory() + " for player id "
-                    + jgfMessage.getPlayerId());
+        BaseJGFMessage jgfMessage = (BaseJGFMessage) TranslatorMap.translate(message);
+        if (jgfMessage != null) {
+            logger.info("message received with category " + jgfMessage.getMessageCategory());
             jgfMessage.setTopic(jgfMessage.getMessageCategory() + "_received");
             messageBroker.publishMessage(jgfMessage, this.getId());
         }
@@ -270,12 +270,12 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
     @Override
     public void messageSent(Message message) {
         // TODO Auto-generated method stub
+
     }
 
     private void sendMessage(BaseJGFMessage jgfMessage) {
         JGNMessage jgnMessage = (JGNMessage) TranslatorMap.translate(jgfMessage);
-        logger.info("sending message to player id " + jgnMessage.getPlayerId());
-        server.sendToPlayer(jgnMessage, jgnMessage.getPlayerId());
+        client.sendToServer(jgnMessage);
     }
 
     @Override
@@ -287,18 +287,16 @@ public class ServerConnector extends BaseConnector implements MessagePublisher, 
 
     @Override
     public void receiveMessage(BaseJGFMessage message) {
-        logger.info("message received from broker");
         sendMessage(message);
     }
 
     @Override
     public void connected(JGNConnection connection) {
-        System.out.println(connection + " connected on server");
+        System.out.println("logged in as Player " + connection.getPlayerId());
     }
 
     @Override
     public void disconnected(JGNConnection connection) {
-        System.out.println(connection + " disconnected on server");
+        System.out.println("logged off");
     }
-
 }
