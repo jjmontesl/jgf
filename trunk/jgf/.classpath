@@ -36,6 +36,6 @@
 	<classpathentry kind="lib" path="src/test/lib/junit-4.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jmephysics2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ant"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jgn"/>
+	<classpathentry kind="lib" path="src/jgf-jgn/lib/jgn.jar"/>
 	<classpathentry kind="output" path="target/classes-eclipse"/>
 </classpath>
