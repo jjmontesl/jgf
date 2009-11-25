@@ -6,27 +6,28 @@ public final class TranslateJGFChatMessageToJGNChatMessage implements net.jgf.tr
 	}
 
 	 public Object translate(Object beanInParam) {
-		net.jgf.messaging.payloads.JGFChatMessage beanIn = (net.jgf.messaging.payloads.JGFChatMessage) beanInParam;
+		net.jgf.messaging.JGFChatMessage beanIn = (net.jgf.messaging.JGFChatMessage) beanInParam;
 		net.jgf.network.messages.JGNChatMessage beanOut = new net.jgf.network.messages.JGNChatMessage();
 		beanOut.setRoomId(beanIn.getRoomId());
 		beanOut.setText(beanIn.getText());
+		beanOut.setPlayerId(beanIn.getPlayerId());
 		beanOut.setId(beanIn.getId());
 		return beanOut;
 	}
 
 //====Missing in net.jgf.network.messages.JGNChatMessage
-//setPlayerId has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setGroupId has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setDestinationPlayerId has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setMessageClient has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setTries has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setMaxTries has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setTimeout has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setTranslatedMessage has no getter in net.jgf.messaging.payloads.JGFChatMessage
-//setTimestamp has no getter in net.jgf.messaging.payloads.JGFChatMessage
+//setPlayerKey has no getter in net.jgf.messaging.JGFChatMessage
+//setGroupId has no getter in net.jgf.messaging.JGFChatMessage
+//setDestinationPlayerId has no getter in net.jgf.messaging.JGFChatMessage
+//setMessageClient has no getter in net.jgf.messaging.JGFChatMessage
+//setTries has no getter in net.jgf.messaging.JGFChatMessage
+//setMaxTries has no getter in net.jgf.messaging.JGFChatMessage
+//setTimeout has no getter in net.jgf.messaging.JGFChatMessage
+//setTranslatedMessage has no getter in net.jgf.messaging.JGFChatMessage
+//setTimestamp has no getter in net.jgf.messaging.JGFChatMessage
 //
 
-//====Missing in net.jgf.messaging.payloads.JGFChatMessage
+//====Missing in net.jgf.messaging.JGFChatMessage
 //getMessageCategory has no setter in net.jgf.network.messages.JGNChatMessage
 //getTopic has no setter in net.jgf.network.messages.JGNChatMessage
 //getClass has no setter in net.jgf.network.messages.JGNChatMessage

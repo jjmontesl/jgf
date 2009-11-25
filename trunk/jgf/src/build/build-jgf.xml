@@ -222,7 +222,7 @@
 	<target name="generateConvertors">
 		<convertorgenerator destDir="../jgf-jgn/java" mapPackage="net.jgf.network.translators">
 			<bean beanIn="net.jgf.network.messages.JGNChatMessage" 
-			  	  beanOut="net.jgf.messaging.payloads.JGFChatMessage" 
+			  	  beanOut="net.jgf.messaging.JGFChatMessage" 
 				  packageName="net.jgf.network.translators" 
 				  inverted="true" />
 		</convertorgenerator>

@@ -1,4 +1,4 @@
-package net.jgf.network.server;
+package net.jgf.network;
 
 import java.io.IOException;
 

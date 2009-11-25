@@ -7,7 +7,6 @@ import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.core.service.BaseService;
-import net.jgf.network.server.BaseConnector;
 import net.jgf.system.Jgf;
 
 /**
