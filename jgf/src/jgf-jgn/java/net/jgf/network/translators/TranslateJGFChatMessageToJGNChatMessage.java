@@ -1,22 +1,36 @@
 package net.jgf.network.translators;
 
+/**
+ * Class to translate between two beans.
+ * @author Mark Schrijver
+ * @version 1.0
+ */
 public final class TranslateJGFChatMessageToJGNChatMessage implements net.jgf.translators.Translator {
 
-	public TranslateJGFChatMessageToJGNChatMessage(){
-	}
+    /**
+     * Constructor.
+     */
+    public TranslateJGFChatMessageToJGNChatMessage() {
+    }
 
-	 public Object translate(Object beanInParam) {
-		net.jgf.messaging.JGFChatMessage beanIn = (net.jgf.messaging.JGFChatMessage) beanInParam;
-		net.jgf.network.messages.JGNChatMessage beanOut = new net.jgf.network.messages.JGNChatMessage();
-		beanOut.setRoomId(beanIn.getRoomId());
-		beanOut.setText(beanIn.getText());
-		beanOut.setPlayerId(beanIn.getPlayerId());
-		beanOut.setId(beanIn.getId());
-		return beanOut;
-	}
+    /**
+     * Translation method. Translates net.jgf.messaging.JGFChatMessage into net.jgf.network.messages.JGNChatMessage.
+     * @param beanInParam bean to translate.
+     * @return translated parameter.
+     */
+    public Object translate(Object beanInParam) {
+        net.jgf.messaging.JGFChatMessage beanIn = (net.jgf.messaging.JGFChatMessage) beanInParam;
+        net.jgf.network.messages.JGNChatMessage beanOut = new net.jgf.network.messages.JGNChatMessage();
+        beanOut.setText(beanIn.getText());
+        beanOut.setRoomId(beanIn.getRoomId());
+        beanOut.setId(beanIn.getId());
+        beanOut.setPlayerId(beanIn.getPlayerId());
+        return beanOut;
+    }
 
 //====Missing in net.jgf.network.messages.JGNChatMessage
 //setPlayerKey has no getter in net.jgf.messaging.JGFChatMessage
+//setTimestamp has no getter in net.jgf.messaging.JGFChatMessage
 //setGroupId has no getter in net.jgf.messaging.JGFChatMessage
 //setDestinationPlayerId has no getter in net.jgf.messaging.JGFChatMessage
 //setMessageClient has no getter in net.jgf.messaging.JGFChatMessage
@@ -24,7 +38,6 @@ public final class TranslateJGFChatMessageToJGNChatMessage implements net.jgf.tr
 //setMaxTries has no getter in net.jgf.messaging.JGFChatMessage
 //setTimeout has no getter in net.jgf.messaging.JGFChatMessage
 //setTranslatedMessage has no getter in net.jgf.messaging.JGFChatMessage
-//setTimestamp has no getter in net.jgf.messaging.JGFChatMessage
 //
 
 //====Missing in net.jgf.messaging.JGFChatMessage
