@@ -10,8 +10,9 @@ import java.util.List;
  * another, as long as they are present in both beans. If a property is missing,
  * there will be a message stating which property is missing in which bean.
  * @author Mark
+ * @version 1.0
  */
-public class GenerateBeanTranslator {
+public final class GenerateBeanTranslator {
 
     private static String translatorPackage;
 
@@ -26,10 +27,12 @@ public class GenerateBeanTranslator {
      * Only public method, used to startup the entire creation process.
      * @param bean1 first bean.
      * @param bean2 second bean.
+     * @param translatorPackageParam package to contain the bean translator.
+     * @return translator corresponding to the supplied classes.
      */
     @SuppressWarnings("unchecked")
-    public static Translator convert(Class bean1, Class bean2, String translatorPackage) {
-        GenerateBeanTranslator translator = new GenerateBeanTranslator(translatorPackage);
+    public static Translator convert(Class bean1, Class bean2, String translatorPackageParam) {
+        GenerateBeanTranslator translator = new GenerateBeanTranslator(translatorPackageParam);
         return translator.convertBean(bean1, bean2);
     }
 
@@ -71,15 +74,15 @@ public class GenerateBeanTranslator {
 
     @SuppressWarnings("unchecked")
     private void generateMethod(Class beanIn, Class beanOut, StringBuffer translatorContent) {
-        translatorContent.append("public Object translate(Object beanInParam) {\n\t\t");
-        translatorContent.append(beanIn.getName());
-        translatorContent.append(" beanIn = (");
-        translatorContent.append(beanIn.getName());
-        translatorContent.append(") beanInParam;\n\t\t");
-        translatorContent.append(beanOut.getName());
-        translatorContent.append(" beanOut = new ");
-        translatorContent.append(beanOut.getName());
-        translatorContent.append("();\n\t\t");
+        translatorContent.append("    /**\n");
+        translatorContent.append("     * Translation method. Translates " + beanIn.getName()
+                + " into " + beanOut.getName() + ".\n");
+        translatorContent.append("     * @param beanInParam bean to translate.\n");
+        translatorContent.append("     * @return translated parameter.\n");
+        translatorContent.append("     */\n");
+        translatorContent.append("    public Object translate(Object beanInParam) {\n");
+        translatorContent.append("        " + beanIn.getName() + " beanIn = (" + beanIn.getName() + ") beanInParam;\n");
+        translatorContent.append("        " + beanOut.getName() + " beanOut = new " + beanOut.getName() + "();\n");
 
         List < Method > beanInGetters = determineGetters(beanIn);
         List < Method > beanOutSetters = determineSetters(beanOut);
@@ -97,7 +100,8 @@ public class GenerateBeanTranslator {
 
         generateCopy(translatorContent, beanInMatchingGetters, beanOutMatchingSetters);
 
-        translatorContent.append("return beanOut;\n\t}");
+        translatorContent.append("        return beanOut;\n");
+        translatorContent.append("    }\n\n");
 
         generateComments(beanIn, beanOut, translatorContent, beanInMissingGetters, beanOutMissingSetters);
 
@@ -107,7 +111,7 @@ public class GenerateBeanTranslator {
     @SuppressWarnings("unchecked")
     private void generateComments(Class beanIn, Class beanOut, StringBuffer translatorContent,
             List < Method > beanInMissingGetters, List < Method > beanOutMissingSetters) {
-        translatorContent.append("\n\n//====Missing in ");
+        translatorContent.append("//====Missing in ");
         translatorContent.append(beanOut.getName());
         translatorContent.append("\n//");
         for (Method s : beanOutMissingSetters) {
@@ -132,11 +136,7 @@ public class GenerateBeanTranslator {
             List < Method > beanOutMatchingSetters) {
         for (Method g : beanInMatchingGetters) {
             Method s = findSetter(beanOutMatchingSetters, g);
-            translatorContent.append("beanOut.");
-            translatorContent.append(s.getName());
-            translatorContent.append("(beanIn.");
-            translatorContent.append(g.getName());
-            translatorContent.append("());\n\t\t");
+            translatorContent.append("        beanOut." + s.getName() + "(beanIn." + g.getName() + "());\n");
         }
     }
 
@@ -198,13 +198,19 @@ public class GenerateBeanTranslator {
     }
 
     private void generateHeaders(String translatorName, StringBuffer translatorContent) {
-        translatorContent.append("package ");
-        translatorContent.append(GenerateBeanTranslator.translatorPackage);
-        translatorContent.append(";\n\npublic final class ");
-        translatorContent.append(translatorName);
-        translatorContent.append(" implements net.jgf.translators.Translator {\n\n\tpublic ");
-        translatorContent.append(translatorName);
-        translatorContent.append("(){\n\t}\n\n\t ");
+        translatorContent.append("package " + GenerateBeanTranslator.translatorPackage + ";\n\n");
+        translatorContent.append("/**\n");
+        translatorContent.append(" * Class to translate between two beans.\n");
+        translatorContent.append(" * @author Mark Schrijver\n");
+        translatorContent.append(" * @version 1.0\n");
+        translatorContent.append(" */\n");
+        translatorContent.append("public final class " + translatorName
+                + " implements net.jgf.translators.Translator {\n\n");
+        translatorContent.append("    /**\n");
+        translatorContent.append("     * Constructor.\n");
+        translatorContent.append("     */\n");
+        translatorContent.append("    public " + translatorName + "() {\n");
+        translatorContent.append("    }\n\n");
     }
 
     private String generateName(String nameIn, String nameOut) {
@@ -216,22 +222,49 @@ public class GenerateBeanTranslator {
         return name.toString();
     }
     
+    /**
+     * Class containing the actual translator data, name and content.
+     * @author Schrijver
+     * @version 1.0
+     */
     public class Translator {
         private String translatorContent;
         private String translatorName;
+
+        /**
+         * Constructor.
+         */
+        public Translator() {
+        }
         
+        /**
+         * Get the translator content.
+         * @return The translator content.
+         */
         public String getTranslatorContent() {
             return translatorContent;
         }
         
+        /**
+         * Set the translator content.
+         * @param translatorContent The translator content.
+         */
         public void setTranslatorContent(String translatorContent) {
             this.translatorContent = translatorContent;
         }
         
+        /**
+         * Get the translator name.
+         * @return the translator name.
+         */
         public String getTranslatorName() {
             return translatorName;
         }
         
+        /**
+         * Set the translator name.
+         * @param translatorName the translator name.
+         */
         public void setTranslatorName(String translatorName) {
             this.translatorName = translatorName;
         }
