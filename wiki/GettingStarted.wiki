@@ -9,20 +9,25 @@ As JGF is written in Java, so you need to know some Java. Also, JGF uses the [ht
 
 === 1 - Explore the Feature List ===
 
-It is important to know your framework features. Just knowing they exist may save you time. The [Features] page contains a list of what you can expect of JGF.
+It is important to know your framework features. Just knowing they exist may save you time. The [Features] page contains a list of what you can expect from JGF.
 
-If you want to know more, you can also read about JGF structure in the [Overview] section.
+=== 2 - Check the tutorials ===
 
-=== 2 - Download JGF and run the test applications  ===
+  * [Examples Tutorials and Examples]
+  * [UserGuide User Guide]
+
+=== 3 - Download JGF and run the test applications  ===
 
 Visit the [DownloadingJGF Download] page and get yourself a copy of JGF. 
 
 Run some examples to ensure everything works (also, examples are useful sources of configuration examples, for you to cut and paste).
 
-=== 3 - Follow the tutorials or copy the base application and start coding! ===
+=== 4 - Follow the tutorials and start coding  ===
 
-  * [Examples Tutorials and Examples]
-  * [UserGuide User Guide]
+Follow the tutorials that you find interesting. 
+
+Once you understand the basics, you can copy the [application skeleton] and start your own game.
+
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
