@@ -14,7 +14,6 @@ It is important to know your framework features. Just knowing they exist may sav
 === 2 - Check the tutorials ===
 
   * [Examples Tutorials and Examples]
-  * [UserGuide User Guide]
 
 === 3 - Download JGF and run the test applications  ===
 
