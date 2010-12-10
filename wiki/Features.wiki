@@ -12,7 +12,7 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
   * Easy overview of application parts and components.
   * Standard and practical way to configure components.
   * Easy way to add or replace parts of the application.
-  * Convenient environment for testing.
+  * Convenient environment for developing and rapid prototyping.
   
 *Console System*
 
