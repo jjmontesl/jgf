@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework 
+	Scene Loader File
+	$Id: tank-a.xml 178 2009-11-02 00:04:04Z jjmontes $
+ --> 	
+
+<jgf>
+
+	<loader>
+	
+		<loader id="!entity.creator" class="net.jgf.loader.entity.EntityCreatorLoader" >
+			<property name="EntityCreatorLoader.entityClass" value="net.jgf.example.tanks.entity.AITank" />
+		</loader>
+		
+		<loader id="!entity.attributes" class="net.jgf.loader.AttributeLoader" >
+			<property name="AttributeLoader.maxSpeed" value="0.9" />
+			<property name="AttributeLoader.firePerSecond" value="0.6" />
+			<property name="AttributeLoader.simultaneousBullets" value="4" />
+		</loader>
+
+		<loader id="!entity.model" class="net.jgf.jme.loader.entity.EntityModelLoader" >
+			<property name="ConverterLoader.resourceUrl" value="tanks/model/enemygreen/greentank.dae" />
+		</loader>
+		
+	</loader>
+	
+	
+</jgf>
+ 
+
+
