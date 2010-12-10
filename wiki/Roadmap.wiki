@@ -34,7 +34,7 @@ Please note that JGF is not ready for production usage. Some important features 
   * Project logo
   * Project site
   * Sample / Demo applications
-  * Implementation on a 2D engine
+  * Implementation on a 2D engine (Pulpcore)
   * Implementation on other 3D engine
 
 
