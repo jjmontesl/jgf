@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework Global Configuration File
+	$Id$
+--> 	
+
+<!-- 
+    This is MudVolley Tutorial Example #1.
+    
+    In this example, a simple scene is set up and two players will be created. Game
+    logic is very simple and just keeps the ball bouncing. There are no rules for
+    scoring yet. 
+    
+    Note that the scene is set up using a custom loader. In many cases, you will use
+    use one of JGF out of the box loaders.
+-->
+
+<!-- 
+	This is an example configuration file for JGF - Java Game Framework.
+	
+	This file corresponds to a version of the example game MudVolley. One of the examples 
+	included in JGF MudVolley tutorials. Through these tutorials, you will be building a 
+	game.
+	
+	Make sure you run the corresponding MudVolley Game Example before reading the file,
+	so you have a "feeling" of what the aim of this example file is.
+	
+	If you haven't built the project or ran any of the examples, you are strongly
+	encouraged to do so. Check the documentation page online for instructions
+	on how to setup JGF for game development.
+-->
+
+<jgf>
+
+	<!-- Application configuration: every JGF application needs to define this element.
+	     This is the information used by the framework to display as game title,
+	     messages... -->
+	<application>
+	
+		<!-- General application information -->
+		<name>MudVolley JGF Example 1: Introducing JGF</name>
+		<company>JGF</company>
+		<version>1.0</version>
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+		
+
+		<!-- In debug mode more verbose logging is produced, and some extra checks
+			 are performed during runtime. This is a boolean parameter (true|false). -->
+		<debug>true</debug>
+		
+		<!-- Application description: to be used in short listings and command line help -->
+		<description>
+			MudVolley is a Slime Volley clone that shows some of
+			Java Game Framework (JGF) features.
+		</description>
+		
+		<!-- A reference to the engine service being used. Currently, only JMonkeyEngine is
+		supported. This service is defined below -->
+		<engine ref="engine" />
+		
+	</application>
+	
+	<!-- Engine service. Currently, the only supported game engine is JMonkeyEngine. 
+		 This service is implemented by the net.jgf.jme.engine.JMEEngine class.
+		 You need to provide some parameters too. -->
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<!-- 'collectStats' parameter causes JMEEngine to collect engine statistics
+		like FPSs, objects drawn, number of textures... Here,
+		we use variable interpolation to apply the same value for 'debug', defined above.  -->
+		<collectStats>${application/debug}</collectStats>
+		
+		<!--  Reference to the LogicManager service, defined below -->
+		<logicManager ref="logic" />
+		
+		<!--  Reference to the ViewManager service, defined below -->
+		<viewManager ref="view" />
+		
+	</service>
+
+	
+	<!-- The SceneManager service holds a reference to the scene being drawn. -->
+	<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager" depends="engine">
+			
+			<!-- DefaultJmeScene is a jMonkeyEngine scene which includes camera
+			management, an optional skybox and some tooling -->
+			<scene id="scene" class="net.jgf.jme.scene.DefaultJmeScene">
+			
+			    <!-- It is possible to define cameras inside DefaultJmeScene configuration,
+				    using the "cameras" element below.
+				    This is not the only place to define cameras. Games load
+				    camera information from data or creating them dynamically. -->
+				<cameras>
+					<!-- A StaticCamera is a... fixed camera -->
+					<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
+						<target>0.0 4.0 0.0</target>
+						<location>0.0 4.0 24.0</location>
+					</camera>
+				</cameras>
+
+                <!-- This "camera" element defines the Scene "current" camera. 
+                    Here we reference the fixed camera defined above. -->
+				<camera ref="scene/cameras/overview" />
+			
+			</scene>
+			
+	</service>
+	
+	<!--
+		Loading system. It provides loading capabilities for scenes, entities and models.
+		The loading system defines a number of loaders. The game uses these loaders
+		(when preparing the scene). In mudvolley1, these loaders are not general-use loaders,
+		but custom loaders that create the necessary geometry for the mudvolley game players and field.
+		In your own applications, you can use this approach but you can also use JGF
+		loaders to read models from disk, and to load scenes and entities from a combination of models,
+		xml configuration files and other entities. Please read the "loaders" examples
+		and documentation in order to find more about Loaders in JGF.
+	 -->
+	<service id="loader" class="net.jgf.loader.DefaultLoaderManager">
+				
+		<!-- A custom loader (note the class namespace belongs to mudvolley) that creates
+		  the mudvolley game scene (which consists of some simple boxes for the field and the network) -->
+		<loader id="loader/scene" class="net.jgf.example.mudvolley1.loader.MudVolleySceneLoader">
+		
+		</loader>
+		
+		<!-- Custom entity loaders (note the class namespace belongs to mudvolley) that create
+		  players and ball entities, including the geometry. The player is at this time created
+		  as a sphere. This loader creates a mudvolley PlayerEntity or BallEntity object, which 
+		  represent the entity logic, not just the geometry that will be drawn. -->
+		<loader id="loader/entity/player" class="net.jgf.example.mudvolley1.loader.MudVolleyPlayerEntityLoader" >
+		</loader>
+		<loader id="loader/entity/ball" class="net.jgf.example.mudvolley1.loader.MudVolleyBallEntityLoader" >
+		</loader> 	
+				
+	</service>
+		
+	<!-- 
+		Entity Manager is used to access and keep track of entities in use by the game.
+		Commonly, entities are arranged in EntityGroups for easier management.
+	 -->
+	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
+		
+		<!-- In this mudvolley example, an empty EntityGroup is created, as entities
+        (players and ball) will be added to this group later. As this is a very simple
+        game, the example puts all entities in the same container group. -->
+		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
+				
+		</entity>
+			
+	</service> 
+	
+	<!-- 
+		Logic Manager contains a tree of states that the game may be
+		running at a given point in time. The combination and activation of these
+		states is what drives the actual "logic" of the game. Active children are
+		updated every iteration of the game. 
+	 -->
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+	
+	    <!-- The ExclusiveLogicNode ensures that only one of its child LogicNodes is
+	         active at the same time. -->
+		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
+			
+			<!-- This is a custom logic state that, when activated, loads the scene
+			    and entities and moves to the next logic state. -->
+			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley1.logic.NewGameLogic" 
+				autoLoad="true" autoActivate="true" >
+			</logic>
+			
+			<!--  This logic state runs during game. It updates the scene (moving players,
+			     ball, calculating collisions... -->
+			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
+			
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.mudvolley1.logic.InGameLogic" 
+					autoLoad="true" autoActivate="true" >
+				</logic>
+			
+			</logic>
+			
+		</logic>
+		
+	</service>
+		
+	<!-- 
+		View Manager contains a tree of states that the application may be
+        showing at a given point in time. The combination and activation of these
+        states is what drives the actual "aspect" of the game. Input processing is
+        also done at this level.
+	 -->
+	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
+
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
+			
+			<!-- A ViewStateNode groups other states so they are better organized and
+			also they can be activated and loaded together. All active children
+			are updated and rendered in every game iteration. -->
+			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
+				
+				<!--  This is a custom view (note the mudvolley namespace). It handles
+				input for both players in the mudvolley example game. -->
+				<view id="view/root/level/input" class="net.jgf.example.mudvolley1.view.InputView"
+					autoLoad="true" autoActivate="true" >
+				</view>
+
+                <!--  This is a JGF view that renders the scene contained in the SceneManager -->
+				<view id="view/root/level/scene" class="net.jgf.jme.view.SceneRenderView"
+					autoLoad="true" autoActivate="true" >
+					<sceneManager ref="scene/manager" />		
+				</view>
+				
+				<!-- This view renders the Skybox in the scene (the Scene needs to be 
+				loaded with a Skybox for it to work) -->
+				<view id="view/root/level/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+					autoLoad="true" autoActivate="true" >
+					<sceneManager ref="scene/manager" />	
+				</view>
+				
+			</view>
+							
+		</view>
+			
+	</service>
+	
+</jgf>
+ 
+
+
