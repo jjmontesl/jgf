@@ -13,7 +13,7 @@ Please note that JGF is not ready for production usage. Some important features 
   * Add missing documentation and review licence notes.
   * Update Wiki and tutorials.
 
-*1.1*
+*Coming up*
 
   * Network system.
   * Complete missing / partially implemented features.
@@ -28,5 +28,14 @@ Please note that JGF is not ready for production usage. Some important features 
   * Better 2D display system
   * More loaders and development tools
   * Consider including a GUI system or improve the Menu system
+
+*Wishlist (help needed)*
+
+  * Project logo
+  * Project site
+  * Sample / Demo applications
+  * Implementation on a 2D engine
+  * Implementation on other 3D engine
+
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
