@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.core.component.BaseComponent;
-import net.jgf.example.mudvolley1.loader.MudVolleyPlayerEntityLoader;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 public abstract class BaseLoader<E> extends BaseComponent implements Loader<E> {
     

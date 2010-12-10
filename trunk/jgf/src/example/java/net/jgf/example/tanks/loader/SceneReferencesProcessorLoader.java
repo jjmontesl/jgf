@@ -23,7 +23,6 @@ import net.jgf.refs.Reference;
 import net.jgf.scene.Scene;
 import net.jgf.system.Jgf;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 
 import com.jme.scene.Node;

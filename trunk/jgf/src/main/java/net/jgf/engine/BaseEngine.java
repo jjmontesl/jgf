@@ -37,91 +37,110 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.service.BaseService;
+import net.jgf.jme.engine.JMEEngine;
 import net.jgf.logic.LogicManager;
 import net.jgf.system.Jgf;
 import net.jgf.view.ViewManager;
+import net.jgf.view.VoidViewManager;
 
 import org.apache.log4j.Logger;
 
 /**
- * <p>This is a base implementation of a JGF {@link Engine}, which provides
- * the main game loop functionality.</p>
- * <p>This base implementation takes care of the references
- * to the {@link ViewManager} and the {@link LogicManager}.</p>
+ * <p>
+ * This is a base implementation of a JGF {@link Engine}, which provides the
+ * main game loop functionality.
+ * </p>
+ * <p>
+ * This base implementation takes care of the references to the
+ * {@link ViewManager} and the {@link LogicManager}.
+ * </p>
+ * 
  * @see Engine
  * @see JMEEngine
  * @author jjmontes
  */
 public abstract class BaseEngine extends BaseService implements Engine {
 
-	/**
-	 * Class logger.
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(BaseEngine.class);
+    /**
+     * Class logger.
+     */
+    @SuppressWarnings("unused")
+    private static final Logger logger = Logger.getLogger(BaseEngine.class);
 
-	/**
-	 * Reference to the ViewManager.
-	 */
-	protected ViewManager viewManager;
+    /**
+     * Reference to the ViewManager.
+     */
+    protected ViewManager viewManager;
 
-	/**
-	 * Reference to the LogicManager.
-	 */
-	protected LogicManager logicManager;
+    /**
+     * Reference to the LogicManager.
+     */
+    protected LogicManager logicManager;
 
-	/**
-	 * Configures this object from the configuration.
-	 * @see Configurable
-	 */
-	@Override
-	public void readConfig(Config config, String configPath) {
-		super.readConfig(config, configPath);
-		Jgf.getDirectory().register(this, "viewManager", config.getString(configPath + "/viewManager/@ref"));
-		Jgf.getDirectory().register(this, "logicManager", config.getString(configPath + "/logicManager/@ref"));
-	}
+    /**
+     * Configures this object from the configuration.
+     * 
+     * @see Configurable
+     */
+    @Override
+    public void readConfig(Config config, String configPath) {
+        super.readConfig(config, configPath);
+        
+        Jgf.getDirectory().register(this, "logicManager", config.getString(configPath + "/logicManager/@ref"));
+        
+        if (config.containsKey(configPath + "/viewManager/@ref")) {
+            Jgf.getDirectory().register(this, "viewManager", config.getString(configPath + "/viewManager/@ref"));
+        }
+    }
 
-	/* (non-Javadoc)
-	 * @see net.jgf.engine.Engine#logic()
-	 */
-	@Override
-	public LogicManager getLogicManager() {
-		return logicManager;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.jgf.engine.Engine#logic()
+     */
+    @Override
+    public LogicManager getLogicManager() {
+        return logicManager;
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.jgf.engine.Engine#states()
+     */
+    @Override
+    public ViewManager getViewManager() {
+        return viewManager;
+    }
 
-	/* (non-Javadoc)
-	 * @see net.jgf.engine.Engine#states()
-	 */
-	@Override
-	public ViewManager getViewManager() {
-		return viewManager;
-	}
+    /**
+     * <p>
+     * On initialization, BaseEngine resolves the named references to the
+     * ViewManager and LogicManager.
+     * </p>
+     * 
+     * @see net.jgf.core.service.BaseService#initialize()
+     */
+    @Override
+    public void initialize() {
 
+        super.initialize();
 
-	/**
-	 * <p>On initialization, BaseEngine resolves the named references to
-	 * the ViewManager and LogicManager.</p>
-	 * @see net.jgf.core.service.BaseService#initialize()
-	 */
-	@Override
-	public void initialize() {
+        if (viewManager == null) {
+            viewManager = new VoidViewManager();
+        }
+        if (logicManager == null) {
+            throw new ConfigException("No logicManager reference found in " + this);
+        }
 
-		super.initialize();
+    }
 
-		if (viewManager == null) throw new ConfigException("No viewManager reference found in " + this);
-		if (logicManager == null) throw new ConfigException("No logicManager reference found in " + this);
+    public void setViewManager(ViewManager viewManager) {
+        this.viewManager = viewManager;
+    }
 
-	}
-
-
-	public void setViewManager(ViewManager viewManager) {
-		this.viewManager = viewManager;
-	}
-
-	public void setLogicManager(LogicManager logicManager) {
-		this.logicManager = logicManager;
-	}
-
+    public void setLogicManager(LogicManager logicManager) {
+        this.logicManager = logicManager;
+    }
 
 }

@@ -33,7 +33,7 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<project name="jgf" default="package">
+<project name="jgf" default="all">
 
 	<description>
   		Ant Build File for Java Game Framework (JGF).
@@ -43,6 +43,8 @@
 		own game projects and build deployers for them.
 	</description>
 
+	
+	
 	<property name="dir.project" value="../.." />
 
 	<property name="app.version" value="0.6" />
@@ -51,13 +53,17 @@
 	<property name="dir.target" value="${dir.project}/target" />
 
 	<property name="dir.src.project-skel" value="${dir.src}/project-skel" />
+	
 	<property name="dir.lib.jme" value="${dir.project}/../jme/target" />
+	<property name="dir.lib.jme-native" value="${dir.project}/../jme/lib" />
+	
 
 	<property name="dir.target.javadoc" value="${dir.target}/docs/api" />
-	<property name="dir.target.classes" value="${dir.target}/classes-eclipse" />
+	<property name="dir.target.classes" value="${dir.target}/classes" />
 	<property name="dir.target.packages" value="${dir.target}/packages" />
 	<property name="dir.target.project-skel" value="${dir.target}/project-skel" />
 	<property name="dir.target.dist" value="${dir.target}/dist" />
+	<property name="dir.target.lib" value="${dir.target}/lib" />
 
 
 	<path id="classpath.main">
@@ -82,33 +88,58 @@
 		<dirset dir="${dir.target.classes}/jgf-jme" />
 	</path>
 
-	<taskdef name="convertorgenerator" classname="net.jgf.tools.codegenerators.tasks.GenerateBeanTranslatorTask">
-		<classpath>
-			<fileset dir="${dir.src}/build/lib">
-				<include name="*.jar" />
-			</fileset>
-			<pathelement path="${dir.src}/build/lib/*.jar" />
-			<pathelement path="${dir.target.classes}" />
-			<pathelement path="../../../jgn/bin/." />
-		</classpath>
-	</taskdef>
-
 	<target name="clean">
 		<delete dir="${dir.target}" />
 	</target>
 
+	   
+	<target name="all" depends="package,package-jme-native,project-skel" />
+		
+	
 	<target name="compile">
 		<mkdir dir="${dir.target.classes}/main" />
-		<javac srcdir="${dir.src}/main/java" destdir="${dir.target.classes}/main" classpathref="classpath.main" debug="on" source="1.5" />
+		<javac includeantruntime="false" srcdir="${dir.src}/main/java" destdir="${dir.target.classes}/main" classpathref="classpath.main" debug="on" source="1.5" />
 
 		<mkdir dir="${dir.target.classes}/jgf-jme" />
-		<javac srcdir="${dir.src}/jgf-jme/java" destdir="${dir.target.classes}/jgf-jme" classpathref="classpath.jgf-jme" debug="on" source="1.5" />
+		<javac includeantruntime="false"  srcdir="${dir.src}/jgf-jme/java" destdir="${dir.target.classes}/jgf-jme" classpathref="classpath.jgf-jme" debug="on" source="1.5" />
 
 		<mkdir dir="${dir.target.classes}/example" />
-		<javac srcdir="${dir.src}/example/java" destdir="${dir.target.classes}/example" classpathref="classpath.example" debug="on" source="1.5" />
+		<javac includeantruntime="false"  srcdir="${dir.src}/example/java" destdir="${dir.target.classes}/example" classpathref="classpath.example" debug="on" source="1.5" />
 	</target>
 
-	<target name="project-skel" depends="package">
+	<target name="copy-deps" depends="package, package-jme-native">
+		   
+		<mkdir dir="${dir.target.lib}" />
+		
+		<copy todir="${dir.target.lib}">
+            <fileset dir="${dir.src}/main/lib" />
+        </copy>
+		<copy todir="${dir.target.lib}">
+            <fileset dir="${dir.src}/jgf-jme/lib" />
+        </copy>
+		<copy todir="${dir.target.lib}">
+            <fileset dir="${dir.target.packages}">
+                <include name="jgf-core.jar" />
+                <include name="jgf-jme.jar" />
+                <include name="jgf-example*.jar" />
+            </fileset>
+        </copy>
+	    
+		<copy todir="${dir.target.lib}">
+			  <fileset dir="${dir.target.packages}" includes="jme-native*.jar" />
+        </copy>
+		
+		<copy todir="${dir.target.lib}" >
+		    <fileset dir="${dir.lib.jme}" includes="jme*.jar" />
+        </copy>
+        <copy todir="${dir.target.lib}" flatten="true">
+              <fileset dir="${dir.lib.jme-native}" includes="**/*.jar" />
+        </copy>		
+		
+	</target>
+	
+	
+	<target name="project-skel" depends="copy-deps">
 
 		<mkdir dir="${dir.target.project-skel}" />
 
@@ -116,24 +147,44 @@
 			<fileset dir="${dir.src.project-skel}" />
 		</copy>
 
-		<copy todir="${dir.target.project-skel}/src/mygame/lib/jme">
-			<fileset dir="${dir.lib.jme}" />
+		<copy todir="${dir.target.project-skel}/lib">
+			<fileset dir="${dir.target.lib}" />
 		</copy>
-		<copy todir="${dir.target.project-skel}/src/mygame/lib/jgf">
-			<fileset dir="${dir.src}/main/lib" />
-		</copy>
-		<copy todir="${dir.target.project-skel}/src/mygame/lib/jgf">
-			<fileset dir="${dir.src}/jgf-jme/lib" />
-		</copy>
-		<copy todir="${dir.target.project-skel}/src/mygame/lib/jgf">
-			<fileset dir="${dir.target.packages}">
-				<include name="jgf-core.jar" />
-				<include name="jgf-jme.jar" />
-			</fileset>
-		</copy>
+
 
 	</target>
 
+	<target name="package-jme-native">
+		
+		<mkdir dir="${dir.target}/lib-native/windows" />
+		<copy todir="${dir.target}/lib-native/windows" flatten="true">
+			<fileset dir="${dir.lib.jme-native}" includes="**/*.dll" />
+		</copy>
+		<jar destfile="${dir.target.packages}/jme-native-windows.jar" basedir="${dir.target}/lib-native/windows">
+			<include name="**/*.dll"/>
+        </jar>
+		
+		<mkdir dir="${dir.target}/lib-native/linux" />
+        <copy todir="${dir.target}/lib-native/linux" flatten="true">
+            <fileset dir="${dir.lib.jme-native}" includes="**/*.so" />
+        </copy>
+		<jar destfile="${dir.target.packages}/jme-native-linux.jar" basedir="${dir.target}/lib-native/linux">
+			<include name="**/*.so"/>
+        </jar>	
+		
+
+        <mkdir dir="${dir.target}/lib-native/macos" />
+        <copy todir="${dir.target}/lib-native/macos" flatten="true">
+            <fileset dir="${dir.lib.jme-native}" includes="**/*.jnilib" />
+        	<fileset dir="${dir.lib.jme-native}" includes="**/*.dylib" />
+        </copy>
+		<jar destfile="${dir.target.packages}/jme-native-macos.jar" basedir="${dir.target}/lib-native/macos">
+			  <include name="**/*.jnilib"/>
+			  <include name="**/*.dylib"/>
+        </jar>  
+	</target>
+
+	
 	<target name="package" depends="compile,javadoc">
 
 		<mkdir dir="${dir.target.packages}" />
@@ -141,7 +192,7 @@
 		<jar destfile="${dir.target.packages}/jgf-core.jar" basedir="${dir.target.classes}/main">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Vendor" value="JGF" />
+				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
 				<attribute name="Implementation-Title" value="JGF" />
 				<attribute name="Implementation-Version" value="${app.version}" />
 			</manifest>
@@ -150,7 +201,7 @@
 		<jar destfile="${dir.target.packages}/jgf-jme.jar" basedir="${dir.target.classes}/jgf-jme">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Vendor" value="JGF" />
+				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
 				<attribute name="Implementation-Title" value="JGF JME Extensions" />
 				<attribute name="Implementation-Version" value="${app.version}" />
 			</manifest>
@@ -159,7 +210,7 @@
 		<jar destfile="${dir.target.packages}/jgf-example.jar" basedir="${dir.target.classes}/example">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Vendor" value="JGF" />
+				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
 				<attribute name="Implementation-Title" value="JGF Examples" />
 				<attribute name="Implementation-Version" value="${app.version}" />
 			</manifest>
@@ -168,7 +219,7 @@
 		<jar destfile="${dir.target.packages}/jgf-example-resources.jar" basedir="${dir.src}/example/resources">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Vendor" value="JGF" />
+				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
 				<attribute name="Implementation-Title" value="JGF Example Resources" />
 				<attribute name="Implementation-Version" value="${app.version}" />
 			</manifest>
@@ -177,7 +228,7 @@
 		<jar destfile="${dir.target.packages}/jgf-docs.jar" basedir="${dir.target.javadoc}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Vendor" value="JGF" />
+				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
 				<attribute name="Implementation-Title" value="JGF JavaDoc" />
 				<attribute name="Implementation-Version" value="${app.version}" />
 			</manifest>
@@ -200,7 +251,7 @@
 			</doctitle>
 
 			<bottom>
-				<![CDATA[<i>Copyright &#169; 2008 Jose Juan Montes. All Rights Reserved.</i>]]>
+				<![CDATA[<i>Copyright &#169; 2008-2010 Jose Juan Montes. All Rights Reserved.</i>]]>
 			</bottom>
 
 			<tag name="todo" scope="all" description="To do:" />
@@ -218,14 +269,6 @@
 		</javadoc>
 
 	</target>
-
-	<target name="generateConvertors">
-		<convertorgenerator destDir="../jgf-jgn/java" mapPackage="net.jgf.network.translators">
-			<bean beanIn="net.jgf.network.messages.JGNChatMessage" 
-			  	  beanOut="net.jgf.messaging.JGFChatMessage" 
-				  packageName="net.jgf.network.translators" 
-				  inverted="true" />
-		</convertorgenerator>
-	</target>
+	
 </project>
 

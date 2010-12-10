@@ -4,7 +4,6 @@ package net.jgf.jme.view.display;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.jme.config.JmeConfigHelper;
-import net.jgf.jme.view.display.DisplayItem.DisplayItemAlignment;
 
 import com.jme.image.Texture;
 import com.jme.math.Vector2f;
@@ -20,7 +19,6 @@ import com.jme.scene.state.BlendState.TestFunction;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.resource.ResourceLocatorTool;
-import com.sceneworker.app.globals.cacheobjects.RootNodeCacheObject;
 
 /**
  *

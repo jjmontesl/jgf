@@ -154,8 +154,10 @@ public final class JMEEngine extends BaseEngine {
 
 			JMEEngine.logger.debug("Starting engine initialization task of " + this);
 
+			
 			logicManager.getRootState().load();
 			viewManager.getRootState().load();
+			
 			logicManager.getRootState().activate();
 			viewManager.getRootState().activate();
 
@@ -182,15 +184,13 @@ public final class JMEEngine extends BaseEngine {
 		// Create StandardGame
 
 		// TODO: resolve dedicated from config, as per configuration
-		//boolean dedicated = System.getComponents().getComponentAs("settings", Settings.class).getBoolean("network.dedicatedServer");
-		boolean dedicated = false;
 		game = new StandardGame(Jgf.getApp().getName(),
-				dedicated ? GameType.HEADLESS : GameType.GRAPHICAL);
+				Jgf.getApp().isDedicatedServer() ? GameType.HEADLESS : GameType.GRAPHICAL);
 		//StandardGame game = new StandardGame(Globals.APPLICATION_NAME, GameType.GRAPHICAL);
 
 		//game.setDialogBehaviour((System.getSettings().getServer().isDedicatedServer()) ? 0 : 2);
 		try {
-			if (! dedicated) GameSettingsPanel.prompt(game.getSettings());
+			if (! Jgf.getApp().isDedicatedServer()) GameSettingsPanel.prompt(game.getSettings());
 		} catch (InterruptedException e) {
 			throw new ServiceException("Settings dialog interrupted", e);
 		}

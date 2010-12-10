@@ -1,10 +1,8 @@
 package net.jgf.example.tanks.entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import net.jgf.config.Configurable;
-import net.jgf.core.state.StateObserver;
 import net.jgf.entity.Entity;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.entity.SpatialEntity;

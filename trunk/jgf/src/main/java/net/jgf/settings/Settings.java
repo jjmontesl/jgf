@@ -12,6 +12,8 @@ public interface Settings {
 
 	public Setting<?> getSetting(String key);
 
+	public <T extends Setting<?>> T getSetting(String key, Class<T> expectedClass);
+	
 	public Collection<Setting<?>> getSettings();
 	
 	/**

@@ -6,15 +6,12 @@
 package net.jgf.core.state;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.core.component.BaseComponent;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
-import net.jgf.system.Jgf;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 

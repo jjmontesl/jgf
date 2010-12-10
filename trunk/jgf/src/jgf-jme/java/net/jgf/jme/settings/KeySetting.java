@@ -28,6 +28,8 @@ public class KeySetting extends Setting<Integer> {
             setStringValue(this.getDefaultValue());
         }
 
+        // TODO: Too much iterations and not too efficient: shall cache values or build a map
+        
         String stringValue = "";
         Field[] fields = KeyInput.class.getFields();
         for (Field field : fields) {

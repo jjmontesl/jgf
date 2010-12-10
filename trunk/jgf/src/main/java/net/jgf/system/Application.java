@@ -34,7 +34,7 @@
 package net.jgf.system;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,6 +146,11 @@ public final class Application {
      * The Engine used.
      */
     private Engine engine;
+    
+    /**
+     * Flat that defines if the application running in dedicated server process
+     */
+    private boolean dedicatedServer = false;
 
     /**
      * Creates a new Application object from the given configuration URL and
@@ -171,7 +176,7 @@ public final class Application {
         filter.setLevelMax(Level.FATAL);
         // TODO: Only way of overriding this will be log4j.xml? maybe --debug at
         // command line? later in the component
-        filter.setLevelMin(Level.INFO);
+        filter.setLevelMin(Level.DEBUG);
 
         // Logging pattern
         // TODO: Accept a log pattern from environment variable
@@ -207,16 +212,29 @@ public final class Application {
      */
     private void initResourceLocator() {
 
+        // Find the appropriate classloader
+        Object dummy = new Object() { 
+            public String toString() { return super.toString(); }
+        };
+        
         // Initialize the resource locator
         try {
-            ResourceLocatorTool.addResourceLocator("config", new SimpleResourceLocator(ClassLoader
-                    .getSystemResource(".")));
+            
+            //URL baseUrl = dummy.getClass().getResource("/");
+            URL baseUrl = Thread.currentThread().getContextClassLoader().getResource("data/");
+            
+            if (baseUrl == null) {
+                logger.warn("Could not setup the resources directory");
+            }
+            
+            ResourceLocatorTool.addResourceLocator("config", 
+                    new SimpleResourceLocator(baseUrl));
             ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_TEXTURE,
-                    new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
+                    new SimpleResourceLocator(baseUrl));
             ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_MODEL,
-                    new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
+                    new SimpleResourceLocator(baseUrl));
             ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_AUDIO,
-                    new SimpleResourceLocator(ClassLoader.getSystemResource(".")));
+                    new SimpleResourceLocator(baseUrl));
 
         } catch (URISyntaxException e) {
             throw new ServiceException("Could not set resource locator for properties.", e);
@@ -329,21 +347,12 @@ public final class Application {
         this.setName(config.getString("application/name"));
         this.setVersion(config.getString("application/version", this.version));
         this.setDebug(config.getBoolean("application/debug", false));
+        this.setDedicatedServer(config.getBoolean("application/dedicatedServer", false));
 
         Jgf.getDirectory().register(this, "engine", config.getString("application/engine/@ref"));
 
         // Build and register services
-        
-        /*
-        List<Service> servicesList = ConfigurableFactory.newListFromConfig(config, "service",
-                Service.class);
-        for (Service service : servicesList) {
-            this.addService(service);
-        }
-        */
-        
-
-        // This way we early add services to the directory
+        // Firstly they are added to the directory
         List<String> elementIds = config.getList("service" + "/@id");
         for (String elementId : elementIds) {
             Service element = ConfigurableFactory.newFromConfig(config, "service" + "[@id='" + elementId
@@ -474,4 +483,16 @@ public final class Application {
         this.engine = engine;
     }
 
+    public boolean isDedicatedServer() {
+        return dedicatedServer;
+    }
+
+    public void setDedicatedServer(boolean dedicatedServer) {
+        if ((this.dedicatedServer == true) && (dedicatedServer == false)) {
+            throw new ConfigException("Cannot change dedicated server setting from true to false.");
+        }
+        this.dedicatedServer = dedicatedServer;
+    }
+
+    
 }

@@ -3,10 +3,6 @@ package net.jgf.example.tanks.entity;
 
 import net.jgf.config.Configurable;
 
-import com.jme.input.MouseInput;
-import com.jme.math.Vector3f;
-import com.jme.system.DisplaySystem;
-
 /**
  */
 @Configurable
@@ -54,7 +50,8 @@ public class PlayerTank extends Tank {
 
 	protected void fixCursor() {
 		// Don't let cursor get too away
-		Vector3f distanceToTarget = target.subtract(spatial.getLocalTranslation());
+		/*
+	    Vector3f distanceToTarget = target.subtract(spatial.getLocalTranslation());
 		distanceToTarget.setY(0.5f);
 		if (distanceToTarget.length() > 15) {
 			distanceToTarget.normalizeLocal().multLocal(15).addLocal(spatial.getLocalTranslation());
@@ -62,6 +59,7 @@ public class PlayerTank extends Tank {
 			//cursorView.getMouse().setLocalTranslation(newPos);
 			MouseInput.get().setCursorPosition((int)newPos.x, (int)newPos.y);
 		}
+		*/
 	}
 
 	/**

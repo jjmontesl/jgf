@@ -1,13 +1,12 @@
 
 package net.jgf.view;
 
-import org.apache.log4j.Logger;
-
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.example.tanks.logic.RestartAction;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
+
+import org.apache.log4j.Logger;
 
 
 /**
