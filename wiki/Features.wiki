@@ -17,18 +17,17 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
 *Console System*
 
   * Extensible and replaceable console system. Functionality, aspect and language can be customized.
-  * A Beanshell console is provided.
   * Basic graphical interface.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-console-1.png
 
 *Settings System*
 
-  * Settings management (defaults, typing...).
-  * Settings storage.
+  * Settings management.
+  * Settings storage providers.
 
   * Configuration Dialog for initial settings (_to be done_).
-  * Command Line Options parsing service, which allows to set settings and other framework parameters based on the command line arguments passed to the application (_to be done_).
+  * Command Line Options parsing (_to be done_).
 
 *Messaging System*
   * Used for communication between components.
@@ -61,8 +60,7 @@ JGF includes and provides components that easily allow you to add development to
   * JME Scene Debugger (bounding volumes viewing, normals viewing, wireframe mode...).
   * Physics Debugger.
   * Scene Monitor / Scene Worker (for scene graph inspecting).
-  * Framework components information.
-  * Java VM metrics reports.
+  * Unified logging.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-debug-1.png
 
@@ -85,13 +83,12 @@ JGF includes and provides components that easily allow you to add development to
 *Logging*
 
  * Using log4j (log4j).
- * Logging configuration.
- * Timed logging about JVM metrics (memory, GC, etc...).  
- * Informed startup and shutdown procedures.
+ * Logging configuration.  
+ * Informed startup, loading and shutdown procedures.
 
 *Build System*
 
-  * Ant scripts provided to package your application, convert it to exe, create installers, create javadocs... (_to be done_).
+  * Ant scripts provided to package your application, convert it to exe, create installers, java web start... (_20% done_).
 
 
 _Please note that some of the features listed are still to be built. A number of them have currently only basic support. If you are interested please collaborate with the project submitting your comments, usage feedback or patches._
