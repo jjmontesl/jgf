@@ -2,8 +2,6 @@ package net.jgf.core.state;
 
 import java.util.List;
 
-import net.jgf.core.service.ServiceException;
-
 
 public interface StateNode<T extends State> {
 

@@ -6,10 +6,6 @@ import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
 
-import com.jme.system.DisplaySystem;
-import com.jme.util.Debug;
-import com.jme.util.Timer;
-import com.jme.util.stat.StatCollector;
 import com.jmex.game.state.GameState;
 import com.jmex.game.state.StatisticsGameState;
 

@@ -8,14 +8,11 @@ import net.jgf.camera.CameraController;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.state.BaseState;
-import net.jgf.core.state.StateNode;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
 import net.jgf.scenemonitor.StatePropertyPage;
-import net.jgf.scenemonitor.StateTreeNode;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
-import net.jgf.view.ViewStateNode;
 
 import org.apache.log4j.Logger;
 

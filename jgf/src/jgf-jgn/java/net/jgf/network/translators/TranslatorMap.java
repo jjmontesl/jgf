@@ -1,7 +1,8 @@
 package net.jgf.network.translators;
 
-import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.Map;
+
 import net.jgf.translators.Translator;
 
 /**

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://jgf/jgf-jws" href="jgf.jnlp">
+ 
+  <information>
+    <title>Tanks</title>
+    <vendor>JGF</vendor>
+    <homepage href="http://code.google.com/p/jgf/"/>
+    <description>JGF Game</description>
+    <description kind="short">JGF Game</description>
+    <offline-allowed />
+  </information>
+  <security>
+      <all-permissions/>
+  </security>
+  <resources>
+  
+    <jar href="jgf-core.jar" /> 
+    <jar href="jgf-example.jar"  />
+    <jar href="jgf-example-resources.jar"  />
+    <jar href="jgf-jme.jar" /> 
+
+    <!-- <jar href="jgfapp.jar" /> -->
+  
+    <jar href="bsh-core-2.0b4.jar" />
+    <jar href="commons-beanutils-bean-collections.jar" /> 
+    <jar href="commons-beanutils-core.jar" /> 
+    <jar href="commons-beanutils.jar" /> 
+    <jar href="commons-collections-3.2.jar" /> 
+    <jar href="commons-configuration-1.5.jar" /> 
+    <jar href="commons-digester-1.8.jar" /> 
+    <jar href="commons-jxpath-1.3.jar" /> 
+    <jar href="commons-lang-2.3.jar" />
+    <jar href="commons-logging-1.1.jar" /> 
+    <jar href="commons-logging-adapters-1.1.jar" /> 
+    <jar href="commons-logging-api-1.1.jar" /> 
+    <jar href="commons-net-1.4.1.jar" /> 
+    <jar href="dom4j-1.6.1.jar" /> 
+    <jar href="jakarta-oro-2.0.8.jar" /> 
+    <jar href="jcore.jar" />     
+    <jar href="log4j-1.2.14.jar" /> 
+
+    <jar href="jme-audio.jar" /> 
+    <jar href="jme-awt.jar" /> 
+    <jar href="jme-collada.jar" /> 
+    <jar href="jme-editors.jar" /> 
+    <jar href="jme-effects.jar" /> 
+    <jar href="jme-font.jar" /> 
+    <jar href="jme-gamestates.jar" /> 
+    <jar href="jme.jar" /> 
+    <jar href="jmejtree_jme2.jar" />  
+    <jar href="jme-model.jar" /> 
+    <jar href="jme-ogrexml.jar" /> 
+    <jar href="jme-scene.jar" /> 
+    <jar href="jme-swt.jar"  />
+    <jar href="jme-terrain.jar"  />
+
+    <jar href="lwjgl.jar" />
+    <jar href="lwjgl_util.jar" />
+    <jar href="lwjgl_util_applet.jar" />
+    <jar href="jorbis-0.0.17.jar" />
+    
+    <jar href="miglayout-3.7-swing.jar" /> 
+    <jar href="propertytable.jar" /> 
+    <jar href="scenemonitor_jme2.jar" /> 
+    <jar href="sceneworker.jar" /> 
+    <jar href="sm_properties_jme2.jar" />    
+
+  </resources>
+ 
+  <resources os="Windows">
+    <j2se version="1.5+"/>
+    <nativelib href="jme-native-windows.jar"/>
+  </resources>
+  
+  <resources os="Mac OS">
+    <j2se version="1.5+"/>
+    <nativelib href="jme-native-macos.jar"/>
+  </resources>
+  
+  <resources os="Linux" arch="i386">
+    <j2se version="1.5+"/>
+    <nativelib href="jme-native-linux.jar"/>
+  </resources>
+  
+  <resources os="Linux" arch="i686">
+    <j2se version="1.5+"/>
+    <nativelib href="jme-native-linux.jar"/>
+  </resources>  
+  
+  <application-desc main-class="net.jgf.example.tanks.Tanks"/>
+   
+  <component-desc />
+  
+</jnlp>

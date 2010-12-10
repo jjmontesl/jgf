@@ -40,11 +40,7 @@ import net.jgf.config.ConfigException;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.console.BaseConsole;
 import net.jgf.console.Console;
-import net.jgf.core.component.Component;
 import net.jgf.core.service.ServiceException;
-import net.jgf.jme.config.JmeConfigHelper;
-import net.jgf.jme.view.ActionInputView.ActionInputKey;
-import net.jgf.system.Jgf;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

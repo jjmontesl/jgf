@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
  * </p>
  * <p>
  * JGF settings manager is String friendly, therefore all values can be read and
- * written as a String. This caters use cases where settings may need to be
+ * written as a String. This tries to use cases where settings may need to be
  * passed as strings (console access, writing settings to configuration files,
  * sending settings through network).
  * </p>
@@ -95,6 +95,23 @@ public final class SettingsManager extends BaseService implements Settings {
         }
         return item;
     }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.jgf.settings.Settings#getSetting(java.lang.String)
+     */
+    @SuppressWarnings (value="unchecked") 
+    public <T extends Setting<?>> T getSetting(String key, Class<T> expectedClass) {
+        Setting<?> s = settings.get(key);
+        T item  = null;
+        item = (T) s;
+        if (item == null) {
+            throw new ConfigException("Tried to retrieve undefined setting '" + key + "'");
+        }
+        return item;
+    }
+    
 
     public boolean containsKey(String key) {
         return settings.containsKey(key);

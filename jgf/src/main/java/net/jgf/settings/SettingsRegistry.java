@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.jgf.config.ConfigException;
-import net.jgf.system.Jgf;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

@@ -2,9 +2,6 @@ package net.jgf.chat;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.logic.BaseLogicState;
@@ -15,6 +12,9 @@ import net.jgf.messaging.MessageNotifications;
 import net.jgf.messaging.MessagePublisher;
 import net.jgf.messaging.MessageSubscriber;
 import net.jgf.system.Jgf;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * The main chat logic is put in here. This class accepts characters typed in

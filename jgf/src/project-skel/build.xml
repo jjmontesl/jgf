@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+ JGF - Java Game Framework
+ $Id$
+ 
+ Copyright (c) 2008, JGF - Java Game Framework
+ All rights reserved.
+ 
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+ 
+     * Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+ 
+     * Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in the
+       documentation and/or other materials provided with the distribution.
+ 
+      * Neither the name of the 'JGF - Java Game Framework' nor the
+       names of its contributors may be used to endorse or promote products
+       derived from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY <copyright holder> ''AS IS'' AND ANY
+ EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL <copyright holder> BE LIABLE FOR ANY
+ DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<project name="jgf" default="all">
+
+	<description>
+  		Ant Build File for Java Game Framework (JGF) Projects.
+		
+		This is a build file for projects based on
+	    JGF. It provides targets to compile, build and package
+		games and applications. It also provides targets
+		to build a Java Web Start application of the project.
+		
+		This build script should be modified 
+		to suit your project needs.
+	</description>
+
+	<property name="dir.project" value="." />
+
+	<property name="app.name" value="JGF Game" />
+	<property name="app.vendor" value="JGF" />
+	<property name="app.version" value="1.0" />
+	<property name="app.mainclass" value="net.jgf.example.tanks.Tanks" />
+
+	<property name="dir.src" value="${dir.project}/src" />
+	<property name="dir.lib" value="${dir.project}/lib" />
+	
+	<property name="dir.target" value="${dir.project}/target" />
+	
+	<property name="dir.target.classes" value="${dir.target}/classes" />
+	<property name="dir.target.packages" value="${dir.target}/packages" />
+	<property name="dir.target.dist" value="${dir.target}/dist" />
+	<property name="dir.target.jws" value="${dir.target}/jws" />
+	<property name="dir.target.lib-signed" value="${dir.target}/lib-signed" />
+
+	
+	<path id="classpath.main">
+		<fileset dir="${dir.lib}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+
+	<target name="clean">
+		<delete dir="${dir.target}" />
+	</target>
+
+	
+	<target name="all" depends="dist-jws" />
+	
+	
+	<target name="sign-jars" depends="package" >
+		<mkdir dir="${dir.target.lib-signed}" />
+		<signjar alias="jgf" storepass="jgfjgf" lazy="true" destDir="${dir.target.lib-signed}" >
+			  <path>
+			    <fileset dir="${dir.lib}" includes="**/*.jar" />
+			  	<fileset dir="${dir.target.packages}" includes="**/*.jar" />
+			  </path>
+		</signjar>
+	</target>
+	
+	
+	<target name="compile">
+		<mkdir dir="${dir.target.classes}" />
+		<javac includeantruntime="false" srcdir="${dir.src}" destdir="${dir.target.classes}" classpathref="classpath.main" debug="on" source="1.5" />
+	</target>
+	
+	<target name="dist-jws" depends="sign-jars">
+	    <mkdir dir="${dir.target.jws}" />
+		<copy todir="${dir.target.jws}">
+			  <fileset dir="${dir.project}" includes="jgf.jnlp" />
+			  <fileset dir="${dir.target.lib-signed}" includes="*.jar" />
+        </copy>
+    </target>
+
+	
+	<target name="package" depends="compile">
+
+		<mkdir dir="${dir.target.packages}" />
+
+		<jar destfile="${dir.target.packages}/jgfapp.jar" basedir="${dir.target.classes}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Implementation-Vendor" value="${app.vendor}" />
+				<attribute name="Implementation-Title" value="${app.name}" />
+				<attribute name="Implementation-Version" value="${app.version}" />
+			</manifest>
+		</jar>
+
+	</target>
+
+</project>
+

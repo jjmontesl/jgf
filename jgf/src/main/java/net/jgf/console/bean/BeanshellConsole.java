@@ -36,13 +36,10 @@ package net.jgf.console.bean;
 import java.util.List;
 import java.util.Map.Entry;
 
-import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.UnsupportedOperationException;
-import net.jgf.core.component.Component;
 
-import org.apache.commons.collections.iterators.EntrySetMapIterator;
 import org.apache.log4j.Logger;
 
 import bsh.EvalError;

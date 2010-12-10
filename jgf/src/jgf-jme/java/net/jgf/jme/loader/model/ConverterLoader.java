@@ -29,7 +29,7 @@ public class ConverterLoader extends ModelLoader {
 		}
 
 		if (node == null) node = new Node(resourceUrl + "Node");
-		Node subNode = ModelUtil.convertModel(resourceUrl);
+		Node subNode = ModelUtil.importModel(resourceUrl);
 		node.attachChild(subNode);
 
 		return node;

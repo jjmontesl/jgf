@@ -3,20 +3,11 @@ package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
 import net.jgf.entity.EntityManager;
-import net.jgf.example.tanks.entity.PlayerTank;
-import net.jgf.jme.scene.JmeScene;
-import net.jgf.jme.view.display.DisplayItemsView;
-import net.jgf.jme.view.display.TextItem;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
-
-import com.jme.scene.Node;
-import com.jme.scene.state.LightState;
-import com.jme.scene.state.LightUtil;
-import com.jme.scene.state.RenderState.StateType;
 
 
 /**

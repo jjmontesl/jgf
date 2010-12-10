@@ -43,7 +43,6 @@ import net.jgf.view.BaseViewState;
 import org.apache.log4j.Logger;
 
 import com.jme.input.InputHandler;
-import com.jme.input.KeyInput;
 import com.jme.input.Mouse;
 import com.jme.input.MouseInput;
 import com.jme.input.action.InputAction;

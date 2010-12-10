@@ -5,14 +5,12 @@ package net.jgf.example.tanks.camera;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.example.tanks.entity.Tank;
 import net.jgf.jme.camera.JmeCamera;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.system.Jgf;
 
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
-import com.jme.scene.Spatial;
 
 /**
  */

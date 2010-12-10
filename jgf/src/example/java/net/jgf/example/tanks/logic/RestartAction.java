@@ -8,7 +8,6 @@ import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
 import net.jgf.example.tanks.entity.Tank;
 import net.jgf.example.tanks.loader.SceneReferencesProcessorLoader;
-import net.jgf.example.tanks.view.EffectsView;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -21,7 +20,6 @@ import net.jgf.view.ViewState;
 import org.apache.log4j.Logger;
 
 import com.jme.scene.Node;
-import com.jme.system.DisplaySystem;
 
 
 /**

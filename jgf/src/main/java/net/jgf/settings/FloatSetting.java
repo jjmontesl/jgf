@@ -2,7 +2,6 @@ package net.jgf.settings;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.system.Jgf;
 
 /**
  * Map of stored settings

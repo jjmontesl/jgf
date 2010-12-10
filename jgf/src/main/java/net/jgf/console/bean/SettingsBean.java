@@ -35,12 +35,8 @@
 package net.jgf.console.bean;
 
 
-import java.util.Set;
-
 import net.jgf.config.Config;
-import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
-import net.jgf.config.ConfigurableFactory;
 import net.jgf.settings.Settings;
 import net.jgf.system.Jgf;
 

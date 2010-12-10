@@ -28,14 +28,14 @@
 	<classpathentry kind="lib" path="src/main/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="src/jgf-jme/lib/sceneworker.jar" sourcepath="/sceneworker/src"/>
 	<classpathentry kind="lib" path="src/jgf-jme/lib/miglayout-3.7-swing.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jme"/>
 	<classpathentry kind="lib" path="src/jgf-jme/lib/jmejtree_jme2.jar"/>
 	<classpathentry kind="lib" path="src/jgf-jme/lib/propertytable.jar"/>
 	<classpathentry kind="lib" path="src/jgf-jme/lib/scenemonitor_jme2.jar" sourcepath="/scenemonitor-dev/src"/>
 	<classpathentry kind="lib" path="src/jgf-jme/lib/sm_properties_jme2.jar"/>
 	<classpathentry kind="lib" path="src/test/lib/junit-4.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jmephysics2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ant"/>
 	<classpathentry kind="lib" path="src/jgf-jgn/lib/jgn.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jme"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jmephysics2"/>
 	<classpathentry kind="output" path="target/classes-eclipse"/>
 </classpath>
