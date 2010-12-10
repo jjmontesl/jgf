@@ -12,7 +12,6 @@
 
 * Documentation
   * [Overview]
-  * [UserGuide User Guide]
   * [Examples Examples]
   * [Javadoc Javadoc]
   * [FAQ]
