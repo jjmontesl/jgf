@@ -42,8 +42,9 @@ JGF main configuration is done in a descriptive XML configuration file, which pr
 
 *Logic and Graphics states*
 
-  * Logic and View States drive the application logic and aspect.
-  * Services for Entities, Players, Scene and other game data management.
+  * Logic and View States drive application logic and aspect.
+  * Entities, Scenes and other concepts can be managed by framework services.
+  * Everything can be described in the configuration file.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-1.png
 
