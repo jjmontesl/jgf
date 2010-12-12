@@ -38,7 +38,6 @@ import java.util.List;
 import net.jgf.console.bean.BeanshellConsole;
 import net.jgf.core.UnsupportedOperationException;
 import net.jgf.core.service.Service;
-import net.jgf.jme.view.ConsoleView;
 
 /**
  * <p>The console interface provides access to a

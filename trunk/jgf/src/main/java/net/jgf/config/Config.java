@@ -36,8 +36,6 @@ package net.jgf.config;
 import java.net.URL;
 import java.util.List;
 
-import net.jgf.jme.config.JmeConfigHelper;
-
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;

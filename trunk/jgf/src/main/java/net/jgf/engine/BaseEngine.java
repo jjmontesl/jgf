@@ -37,7 +37,6 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.service.BaseService;
-import net.jgf.jme.engine.JMEEngine;
 import net.jgf.logic.LogicManager;
 import net.jgf.system.Jgf;
 import net.jgf.view.ViewManager;
@@ -76,7 +75,7 @@ public abstract class BaseEngine extends BaseService implements Engine {
      * Reference to the LogicManager.
      */
     protected LogicManager logicManager;
-
+    
     /**
      * Configures this object from the configuration.
      * 
@@ -125,10 +124,11 @@ public abstract class BaseEngine extends BaseService implements Engine {
     public void initialize() {
 
         super.initialize();
-
+        
         if (viewManager == null) {
             viewManager = new VoidViewManager();
         }
+        // TODO: Allow for a void logicmanager
         if (logicManager == null) {
             throw new ConfigException("No logicManager reference found in " + this);
         }

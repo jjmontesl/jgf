@@ -33,6 +33,7 @@
 
 package net.jgf.jme.engine;
 
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 import net.jgf.config.Config;
@@ -89,6 +90,11 @@ public final class JMEEngine extends BaseEngine {
 	private StandardGameState standardGameState = null;
 
 	/**
+	 * Refernece to the engine rendering statistics
+	 */
+	private EngineStats stats = new EngineStats();
+	
+	/**
 	 * Whether JME Engine will collect rendering statistics.
 	 */
 	private boolean collectStats = false;
@@ -111,7 +117,11 @@ public final class JMEEngine extends BaseEngine {
 		@Override
 		public void render(float tpf) {
 			// TODO: Where to cap
-			if (tpf > timerCap) tpf = timerCap;
+			if (tpf > timerCap) {
+			    stats.setCappedFrames(stats.getCappedFrames() + 1);
+			    tpf = timerCap;
+			}
+			stats.setRenderedFrames(stats.getRenderedFrames() + 1);
 			viewManager.render(tpf);
 		}
 
@@ -215,6 +225,8 @@ public final class JMEEngine extends BaseEngine {
 		Callable<Object> initTask = new StandardGameInitTask();
 		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).enqueue(initTask);
 
+		stats.setEngineStart(new Date());
+		
 	}
 
 	/**
@@ -238,6 +250,8 @@ public final class JMEEngine extends BaseEngine {
 			game.finish();
 			game = null;
 		}
+		
+        logger.info("Stats: " + stats);
 	}
 
 	/**
@@ -268,6 +282,13 @@ public final class JMEEngine extends BaseEngine {
 	}
 
 	/**
+	 * Returns the engine rendering statistics.
+	 */
+	public EngineStats getStats() {
+        return stats;
+    }
+
+    /**
 	 * <p>Sets the maximum time interval allowed between frames. If the time elapsed is bigger, it is capped
 	 * to this value. The default is 0.02 (50 FPS).</p>
 	 */
@@ -275,6 +296,8 @@ public final class JMEEngine extends BaseEngine {
 		this.timerCap = timerCap;
 	}
 
+	
+	
 	/* (non-Javadoc)
 	 * @see net.jgf.core.component.BaseComponent#toString()
 	 */
@@ -283,4 +306,6 @@ public final class JMEEngine extends BaseEngine {
 		return this.getClass().getSimpleName() + "[id=" + this.getId() +",timerCap=" + timerCap + ",collecStats=" + collectStats + "]";
 	}
 
+	
+	
 }

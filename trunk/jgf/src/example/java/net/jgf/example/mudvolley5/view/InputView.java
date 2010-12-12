@@ -28,6 +28,13 @@ public class InputView extends BaseViewState {
 
 	private Settings settings;
 	
+	private KeySetting p1leftKeySetting;
+	private KeySetting p1rightKeySetting;
+	private KeySetting p1upKeySetting;
+	private KeySetting p2leftKeySetting;
+    private KeySetting p2rightKeySetting;
+    private KeySetting p2upKeySetting;
+    
 	/**
 	 * Class logger
 	 */
@@ -66,11 +73,12 @@ public class InputView extends BaseViewState {
 		player1 = Jgf.getDirectory().getObjectAs("entity/root/player1", PlayerEntity.class);
 		player2 = Jgf.getDirectory().getObjectAs("entity/root/player2", PlayerEntity.class);
 
-		settings = Jgf.getDirectory().getObjectAs("settings", Settings.class);
 		
 		inputHandler = new InputHandler();
 		inputHandler.addAction(new KeyInputAction(), InputHandler.DEVICE_KEYBOARD, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
 
+        settings = Jgf.getDirectory().getObjectAs("settings", Settings.class);
+		
 	}
 
 	/**
