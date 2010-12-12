@@ -3,7 +3,7 @@ package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.state.State;
-import net.jgf.core.state.StateUtil;
+import net.jgf.core.state.StateHelper;
 import net.jgf.example.tanks.entity.PlayerTank;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.system.Jgf;
@@ -56,7 +56,7 @@ public class MissionLogic extends BaseLogicState {
 			if (!bannerFailed.isActive()) {
 				timeAfterDeath += tpf;
 				if (timeAfterDeath > 2.0f) {
-					StateUtil.loadAndActivate(bannerFailed);
+					StateHelper.loadAndActivate(bannerFailed);
 				}
 			}
 		

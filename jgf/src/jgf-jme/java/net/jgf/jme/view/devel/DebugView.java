@@ -116,7 +116,9 @@ public class DebugView extends BaseViewState {
         KeyBindingManager.getKeyBindingManager().set("jgf_report", KeyInput.KEY_F4);
 
         // TODO: Remove this??
+        /*
         KeyBindingManager.getKeyBindingManager().set("parallel_projection", KeyInput.KEY_F2);
+        */
 
         KeyBindingManager.getKeyBindingManager().set("toggle_depth", KeyInput.KEY_F3);
 
@@ -126,7 +128,7 @@ public class DebugView extends BaseViewState {
     }
 
     @Override
-		public void update(float tpf) {
+	public void update(float tpf) {
 
     	super.update(tpf);
 
@@ -163,6 +165,7 @@ public class DebugView extends BaseViewState {
           "jgf_report", false)) {
       	logger.info("Report: \n" + NamingUtils.directoryReport());
       }
+      /*
       if (KeyBindingManager.getKeyBindingManager().isValidCommand(
               "parallel_projection", false)) {
           if (DisplaySystem.getDisplaySystem().getRenderer().getCamera()
@@ -172,6 +175,7 @@ public class DebugView extends BaseViewState {
               cameraParallel();
           }
       }
+      */
       if (KeyBindingManager.getKeyBindingManager().isValidCommand(
               "mem_report", false)) {
           logger.info(SystemInfoService.getSystemInfo());

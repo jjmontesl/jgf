@@ -35,7 +35,8 @@ public abstract class Widget {
 		if (evt.getTriggerIndex() == KeyInput.KEY_DOWN) {
 			laf.getController().nextItem();
 		}
-		if (evt.getTriggerIndex() == KeyInput.KEY_SPACE) {
+		if ((evt.getTriggerIndex() == KeyInput.KEY_SPACE) || 
+		   (evt.getTriggerIndex() == KeyInput.KEY_RETURN))    {
 			laf.getController().useCurrentItem();
 		}
 

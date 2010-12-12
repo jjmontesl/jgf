@@ -1,6 +1,6 @@
 /*
  * JGF - Java Game Framework
- * $Id$
+ * $Id: Engine.java 203 2010-12-10 03:06:18Z jjmontes $
  *
  * Copyright (c) 2008, JGF - Java Game Framework
  * All rights reserved.
@@ -31,42 +31,56 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.jgf.engine;
+package net.jgf.jme.engine;
 
-import net.jgf.logic.LogicManager;
-import net.jgf.view.ViewManager;
+import java.util.Date;
 
 
 /**
- * <p>The Engine interface defines a service that runs the main game loop. It is responsible
- * for updating the LogicManager and the ViewManager services. An Engine must spawn a thread
- * to run the main game loop.</p>
- * <p>Currently, only a single engine implementation is provided ({@link JMEEngine}). Most users
- * will not need to extend or modify the engine subsystem.</p>
- * <p>Note: Engines need to honour the 'dedicatedServer' setting and avoid creating graphical windows
- * when running in that mode. At least, an UnsupportedOperationException should be thrown
- * if dedicatedServer is set for an Engine that doesn't support it.</p>
- * <p>See {@link JMEEngine} for an example of an implementation.</p>
- * @see BaseEngine
- * @see JMEEngine
+ * <p>EngineStats holds information about the number of frames rendered.</p>
+ * 
  * @author jjmontes
  */
-public interface Engine {
+public class EngineStats {
 
-	/**
-	 * Starts the main game loop, and thus the game.
-	 */
-	public void start();
+    protected long renderedFrames;
+    
+    protected long cappedFrames;
+    
+    protected Date engineStart;
 
-	/**
-	 * Returns a reference to the LogicManager.
-	 */
-	public LogicManager getLogicManager();
+    public long getRenderedFrames() {
+        return renderedFrames;
+    }
 
-	/**
-	 * Returns a reference to the ViewManager.
-	 */
-	public ViewManager getViewManager();
+    public void setRenderedFrames(long renderedFrames) {
+        this.renderedFrames = renderedFrames;
+    }
 
+    public long getCappedFrames() {
+        return cappedFrames;
+    }
+
+    public void setCappedFrames(long cappedFrames) {
+        this.cappedFrames = cappedFrames;
+    }
+
+    public Date getEngineStart() {
+        return engineStart;
+    }
+
+    public void setEngineStart(Date engineStart) {
+        this.engineStart = engineStart;
+    }
+
+    @Override
+    public String toString() {
+        double cappedRatio = (((double)this.getCappedFrames()) / ((double)this.getRenderedFrames()));
+        String toString = "JMEEngine stats [renderedFrames=" + this.getRenderedFrames() + ",cappedFrames=" + this.getCappedFrames() + ",ratio=" + cappedRatio + "]";
+        return toString;
+    }
+    
+    
+    
 }
 
