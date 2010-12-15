@@ -33,6 +33,12 @@
 	<classpathentry kind="lib" path="src/jgf-jme/lib/scenemonitor_jme2.jar" sourcepath="/scenemonitor-dev/src"/>
 	<classpathentry kind="lib" path="src/jgf-jme/lib/sm_properties_jme2.jar"/>
 	<classpathentry kind="lib" path="src/test/lib/junit-4.1.jar"/>
+	<classpathentry kind="lib" path="src/jgf-jme/lib/nifty-1.2.jar" sourcepath="/home/jjmontes/Proyectos/jgf/src/jgf-jme/lib-doc/nifty-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="src/jgf-jme/lib/nifty-default-controls-1.2.jar"/>
+	<classpathentry kind="lib" path="src/jgf-jme/lib/nifty-examples-1.2.jar"/>
+	<classpathentry kind="lib" path="src/jgf-jme/lib/xpp3-1.1.4c.jar"/>
+	<classpathentry kind="lib" path="src/jgf-jme/lib/nifty-style-black-1.2.jar"/>
+	<classpathentry kind="lib" path="src/jgf-jme/lib/lwjgl.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ant"/>
 	<classpathentry kind="lib" path="src/jgf-jgn/lib/jgn.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jme"/>
