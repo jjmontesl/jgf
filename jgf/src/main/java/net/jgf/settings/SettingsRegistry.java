@@ -44,6 +44,7 @@ import java.util.Map;
 
 import net.jgf.config.ConfigException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -56,7 +57,7 @@ import org.apache.log4j.Logger;
  * @author jjmontes
  * @version 1.0
  */
-final class SettingsRegistry {
+public final class SettingsRegistry {
 
     /**
      * Class logger.
@@ -229,47 +230,7 @@ final class SettingsRegistry {
 
         if (target != null) {
 
-            String setterName = "set" + String.valueOf(field.charAt(0)).toUpperCase();
-            if (field.length() > 1)
-                setterName += field.substring(1);
-
-            try {
-                logger.debug("Injecting field '" + field + "'=" + value + " of object " + target);
-                Method[] methods = target.getClass().getMethods();
-
-                // Find a setter with the appropriate parameter type
-                boolean found = false;
-                for (Method method : methods) {
-                    if (method.getName().equals(setterName)) {
-                        if ((method.getParameterTypes().length == 1)
-                                && (method.getReturnType() == void.class)) {
-                            if ((method.getParameterTypes()[0].isInstance(value))
-                                    || (value == null)) {
-                                found = true;
-                                // Call the setter
-                                // TODO: Cache the method when the object is registered
-                                method.invoke(target, value);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (!found) {
-                    throw new ConfigException("No setter found (of correct type) '"
-                            + setterName + "' found in object " + target
-                            + " when setting value for settings resolved reference: " + value);
-                }
-
-            } catch (IllegalAccessException e) {
-                throw new ConfigException("No accessible setter (of correct type) '" + setterName
-                        + "' found in object " + target
-                        + " when setting value for settings resolved reference " + value, e);
-            } catch (InvocationTargetException e) {
-                throw new ConfigException("Error calling setter '" + setterName
-                        + "' found in object " + target
-                        + " when setting value for settings resolved reference " + value, e);
-            }
+            updateObject(target, field, value);
 
         } else {
             // Everything should be unregistered
@@ -281,5 +242,33 @@ final class SettingsRegistry {
         }
 
     }
+    
+    /**
+     * Sets an attribute on a given object using reflection. Attribute name
+     * will be prefixed with "set" and its first letter changed to uppercase.
+     * @param target
+     * @param field
+     * @param value
+     */
+    public static void updateObject(Object target, String field, Object value) {
+        String setterName = "set" + String.valueOf(field.charAt(0)).toUpperCase();
+        if (field.length() > 1)
+            setterName += field.substring(1);
+
+        try {
+            logger.debug("Injecting field '" + field + "'=" + value + " of object " + target);
+            BeanUtils.setProperty(target, field, value);
+            
+        } catch (IllegalAccessException e) {
+            throw new ConfigException("No accessible setter (of correct type) '" + setterName
+                    + "' found in object " + target
+                    + " when setting value for settings resolved reference " + value, e);
+        } catch (InvocationTargetException e) {
+            throw new ConfigException("Error calling setter '" + setterName
+                    + "' found in object " + target
+                    + " when setting value for settings resolved reference " + value, e);
+        }
+    }
+    
 
 }

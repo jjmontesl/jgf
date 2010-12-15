@@ -36,6 +36,11 @@ package net.jgf.config;
 import java.net.URL;
 import java.util.List;
 
+import net.jgf.jme.config.JmeConfigHelper;
+import net.jgf.settings.Setting;
+import net.jgf.settings.SettingsRegistry;
+import net.jgf.system.Jgf;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
@@ -300,6 +305,30 @@ public final class Config {
      */
     public boolean containsKey(String key) {
         return config.containsKey(key);
+    }
+    
+    /**
+     * <p>Processes the given setting searching for a reference "setting" attribute. If
+     * it is not present, the value of the field is used.</p>
+     */
+    public void setFromSetting(Class<? extends Setting<?>> settingClass, Object target, String field, String configPath, String defaultValue) {
+        if (config.containsKey(configPath + "/@setting")) {
+            // Register setting
+            Jgf.getSettings().register(target, field, config.getString(configPath + "/@setting"));
+        } else {
+            Setting<?> setting  = null;
+            try {
+                setting = settingClass.newInstance();
+            } catch (IllegalAccessException e) {
+                throw new ConfigException("Cannot create instance of Setting class " + settingClass.getCanonicalName(), e);
+            } catch (InstantiationException e) {
+                throw new ConfigException("Cannot create instance of Setting class " + settingClass.getCanonicalName(), e);
+            } 
+            
+            setting.setStringValue(config.getString(configPath, defaultValue));
+            
+            SettingsRegistry.updateObject(target, field, setting.getValue());
+        }
     }
 
 }

@@ -61,6 +61,7 @@ public final class PropertiesStorage extends BaseService {
 
         super.readConfig(config, configPath);
         
+        
         path = config.getString(configPath + "/path", path);
         
         String settingsRef = config.getString(configPath + "/settings/@ref");

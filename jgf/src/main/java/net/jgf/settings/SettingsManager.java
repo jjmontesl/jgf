@@ -156,7 +156,7 @@ public final class SettingsManager extends BaseService implements Settings {
         settingsRegistry.register(target, field, id);
     }
     
-    public void update(String id, Object value) {
+    void update(String id, Object value) {
         settingsRegistry.update(id, value);
     }
 

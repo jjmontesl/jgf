@@ -34,6 +34,7 @@
 package net.jgf.system;
 
 import net.jgf.core.naming.Directory;
+import net.jgf.settings.Settings;
 
 import org.apache.log4j.Logger;
 
@@ -92,6 +93,17 @@ public final class Jgf {
      */
     public static Directory getDirectory() {
         return app.getDirectory();
+    }
+    
+    /**
+     * <p>Returns the Settings component for the application.
+     * Settings are values that can change over application life.</p>
+     *
+     * @return the Settings reference.
+     * @see Settings
+     */
+    public static Settings getSettings() {
+        return app.getSettings();
     }
 
 }

@@ -49,6 +49,8 @@ import net.jgf.core.naming.Directory;
 import net.jgf.core.service.Service;
 import net.jgf.core.service.ServiceException;
 import net.jgf.engine.Engine;
+import net.jgf.settings.Settings;
+import net.jgf.settings.SettingsManager;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.BasicConfigurator;
@@ -105,6 +107,11 @@ public final class Application {
     private static final int DEFAULT_SERVICES_SIZE = 32;
 
     /**
+     * Application key name (i.e. lowercase simple project name usable in filesystem paths)
+     */
+    private String key;
+    
+    /**
      * Application name.
      */
     private String name;
@@ -152,6 +159,11 @@ public final class Application {
      */
     private boolean dedicatedServer = false;
 
+    /**
+     * Reference to the Settings Manager used.
+     */
+    private Settings settings;
+    
     /**
      * Creates a new Application object from the given configuration URL and
      * command line arguments.
@@ -345,10 +357,14 @@ public final class Application {
     public void readConfig(Config config) {
 
         this.setName(config.getString("application/name"));
+        this.setKey(config.getString("application/key"));
         this.setVersion(config.getString("application/version", this.version));
         this.setDebug(config.getBoolean("application/debug", false));
         this.setDedicatedServer(config.getBoolean("application/dedicatedServer", false));
 
+        if (config.containsKey("application/settings/@ref")) {
+            Jgf.getDirectory().register(this, "settings", config.getString("application/settings/@ref"));
+        }
         Jgf.getDirectory().register(this, "engine", config.getString("application/engine/@ref"));
 
         // Build and register services
@@ -359,7 +375,6 @@ public final class Application {
                     + "']", Service.class);
             this.addService(element);
         }
-
 
     }
 
@@ -494,5 +509,21 @@ public final class Application {
         this.dedicatedServer = dedicatedServer;
     }
 
-    
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+
 }
