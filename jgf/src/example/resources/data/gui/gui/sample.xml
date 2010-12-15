@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Java Game Framework Global Configuration File
+	$Id: box.xml 47 2008-11-24 01:26:13Z jjmontes $
+ --> 	
+
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+  <screen id="start" controller="de.lessvoid.nifty.screen.DefaultScreenController">
+    <layer id="layer" backgroundColor="#0000" childLayout="center">
+      <panel id="panel" height="15%" width="25%" align="center" valign="center" backgroundColor="#f00f" childLayout="center" visibleToMouse="true">
+        <text id="text" font="console.fnt" color="#000f" text="Hello World!" align="center" valign="center" />
+      </panel>
+    </layer>
+  </screen>
+</nifty>
+

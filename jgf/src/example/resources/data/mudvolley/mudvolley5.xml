@@ -10,6 +10,7 @@
 	<!-- Application configuration -->
 	<application>
 	
+	    <key>mudvolley</key>
 		<name>MudVolley JGF Example 5: Settings</name>
 		<version>1.0</version>
 		<networkProtocolVersion>1.0</networkProtocolVersion>
@@ -21,6 +22,7 @@
 		</description>
 		
 		<engine ref="engine" />
+		<settings ref="settings" />
 		
 	</application>
 	
@@ -36,7 +38,7 @@
 		
 	</service>
 
-   <!-- 
+    <!-- 
         Settings configuration
      -->
     <service id="settings" class="net.jgf.settings.SettingsManager">
@@ -44,6 +46,9 @@
         <caseSensitive>true</caseSensitive>
     
         <settings>
+        
+            <setting id="project/name" class="net.jgf.settings.StringSetting"
+                     label="Project Name" default="${application/key}" />
         
             <setting id="settings/video/gamma" class="net.jgf.settings.FloatSetting"
                      label="Video Gamma" default="1.0f" />
@@ -63,14 +68,19 @@
                      label="P1 Move Right" default="KEY_RIGHT" />
                      
             <setting id="settings/input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
-                     label="Screenshot" default="KEY_F5" />                  
+                     label="Screenshot" default="KEY_F5" />
+            <setting id="settings/input/key/axis" class="net.jgf.jme.settings.KeySetting" 
+                     label="Screenshot" default="KEY_F10" />                       
+    
+            <setting id="settings/storage/path" class="net.jgf.settings.StringSetting"
+                     label="Settings file path" default="$USER_HOME/mudvolley.properties" />
             
         </settings>
     
     </service>
     
     <service id="settingsStorage" class="net.jgf.settings.storage.PropertiesStorage">
-        <path>$USER_HOME/mudvolley.properties</path>
+        <path setting="settings/storage/path" />
         <settings ref="settings" />
     </service>
 	
@@ -204,7 +214,7 @@
 				<view id="view/root/level/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
-					<key>KEY_F10</key>
+					<key setting="settings/input/key/axis" />
 
 					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" context="debug"
 						autoLoad="true" autoActivate="false" >
