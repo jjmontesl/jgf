@@ -10,10 +10,10 @@
 	<!-- Application configuration -->
 	<application>
 	
-	    <key>jgf-example-display</key>
+	   <key>jgf-example-gui</key>
 	
 		<!-- Name of the application. Will appear in the Window Title and messages. -->
-		<name>Java Game Framework: Display Test</name>
+		<name>Java Game Framework: GUI Test</name>
 		
 		<!-- Application version -->
 		<version>1.0</version>
@@ -61,28 +61,19 @@
 	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
 		
 		<view id="view/root" class="net.jgf.view.ViewStateNode">
+
+
+            <!-- Sample rotating box -->
+            <view id="view/root/box" class="net.jgf.example.box.BoxView"
+                autoLoad="true" autoActivate="true" >
+            </view>
 			
-			<view id="view/root/display" class="net.jgf.jme.view.display.DisplayItemsView" 
+			<view id="view/root/display" class="net.jgf.jme.gui.NiftyView" 
 				autoLoad="true" autoActivate="true">
-				
-				<item id="view/root/display/1" class="net.jgf.jme.view.display.ImageItem">
-					<center>-0.0 0.0 0.0</center>
-					<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
-					<size>2.5</size>
-				</item>
-				<item id="view/root/display/text" class="net.jgf.jme.view.display.TextItem">
-					<center>0.0 -0.8 0.0</center>
-					<size>0.03</size>
-					<font>Verdana PLAIN 40</font>
-					<text>"JGF - Java Game Framework" - http://code.google.com/p/jgf/ 
-					</text>
-				</item>			
+			     <file>gui/gui/sample.xml</file>
 			</view>			
 
-			<!-- Background sample scene -->
-			<view id="view/root/box" class="net.jgf.example.box.BoxView"
-				autoLoad="true" autoActivate="true" >
-			</view>
+
 
 		</view>
 			
