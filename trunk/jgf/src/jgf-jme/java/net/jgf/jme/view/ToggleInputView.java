@@ -6,6 +6,7 @@ import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.jme.config.JmeConfigHelper;
+import net.jgf.jme.settings.KeySetting;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 import net.jgf.view.ViewState;
@@ -13,6 +14,7 @@ import net.jgf.view.ViewState;
 import org.apache.log4j.Logger;
 
 import com.jme.input.KeyBindingManager;
+import com.jme.input.KeyInput;
 
 /**
  */
@@ -128,10 +130,18 @@ public final class ToggleInputView extends BaseViewState {
 
 		view = ConfigurableFactory.newFromConfig(config, configPath + "/view", ViewState.class);
 		Jgf.getDirectory().addObject(view.getId(), view);
-
-		key = JmeConfigHelper.getKeyInput(config, configPath + "/key", 0);
-
+		
+		config.setFromSetting(KeySetting.class, this, "key", configPath + "/key", "KEY_F10");
+		
 	}
 
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+	
 
 }
