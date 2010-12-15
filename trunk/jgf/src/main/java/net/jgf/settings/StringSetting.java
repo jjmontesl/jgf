@@ -13,7 +13,7 @@ public class StringSetting extends Setting<String> {
 
     public void setStringValue(String value) {
         this.value = value;
-        manager.update(this.getId(), this.value);
+        updateRegistered();
     }
 
     public String getStringValue() {

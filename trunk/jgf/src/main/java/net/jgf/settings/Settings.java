@@ -23,6 +23,6 @@ public interface Settings {
 	 * @param id the id of the setting for which changes will be notified.
 	 */
 	public void register(Object target, String field, String id);
-
+	
 }
 

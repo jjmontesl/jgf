@@ -10,11 +10,11 @@ import net.jgf.core.component.BaseComponent;
 @Configurable
 public abstract class Setting<T> extends BaseComponent {
 
-	String label;
+	private String label;
 	
-	String defaultValue;
+	private String defaultValue;
 	
-	SettingsManager manager;
+	private SettingsManager manager;
 
 	public Setting() {
 		super();
@@ -52,7 +52,7 @@ public abstract class Setting<T> extends BaseComponent {
 	    this.manager = manager;
 	}
 	
-	public SettingsManager getManager() {
+	public Settings getManager() {
         return manager;
     }
 
@@ -66,6 +66,10 @@ public abstract class Setting<T> extends BaseComponent {
     
     public void reset() {
         this.setStringValue(this.getDefaultValue());
+    }
+    
+    protected void updateRegistered() {
+        if (manager != null) this.manager.update(this.getId(), this.getValue());
     }
 	
 }

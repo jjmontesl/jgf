@@ -13,7 +13,7 @@ public class BooleanSetting extends Setting {
 
 	public void setStringValue(String value) {
 		this.value = Boolean.parseBoolean(value);
-		manager.update(this.getId(), this.value);
+		this.updateRegistered();
 	}
 	
 	public String getStringValue() {
