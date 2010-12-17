@@ -36,6 +36,8 @@ public final class ToggleInputView extends BaseViewState {
 	 * The KeyInput to bind in order to activate and deactivate.
 	 */
 	private int key;
+	
+	private boolean toggling;
 
 	/**
 	 * Simply calls the underlying View render method (if this state is active and loaded).
@@ -58,15 +60,21 @@ public final class ToggleInputView extends BaseViewState {
 	@Override
 	public void input(float tpf) {
 
-	    if (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.getId() + "]", false)) {
+	    if ( (! toggling) && (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.getId() + "]", false)) ) {
+	            toggling = true;
 	    		if (view.isActive())  {
 	    			view.deactivate();
 	    		} else  {
 	    			view.activate();
 	    		}
+	    		
 	    } else {
-	    	view.input(tpf);
+	        if (! (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.getId() + "]", false))) {
+	            toggling = false;
+	        }
 	    }
+	    
+	    view.input(tpf);
 
 	}
 
