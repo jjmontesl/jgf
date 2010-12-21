@@ -8,11 +8,11 @@
 
 === What is the current state of development? ===
 
-JGF is not yet ready for public usage. Major changes are expected to the API and  several features are poorly implemented or missing.
+JGF is alpha code. Changes to the API are to be expected  and  several features are poorly implemented or missing.
 
 === Is jMonkeyEngine the only game engine usable with JGF ===
 
-Currently it is. While writing implementations for other engines is _in theory_ possible, this is not a trivial task. Currently jMonkeyEngine is the only engine supported by JGF. Also, note that JGF itself doesn't require a 3D engine, and is _in theory_ extensible to support 2D engines as well.
+Currently it is. While writing implementations for other engines is _in theory_ possible, this is not a trivial task. Currently jMonkeyEngine 2 (JME2) is the only engine supported by JGF. Also, note that JGF itself doesn't require a 3D engine, and tries to be extensible to support 2D engines as well.
 
 == Logging ==
 
