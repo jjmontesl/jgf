@@ -5,11 +5,22 @@
 	$Id: box.xml 47 2008-11-24 01:26:13Z jjmontes $
  --> 	
 
+<!--
+   Sample simple GUI
+   This GUI screen is for test purposes only.
+   Please note that more complete GUI examples are available 
+   in Tanks and Mudvolley example games.
+-->
+
 <nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
-  <screen id="start" controller="de.lessvoid.nifty.screen.DefaultScreenController">
+
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+
+  <screen id="start">
     <layer id="layer" backgroundColor="#0000" childLayout="center">
       <panel id="panel" height="15%" width="25%" align="center" valign="center" backgroundColor="#f00f" childLayout="center" visibleToMouse="true">
-        <text id="text" font="console.fnt" color="#000f" text="Hello World!" align="center" valign="center" />
+        <label id="label" color="#000f" text="Hello World!" align="center" valign="center" />
       </panel>
     </layer>
   </screen>

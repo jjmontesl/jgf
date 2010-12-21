@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.jme.image.Image;
 import com.jme.image.Texture;
+import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureKey;
@@ -22,10 +24,12 @@ public class JmeRenderImage implements RenderImage {
   
   public JmeRenderImage(final URL url, final boolean filterParam) {
     if (filterParam) {
-      texture = TextureManager.loadTexture(url, Texture.MinificationFilter.BilinearNoMipMaps, Texture.MagnificationFilter.Bilinear, Image.Format.GuessNoCompression, 0.0f, false);
+      texture = TextureManager.loadTexture(url, Texture.MinificationFilter.BilinearNoMipMaps, Texture.MagnificationFilter.Bilinear, Image.Format.GuessNoCompression, 0.0f, true);
     } else {
-      texture = TextureManager.loadTexture(url, Texture.MinificationFilter.NearestNeighborNoMipMaps, Texture.MagnificationFilter.NearestNeighbor, Image.Format.GuessNoCompression, 0.0f, false);
+      texture = TextureManager.loadTexture(url, Texture.MinificationFilter.NearestNeighborNoMipMaps, Texture.MagnificationFilter.NearestNeighbor, Image.Format.GuessNoCompression, 0.0f, true);
     }
+    //texture.setRotation(new Quaternion(0, 1, 0, FastMath.PI));
+    
     synchronized(sizeCache) {
         TextureKey key = texture.getTextureKey();
         originalSize = sizeCache.get(key);
@@ -38,6 +42,7 @@ public class JmeRenderImage implements RenderImage {
     textureState = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
     textureState.setEnabled(true);
     textureState.setTexture(texture);
+    
   }
 
   public int getWidth() {

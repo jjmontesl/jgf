@@ -97,7 +97,6 @@ public final class LoggingConfigService extends BaseService {
 		while (config.containsKey(configPath + "/logger[" + index + "]/@name")) {
 			String loggerName = config.getString(configPath + "/logger[" + index + "]/@name");
 			String levelStr = config.getString(configPath + "/logger[" + index + "]/@level");
-			Level level = null;
 			if ("INFO".equals(levelStr.toUpperCase())) {
 				setLoggerLevel(loggerName, Level.INFO);
 			} else if ("FATAL".equals(levelStr.toUpperCase())) {

@@ -20,17 +20,14 @@ public abstract class BaseViewState extends BaseState implements ViewState {
 
 	@Override
 	public void render(float tpf) {
-
 	}
 
 	@Override
 	public void update(float tpf) {
-
 	}
 
 	@Override
 	public void input(float tpf) {
-
 	}
 
 }

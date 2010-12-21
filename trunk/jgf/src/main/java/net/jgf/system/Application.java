@@ -247,6 +247,7 @@ public final class Application {
                     new SimpleResourceLocator(baseUrl));
             ResourceLocatorTool.addResourceLocator(ResourceLocatorTool.TYPE_AUDIO,
                     new SimpleResourceLocator(baseUrl));
+            
 
         } catch (URISyntaxException e) {
             throw new ServiceException("Could not set resource locator for properties.", e);

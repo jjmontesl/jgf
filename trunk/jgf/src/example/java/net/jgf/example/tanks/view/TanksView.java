@@ -1,9 +1,11 @@
 package net.jgf.example.tanks.view;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.state.StateLifecycleEvent;
+import net.jgf.core.state.StateObserver;
+import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 import net.jgf.example.tanks.entity.PlayerTank;
-import net.jgf.jme.view.display.DisplayItemsView;
-import net.jgf.jme.view.display.TextItem;
+import net.jgf.jme.gui.NiftyGuiView;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
@@ -11,23 +13,25 @@ import org.apache.log4j.Logger;
 
 import com.jme.math.FastMath;
 
+import de.lessvoid.nifty.elements.render.TextRenderer;
+
 /**
  */
 @Configurable
-public class TanksView extends BaseViewState {
+public class TanksView extends BaseViewState implements StateObserver {
 
 	/**
 	 * Class logger
 	 */
 	private static final Logger logger = Logger.getLogger(TanksView.class);
 
-	protected DisplayItemsView osdItemsView;
+	protected TextRenderer hitsText;
 	
-	protected TextItem killsTextItem;
-	
-	protected TextItem timeTextItem;
+	protected TextRenderer timeText;
 	
 	protected PlayerTank player;
+	
+	protected NiftyGuiView niftyView;
 	
 	// TODO: This should be game data
 	protected float gameTime;
@@ -37,9 +41,11 @@ public class TanksView extends BaseViewState {
 	@Override
 	public void load() {
 		super.load();
-		killsTextItem = Jgf.getDirectory().getObjectAs("view/root/level/osd/kills", TextItem.class);
-		timeTextItem = Jgf.getDirectory().getObjectAs("view/root/level/osd/time", TextItem.class);
-		osdItemsView = Jgf.getDirectory().getObjectAs("view/root/level/osd", DisplayItemsView.class);
+
+		// Hook the activate event of the Nifty menu
+		niftyView = Jgf.getDirectory().getObjectAs("view/root/level/osd",  NiftyGuiView.class);
+		niftyView.addStateObserver(this);
+
 		Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
 		gameTime = 0;
 	}
@@ -57,7 +63,7 @@ public class TanksView extends BaseViewState {
 		
 		timeElapsed += tpf;
 		
-		if (timeElapsed > 1.0f) {
+		if (timeElapsed > 0.09f) {
 		
 			timeElapsed = 0.0f;
 			
@@ -66,11 +72,9 @@ public class TanksView extends BaseViewState {
 				int timeMinutes = (int) (gameTime / 60);
 				int timeSeconds = ((int) (gameTime)) % 60;
 				String timeString = String.format("%02d:%02d.%1d", (Object[]) new Integer[] {timeMinutes, timeSeconds, (int) ((gameTime - FastMath.floor(gameTime)) * 10)} );
-				timeTextItem.setText("Time: " +  timeString);
-				timeTextItem.refreshNode(osdItemsView.getRootNode());
-				
-				killsTextItem.setText("Hits: " +  player.getKills());
-				killsTextItem.refreshNode(osdItemsView.getRootNode());
+
+				timeText.setText("Time: " +  timeString);
+				hitsText.setText("Hits: " +  player.getKills());
 			}
 			
 		}
@@ -87,5 +91,13 @@ public class TanksView extends BaseViewState {
 	public void setPlayer(PlayerTank player) {
 		this.player = player;
 	}
+
+    @Override
+    public void onStateLifecycle(StateLifecycleEvent evt) {
+        if (evt.getType() == LifecycleEventType.Activate) {
+            timeText = niftyView.getNifty().getCurrentScreen().findElementByName("labelTime").getRenderer(TextRenderer.class);
+            hitsText = niftyView.getNifty().getCurrentScreen().findElementByName("labelHits").getRenderer(TextRenderer.class);
+        }
+    }
 	
 }

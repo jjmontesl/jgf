@@ -47,32 +47,32 @@
     
         <settings>
         
-            <setting id="project/name" class="net.jgf.settings.StringSetting"
+            <setting name="project/name" class="net.jgf.settings.StringSetting"
                      label="Project Name" default="${application/key}" />
         
-            <setting id="settings/video/gamma" class="net.jgf.settings.FloatSetting"
+            <setting name="video/gamma" class="net.jgf.settings.FloatSetting"
                      label="Video Gamma" default="1.0f" />
             
-            <setting id="settings/input/key/p1up" class="net.jgf.jme.settings.KeySetting" 
+            <setting name="input/key/p1up" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Up" default="KEY_W" />
-            <setting id="settings/input/key/p1left" class="net.jgf.jme.settings.KeySetting" 
+            <setting nane="input/key/p1left" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Left" default="KEY_A" />
-            <setting id="settings/input/key/p1right" class="net.jgf.jme.settings.KeySetting" 
+            <setting name="input/key/p1right" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Right" default="KEY_D" />
 
-            <setting id="settings/input/key/p2up" class="net.jgf.jme.settings.KeySetting" 
+            <setting name="input/key/p2up" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Up" default="KEY_UP" />
-            <setting id="settings/input/key/p2left" class="net.jgf.jme.settings.KeySetting" 
+            <setting name="input/key/p2left" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Left" default="KEY_LEFT" />
-            <setting id="settings/input/key/p2right" class="net.jgf.jme.settings.KeySetting" 
+            <setting name="input/key/p2right" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Right" default="KEY_RIGHT" />
                      
-            <setting id="settings/input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
+            <setting name="input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
                      label="Screenshot" default="KEY_F5" />
-            <setting id="settings/input/key/axis" class="net.jgf.jme.settings.KeySetting" 
+            <setting name="input/key/axis" class="net.jgf.jme.settings.KeySetting" 
                      label="Screenshot" default="KEY_F10" />                       
     
-            <setting id="settings/storage/path" class="net.jgf.settings.StringSetting"
+            <setting name="storage/path" class="net.jgf.settings.StringSetting"
                      label="Settings file path" default="$USER_HOME/mudvolley.properties" />
             
         </settings>
@@ -82,6 +82,7 @@
     <service id="settingsStorage" class="net.jgf.settings.storage.PropertiesStorage">
         <path setting="settings/storage/path" />
         <settings ref="settings" />
+        <!-- TODO: Add exclusion capabilities -->
     </service>
 	
 	
@@ -214,7 +215,7 @@
 				<view id="view/root/level/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
-					<key setting="settings/input/key/axis" />
+					<key>KEY_F10</key>
 
 					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" context="debug"
 						autoLoad="true" autoActivate="false" >

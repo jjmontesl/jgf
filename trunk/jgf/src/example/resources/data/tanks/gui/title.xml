@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Java Game Framework GUI Configuration file.
+    This is a GUI configuration file for the Nifty GUI library
+    which JGF uses.
+ --> 	
+
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+
+  <screen id="start">
+      
+      
+    <layer id="image" backgroundColor="#0000" childLayout="vertical">
+      <effect>
+        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1000" startDelay="0" inherit="true" post="false" />
+        <onEndScreen name="fade" startColor="#ffff" endColor="#0000" length="500" startDelay="0" inherit="true" post="false" />
+      </effect>
+      
+      <panel id="panelLogo" height="100%" width="100%" align="center" valign="center" backgroundColor="#0000" childLayout="center" visibleToMouse="true">
+        <image filename="tanks/texture/logo/tanks-logo.png" width="60%" height="60%" align="center" valign="center" />       
+      </panel>
+    </layer>
+    
+    <layer id="text" backgroundColor="#0000" childLayout="vertical">
+      <effect>
+        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1000" startDelay="0" inherit="true" post="false" />
+        <onEndScreen name="fade" startColor="#ffff" endColor="#0000" length="500" startDelay="0" inherit="true" post="false" />
+      </effect>
+      
+      <panel id="panelText" height="90%" width="100%" align="center" valign="bottom" backgroundColor="#0000" childLayout="center" visibleToMouse="true">
+        <text id="text1" font="aurulent-sans-16-bold.fnt" color="#ffff" text="T a u n k l e t" align="center" valign="center" />       
+      </panel>
+    </layer>    
+    
+  </screen>
+</nifty>
+
