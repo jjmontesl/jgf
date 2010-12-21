@@ -9,6 +9,7 @@
 	<!-- Application configuration -->
 	<application>
 	
+	    <key>taunklet</key>
 		<name>Taunklet</name>
 		<version>1.0</version>
 		<networkProtocolVersion>1.0</networkProtocolVersion>
@@ -278,85 +279,24 @@
 				
 				<unloadOnFinish>true</unloadOnFinish>
 
-				<view id="view/root/intro/fader1" class="net.jgf.jme.view.FaderViewNode"
-					autoLoad="true" autoActivate="true" >
-				
-					<fadeInTime>3.0</fadeInTime>
-					<fadeOutTime>0.8</fadeOutTime>
-					<autoFadeOutTime>3.0</autoFadeOutTime>
-					<allowKeyToSkip>true</allowKeyToSkip>
-					<color>0.0 0.0 0.0</color>
-					
-					<view id="view/root/intro/tech" class="net.jgf.jme.view.display.DisplayItemsView" 
-						autoLoad="true" autoActivate="true">
-						
-						<item id="view/root/intro/tech/1" class="net.jgf.jme.view.display.ImageItem">
-							<center>-0.66 0.5 0.0</center>
-							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
-							<size>1.0</size>
-						</item>
-						<item id="view/root/intro/tech/2" class="net.jgf.jme.view.display.ImageItem">
-							<center>0.0 0.5 0.0</center>
-							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
-							<size>0.8</size>
-						</item>
-						<item id="view/root/intro/tech/3" class="net.jgf.jme.view.display.ImageItem">
-							<center>0.66 0.5 0.0</center>
-							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
-							<size>0.5</size>
-						</item>
-						<item id="view/root/intro/tech/text" class="net.jgf.jme.view.display.TextItem">
-							<center>0.0 -0.8 0.0</center>
-							<size>0.03</size>
-							<font>Verdana PLAIN 40</font>
-							<text>Created with "JGF - Java Game Framework" - http://code.google.com/p/jgf/ 
-							</text>
-						</item>			
-						<item id="view/root/intro/tech/text2" class="net.jgf.jme.view.display.TextItem">
-							<center>0.0 -0.87 0.0</center>  
-							<size>0.03</size>
-							<font>Verdana PLAIN 40</font>
-							<text>(c) 2008-2009 JGF - Published under the BSD license</text>
-						</item>	
-					</view>
-					
+                <!-- 
+				<view id="view/root/intro/tech" class="net.jgf.jme.gui.NiftyGuiView"
+				   autoLoad="true" autoActivate="true">
+				   <file>tanks/gui/introtech.xml</file>
+				   <endAfter>3.0</endAfter>
 				</view>
 				
-				<view id="view/root/intro/fader2" class="net.jgf.jme.view.FaderViewNode"
-					autoLoad="true" autoActivate="false" >
-				
-					<fadeInTime>1.5</fadeInTime>
-					<fadeOutTime>0.8</fadeOutTime>
-					<autoFadeOutTime>4.0</autoFadeOutTime>
-					<allowKeyToSkip>true</allowKeyToSkip>
-					<color>0.0 0.0 0.0</color>
-					
-					<view id="view/root/intro/logo" class="net.jgf.jme.view.display.DisplayItemsView" 
-						autoLoad="true" autoActivate="true">
-						
-						<item id="view/root/intro/logo/tanks" class="net.jgf.jme.view.display.ImageItem">
-							<center>0.0 0.2 0.0</center>
-							<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
-							<size>0.75</size>
-						</item>
-						
-						<item id="view/root/intro/logo/title" class="net.jgf.jme.view.display.TextItem">
-							<center>-0.00 -0.3 0.0</center>
-							<size>0.25</size>
-							<font>Verdana BOLD 40</font>
-							<text>T a u n k l e t</text>
-						</item>	
-						
-					</view>
-					
-				</view>
+                <view id="view/root/intro/title" class="net.jgf.jme.gui.NiftyGuiView"
+                   autoLoad="true" autoActivate="false">
+                   <file>tanks/gui/title.xml</file>
+                   <endAfter>3.0</endAfter>
+                </view>		
+                 -->    			
 				
 				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
 					<action ref="logic/action/showmenu" />
 				</view>
-
-
 
 			</view>
 
@@ -373,41 +313,11 @@
 					<sceneManager ref="scene/manager" />		
 				</view>
 				
-				<view id="view/root/main/background" class="net.jgf.jme.view.display.DisplayItemsView" 
-					autoLoad="true" autoActivate="true">
-					
-					<!-- <item id="view/root/main/background/warpigs" class="net.jgf.jme.view.display.ImageItem">
-						<center>0.0 0.0 0.0</center>
-						<textureUrl>tanks/texture/logo/war-pigs.png</textureUrl>
-						<size>1.0</size>
-					</item>  -->
-						
-					<item id="view/root/main/background/tanks" class="net.jgf.jme.view.display.ImageItem">
-						<center>0.7 -0.7 0.0</center>
-						<textureUrl>tanks/texture/logo/tanks-logo.png</textureUrl>
-						<size>0.25</size>
-					</item>
-					
-					<item id="view/root/main/background/title" class="net.jgf.jme.view.display.TextItem">
-						<center>0.7 -0.8 0.0</center>
-						<size>0.050</size>
-						<font>Verdana BOLD 48</font>
-						<text>T a u n k l e t</text>
-					</item>	
-						
-				</view>
-				
-				<view id="view/root/main/menu" class="net.jgf.jme.view.menu.DefaultMenuView"
-						autoLoad="true" autoActivate="true" >
-					<lookAndFeel id="view/root/main/menu/laf" class="net.jgf.jme.view.menu.DefaultMenuLookAndFeel" >
-						<origin>0.90 0.6 0.0</origin>
-						<size>0.08</size>
-						<font>Verdana PLAIN 48</font>
-						<align>Right</align>
-					</lookAndFeel>
-					<initialMenu ref="menu/main" />
-				</view>
-				
+                <view id="view/root/main/menu" class="net.jgf.jme.gui.NiftyGuiView"
+                   autoLoad="true" autoActivate="true">
+                   <file>tanks/gui/mainmenu.xml</file>
+                </view> 
+
 			</view>
 
 
@@ -464,70 +374,18 @@
 				<view id="view/root/level/failed" class="net.jgf.view.ViewStateNode"
 						autoLoad="true" autoActivate="false">
 
-					<view id="view/root/level/failed/banner" class="net.jgf.jme.view.display.DisplayItemsView" 
-						autoLoad="true" autoActivate="true">
-						
-						<item id="view/root/level/failed/banner/background" class="net.jgf.jme.view.display.ImageItem">
-							<center>-0.0 0.0 0.0</center>
-							<textureUrl>tanks/texture/logo/tech-jme.png</textureUrl>
-							<size>0.5</size>
-						</item>					
-						<item id="view/root/level/failed/banner/text" class="net.jgf.jme.view.display.TextItem">
-							<center>-0.0 0.0 0.0</center>
-							<size>0.15</size>
-							<font>Verdana PLAIN 40</font>
-							<text>Mission Failed</text>
-							<align>Center</align>
-						</item>
-						<item id="view/root/level/failed/banner/press" class="net.jgf.jme.view.display.TextItem">
-							<center>0.9 -0.9 0.0</center>
-							<size>0.05</size>
-							<font>Verdana PLAIN 40</font>
-							<text>Press SPACE</text>
-							<align>BottomRight</align>
-						</item>
-	
-					</view>
-					
-					<view id="view/root/level/failed/action" class="net.jgf.jme.view.ActionInputView" 
-						autoLoad="true" autoActivate="true" >
+	                <view id="view/root/level/failed/banner" class="net.jgf.jme.gui.NiftyGuiView"
+	                   autoLoad="true" autoActivate="true">
+	                   <file>tanks/gui/failed.xml</file>
+	                </view> 
 
-						<action ref="logic/action/restart" key="KEY_SPACE" />
-						
-					</view>					
-					
 				</view>
 
-				<view id="view/root/level/osd" class="net.jgf.jme.view.display.DisplayItemsView" 
-					autoLoad="true" autoActivate="true">
-					
-					<item id="view/root/level/osd/kills" class="net.jgf.jme.view.display.TextItem">
-						<center>-0.95 0.95 0.0</center>
-						<size>0.05</size>
-						<font>Verdana PLAIN 40</font>
-						<text>Hits: 0</text>
-						<align>TopLeft</align>
-					</item>
-					<item id="view/root/level/osd/time" class="net.jgf.jme.view.display.TextItem">
-						<center>-0.95 0.85 0.0</center>
-						<size>0.05</size>
-						<font>Verdana PLAIN 40</font>
-						<text>Time: 00:00</text>
-						<align>TopLeft</align>
-					</item>
-					<item id="view/root/level/osd/tanks" class="net.jgf.jme.view.display.TextItem">
-					   <settings ref="settings" >
-					       <setting ref="settings/player/name" field="text" />
-					   </settings>
-					
-						<center>-0.95 0.75 0.0</center>
-						<size>0.05</size>
-						<font>Verdana PLAIN 40</font>
-						<!-- <text>Tanks: -</text>  -->
-						<align>TopLeft</align>
-					</item>
-					
-				</view>		
+                <view id="view/root/level/osd" class="net.jgf.jme.gui.NiftyGuiView"
+                   autoLoad="true" autoActivate="true">
+                   <file>tanks/gui/osd.xml</file>
+                </view> 
+
 				
 				<view id="view/root/level/grid" class="net.jgf.jme.view.devel.AxisGridView" 
 					autoLoad="false" autoActivate="false" >
@@ -612,62 +470,7 @@
 		</audio>
 		
 	</service>
-	
-	<!-- 
-		Menu System
-	 -->
-	<service id="menu" class="net.jgf.menu.DefaultMenuSystem">
 
-		<menu id="menu/main" class="net.jgf.menu.DefaultMenu">
-			<item id="menu/newgame/1player" class="net.jgf.menu.items.ActionMenuItem">
-				<key>1 Player Missions</key>
-				<action ref="logic/action/newgame" />
-			</item>
-			<item id="menu/newgame/network" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<key>Network Game</key>
-				<target ref="menu/newgame/network" />
-			</item>
-			<item id="menu/main/settings" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<key>Settings</key>
-				<target ref="menu/settings" />
-			</item>
-			<item id="menu/main/quit" class="net.jgf.menu.items.ActionMenuItem">
-				<key>Quit</key>
-				<action ref="logic/action/quit" />
-			</item>
-		</menu>
-
-		<menu id="menu/settings" class="net.jgf.menu.DefaultMenu">
-			
-			<item id="menu/settings/title" class="net.jgf.menu.items.TitleMenuItem">
-				<key>Taunklet Settings</key>
-			</item>
-		
-			<item id="menu/settings/sep01" class="net.jgf.menu.items.SeparatorMenuItem" />
-		
-			<item id="menu/settings/up" class="net.jgf.menu.items.SettingMenuItem">
-				<setting ref="input.up" />
-			</item>
-			<item id="menu/settings/down" class="net.jgf.menu.items.SettingMenuItem">
-				<setting ref="input.down" />
-			</item>
-			<item id="menu/settings/left" class="net.jgf.menu.items.SettingMenuItem">
-				<setting ref="input.left" />
-			</item>
-			<item id="menu/settings/right" class="net.jgf.menu.items.SettingMenuItem">
-				<setting ref="input.right" />
-			</item>
-
-			<item id="menu/settings/sep02" class="net.jgf.menu.items.SeparatorMenuItem" />
-
-			<item id="menu/settings/back" class="net.jgf.menu.items.ScreenLinkMenuItem">
-				<key>Back</key>
-				<target ref="menu/main" />
-			</item>	
-		</menu>
-
-	</service>	
-	
 	<!-- 
 		System Information Service
 	 -->

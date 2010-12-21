@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Java Game Framework GUI Configuration file.
+    This is a GUI configuration file for the Nifty GUI library
+    which JGF uses.
+ --> 
+
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+
+  <screen id="start">
+      
+      
+    <layer id="layer" backgroundColor="#000f" childLayout="vertical">
+      <effect>
+        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="500" startDelay="500" inherit="true" post="false" />
+        <onEndScreen name="fade" startColor="#ffff" endColor="#0000" length="500" startDelay="0" inherit="true" post="false" />
+      </effect>
+      
+      <panel id="panelUp" height="90%" width="100%" align="center" valign="center" backgroundColor="#000f" childLayout="horizontal" visibleToMouse="true">
+        <panel id="panel1" height="100%" width="33%" align="center" valign="center" backgroundColor="#000f" childLayout="center" visibleToMouse="true">
+	        <image filename="tanks/texture/logo/tech-jme.png"  align="center" valign="center" />
+        </panel>
+        <panel id="panel2" height="100%" width="33%" align="center" valign="center" backgroundColor="#000f" childLayout="center" visibleToMouse="true">
+	        <image filename="tanks/texture/logo/tech-jme.png"  align="center" valign="center" />
+	    </panel>
+	    <panel id="panel3" height="100%" width="33%" align="center" valign="center" backgroundColor="#000f" childLayout="center" visibleToMouse="true">
+	        <image filename="tanks/texture/logo/tech-jme.png"  align="center"  valign="center" />
+        </panel>
+      </panel>
+      <panel id="panelDown" height="10%" width="100%" align="center" valign="center" backgroundColor="#000f" childLayout="vertical" visibleToMouse="true" >
+        <text id="text1" font="console.fnt"  color="#ffff" text="Created with 'JGF - Java Game Framework' - http://code.google.com/p/jgf/" align="center" valign="center" />
+        <text id="text2" font="console.fnt"  color="#ffff" text="(c) 2008-2011 JGF - Published under the BSD license" align="center" valign="center" />
+      </panel>
+    </layer>
+  </screen>
+</nifty>
+

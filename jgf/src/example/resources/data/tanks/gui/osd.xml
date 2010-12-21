@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Java Game Framework GUI Configuration file.
+    This is a GUI configuration file for the Nifty GUI library
+    which JGF uses.
+ --> 	
+
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+
+  <screen id="start" controller="net.jgf.jme.gui.JgfDefaultScreenController">
+      
+      
+    <layer id="layer" backgroundColor="#0000" childLayout="vertical">
+      <effect>
+        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="5500" startDelay="500" inherit="true" post="false" />
+      </effect>
+      
+      <panel id="panelOuter" height="100%" width="100%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#0000" childLayout="horizontal" visibleToMouse="true">
+      
+        <panel id="panelTop" width="20%" padding="5px,5px,5px,5px" align="left" valign="bottom" backgroundColor="#aaf3" childLayout="vertical" visibleToMouse="true">
+            <label id="labelHits" color="#ffff" text="Hits: 0" align="left" valign="top" />
+            <label id="labelTime" color="#ffff" text="Time: 00:00.0" align="left" valign="top" />
+        </panel>      
+    
+      </panel>
+    </layer>       
+
+ 
+  </screen>
+  
+  
+</nifty>
+
