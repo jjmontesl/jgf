@@ -48,7 +48,7 @@ JGF base project skeleton makes starting a new JGF project a cut-and-paste matte
 
 A complete game is provided with with JGF: [Taunklet]. Follow the link to learn more about it.
 
-http://www.youtube.com/watch?v=b09Xyveo24I
+<wiki:video url="http://www.youtube.com/watch?v=b09Xyveo24I"/>
 
 
 [http://code.google.com/p/jgf/ JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
