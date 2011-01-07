@@ -76,9 +76,9 @@ public class FreeCameraView extends BaseViewState {
 	 * @see com.jmex.game.state.GameState#setActive(boolean)
 	 */
 	@Override
-	public void activate() {
+	public void doActivate() {
 
-		super.activate();
+		super.doActivate();
 
 		if (spectator == null) {
 			this.spectator = new Spectator("!" + this + "/spectator");
@@ -100,15 +100,15 @@ public class FreeCameraView extends BaseViewState {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#deactivate()
+	 * @see net.jgf.core.state.State#deactivate()
 	 */
 	@Override
-	public void deactivate() {
+	public void doDeactivate() {
 		super.deactivate();
 	}
 
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 
 	}
 
@@ -118,13 +118,13 @@ public class FreeCameraView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#input(float)
 	 */
 	@Override
-	public void input(float tpf) {
+	public void doInput(float tpf) {
 		super.input(tpf);
 		inputHandler.update(tpf);
 	}
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		super.update(tpf);
 		spectator.update(tpf);
 	}

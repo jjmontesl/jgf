@@ -1,11 +1,17 @@
 package net.jgf.jme.gui;
 
+import java.util.concurrent.Callable;
+
 import net.jgf.config.ConfigException;
 import net.jgf.core.state.StateHelper;
+import net.jgf.jme.view.gui.NiftyGuiView;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
+
+import com.jme.util.GameTaskQueue;
+import com.jme.util.GameTaskQueueManager;
 
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
@@ -15,12 +21,12 @@ import de.lessvoid.nifty.screen.ScreenController;
 /**
  * This class is intended to be used or extended.
  */
-public class JgfDefaultScreenController implements ScreenController {
+public class JgfScreenController implements ScreenController {
 
     /**
      * Class logger.
      */
-    private static final Logger logger = Logger.getLogger(JgfDefaultScreenController.class);
+    private static final Logger logger = Logger.getLogger(JgfScreenController.class);
     
     protected Nifty nifty;
     
@@ -28,25 +34,37 @@ public class JgfDefaultScreenController implements ScreenController {
     
     protected NiftyGuiView view;
     
+    private class ActionTask implements Callable<Object> {
+        private LogicAction action;
+        
+        public ActionTask(LogicAction action) {
+            this.action = action;
+        }
+        public Object call() {
+            action.perform(null);
+            return null;
+        }
+    }
+    
     private class ActionNotify implements EndNotify {
         
         String actionId = null;
         
-        JgfDefaultScreenController controller = null;
+        JgfScreenController controller = null;
         
-        public ActionNotify(JgfDefaultScreenController controller, String actionId) {
+        public ActionNotify(JgfScreenController controller, String actionId) {
             this.controller = controller;
             this.actionId = actionId;
         }
         
         @Override
         public void perform() {
-            StateHelper.deactivateAndUnload(controller.view);
+            controller.view.deactivate();
             doAction(actionId);
         }
     };
     
-    public JgfDefaultScreenController(NiftyGuiView view) {
+    public JgfScreenController(NiftyGuiView view) {
         super();
         this.view = view;
     }
@@ -90,12 +108,18 @@ public class JgfDefaultScreenController implements ScreenController {
 
         }
 
-        action.perform(null);
+        
+        
+        //action.perform(null);
+        Callable<Object> performTask = new ActionTask(action);
+        GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).enqueue(performTask);
+
+        
     }
     
     public void quit() {
         logger.info("Quitting application");
-        Jgf.getApp().finalize();
+        Jgf.getApp().dispose();
     }
   
 }

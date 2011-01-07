@@ -30,19 +30,27 @@ public class MissionLogic extends BaseLogicState {
 	
 	
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
 		bannerFailed = Jgf.getDirectory().getObjectAs("view/root/level/failed", State.class);
-		timeAfterDeath = 0;
 	}
+	
 	
 
 	@Override
-	public void update(float tpf) {
+    public void doActivate() {
+        super.doActivate();
+        timeAfterDeath = 0;
+    }
+
+
+
+    @Override
+	public void doUpdate(float tpf) {
 		
 		checkPlayerAlive(tpf);
 		

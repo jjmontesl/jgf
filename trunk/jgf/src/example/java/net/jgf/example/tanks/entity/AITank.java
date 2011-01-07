@@ -74,8 +74,8 @@ public class AITank extends Tank {
      * @see net.jgf.example.tanks.entity.Tank#load()
      */
     @Override
-    public void load() {
-        super.load();
+    public void doLoad() {
+        super.doLoad();
         Jgf.getDirectory().register(this, "targetEntity", "entity/root/players/player1");
         players = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
         enemies = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
@@ -84,20 +84,20 @@ public class AITank extends Tank {
     }
 
     @Override
-    public void unload() {
-        super.unload();
+    public void doUnload() {
+        super.doUnload();
         Jgf.getDirectory().unregister(this, "targetEntity");
     }
 
     @Override
-    public void activate() {
-        super.activate();
+    public void doActivate() {
+        super.doActivate();
         originalPosition = spatial.getWorldTranslation().clone();
         originalTile = map.worldToTile(originalPosition);
     }
 
     @Override
-    public void update(float tpf) {
+    public void doUpdate(float tpf) {
 
         if (targetEntity != null) {
 
@@ -164,7 +164,7 @@ public class AITank extends Tank {
             fire();
         }
 
-        super.update(tpf);
+        super.doUpdate(tpf);
 
     }
 

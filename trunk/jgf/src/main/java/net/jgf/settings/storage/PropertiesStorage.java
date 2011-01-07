@@ -10,10 +10,13 @@ import java.io.Writer;
 import java.util.Properties;
 
 import net.jgf.config.Config;
+import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.service.BaseService;
 import net.jgf.settings.Setting;
+import net.jgf.settings.SettingHandler;
 import net.jgf.settings.Settings;
+import net.jgf.settings.StringSetting;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
@@ -42,11 +45,11 @@ public final class PropertiesStorage extends BaseService {
 
     protected Settings settings;
     
-    protected String path;
+    protected SettingHandler<String> path = new SettingHandler<String>(StringSetting.class);
     
     public PropertiesStorage() {
         super();
-        path = "$USER_HOME/" + Jgf.getApp().getName() + ".properties";
+        path.setValue("$USER_HOME/" + Jgf.getApp().getKey() + ".properties");
     }
 
     /*
@@ -62,7 +65,7 @@ public final class PropertiesStorage extends BaseService {
         super.readConfig(config, configPath);
         
         
-        path = config.getString(configPath + "/path", path);
+        path.readValue(config.getString(configPath + "/path", path.getValue()));
         
         String settingsRef = config.getString(configPath + "/settings/@ref");
         Jgf.getDirectory().register(this, "settings", settingsRef);
@@ -90,7 +93,7 @@ public final class PropertiesStorage extends BaseService {
 
     public void readSettings() {
         
-        String epath = expandPath(this.path);
+        String epath = expandPath(this.path.getValue());
         logger.info("Reading settings from file: " + epath);
         
         Properties properties = new Properties();
@@ -106,7 +109,12 @@ public final class PropertiesStorage extends BaseService {
         for (Setting< ? > setting : settings.getSettings()) {
             String propValue = properties.getProperty(setting.getId());
             if (propValue != null) {
-                setting.setStringValue(propValue);
+                try {
+                    setting.readValue(propValue);
+                } catch (ConfigException e) {
+                    // If read value cannot be parsed:
+                    setting.reset();
+                }
             }
         }
     }
@@ -117,12 +125,12 @@ public final class PropertiesStorage extends BaseService {
         
         // TODO: Write settings in alphabetical order
         
-        String epath = expandPath(this.path);
+        String epath = expandPath(this.path.getValue());
         logger.info("Writing settings to file: " + epath);
         
         Properties properties = new Properties();
-        for (Setting setting : settings.getSettings()) { 
-            properties.put(setting.getId(), setting.getStringValue());
+        for (Setting<?> setting : settings.getSettings()) { 
+            properties.put(setting.getId(), setting.toString());
         }
         
         File file = new File(epath);
@@ -147,11 +155,11 @@ public final class PropertiesStorage extends BaseService {
     }
 
     public String getPath() {
-        return path;
+        return path.getValue();
     }
 
     public void setPath(String path) {
-        this.path = path;
+        this.path.readValue(path);
     }
     
     

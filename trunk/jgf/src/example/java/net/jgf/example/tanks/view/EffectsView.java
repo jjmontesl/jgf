@@ -78,22 +78,22 @@ public class EffectsView extends BaseViewState {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		loader = Jgf.getDirectory().getObjectAs("loader/model", Loader.class);
 	}
 
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#unload()
 	 */
 	@Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
 		// TODO: Unregister object from directory, do the same to cleanup other states
 	}
 
@@ -102,11 +102,11 @@ public class EffectsView extends BaseViewState {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see net.jgf.core.state.BaseState#activate()
+	 * @see net.jgf.core.state.State#activate()
 	 */
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
 		if (smokesNode == null) {
 			smokesNode = new Node("smokes");
@@ -120,8 +120,8 @@ public class EffectsView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
-		super.update(tpf);
+	public void doUpdate(float tpf) {
+		super.doUpdate(tpf);
 		
 		// TODO: This shouldn't be here, it's not an effect
 		scene.getRootNode().sortLights();

@@ -16,8 +16,8 @@ public abstract class BaseLogicAction extends BaseLogicState implements LogicAct
 	private static final Logger logger = Logger.getLogger(BaseLogicAction.class);
 
 	@Override
-	public void update(float tpf) {
-
+	public void doUpdate(float tpf) {
+	    // Nothing to do
 	}
 
 	@Override

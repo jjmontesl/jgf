@@ -9,32 +9,19 @@ import net.jgf.config.Configurable;
 @Configurable
 public class FloatSetting extends Setting<Float> {
 
-    Float value;
-
-    public void setStringValue(String value) {
+    @Override
+    public Float parseValue(String value) {
         // TODO: Hack to allow commas instead of periods for decimal separator
-        this.value = Float.parseFloat(value.replace(',', '.'));
-        this.updateRegistered();
+        return Float.parseFloat(value.replace(',', '.'));
     }
 
-    public String getStringValue() {
-        if (value == null) {
-            setStringValue(this.getDefaultValue());
-        }
-        return String.format("%.2f", value);
+    public String toString() {
+        return String.format("%.2f", this.getValue());
     }
 
     @Override
     public void readConfig(Config config, String configPath) {
         super.readConfig(config, configPath);
-    }
-
-    @Override
-    public Float getValue() {
-        if (value == null) {
-            setStringValue(this.getDefaultValue());
-        }
-        return value;
     }
 
 }

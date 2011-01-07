@@ -15,22 +15,6 @@ import org.apache.log4j.Logger;
 
 /**
  * <p>
- * The SettingsManager holds and provides access to application settings. These
- * are commonly used to hold data such as difficulty level, key bindings, user
- * name and preferences, video rendering settings, etc.
- * </p>
- * <p>
- * JGF settings manager is String friendly, therefore all values can be read and
- * written as a String. This tries to use cases where settings may need to be
- * passed as strings (console access, writing settings to configuration files,
- * sending settings through network).
- * </p>
- * <p>
- * In-memory settings storage is done in custom classes, which provide access to
- * typed values.
- * </p>
- * <p>
- * <b>Note:</b> This class has not been designed to be extended or replaced.
  * </p>
  * 
  * @version 1.0
@@ -55,12 +39,9 @@ public final class SettingsManager extends BaseService implements Settings {
      */
     protected Hashtable<String, Setting<?>> settings;
 
-    protected SettingsRegistry settingsRegistry;
-    
     public SettingsManager() {
         super();
         settings = new Hashtable<String, Setting<?>>(INITIAL_SETTINGS_CAPACITY);
-        settingsRegistry = new SettingsRegistry(this);
     }
 
     /*
@@ -132,32 +113,12 @@ public final class SettingsManager extends BaseService implements Settings {
         setting.setManager(this);
         settings.put(setting.getId(), setting);
         Jgf.getDirectory().addObject(setting.getId(), setting);
-        settingsRegistry.update(setting.getId(), setting.getValue());
-    }
-
-    public void setStringValue(String key, String value) throws ConfigException {
-        Setting<?> setting = getSetting(key);
-        setting.setStringValue(value);
-    }
-
-    public String getStringValue(String key) {
-        Setting< ? > setting = getSetting(key);
-        return setting.getStringValue();
     }
 
     @Override
     public Collection<Setting< ? >> getSettings() {
         Collection<Setting< ? >> res = settings.values();
         return res;
-    }
-
-    @Override
-    public void register(Object target, String field, String id) {
-        settingsRegistry.register(target, field, id);
-    }
-    
-    void update(String id, Object value) {
-        settingsRegistry.update(id, value);
     }
 
 }

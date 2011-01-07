@@ -49,7 +49,7 @@ public class ControllerAction extends BaseLogicAction {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#toString()
+	 * @see net.jgf.core.state.State#toString()
 	 */
 	@Override
 	public String toString() {

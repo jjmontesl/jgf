@@ -1,5 +1,5 @@
 /**
- * $Id$
+ * $Id: BaseState.java 203 2010-12-10 03:06:18Z jjmontes $
  * Java Game Framework
  */
 
@@ -16,8 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * This GameStateNode is a GameStateNode.
- * from a properties file.
+ * 
  */
 public abstract class BaseState extends BaseComponent implements State {
 
@@ -57,12 +56,17 @@ public abstract class BaseState extends BaseComponent implements State {
 	 * @see net.jgf.view.ViewState#setActive(boolean)
 	 */
 	@Override
-	public void activate() {
+	public final void activate() {
 		
 		if (!this.loaded) throw new IllegalStateException("Activating unloaded state " + this);
 		
+		if (this.active) throw new IllegalStateException("Activating already active state " + this);
+		
 		BaseState.logger.debug("Activating " + this);
-		this.active = true;
+
+        this.active = true;
+		
+		this.doActivate();
 
 		// Notify observers
 		for (StateObserver observer : stateObservers) {
@@ -71,24 +75,38 @@ public abstract class BaseState extends BaseComponent implements State {
 
 	}
 
+	public void doActivate() {
+	    
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see net.jgf.view.ViewState#deactivate()
 	 */
 	@Override
-	public void deactivate() {
+	public final void deactivate() {
 		
-		logger.debug("Deactivating " + this);
+		if (!this.loaded) throw new IllegalStateException("Deactivating unloaded state " + this);
 		
-		if (!this.loaded) throw new IllegalStateException("Deactivating unloaded " + this);
+		if (this.isActive()) {
 		
-		this.active = false;
-
-
-		// Notify observers
-		for (StateObserver observer : stateObservers) {
-			observer.onStateLifecycle(new StateLifecycleEvent(LifecycleEventType.Deactivate, this));
+		    logger.debug("Deactivating " + this);
+		    
+            this.active = false;
+    		
+    		this.doDeactivate();
+    
+    		// Notify observers
+    		for (StateObserver observer : stateObservers) {
+    			observer.onStateLifecycle(new StateLifecycleEvent(LifecycleEventType.Deactivate, this));
+    		}
+		} else {
+		    logger.debug("Skipping deactivation of already deactivated state " + this);
 		}
+	}
+	
+	public void doDeactivate() {
+	    
 	}
 
 	/**
@@ -108,7 +126,7 @@ public abstract class BaseState extends BaseComponent implements State {
 	 * @see net.jgf.view.ViewState#isLoaded()
 	 */
 	@Override
-	public boolean isLoaded() {
+	public final boolean isLoaded() {
 		return loaded;
 	}
 
@@ -116,28 +134,64 @@ public abstract class BaseState extends BaseComponent implements State {
 	 * @see net.jgf.view.ViewState#load()
 	 */
 	@Override
-	public void load() {
-		BaseState.logger.debug("Loading " + this);
+	public final void load() {
+
+		if (! this.isLoaded()) {
+		    
+		    BaseState.logger.debug("Loading " + this);
+    	      
+		    if (StringUtils.isBlank(this.getId())) {
+		        throw new ConfigException("Illegal blank id in state " + this + " (detected at State.load())");
+    	    }
 		
-		if (StringUtils.isBlank(this.getId())) {
-			throw new ConfigException("Illegal blank id in state " + this + " (detected at State.load())");
+		    this.loaded = true;
+    		
+    		this.doLoad();
+    		
+    	      // Notify observers
+            for (StateObserver observer : stateObservers) {
+                observer.onStateLifecycle(new StateLifecycleEvent(LifecycleEventType.Load, this));
+            }
+		
+		} else {
+		    logger.debug("Skipping state load of already loaded state " + this);
 		}
-		this.loaded = true;
 	}
 
+	public void doLoad() {
+	    
+	}
+	
 	/* (non-Javadoc)
 	 * @see net.jgf.view.ViewState#unload()
 	 */
 	// TODO: Should automatically deactivate on unload? yes! state lifecycle!
 	@Override
-	public void unload() {
+	public final void unload() {
+		
+		// TODO: Document this behaviour
+		if (!this.loaded) {
+		    logger.debug("Skipping unloading of already unloaded state " + this);
+		    return;
+		}
+		
 		BaseState.logger.debug("Unloading " + this);
 		
 		// TODO: Document this behaviour
-		if (!this.loaded) return;
-		
 		if (this.active) this.deactivate();
+		
 		this.loaded = false;
+		
+		this.doUnload();
+	     
+		// Notify observers
+        for (StateObserver observer : stateObservers) {
+            observer.onStateLifecycle(new StateLifecycleEvent(LifecycleEventType.Unload, this));
+        }
+	}
+	
+	public void doUnload() {
+	    
 	}
 
 	/* (non-Javadoc)
@@ -154,14 +208,14 @@ public abstract class BaseState extends BaseComponent implements State {
 	 * @return the autoLoad
 	 */
 	@Override
-	public boolean isAutoLoad() {
+	public final boolean isAutoLoad() {
 		return autoLoad;
 	}
 
 	/**
 	 * @param autoLoad the autoLoad to set
 	 */
-	public void setAutoLoad(boolean autoLoad) {
+	public final void setAutoLoad(boolean autoLoad) {
 		this.autoLoad = autoLoad;
 	}
 
@@ -169,7 +223,7 @@ public abstract class BaseState extends BaseComponent implements State {
 	 * @see net.jgf.logic.LogicState#addObserver(net.jgf.logic.LogicStateObserver)
 	 */
 	@Override
-	public void addStateObserver(StateObserver observer) {
+	public final void addStateObserver(StateObserver observer) {
 		this.stateObservers.add(observer);
 	}
 
@@ -177,26 +231,26 @@ public abstract class BaseState extends BaseComponent implements State {
 	 * @see net.jgf.logic.LogicState#removeObserver(net.jgf.logic.LogicStateObserver)
 	 */
 	@Override
-	public void removeStateObserver(StateObserver observer) {
+	public final void removeStateObserver(StateObserver observer) {
 		this.stateObservers.remove(observer);
 	}
 
 	@Override
-	public void clearStateObservers() {
+	public final void clearStateObservers() {
 		this.stateObservers.clear();
 	}
 	
 	/**
 	 * @return the autoActivate
 	 */
-	public boolean isAutoActivate() {
+	public final boolean isAutoActivate() {
 		return autoActivate;
 	}
 
 	/**
 	 * @param autoActivate the autoActivate to set
 	 */
-	public void setAutoActivate(boolean autoActivate) {
+	public final void setAutoActivate(boolean autoActivate) {
 		this.autoActivate = autoActivate;
 	}
 

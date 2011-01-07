@@ -21,7 +21,7 @@ public class BallEntity extends SpatialEntity {
 	private Quaternion rotation = new Quaternion();
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		spatial.getLocalTranslation().addLocal(speed.mult(tpf));
 		spatial.getLocalRotation().multLocal(rotation);
 		speed.y += (MudSettings.BALL_GRAVITY * tpf);

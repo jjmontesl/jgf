@@ -38,9 +38,9 @@ public class NewGameLogic extends BaseLogicState {
 	 * @see net.jgf.logic.BaseLogicState#activate()
 	 */
 	@Override
-	public void activate() {
+	public void doActivate() {
 
-		super.activate();
+		super.doActivate();
 
 		logger.info ("Starting new volley game (logic)");
 
@@ -78,7 +78,7 @@ public class NewGameLogic extends BaseLogicState {
 	}
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		// Nothing to do
 	}
 

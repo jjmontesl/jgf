@@ -26,8 +26,12 @@ public abstract class BaseEntity extends BaseState implements Entity {
 
 
 	@Override
-	public void update(float tpf) {
-
+	public final void update(float tpf) {
+	    if (this.isActive()) doUpdate(tpf);
 	}
 
+	public void doUpdate(float tpf) {
+	    
+	}
+	
 }

@@ -58,12 +58,12 @@ public class SettingsBean {
 	
 	public String get(String key) {
 		// TODO: Check for nulls
-		return settings.getSetting(key).getStringValue();
+		return settings.getSetting(key).toString();
 	}
 	
 	public void set(String key, String value) {
 		// TODO: Check for nulls
-		settings.getSetting(key).setStringValue(value);
+		settings.getSetting(key).readValue(value);
 	}
 	
 	public void readConfig(Config config, String configPath) {

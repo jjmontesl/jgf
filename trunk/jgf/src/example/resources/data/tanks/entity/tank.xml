@@ -17,6 +17,10 @@
 		<loader id="!entity.model" class="net.jgf.jme.loader.entity.EntityModelLoader" >
 			<property name="ConverterLoader.resourceUrl" value="tanks/model/tank/tank.dae" />
 		</loader>
+
+        <loader id="!entity.attributes" class="net.jgf.loader.AttributeLoader" >
+            <property name="AttributeLoader.simultaneousBullets" value="8" />
+        </loader>
 		
 	</loader>
 	

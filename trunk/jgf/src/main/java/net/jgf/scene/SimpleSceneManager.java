@@ -64,10 +64,9 @@ public class SimpleSceneManager extends BaseService implements SceneManager {
 		super.readConfig(config, configPath);
 
 		if (config.containsKey(configPath + "/scene/@id")) {
-			// TODO: Is not advisable to initialize scenes at reading time because they can be engine
-			// dependent. Scene initialization should be done at runtime??
 			scene = ConfigurableFactory.newFromConfig(config, configPath + "/scene", Scene.class);
 			Jgf.getDirectory().addObject(scene.getId(), scene);
+			Jgf.getDirectory().register(this, "scene", scene.getId());
 		}
 
 

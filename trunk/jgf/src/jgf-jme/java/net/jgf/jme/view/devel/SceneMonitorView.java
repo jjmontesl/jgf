@@ -35,7 +35,7 @@ public final class SceneMonitorView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		super.update(tpf);
 		SceneMonitor.getMonitor().updateViewer(tpf);
 		if (!SceneMonitor.getMonitor().isVisible()) this.deactivate();
@@ -45,7 +45,7 @@ public final class SceneMonitorView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 		super.render(tpf);
 		SceneMonitor.getMonitor().renderViewer(DisplaySystem.getDisplaySystem().getRenderer());
 	}
@@ -56,8 +56,8 @@ public final class SceneMonitorView extends BaseViewState {
 	 * @see net.jgf.view.ViewState#setActive(boolean)
 	 */
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		SceneMonitor.getMonitor().registerNode(((JmeScene)sceneManager.getScene()).getRootNode());
 		SceneMonitor.getMonitor().setViewerUpdateInterval(updateInterval);
 		SceneMonitor.getMonitor().showViewer(true);
@@ -65,10 +65,10 @@ public final class SceneMonitorView extends BaseViewState {
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#deactivate()
+	 * @see net.jgf.core.state.State#deactivate()
 	 */
 	@Override
-	public void deactivate() {
+	public void doDeactivate() {
 		SceneMonitor.getMonitor().showViewer(false);
 		SceneMonitor.getMonitor().unregisterNode(((JmeScene)sceneManager.getScene()).getRootNode());
 		super.deactivate();
@@ -77,11 +77,11 @@ public final class SceneMonitorView extends BaseViewState {
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#unload()
 	 */
 	@Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
 		SceneMonitor.getMonitor().cleanup();
 	}
 

@@ -19,7 +19,7 @@ public class PlayerTank extends Tank {
 	private int kills = 0;
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 		direction.set(0, 0, 0);
 		if (walkLeft) direction.x = -1;
@@ -28,7 +28,7 @@ public class PlayerTank extends Tank {
 		if (walkDown) direction.z = 1;
 		direction.normalizeLocal();
 
-		super.update(tpf);
+		super.doUpdate(tpf);
 
 		//fixCursor();
 

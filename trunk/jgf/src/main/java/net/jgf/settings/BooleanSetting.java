@@ -7,20 +7,14 @@ import net.jgf.config.Configurable;
  * Map of stored settings
  */
 @Configurable
-public class BooleanSetting extends Setting {
+public class BooleanSetting extends Setting<Boolean> {
 
-	Boolean value;
-
-	public void setStringValue(String value) {
-		this.value = Boolean.parseBoolean(value);
-		this.updateRegistered();
+	public Boolean parseValue(String value) {
+		return Boolean.parseBoolean(value);
 	}
 	
-	public String getStringValue() {
-		if (value == null) {
-			setStringValue(this.getDefaultValue());
-		}
-		return Boolean.toString(value);
+	public String toString() {
+		return Boolean.toString(this.getValue());
 	}
 	
 	@Override
@@ -28,14 +22,5 @@ public class BooleanSetting extends Setting {
 		super.readConfig(config, configPath);
 	}
 
-	@Override
-	public Object getValue() {
-        if (value == null) {
-            setStringValue(this.getDefaultValue());
-        }
-		return value;
-	}
-	
-	
 	
 }

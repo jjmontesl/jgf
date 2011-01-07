@@ -34,15 +34,15 @@ public class SkyboxRenderView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 	}
 
 	/**
 	 * Scene geometry update.
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 			if (! this.active) return;
 
@@ -70,7 +70,7 @@ public class SkyboxRenderView extends BaseViewState {
 	 * class.
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 
 		if (! this.active) return;
 

@@ -133,11 +133,11 @@ public class AxisGridView extends BaseViewState {
 	 * Loading {@link AxisGridView} will create the grid. If the grid
 	 * attributes are modified, changes will not be visible until this ViewState is reloaded.
 	 *
-	 * @see net.jgf.view.BaseViewState#load()
+	 * @see net.jgf.view.BaseViewState#doLoad()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		rootNode = new Node("axisGrid");
 		rootNode.attachChild(buildGeometry());
 		rootNode.lock();
@@ -146,11 +146,11 @@ public class AxisGridView extends BaseViewState {
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#unload()
 	 */
 	@Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
 		if (rootNode != null) {
 			rootNode.detachAllChildren();
 			rootNode = null;
@@ -277,7 +277,7 @@ public class AxisGridView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 
 		if (! this.active) return;
 

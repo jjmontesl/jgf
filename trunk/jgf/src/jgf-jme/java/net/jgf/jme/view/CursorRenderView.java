@@ -43,12 +43,10 @@ public class CursorRenderView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#load()
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
 		
-		if (this.loaded) return;
-		
-		super.load();
+		super.doLoad();
 
 		mouse = new AbsoluteMouse("MouseInput", DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem.getDisplaySystem().getHeight());
 		mouse.setSpeed(1.0f);
@@ -84,8 +82,8 @@ public class CursorRenderView extends BaseViewState {
 	
 	
 	@Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
 		rootNode.detachChild(mouse);
 		mouse = null;
 	}
@@ -94,7 +92,7 @@ public class CursorRenderView extends BaseViewState {
 	 * Scene geometry update.
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 			if (! this.active) return;
 
@@ -108,7 +106,7 @@ public class CursorRenderView extends BaseViewState {
 	 * class.
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 
 		if (! this.active) return;
 

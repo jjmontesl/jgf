@@ -178,8 +178,8 @@ public class ChatViewState extends BaseViewState implements ChatObserver {
     }
 
     @Override
-    public void load() {
-        super.load();
+    public void doLoad() {
+        super.doLoad();
         // TODO: Unload: remove observer
         logic.setChatObserver(this);
         input = new InputHandler();
@@ -191,14 +191,14 @@ public class ChatViewState extends BaseViewState implements ChatObserver {
     }
 
     @Override
-    public void unload() {
-        super.unload();
+    public void doUnload() {
+        super.doUnload();
         logic.setChatObserver(null);
         input = null;
     }
 
     @Override
-    public void update(float tpf) {
+    public void doUpdate(float tpf) {
         super.update(tpf);
 
         inputText.print("> " + logic.getCurrentChatMessage());
@@ -206,13 +206,13 @@ public class ChatViewState extends BaseViewState implements ChatObserver {
     }
 
     @Override
-    public void input(float tpf) {
+    public void doInput(float tpf) {
         super.input(tpf);
         input.update(tpf);
     }
 
     @Override
-    public void render(float tpf) {
+    public void doRender(float tpf) {
         super.render(tpf);
         DisplaySystem.getDisplaySystem().getRenderer().draw(chatNode);
     }

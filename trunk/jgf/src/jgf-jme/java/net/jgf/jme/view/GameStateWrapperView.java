@@ -46,7 +46,7 @@ public final class GameStateWrapperView extends BaseViewState {
 	 * @see net.jgf.core.state.State#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 		gameState.render(tpf);
 	}
 
@@ -55,29 +55,29 @@ public final class GameStateWrapperView extends BaseViewState {
 	 * @see net.jgf.core.state.State#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		gameState.update(tpf);
 	}
 
 	/**
 	 * Calls the underlying GameState cleanup method and unloads this GameStateWrapperView.
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#doUnload()
 	 */
 	@Override
-	public void unload() {
+	public void doUnload() {
 		// TODO: unload logging should be done by container??
 		gameState.cleanup();
 		gameState = null;
-		super.unload();
+		super.doUnload();
 	}
 
 	/**
 	 * <p>Creates and activates the JME GameState that is wrapped by this State.</p>
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 
 		try {
 			gamestateClass = Class.forName(className);

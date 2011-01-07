@@ -19,7 +19,7 @@
 
   <screen id="start">
     <layer id="layer" backgroundColor="#0000" childLayout="center">
-      <panel id="panel" height="15%" width="25%" align="center" valign="center" backgroundColor="#f00f" childLayout="center" visibleToMouse="true">
+      <panel id="panel" height="15%" width="25%" align="center" valign="center" backgroundColor="#f00a" childLayout="center" visibleToMouse="true">
         <label id="label" color="#000f" text="Hello World!" align="center" valign="center" />
       </panel>
     </layer>

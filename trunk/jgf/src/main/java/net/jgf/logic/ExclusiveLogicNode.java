@@ -1,7 +1,10 @@
 
 package net.jgf.logic;
 
+import org.apache.log4j.Logger;
+
 import net.jgf.config.Configurable;
+import net.jgf.core.state.BaseState;
 import net.jgf.core.state.StateLifecycleEvent;
 import net.jgf.core.state.StateObserver;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
@@ -13,6 +16,11 @@ import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 @Configurable
 public class ExclusiveLogicNode extends BaseLogicStateNode implements StateObserver {
 
+    /**
+     * Class logger
+     */
+    private static final Logger logger = Logger.getLogger(ExclusiveLogicNode.class);
+    
 	/* (non-Javadoc)
 	 * @see net.jgf.core.state.BaseStateNode#attachChild(net.jgf.core.state.State)
 	 */
@@ -25,8 +33,10 @@ public class ExclusiveLogicNode extends BaseLogicStateNode implements StateObser
 	@Override
 	public void onStateLifecycle(StateLifecycleEvent evt) {
 
+	    logger.debug (this + " processing " + evt.getType() + " from " + evt.getSource());
+	    
 		if (evt.getType() == LifecycleEventType.Activate) {
-
+		    
 			// Count number of active children
 			int activeCount = 0;
 			for (LogicState state : children) {

@@ -9,31 +9,18 @@ import net.jgf.config.Configurable;
 @Configurable
 public class StringSetting extends Setting<String> {
 
-    String value;
-
-    public void setStringValue(String value) {
-        this.value = value;
-        updateRegistered();
+    @Override
+    public String parseValue(String value) {
+        return value;
     }
 
-    public String getStringValue() {
-        if (value == null) {
-            setStringValue(this.getDefaultValue());
-        }
-        return value;
+    public String toString() {
+        return this.getValue();
     }
 
     @Override
     public void readConfig(Config config, String configPath) {
         super.readConfig(config, configPath);
-    }
-
-    @Override
-    public String getValue() {
-        if (value == null) {
-            setStringValue(this.getDefaultValue());
-        }
-        return value;
     }
 
 }

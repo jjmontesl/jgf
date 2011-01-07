@@ -5,7 +5,7 @@ import net.jgf.core.state.StateLifecycleEvent;
 import net.jgf.core.state.StateObserver;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 import net.jgf.example.tanks.entity.PlayerTank;
-import net.jgf.jme.gui.NiftyGuiView;
+import net.jgf.jme.view.gui.NiftyGuiView;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
@@ -39,20 +39,28 @@ public class TanksView extends BaseViewState implements StateObserver {
 	protected float timeElapsed;
 	
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 
 		// Hook the activate event of the Nifty menu
 		niftyView = Jgf.getDirectory().getObjectAs("view/root/level/osd",  NiftyGuiView.class);
 		niftyView.addStateObserver(this);
 
 		Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
-		gameTime = 0;
 	}
 
 	@Override
-	public void update(float tpf) {
-		super.update(tpf);
+    public void doActivate() {
+        // TODO Auto-generated method stub
+        super.doActivate();
+        gameTime = 0;
+    }
+
+
+
+    @Override
+	public void doUpdate(float tpf) {
+		super.doUpdate(tpf);
 		
 		// Order matters
 		gameTime += tpf;

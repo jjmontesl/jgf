@@ -16,17 +16,11 @@ import com.jme.input.KeyInput;
 @Configurable
 public class KeySetting extends Setting<Integer> {
 
-    Integer value;
-
-    public void setStringValue(String value) {
-        this.value = TypeParserHelper.valueOfKeyInput(value);
-        this.updateRegistered();
+    public Integer parseValue(String value) {
+        return TypeParserHelper.valueOfKeyInput(value);
     }
 
-    public String getStringValue() {
-        if (value == null) {
-            setStringValue(this.getDefaultValue());
-        }
+    public String toString() {
 
         // TODO: Too much iterations and not too efficient: shall cache values or build a map
         
@@ -35,7 +29,7 @@ public class KeySetting extends Setting<Integer> {
         for (Field field : fields) {
             try {
                 if (field.getType() == int.class) {
-                    if (field.getInt(null) == value.intValue())
+                    if (field.getInt(null) == this.getValue().intValue())
                         stringValue = field.getName();
                 }
             } catch (IllegalAccessException e) {
@@ -52,11 +46,4 @@ public class KeySetting extends Setting<Integer> {
         super.readConfig(config, configPath);
     }
 
-    @Override
-    public Integer getValue() {
-        if (value == null) {
-            setStringValue(this.getDefaultValue());
-        }
-        return value;
-    }
 }

@@ -13,7 +13,7 @@ import net.jgf.core.state.BaseStateNode;
  */
 @Configurable
 // TODO: Should this be an interface?? It is already states
-public class EntityGroup extends BaseStateNode<Entity> implements Entity {
+public final class EntityGroup extends BaseStateNode<Entity> implements Entity {
 
 	public EntityGroup() {
 		super();
@@ -23,9 +23,11 @@ public class EntityGroup extends BaseStateNode<Entity> implements Entity {
 
 	@Override
 	public void update(float tpf) {
-		for (Entity entity : children) {
-			if (entity.isActive()) entity.update(tpf);
-		}
+	    if (this.isActive()) {
+    		for (Entity entity : children) {
+    			if (entity.isActive()) entity.update(tpf);
+    		}
+	    }
 	}
 
 

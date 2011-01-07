@@ -16,8 +16,12 @@ public abstract class BaseLogicState extends BaseState implements LogicState {
 	private static final Logger logger = Logger.getLogger(BaseLogicState.class);
 
 	@Override
-	public void update(float tpf) {
-
+	public final void update(float tpf) {
+	    if (this.active) doUpdate(tpf);
+	}
+	
+	public void doUpdate(float tpf) {
+	    
 	}
 
 }

@@ -27,11 +27,11 @@ public class BoxView extends BaseViewState {
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 
 		// Get a scene
 		scene = new DefaultJmeScene();
@@ -56,8 +56,8 @@ public class BoxView extends BaseViewState {
 	 * @see com.jmex.game.state.DebugGameState#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
-		super.update(tpf);
+	public void doUpdate(float tpf) {
+		super.doUpdate(tpf);
 		scene.getRootNode().getLocalRotation().multLocal(new Quaternion().fromAngleAxis(tpf, new Vector3f(1.0f, 1.0f, 1.0f))).normalize();
 		scene.update(tpf);
 	}
@@ -66,8 +66,8 @@ public class BoxView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
-		super.render(tpf);
+	public void doRender(float tpf) {
+		super.doRender(tpf);
 		DisplaySystem.getDisplaySystem().getRenderer().draw(scene.getRootNode());
 	}
 

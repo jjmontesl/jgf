@@ -10,6 +10,7 @@
 	<!-- Application configuration -->
 	<application>
 	
+	    <key>mudvolley</key>
 		<name>MudVolley JGF Example 3: Introducing Loaders</name>
 		<version>1.0</version>
 		<networkProtocolVersion>1.0</networkProtocolVersion>

@@ -144,23 +144,6 @@ public abstract class BaseComponent implements Component {
 
         this.id = config.getString(configPath + "/@id");
 
-        // Al components provide settings injection defined at XML
-        if (config.containsKey(configPath + "/settings/@ref")) {
-            String settingsRef = config.getString(configPath + "/settings/@ref");
-            Settings settings = Jgf.getDirectory().getObjectAs(settingsRef, Settings.class);
-
-            int index = 1;
-            while (config.containsKey(configPath + "/settings/setting[" + index + "]/@field")) {
-                String field = config.getString(configPath + "/settings/setting[" + index
-                        + "]/@field");
-                String ref = config.getString(configPath + "/settings/setting[" + index + "]/@ref");
-                settings.register(this, field, ref);
-
-                index++;
-            }
-
-        }
-
     }
 
     /**

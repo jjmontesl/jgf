@@ -72,34 +72,49 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	 * @see net.jgf.view.ViewState#setActive(boolean)
 	 */
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		for (T state : children) {
-			if (state.isAutoActivate()) state.activate();
+			if ((state.isAutoActivate()) && (!state.isActive()) && (state.isLoaded())) state.activate();
 		}
 	}
+	
+	
 
-	/* (non-Javadoc)
+	/**
+	 * This does not deactivate children states since JGF allows users
+	 * to disable a parent node while keeping children activation state.
+	 */
+	@Override
+    public void doDeactivate() {
+        super.doDeactivate();
+        for (T state : children) {
+            if (state.isAutoActivate()) state.deactivate();
+        }        
+    }
+
+    /* (non-Javadoc)
 	 * @see net.jgf.view.ViewState#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		for (T state : children) {
 			if (state.isAutoLoad()) state.load();
 		}
 	}
 
 	/**
-	 * <p>Also unloads all children unconditionally, even if they are not loaded.</p>
+	 * <p>Also unloads all children unconditionally, even if they 
+	 * if they are not "autoLoad".</p>
 	 */
 	// TODO: Check unloading policy
 	@Override
-	public void unload() {
+	public void doUnload() {
 		for (T state : children) {
 			if (state.isLoaded()) state.unload();
 		}
-		if (this.isLoaded()) super.unload();
+		if (this.isLoaded()) super.doUnload();
 	}
 
 	/**

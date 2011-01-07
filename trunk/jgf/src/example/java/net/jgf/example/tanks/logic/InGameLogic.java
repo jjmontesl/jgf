@@ -27,18 +27,18 @@ public class InGameLogic extends BaseLogicState {
 	
 	
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		entityManager = Jgf.getDirectory().getObjectAs("entity", EntityManager.class);
 		sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
 	}
 	
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 		entityManager.update(tpf);
 		sceneManager.update(tpf);
