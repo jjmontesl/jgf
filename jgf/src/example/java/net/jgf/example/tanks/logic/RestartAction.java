@@ -63,6 +63,17 @@ public class RestartAction extends BaseLogicAction {
 			StateHelper.deactivateAndUnload(enemy);
 		}
 		
+		
+		
+		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
+		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
+        ViewState levelView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
+        
+        if (rootEntity.isLoaded()) rootEntity.deactivate();
+        if (inGameLogic.isLoaded()) inGameLogic.deactivate();
+        if (levelView.isLoaded()) levelView.deactivate();
+        
+		// Load scene
 		SceneReferencesProcessorLoader sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene/referencesprocessor", SceneReferencesProcessorLoader.class);
 		sceneLoader.load(scene, new LoadProperties());
 		
@@ -71,19 +82,21 @@ public class RestartAction extends BaseLogicAction {
 		spawnLogic.spawnPlayer();
 
 		// Prepare entities
-		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
+		
 		StateHelper.loadAndActivate(rootEntity);
 
+        for (Entity enemy : enemies.children()) {
+            StateHelper.loadAndActivate(enemy);
+        }
+		
 		// Activate next view and logic
-		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
+		
 		StateHelper.loadAndActivate(inGameLogic);
-		ViewState levelView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
 		StateHelper.loadAndActivate(levelView);
 		
-		// Clear banner
-		ViewState failedView = Jgf.getDirectory().getObjectAs("view/root/level/failed", ViewState.class);
-		failedView.deactivate();
-		
+        // Clear banner
+        ViewState failedView = Jgf.getDirectory().getObjectAs("view/root/level/failed", ViewState.class);
+        failedView.deactivate();		
 
 	}
 

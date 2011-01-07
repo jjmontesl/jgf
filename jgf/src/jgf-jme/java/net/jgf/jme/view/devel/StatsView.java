@@ -45,7 +45,7 @@ public final class StatsView extends BaseViewState {
 	 * @see net.jgf.core.state.State#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 		gameState.render(tpf);
 		// TODO: Is this advisable or needed?
 		//DisplaySystem.getDisplaySystem().getRenderer().renderQueue();
@@ -56,7 +56,7 @@ public final class StatsView extends BaseViewState {
 	 * @see net.jgf.core.state.State#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 		gameState.update(tpf);
 
@@ -64,23 +64,23 @@ public final class StatsView extends BaseViewState {
 
 	/**
 	 * Calls the underlying GameState cleanup method and unloads this GameStateWrapperView.
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#doUnload()
 	 */
 	@Override
-	public void unload() {
+	public void doUnload() {
 		// TODO: unload logging should be done by container??
 		if (gameState != null) gameState.cleanup();
 		gameState = null;
-		super.unload();
+		super.doUnload();
 	}
 
 	/**
 	 * <p>Creates and activates the JME GameState that is wrapped by this State.</p>
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 
 		// TODO: Parameterize StatisticsGameState from config
 		gameState = new StatisticsGameState(this.getId() + "-sgs", graphWidth, graphHeight, graphAlpha, true);
@@ -90,13 +90,13 @@ public final class StatsView extends BaseViewState {
 	
 	
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		gameState.setActive(true);
 	}
 
 	@Override
-	public void deactivate() {
+	public void doDeactivate() {
 		super.deactivate();
 		gameState.setActive(false);
 	}

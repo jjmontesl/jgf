@@ -1,5 +1,8 @@
 package net.jgf.settings;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.component.BaseComponent;
@@ -12,15 +15,19 @@ public abstract class Setting<T> extends BaseComponent {
 
 	private String label;
 	
-	private String defaultValue;
+	private T defaultValue;
+	
+	private volatile T value;
 	
 	private SettingsManager manager;
-
+	
+	private HashSet<SettingObserver> observers;
+	
 	public Setting() {
 		super();
 	}
 	
-	public Setting(String id, String label, String defaultValue) {
+	public Setting(String id, String label, T defaultValue) {
 		super(id);
 		this.label = label;
 		this.setDefaultValue(defaultValue);
@@ -34,19 +41,23 @@ public abstract class Setting<T> extends BaseComponent {
 		this.label = label;
 	}
 
-	public String getDefaultValue() {
+	public T getDefaultValue() {
 		return defaultValue;
 	}
 
-	public void setDefaultValue(String defaultValue) {
+	public void setDefaultValue(T defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 
-	public abstract void setStringValue(String value);
 	
-	public abstract String getStringValue();
+	public abstract T parseValue(String value);
 	
-	public abstract T getValue();
+	public abstract String toString();
+
+    public synchronized T getValue() {
+        if (this.value == null) this.reset();
+        return this.value;
+    }
 	
 	void setManager(SettingsManager manager) {
 	    this.manager = manager;
@@ -60,16 +71,51 @@ public abstract class Setting<T> extends BaseComponent {
 		
 		super.readConfig(config, configPath);
 		this.setLabel(config.getString(configPath + "/@label"));
-		this.setDefaultValue(config.getString(configPath + "/@default"));
+		this.setDefaultValue(this.parseValue(config.getString(configPath + "/@default")));
+		this.reset();
 		
 	}
     
     public void reset() {
-        this.setStringValue(this.getDefaultValue());
+        this.setValue(this.getDefaultValue());
+    }
+
+    public void readValue(String value) {
+        this.setValue(this.parseValue(value));
     }
     
-    protected void updateRegistered() {
-        if (manager != null) this.manager.update(this.getId(), this.getValue());
+    public synchronized void setValue(T value) {
+        this.value = value;
+        this.updateObservers();
     }
-	
+    
+    public synchronized void addObserver(SettingObserver observer) {
+        if (observers == null) {
+            observers = new HashSet<SettingObserver>();
+        }
+        observers.add(observer);
+    }
+    
+    public synchronized void removeObserver(SettingObserver observer) {
+        if (observers == null) {
+            observers = new HashSet<SettingObserver>();
+        }
+        observers.remove(observer);
+    }
+    
+    public synchronized void clearObservers() {
+        if (observers == null) {
+            observers = new HashSet<SettingObserver>();
+        } else {
+            observers.clear();
+        }
+    }
+    
+    private void updateObservers() {
+        if (observers != null) {
+            for (SettingObserver listener : observers) {
+                listener.onChange(this);
+            }
+        }
+    }
 }

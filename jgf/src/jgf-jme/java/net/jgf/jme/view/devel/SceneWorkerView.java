@@ -7,7 +7,7 @@ import java.util.List;
 import net.jgf.camera.CameraController;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.core.state.BaseState;
+import net.jgf.core.state.State;
 import net.jgf.jme.scene.JmeScene;
 import net.jgf.scene.SceneManager;
 import net.jgf.scenemonitor.StatePropertyPage;
@@ -56,7 +56,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		this.lastTpf = tpf;
 		super.update(tpf);
 		//SceneMonitor.getMonitor().updateViewer(tpf);
@@ -70,7 +70,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	 * @see net.jgf.view.BaseViewState#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 		this.lastTpf = tpf;
 		super.render(tpf);
 		//SceneMonitor.getMonitor().renderViewer(DisplaySystem.getDisplaySystem().getRenderer());
@@ -81,8 +81,8 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	 * @see net.jgf.view.ViewState#setActive(boolean)
 	 */
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		logger.debug ("Activating Scene Worker");
 		
 		SceneWorker.inst().initialiseSceneWorkerAndMonitor();
@@ -93,7 +93,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 		// Register SceneMonitor custom property pages
 		A_MonitorInformationPanel mip = SceneMonitor.getMonitor().getMonitorInformationPanel();
 		PropertyInformation propInfo = (PropertyInformation) mip;
-		propInfo.getPropertyPageHandler().registerPropertyPage(BaseState.class, new StatePropertyPage());
+		propInfo.getPropertyPageHandler().registerPropertyPage(State.class, new StatePropertyPage());
 		
 		/*SceneWorker.inst().addTreeRepresentationBinding(StateNode.class, StateTreeNode.class);
 		SceneWorker.inst().addTreeRepresentationBinding(ViewStateNode.class, StateTreeNode.class);*/
@@ -111,10 +111,10 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#deactivate()
+	 * @see net.jgf.core.state.State#deactivate()
 	 */
 	@Override
-	public void deactivate() {
+	public void doDeactivate() {
 		logger.debug ("Deactivating Scene Worker");
 		SceneMonitor.getMonitor().showViewer(false);
 		SceneWorker.inst().deactivate();
@@ -124,11 +124,11 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#unload()
 	 */
 	@Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
 		SceneWorker.inst().unload();
 	}
 

@@ -74,7 +74,7 @@
 		       Please note that more complete GUI examples are available 
 		       in Tanks and Mudvolley example games.
 			-->
-			<view id="view/root/display" class="net.jgf.jme.gui.NiftyGuiView" 
+			<view id="view/root/display" class="net.jgf.jme.view.gui.NiftyGuiView" 
 				autoLoad="true" autoActivate="true">
 			     <file>gui/gui/sample.xml</file>
 			</view>			

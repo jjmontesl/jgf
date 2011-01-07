@@ -57,7 +57,7 @@ public class Spectator extends DefaultEntity {
 	 * Updates the entity
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 		if (forward) {
 			getSpatial().getLocalTranslation().addLocal(getSpatial().getLocalRotation().mult(Vector3f.UNIT_Z).mult(MOVE_SPEED * tpf));

@@ -53,9 +53,9 @@ public class DebugView extends BaseViewState {
     protected SceneManager sceneManager;
 
     @Override
-		public void load() {
+		public void doLoad() {
 
-    	super.load();
+    	super.doLoad();
 
     	if (sceneManager == null) {
     		throw new ConfigException(this.toString() + " cannot be loaded because no SceneManager has been set.");
@@ -128,9 +128,9 @@ public class DebugView extends BaseViewState {
     }
 
     @Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
-    	super.update(tpf);
+    	super.doUpdate(tpf);
 
       //rootNode.updateGeometricState(tpf, true);
 
@@ -212,9 +212,9 @@ public class DebugView extends BaseViewState {
     }
 
     @Override
-		public void render(float tpf) {
+	public void doRender(float tpf) {
 
-    	super.render(tpf);
+    	super.doRender(tpf);
 
       if (showBounds) {
           Debugger.drawBounds(rootNode, DisplaySystem.getDisplaySystem()
@@ -271,6 +271,6 @@ public class DebugView extends BaseViewState {
 			this.sceneManager = sceneManager;
 		}
 
-
+		
 
 }

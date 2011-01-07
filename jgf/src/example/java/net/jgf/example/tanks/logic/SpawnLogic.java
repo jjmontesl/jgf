@@ -42,30 +42,32 @@ public class SpawnLogic extends BaseLogicState {
 
 	DefaultJmeScene scene;
 
-	Node bulletNode;
-
 	EffectsView effectsView;
 
 	int bullets = 0;
 
-	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
-	 */
+	   /* (non-Javadoc)
+     * @see net.jgf.core.state.State#load()
+     */
+    @Override
+    public void doLoad() {
+        super.doLoad();
+    }
+	
+	
 	@Override
-	public void load() {
-		super.load();
+	public void doActivate() {
+		super.doActivate();
 		entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
 		playerEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
 		bulletEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
 		enemyEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
 		effectsView = Jgf.getDirectory().getObjectAs("view/root/level/fight/effects", EffectsView.class);
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		bulletNode = (Node) scene.getRootNode().getChild("bullets");
-
 	}
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		// Nothing to do here
 	}
 
@@ -87,6 +89,8 @@ public class SpawnLogic extends BaseLogicState {
 
 		tank.integrate(playerEntityGroup, scene.getRootNode(), position);
 		scene.getRootNode().updateRenderState();
+		
+		StateHelper.loadAndActivate(tank);
 
 		return tank;
 	}
@@ -105,6 +109,7 @@ public class SpawnLogic extends BaseLogicState {
 		bullet.getSpatial().setModelBound(new BoundingSphere());
 		bullet.getSpatial().updateModelBound();
 
+	    Node bulletNode = (Node) scene.getRootNode().getChild("bullets");
 		bullet.integrate(bulletEntityGroup, bulletNode, position);
 		bullet.getSpatial().setUserData("entity", new TransientSavable<Entity>(bullet));
 
@@ -118,12 +123,15 @@ public class SpawnLogic extends BaseLogicState {
 		bullet.startFrom(newPosition, orientation.mult(Vector3f.UNIT_Z));
 
 		effectsView.addBullet(bullet);
+		
+		StateHelper.loadAndActivate(bullet);
 
 		return bullet;
 	}
 
 	public void destroyBullet(Bullet bullet) {
 
+	    Node bulletNode = (Node) scene.getRootNode().getChild("bullets");
 		bullet.withdraw(bulletEntityGroup, bulletNode);
 		effectsView.addExplosion(bullet.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_BULLET_TTL);
 

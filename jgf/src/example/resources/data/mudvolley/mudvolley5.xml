@@ -47,32 +47,32 @@
     
         <settings>
         
-            <setting name="project/name" class="net.jgf.settings.StringSetting"
+            <setting id="settings/project/name" class="net.jgf.settings.StringSetting"
                      label="Project Name" default="${application/key}" />
         
-            <setting name="video/gamma" class="net.jgf.settings.FloatSetting"
+            <setting id="settings/video/gamma" class="net.jgf.settings.FloatSetting"
                      label="Video Gamma" default="1.0f" />
             
-            <setting name="input/key/p1up" class="net.jgf.jme.settings.KeySetting" 
+            <setting id="settings/input/key/p1up" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Up" default="KEY_W" />
-            <setting nane="input/key/p1left" class="net.jgf.jme.settings.KeySetting" 
+            <setting id="settings/input/key/p1left" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Left" default="KEY_A" />
-            <setting name="input/key/p1right" class="net.jgf.jme.settings.KeySetting" 
+            <setting id="settings/input/key/p1right" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Right" default="KEY_D" />
 
-            <setting name="input/key/p2up" class="net.jgf.jme.settings.KeySetting" 
+            <setting id="settings/input/key/p2up" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Up" default="KEY_UP" />
-            <setting name="input/key/p2left" class="net.jgf.jme.settings.KeySetting" 
+            <setting id="settings/input/key/p2left" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Left" default="KEY_LEFT" />
-            <setting name="input/key/p2right" class="net.jgf.jme.settings.KeySetting" 
+            <setting id="settings/input/key/p2right" class="net.jgf.jme.settings.KeySetting" 
                      label="P1 Move Right" default="KEY_RIGHT" />
                      
-            <setting name="input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
-                     label="Screenshot" default="KEY_F5" />
-            <setting name="input/key/axis" class="net.jgf.jme.settings.KeySetting" 
-                     label="Screenshot" default="KEY_F10" />                       
+            <setting id="settings/input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
+                     label="Screenshot" default="KEY_F10" />
+            <setting id="settings/input/key/axis" class="net.jgf.jme.settings.KeySetting" 
+                     label="Show Grid" default="KEY_F9" />                       
     
-            <setting name="storage/path" class="net.jgf.settings.StringSetting"
+            <setting id="settings/storage/path" class="net.jgf.settings.StringSetting"
                      label="Settings file path" default="$USER_HOME/mudvolley.properties" />
             
         </settings>
@@ -80,7 +80,7 @@
     </service>
     
     <service id="settingsStorage" class="net.jgf.settings.storage.PropertiesStorage">
-        <path setting="settings/storage/path" />
+        <path>#{settings/storage/path}</path>
         <settings ref="settings" />
         <!-- TODO: Add exclusion capabilities -->
     </service>
@@ -184,7 +184,7 @@
 					autoLoad="true" autoActivate="true" >
 					
 					
-					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley1.view.InputView"
+					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley5.view.InputView"
 						autoLoad="true" autoActivate="true" >
 					</view>
 					
@@ -215,7 +215,7 @@
 				<view id="view/root/level/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
-					<key>KEY_F10</key>
+					<key>#{settings/input/key/axis}</key>
 
 					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" context="debug"
 						autoLoad="true" autoActivate="false" >
@@ -243,6 +243,19 @@
 				
 				</view>
 				
+            <!-- Console View state that serves as interface to use the Console system -->
+            <view id="view/root/console/switch" class="net.jgf.jme.view.ToggleInputView"
+                autoLoad="true" autoActivate="true">
+
+                <key>KEY_TAB</key>
+
+                <view id="view/root/console" class="net.jgf.jme.view.ConsoleView"
+                    autoLoad="true" autoActivate="false">
+                    <console ref="console" />
+                </view>
+                
+            </view>				
+				
 				<view id="view/root/level/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
@@ -261,6 +274,18 @@
 		</view>
 			
 	</service>
+	
+   <service id="console" class="net.jgf.console.StreamConsoleWrapper">
+        <service id="console/wrapped" class="net.jgf.console.bean.BeanshellConsole" >
+    
+            <bean name="settings" class="net.jgf.console.bean.SettingsBean" >
+                <settings ref="settings" />
+            </bean>
+            <bean name="jgf" class="net.jgf.console.bean.JgfToolsConsoleBean" >
+            </bean>
+            
+        </service>
+    </service>
 	
 	<!-- 
 		System Information Service

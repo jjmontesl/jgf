@@ -66,9 +66,9 @@ public class FaderViewNode extends BaseViewStateNode {
 	 * @see net.jgf.view.BaseViewState#load()
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 
 		rootNode.detachAllChildren();
 
@@ -89,8 +89,8 @@ public class FaderViewNode extends BaseViewStateNode {
 	 * @see net.jgf.core.state.BaseStateNode#unload()
 	 */
 	@Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
 		rootNode.detachAllChildren();
 		fader = null;
 	}
@@ -114,7 +114,7 @@ public class FaderViewNode extends BaseViewStateNode {
 
 			if ((fadeMode == FadeMode.FadeOut) && (!(fader.getAlpha() < 1.0f))) {
 				if (isDeactivateOnFinish()) this.deactivate();
-				if (isUnloadOnFinish()) this.unload();
+				if (isUnloadOnFinish()) this.doUnload();
 			}
 
 	}
@@ -148,8 +148,8 @@ public class FaderViewNode extends BaseViewStateNode {
 	 * @see net.jgf.core.state.BaseStateNode#activate()
 	 */
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		this.fadeIn();
 	}
 

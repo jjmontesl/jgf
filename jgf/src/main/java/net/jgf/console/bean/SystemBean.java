@@ -37,7 +37,8 @@ package net.jgf.console.bean;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.util.system.NamingUtils;
+import net.jgf.settings.Settings;
+import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -45,22 +46,21 @@ import org.apache.log4j.Logger;
  * Implements the console commands.
  */
 @Configurable
-public class JgfToolsConsoleBean {
+public class SystemBean {
 
 	/**
 	 * Class logger
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(JgfToolsConsoleBean.class);
+	private static final Logger logger = Logger.getLogger(SystemBean.class);
 
+	
+	public void quit() {
+	    Jgf.getApp().dispose();
+	}
 	
 	public void readConfig(Config config, String configPath) {
 		
 	}
 
-	public void dumpDirectory() {
-		logger.info("JGF Directory Dump: \n" + NamingUtils.directoryReport());
-	}
-	
-	
 }

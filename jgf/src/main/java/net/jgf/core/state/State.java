@@ -33,6 +33,8 @@ import net.jgf.view.ViewState;
  * state that contains other states, you need to ensure you check if a state is active before calling
  * its update methods. Failure to do so may result in states performing tasks while inactive.</p>
  *
+ * TODO: Study / document thread-safeness
+ *
  * @see ViewState
  * @see LogicState
  * @see Entity

@@ -36,7 +36,9 @@ package net.jgf.example.tanks.view;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.example.tanks.entity.PlayerTank;
+import net.jgf.jme.settings.KeySetting;
 import net.jgf.jme.view.CursorRenderView;
+import net.jgf.settings.SettingHandler;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
@@ -73,13 +75,11 @@ public class InputView extends BaseViewState {
 
     protected InputHandler inputHandler;
 
-    int keyLeft;
-    
-    int keyDown;
-    
-    int keyUp;
-    
-    int keyRight;
+    private SettingHandler<Integer> keyLeft = new SettingHandler<Integer>(KeySetting.class, "#{settings/input/key/left}");
+    private SettingHandler<Integer> keyRight = new SettingHandler<Integer>(KeySetting.class, "#{settings/input/key/right}");
+    private SettingHandler<Integer> keyUp = new SettingHandler<Integer>(KeySetting.class, "#{settings/input/key/up}");
+    private SettingHandler<Integer> keyDown = new SettingHandler<Integer>(KeySetting.class, "#{settings/input/key/down}");
+
     
     public InputView() {
         super();
@@ -100,13 +100,13 @@ public class InputView extends BaseViewState {
                 return;
             }
 
-            if (evt.getTriggerIndex() == keyLeft) {
+            if (evt.getTriggerIndex() == keyLeft.getValue()) {
                 player.setWalkLeft(evt.getTriggerPressed());
-            } else if (evt.getTriggerIndex() == keyRight) {
+            } else if (evt.getTriggerIndex() == keyRight.getValue()) {
                 player.setWalkRight(evt.getTriggerPressed());
-            } else if (evt.getTriggerIndex() == keyUp) {
+            } else if (evt.getTriggerIndex() == keyUp.getValue()) {
                 player.setWalkUp(evt.getTriggerPressed());
-            } else if (evt.getTriggerIndex() == keyDown) {
+            } else if (evt.getTriggerIndex() == keyDown.getValue()) {
                 player.setWalkDown(evt.getTriggerPressed());
             }
 
@@ -162,12 +162,12 @@ public class InputView extends BaseViewState {
     /*
      * (non-Javadoc)
      * 
-     * @see net.jgf.core.state.BaseState#load()
+     * @see net.jgf.core.state.State#load()
      */
     @Override
-    public void load() {
+    public void doLoad() {
 
-        super.load();
+        super.doLoad();
 
         Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
 
@@ -178,8 +178,8 @@ public class InputView extends BaseViewState {
     }
 
     @Override
-    public void activate() {
-        super.activate();
+    public void doActivate() {
+        super.doActivate();
         CursorRenderView cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor",
                 CursorRenderView.class);
         cursorView.getMouse().registerWithInputHandler(inputHandler);
@@ -193,7 +193,7 @@ public class InputView extends BaseViewState {
      * @see GameState#update(float)
      */
     @Override
-    public void input(float tpf) {
+    public void doInput(float tpf) {
 
         inputHandler.update(tpf);
 
@@ -203,21 +203,6 @@ public class InputView extends BaseViewState {
         this.player = player;
     }
 
-    public void setKeyLeft(Integer keyLeft) {
-        this.keyLeft = keyLeft;
-    }
-
-    public void setKeyDown(Integer keyDown) {
-        this.keyDown = keyDown;
-    }
-
-    public void setKeyUp(Integer keyUp) {
-        this.keyUp = keyUp;
-    }
-
-    public void setKeyRight(Integer keyRight) {
-        this.keyRight = keyRight;
-    }
 
     @Override
     public void readConfig(Config config, String configPath) {

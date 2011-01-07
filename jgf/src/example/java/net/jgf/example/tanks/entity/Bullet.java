@@ -68,11 +68,11 @@ public class Bullet extends SpatialEntity {
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
 		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
 
@@ -92,19 +92,19 @@ public class Bullet extends SpatialEntity {
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#unload()
 	 */
 	@Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
 		// TODO: Verify this is cleaning up correctly
 		this.getSpatial().setUserData("entity", null);
 	}
 
 	
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 	}
 
 
@@ -172,7 +172,7 @@ public class Bullet extends SpatialEntity {
 	}
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 
 		// Actually move the bullet

@@ -38,11 +38,11 @@ public class InGameLogic extends BaseLogicState {
 	private BallEntity ball;
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
 		entityManager = Jgf.getDirectory().getObjectAs("entity", EntityManager.class);
 
@@ -52,9 +52,9 @@ public class InGameLogic extends BaseLogicState {
 	}
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
-		super.update(tpf);
+		super.doUpdate(tpf);
 
 		sceneManager.update(tpf);
 		entityManager.update(tpf);

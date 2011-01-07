@@ -70,7 +70,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 
 	/**
 	 * @return
-	 * @see net.jgf.core.state.BaseState#isActive()
+	 * @see net.jgf.core.state.State#isActive()
 	 */
 	public boolean isActive() {
 		return rootState.isActive();
@@ -78,7 +78,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 
 	/**
 	 * @return
-	 * @see net.jgf.core.state.BaseState#isLoaded()
+	 * @see net.jgf.core.state.State#isLoaded()
 	 */
 	public boolean isLoaded() {
 		return rootState.isLoaded();
@@ -86,7 +86,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 
 	/**
 	 *
-	 * @see net.jgf.view.ViewStateNode#load()
+	 * @see net.jgf.view.ViewStateNode#doLoad()
 	 */
 	public void load() {
 		rootState.load();
@@ -96,7 +96,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 
 	/**
 	 *
-	 * @see net.jgf.core.state.BaseState#activate()
+	 * @see net.jgf.core.state.State#doActivate()
 	 */
 	public void activate() {
 		rootState.activate();
@@ -104,7 +104,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 
 	/**
 	 *
-	 * @see net.jgf.core.state.BaseState#deactivate()
+	 * @see net.jgf.core.state.State#deactivate()
 	 */
 	public void deactivate() {
 		rootState.deactivate();
@@ -112,7 +112,7 @@ public final class DefaultViewManager extends BaseService implements ViewManager
 
 	/**
 	 *
-	 * @see net.jgf.view.ViewStateNode#unload()
+	 * @see net.jgf.view.ViewStateNode#doUnload()
 	 */
 	public void unload() {
 		rootState.unload();

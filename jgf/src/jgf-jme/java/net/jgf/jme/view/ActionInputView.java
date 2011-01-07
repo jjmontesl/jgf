@@ -88,7 +88,7 @@ public final class ActionInputView extends BaseViewState {
 	 * @see net.jgf.core.state.State#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 		// Nothing to render
 	}
 
@@ -97,12 +97,12 @@ public final class ActionInputView extends BaseViewState {
 	 * @see net.jgf.core.state.State#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		// Nothing to do
 	}
 
 	@Override
-	public void input(float tpf) {
+	public void doInput(float tpf) {
 
 		inputHandler.update(tpf);
 
@@ -110,22 +110,22 @@ public final class ActionInputView extends BaseViewState {
 
 	/**
 	 * Calls the underlying View cleanup method and unloads this GameStateWrapperView.
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#doUnload()
 	 */
 	@Override
-	public void unload() {
+	public void doUnload() {
 		inputHandler.clearActions();
 		inputHandler = null;
-		super.unload();
+		super.doUnload();
 	}
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 		inputHandler = new InputHandler();
 		inputHandler.addAction(new KeyInputAction(), InputHandler.DEVICE_KEYBOARD, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
 

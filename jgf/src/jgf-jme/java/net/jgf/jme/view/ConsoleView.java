@@ -141,11 +141,11 @@ public class ConsoleView extends BaseViewState implements ConsoleObserver {
 
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
-		super.load();
+	public void doLoad() {
+		super.doLoad();
 		// TODO: Unload: remove observer
 		console.addConsoleObserver(this);
 		input = new InputHandler();
@@ -246,8 +246,8 @@ public class ConsoleView extends BaseViewState implements ConsoleObserver {
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
-		super.update(tpf);
+	public void doUpdate(float tpf) {
+		super.doUpdate(tpf);
 
 		inputText.print("> " + console.getCommand());
 		consoleNode.updateGeometricState(tpf, true);
@@ -257,8 +257,8 @@ public class ConsoleView extends BaseViewState implements ConsoleObserver {
 	 * @see net.jgf.view.BaseViewState#input(float)
 	 */
 	@Override
-	public void input(float tpf) {
-		super.input(tpf);
+	public void doInput(float tpf) {
+		super.doInput(tpf);
 		input.update(tpf);
 	}
 
@@ -266,8 +266,8 @@ public class ConsoleView extends BaseViewState implements ConsoleObserver {
 	 * Draws the console.
 	 */
 	@Override
-	public void render(float tpf) {
-		super.render (tpf);
+	public void doRender(float tpf) {
+		super.doRender (tpf);
 		DisplaySystem.getDisplaySystem().getRenderer().draw(consoleNode);
 	}
 

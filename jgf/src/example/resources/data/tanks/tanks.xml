@@ -123,8 +123,8 @@
 	 -->
 	
 	<!-- 
-		Entity Manager: Just create the groups as entities are 
-		added dynamically or by loaders.
+		Entity Manager: Just create groups. Entities are 
+		usually added dynamically or by loaders.
 	 -->
 	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
 		
@@ -218,7 +218,7 @@
 	 -->
 	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
 	
-		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
+		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
 			
 			<logic id="logic/action" class="net.jgf.logic.LogicStateNode" 
 				autoActivate="false">
@@ -280,13 +280,13 @@
 				<unloadOnFinish>true</unloadOnFinish>
 
                 <!-- 
-				<view id="view/root/intro/tech" class="net.jgf.jme.gui.NiftyGuiView"
+				<view id="view/root/intro/tech" class="net.jgf.jme.view.gui.NiftyGuiView"
 				   autoLoad="true" autoActivate="true">
 				   <file>tanks/gui/introtech.xml</file>
 				   <endAfter>3.0</endAfter>
 				</view>
 				
-                <view id="view/root/intro/title" class="net.jgf.jme.gui.NiftyGuiView"
+                <view id="view/root/intro/title" class="net.jgf.jme.view.gui.NiftyGuiView"
                    autoLoad="true" autoActivate="false">
                    <file>tanks/gui/title.xml</file>
                    <endAfter>3.0</endAfter>
@@ -313,7 +313,7 @@
 					<sceneManager ref="scene/manager" />		
 				</view>
 				
-                <view id="view/root/main/menu" class="net.jgf.jme.gui.NiftyGuiView"
+                <view id="view/root/main/menu" class="net.jgf.jme.view.gui.NiftyGuiView"
                    autoLoad="true" autoActivate="true">
                    <file>tanks/gui/mainmenu.xml</file>
                 </view> 
@@ -347,12 +347,6 @@
 					
 					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView"
 						autoLoad="true" autoActivate="true" >
-					   <settings ref="settings">
-						  <setting ref="settings/input/key/up" field="keyUp"  />
-						  <setting ref="settings/input/key/down" field="keyDown" />
-						  <setting ref="settings/input/key/left" field="keyLeft" />
-						  <setting ref="settings/input/key/right" field="keyRight" /> 
-					   </settings>
 					</view>
 					
 					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
@@ -374,14 +368,14 @@
 				<view id="view/root/level/failed" class="net.jgf.view.ViewStateNode"
 						autoLoad="true" autoActivate="false">
 
-	                <view id="view/root/level/failed/banner" class="net.jgf.jme.gui.NiftyGuiView"
+	                <view id="view/root/level/failed/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
 	                   autoLoad="true" autoActivate="true">
 	                   <file>tanks/gui/failed.xml</file>
 	                </view> 
 
 				</view>
 
-                <view id="view/root/level/osd" class="net.jgf.jme.gui.NiftyGuiView"
+                <view id="view/root/level/osd" class="net.jgf.jme.view.gui.NiftyGuiView"
                    autoLoad="true" autoActivate="true">
                    <file>tanks/gui/osd.xml</file>
                 </view> 

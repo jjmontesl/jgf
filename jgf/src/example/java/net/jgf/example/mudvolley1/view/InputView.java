@@ -55,12 +55,12 @@ public class InputView extends BaseViewState {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 
 		player1 = Jgf.getDirectory().getObjectAs("entity/root/player1", PlayerEntity.class);
 		player2 = Jgf.getDirectory().getObjectAs("entity/root/player2", PlayerEntity.class);
@@ -75,7 +75,7 @@ public class InputView extends BaseViewState {
 	 * @see GameState#update(float)
 	 */
 	@Override
-	public void input(float tpf) {
+	public void doInput(float tpf) {
 
 		inputHandler.update(tpf);
 

@@ -37,8 +37,8 @@ public class ActionView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
-		super.update(tpf);
+	public void doUpdate(float tpf) {
+		super.doUpdate(tpf);
 
 		// Perform action
 		if (action != null) {

@@ -32,9 +32,9 @@ public class SkyboxLoader extends BaseLoader<Scene> {
   	}
 
 		Node skybox = SceneUtils.setupSkyBox(prefix, suffix);
-  	skybox.setRenderState(((DefaultJmeScene)scene).getCommonRenderStates().get("fogDisabled"));
-  	((DefaultJmeScene)scene).getSky().setRootNode(skybox);
-  	skybox.updateRenderState();
+      	skybox.setRenderState(((DefaultJmeScene)scene).getCommonRenderStates().get("fogDisabled"));
+      	((DefaultJmeScene)scene).getSky().setRootNode(skybox);
+      	skybox.updateRenderState();
 
 		return scene;
 

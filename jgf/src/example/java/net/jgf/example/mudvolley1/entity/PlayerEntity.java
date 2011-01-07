@@ -26,7 +26,7 @@ public class PlayerEntity extends SpatialEntity {
 
 
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 		if (walkLeft) spatial.getLocalTranslation().addLocal(-walkSpeed * tpf, 0, 0);
 		if (walkRight) spatial.getLocalTranslation().addLocal(walkSpeed * tpf, 0, 0);

@@ -1,5 +1,5 @@
 
-package net.jgf.jme.gui;
+package net.jgf.jme.view.gui;
 
 
 
@@ -10,10 +10,12 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.state.StateHelper;
+import net.jgf.jme.gui.JgfScreenController;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
 
+import com.jme.renderer.RenderQueue;
 import com.jme.util.resource.ResourceLocatorTool;
 
 import de.lessvoid.nifty.EndNotify;
@@ -39,9 +41,9 @@ public class NiftyGuiView extends BaseViewState {
 
 	protected Nifty nifty; 
 	
-	protected String file = "gui/gui/sample.xml";
+	protected String file;
 	
-	protected float endAfter = 4.0f;
+	protected float endAfter;
 	
 	protected float timeElapsed = 0;
 	
@@ -57,7 +59,7 @@ public class NiftyGuiView extends BaseViewState {
 	    
 	    @Override
         public void perform() {
-            StateHelper.deactivateAndUnload(view);
+            view.deactivate();
         }
     };
 	
@@ -68,9 +70,9 @@ public class NiftyGuiView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#load()
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 
 		nifty = new Nifty(
 		        new JmeRenderDevice(),
@@ -85,18 +87,19 @@ public class NiftyGuiView extends BaseViewState {
 	 * @see net.jgf.core.state.BaseStateNode#unload()
 	 */
 	@Override
-	public void unload() {
+	public void doUnload() {
 		nifty.exit();
-	    super.unload();
+	    super.doUnload();
 	}
 
 	
-	
-	@Override
-    public void activate() {
+
+    @Override
+    public void doActivate() {
         
-        
-        ScreenController controller = new JgfDefaultScreenController(this);
+        super.doActivate();
+	    
+        ScreenController controller = new JgfScreenController(this);
         
         URL screenUrl = ResourceLocatorTool.locateResource("config", file);
         if (screenUrl == null) {
@@ -116,10 +119,6 @@ public class NiftyGuiView extends BaseViewState {
         this.closing = false;
         //this.nifty.gotoScreen("start");
         
-        // FIXME: This a workaround to cause observers to be notified after activation. This should be
-        // enforced by the framework (doActivate, doLoad?)
-        super.activate();
-        
     }
 
 	
@@ -127,9 +126,9 @@ public class NiftyGuiView extends BaseViewState {
 	 * Scene geometry update.
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
-			super.update(tpf);
+			super.doUpdate(tpf);
 			
 			this.timeElapsed += tpf;
 			if ((! this.closing) && (this.endAfter > 0)) {
@@ -149,9 +148,9 @@ public class NiftyGuiView extends BaseViewState {
 	 * class.
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 
-		super.render(tpf);
+		super.doRender(tpf);
 		
 	    if (nifty.render(false))  {
 	        if (this.isActive()) this.deactivate();

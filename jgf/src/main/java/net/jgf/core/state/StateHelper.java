@@ -26,10 +26,10 @@ public class StateHelper {
 	}
 
 	public static void loadAndActivate (State state) {
-		state.load();
-		state.activate();
+		if (!state.isLoaded()) state.load();
+		if (!state.isActive()) state.activate();
 	}
-
+	
 	public static void deactivateAndUnload(State state) {
 		if (state.isActive()) state.deactivate();
 		if (state.isLoaded()) state.unload();
@@ -37,14 +37,28 @@ public class StateHelper {
 
 	public static void loadAndActivate (String stateId) {
 		State state = Jgf.getDirectory().getObjectAs(stateId, State.class);
-		state.load();
-		state.activate();
+		StateHelper.loadAndActivate(state);
 	}
 
 	public static void deactivateAndUnload(String stateId) {
 		State state = Jgf.getDirectory().getObjectAs(stateId, State.class);
-		state.deactivate();
-		state.unload();
+		StateHelper.loadAndActivate(state);
+	}
+	
+	public static void deepDeactivate(String stateId) {
+	    State state = Jgf.getDirectory().getObjectAs(stateId, State.class);
+	    StateHelper.deepDeactivate(state);
+	}
+	
+	public static void deepDeactivate(State state) {
+	    if (!state.isLoaded()) return;
+	    if (state instanceof StateNode<?>) {
+	        StateNode<?> stateNode = (StateNode<?>) state;
+	        for (State child : stateNode.children()) {
+	            deepDeactivate(child);
+	        }
+	    }
+        if (!state.isActive()) state.deactivate();	    
 	}
 	
 }

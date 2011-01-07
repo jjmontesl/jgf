@@ -10,6 +10,9 @@
 	<!-- Application configuration -->
 	<application>
 	
+	    <!-- Short application name (for use with file names, etc...) -->
+	    <key>console</key>
+	
 		<!-- Name of the application. Will appear in the Window Title and messages. -->
 		<name>Java Game Framework: Console Test</name>
 		

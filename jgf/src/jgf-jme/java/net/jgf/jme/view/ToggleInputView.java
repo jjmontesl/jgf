@@ -5,8 +5,9 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
-import net.jgf.jme.config.JmeConfigHelper;
 import net.jgf.jme.settings.KeySetting;
+import net.jgf.settings.Setting;
+import net.jgf.settings.SettingHandler;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 import net.jgf.view.ViewState;
@@ -14,7 +15,6 @@ import net.jgf.view.ViewState;
 import org.apache.log4j.Logger;
 
 import com.jme.input.KeyBindingManager;
-import com.jme.input.KeyInput;
 
 /**
  */
@@ -35,7 +35,7 @@ public final class ToggleInputView extends BaseViewState {
 	/**
 	 * The KeyInput to bind in order to activate and deactivate.
 	 */
-	private int key;
+	private SettingHandler<Integer> key = new SettingHandler<Integer>(KeySetting.class);
 	
 	private boolean toggling;
 
@@ -44,7 +44,7 @@ public final class ToggleInputView extends BaseViewState {
 	 * @see net.jgf.core.state.State#render(float)
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 		if (view.isActive()) view.render(tpf);
 	}
 
@@ -53,12 +53,12 @@ public final class ToggleInputView extends BaseViewState {
 	 * @see net.jgf.core.state.State#update(float)
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 		if (view.isActive()) view.update(tpf);
 	}
 
 	@Override
-	public void input(float tpf) {
+	public void doInput(float tpf) {
 
 	    if ( (! toggling) && (KeyBindingManager.getKeyBindingManager().isValidCommand("toggle[" + this.getId() + "]", false)) ) {
 	            toggling = true;
@@ -80,31 +80,31 @@ public final class ToggleInputView extends BaseViewState {
 
 	/**
 	 * Calls the underlying View cleanup method and unloads this GameStateWrapperView.
-	 * @see net.jgf.core.state.BaseState#unload()
+	 * @see net.jgf.core.state.State#doUnload()
 	 */
 	@Override
-	public void unload() {
+	public void doUnload() {
 		// TODO: unload logging should be done by container??
 		view.unload();
 		Jgf.getDirectory().removeObject(view.getId());
 		view = null;
-		super.unload();
+		super.doUnload();
 	}
 
 	/* (non-Javadoc)
-	 * @see net.jgf.core.state.BaseState#load()
+	 * @see net.jgf.core.state.State#load()
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 		if (view.isAutoLoad()) view.load();
 
 		// KeyBindings
-		if (key == 0) {
+		if (key.getValue() == 0) {
 			throw new ConfigException("No key was specified for " + this + " (detected on loading)");
 		} else {
-			KeyBindingManager.getKeyBindingManager().set("toggle[" + this.getId() + "]", key);
+			KeyBindingManager.getKeyBindingManager().set("toggle[" + this.getId() + "]", key.getValue());
 		}
 
 	}
@@ -114,8 +114,8 @@ public final class ToggleInputView extends BaseViewState {
 	 */
 	// TODO: Where to check autoactivation
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		if (view.isAutoActivate()) view.activate();
 	}
 
@@ -138,17 +138,17 @@ public final class ToggleInputView extends BaseViewState {
 
 		view = ConfigurableFactory.newFromConfig(config, configPath + "/view", ViewState.class);
 		Jgf.getDirectory().addObject(view.getId(), view);
-		
-		config.setFromSetting(KeySetting.class, this, "key", configPath + "/key", "KEY_F10");
+
+		key.readValue(config.getString(configPath + "/key", "KEY_F10"));
 		
 	}
 
     public int getKey() {
-        return key;
+        return this.key.getValue();
     }
 
     public void setKey(int key) {
-        this.key = key;
+        this.key.setValue(key);
     }
 	
 

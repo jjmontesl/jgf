@@ -190,8 +190,6 @@ public final class Directory {
      */
     public synchronized void addObject(String id, Object object) {
 
-        WeakReference<Object> ref = new WeakReference<Object>(object);
-
         logger.trace("Adding object " + object + " to " + this);
 
         if (object == null) {
@@ -204,7 +202,7 @@ public final class Directory {
         }
 
         if (id.charAt(0) == DIRECTORY_EXCLUDING_PREFIX) {
-            logger.debug("Not adding object with id '" + id
+            logger.trace("Not adding object with id '" + id
                     + "' to the directory as it starts with '"
                     + DIRECTORY_EXCLUDING_PREFIX + "'");
             return;
@@ -218,7 +216,8 @@ public final class Directory {
                     + " because an object with that name already exists");
         }
         */
-
+        
+        WeakReference<Object> ref = new WeakReference<Object>(object);
         objects.put(id, ref);
 
         if (objects.size() > peakSize) {

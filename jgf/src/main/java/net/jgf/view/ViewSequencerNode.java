@@ -45,11 +45,11 @@ public class ViewSequencerNode extends BaseViewStateNode implements StateObserve
 
 	/**
 	 * ViewSequencerNode activates the first child when it is activated, so the sequence starts.
-	 * @see net.jgf.core.state.BaseStateNode#activate()
+	 * @see net.jgf.core.state.BaseStateNode#doActivate()
 	 */
 	@Override
-	public void activate() {
-		super.activate();
+	public void doActivate() {
+		super.doActivate();
 		if (children.size() > 0) children.get(0).activate();
 	}
 
@@ -79,7 +79,7 @@ public class ViewSequencerNode extends BaseViewStateNode implements StateObserve
 					// Last state: cleanup
 					this.deactivate();
 					if (unloadOnFinish) {
-						this.unload();
+						this.doUnload();
 					}
 				}
 			}

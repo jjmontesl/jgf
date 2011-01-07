@@ -36,15 +36,15 @@ public class ProjectedWaterView extends BaseViewState {
     Node rootNode;
 
     @Override
-	public void unload() {
-		super.unload();
+	public void doUnload() {
+		super.doUnload();
         waterEffectRenderPass.cleanup();
 	}
 
     @Override
-    public void load() {
+    public void doLoad() {
         
-    	super.load();
+    	super.doLoad();
     	
     	pManager = new BasicPassManager();
     	
@@ -95,7 +95,7 @@ public class ProjectedWaterView extends BaseViewState {
 	 * class.
 	 */
 	@Override
-	public void render(float tpf) {
+	public void doRender(float tpf) {
 
 		if (! this.active) return;
 		

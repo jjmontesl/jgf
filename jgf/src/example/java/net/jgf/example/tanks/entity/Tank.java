@@ -82,9 +82,9 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	 * Loads this entity.
 	 */
 	@Override
-	public void load() {
+	public void doLoad() {
 
-		super.load();
+		super.doLoad();
 
 		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
 		//cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
@@ -325,7 +325,7 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	 * Updates the tank. This is called every frame.
 	 */
 	@Override
-	public void update(float tpf) {
+	public void doUpdate(float tpf) {
 
 		updateMovement(tpf);
 
