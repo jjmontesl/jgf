@@ -19,7 +19,7 @@
 		</loader>
 
         <loader id="!entity.attributes" class="net.jgf.loader.AttributeLoader" >
-            <property name="AttributeLoader.simultaneousBullets" value="8" />
+            <property name="AttributeLoader.simultaneousBullets" value="5" />
         </loader>
 		
 	</loader>

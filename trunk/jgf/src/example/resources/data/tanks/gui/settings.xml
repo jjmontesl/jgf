@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Java Game Framework GUI Configuration file.
+    This is a GUI configuration file for the Nifty GUI library
+    which JGF uses.
+ --> 
+
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+
+   <screen id="start" controller="net.jgf.jme.gui.JgfScreenController">
+      
+    <layer id="layer" backgroundColor="#0000" childLayout="center">
+      
+      <effect>
+        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="500" startDelay="000" inherit="true" post="false"  />
+      </effect>
+      
+      <panel id="panelOuter" height="90%" width="80%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#779a" childLayout="center" visibleToMouse="true">
+      
+        <panel id="panelTop" height="100%" width="100%" align="center" valign="center" backgroundColor="#0000" childLayout="vertical" visibleToMouse="true">
+            
+            <panel id="settings" height="*" align="right" childLayout="vertical" />
+            
+            <panel align="right" childLayout="horizontal" height="8px" />
+            <control align="right" width="30%" name="button" label="Back" >
+                <interact onClick="endScreenAndDoAction(logic/action/showmenu)" />
+            </control>
+        </panel>      
+
+
+      </panel>
+    </layer>
+  </screen>  
+  
+</nifty>
+

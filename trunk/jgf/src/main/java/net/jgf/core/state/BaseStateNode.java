@@ -82,14 +82,12 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 	
 
 	/**
-	 * This does not deactivate children states since JGF allows users
-	 * to disable a parent node while keeping children activation state.
 	 */
 	@Override
     public void doDeactivate() {
         super.doDeactivate();
         for (T state : children) {
-            if (state.isAutoActivate()) state.deactivate();
+            if ((state.isAutoActivate()) && (state.isLoaded())) state.deactivate();
         }        
     }
 

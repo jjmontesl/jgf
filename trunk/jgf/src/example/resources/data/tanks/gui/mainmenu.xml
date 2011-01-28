@@ -35,12 +35,12 @@
             
             <panel align="right" childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Settings" >
-                <interact onClick="gotoScreen(settings)" />
+                <interact onClick="endScreenAndDoAction(logic/action/showsettings)" />
             </control>
             
             <panel align="right" childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Quit" >
-                <interact onClick="quit()" />
+                <interact onClick="endScreenAndQuit()" />
             </control>
         </panel>      
     
@@ -55,39 +55,7 @@
  
   </screen>
   
-  <screen id="settings" controller="net.jgf.jme.gui.JgfScreenController">
-      
-      
-    <layer id="layer" backgroundColor="#0000" childLayout="vertical">
-      
-      <effect>
-        <onStartScreen name="move" mode="in" direction="right" length="500" startDelay="0" inherit="true" post="true" />
-        <onEndScreen name="move" mode="out" direction="right" length="500" startDelay="0" inherit="true" post="true" />
-      </effect>
-      
-      <panel id="panelOuter" height="100%" width="100%" padding="50px,50px,50px,50px" align="center" valign="center" backgroundColor="#0000" childLayout="vertical" visibleToMouse="true">
-      
-        <panel id="panelTop" height="*" width="100%" align="center" valign="top" backgroundColor="#0000" childLayout="vertical" visibleToMouse="true">
-            
-            <control align="right" width="30%" name="button" label="Up" />
-            <control align="right" width="30%" name="button" label="Down" >
-            </control>
-            <control align="right" width="30%" name="button" label="Left" >
-            </control>
-            <control align="right" width="30%" name="button" label="Right" >
-            </control>
-            
-            <panel align="right" childLayout="horizontal" height="8px" />
-            <control align="right" width="30%" name="button" label="Back" >
-                <interact onClick="gotoScreen(start)" />
-               
-            </control>
-        </panel>      
-    
-
-      </panel>
-    </layer>
-  </screen>  
+ 
   
 </nifty>
 

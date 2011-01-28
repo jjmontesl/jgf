@@ -84,10 +84,7 @@ public final class ToggleInputView extends BaseViewState {
 	 */
 	@Override
 	public void doUnload() {
-		// TODO: unload logging should be done by container??
 		view.unload();
-		Jgf.getDirectory().removeObject(view.getId());
-		view = null;
 		super.doUnload();
 	}
 

@@ -9,22 +9,19 @@ import java.net.URL;
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
-import net.jgf.core.state.StateHelper;
+import net.jgf.core.IllegalStateException;
 import net.jgf.jme.gui.JgfScreenController;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
 
-import com.jme.renderer.RenderQueue;
 import com.jme.util.resource.ResourceLocatorTool;
 
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.input.mapping.DefaultScreenMapping;
 import de.lessvoid.nifty.jme.input.JmeInputSystem;
 import de.lessvoid.nifty.jme.render.JmeRenderDevice;
 import de.lessvoid.nifty.jme.sound.JmeSoundDevice;
-import de.lessvoid.nifty.screen.NullScreen;
 import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.tools.TimeProvider;
 
@@ -60,6 +57,7 @@ public class NiftyGuiView extends BaseViewState {
 	    @Override
         public void perform() {
             view.deactivate();
+            view.unload();
         }
     };
 	
@@ -74,21 +72,48 @@ public class NiftyGuiView extends BaseViewState {
 
 		super.doLoad();
 
-		nifty = new Nifty(
-		        new JmeRenderDevice(),
-		        new JmeSoundDevice(),
-		        new JmeInputSystem(),
-		        new TimeProvider());
-		
 	}
 
+	private void initNifty() {
+	    
+	    if (nifty != null) {
+            throw new IllegalStateException ("Nifty instance is already created at load time");
+        }
+        
+        nifty = new Nifty(
+                new JmeRenderDevice(),
+                new JmeSoundDevice(),
+                new JmeInputSystem(),
+                new TimeProvider());
+        
+        ScreenController controller = new JgfScreenController(this);
+
+        URL screenUrl = ResourceLocatorTool.locateResource("config", file);
+        if (screenUrl == null) {
+            throw new ConfigException("Could not find NiftyGUI screen resource at: " + file);
+        }
+        logger.debug("Loading NiftyGUI screen from " + screenUrl.toExternalForm());
+
+        try {
+            nifty.fromXml("niftygui-" + this.getId(), screenUrl.openStream(), "start", controller);
+
+        } catch (IOException e) {
+            throw new ConfigException("Could not read GUI resource: " + file, e);
+        }
+
+        this.timeElapsed = 0;
+        this.closing = false;
+        
+	}
 
 	/* (non-Javadoc)
 	 * @see net.jgf.core.state.BaseStateNode#unload()
 	 */
 	@Override
 	public void doUnload() {
-		nifty.exit();
+		if (! ((nifty.getCurrentScreen() == null) || (nifty.getCurrentScreen().isNull())) ) {
+		    nifty.exit();
+		}
 	    super.doUnload();
 	}
 
@@ -98,30 +123,15 @@ public class NiftyGuiView extends BaseViewState {
     public void doActivate() {
         
         super.doActivate();
-	    
-        ScreenController controller = new JgfScreenController(this);
         
-        URL screenUrl = ResourceLocatorTool.locateResource("config", file);
-        if (screenUrl == null) {
-            throw new ConfigException("Could not find NiftyGUI screen resource at: " + file);
-        }
-        logger.debug ("Loading NiftyGUI screen from " + screenUrl.toExternalForm());
+        if (this.nifty == null) initNifty();
         
-
-        try {
-            nifty.fromXml("niftygui-" + this.getId(), screenUrl.openStream(), "start", controller);
-            
-        } catch (IOException e) {
-            throw new ConfigException("Could not read GUI resource: " + file, e);
-        }
+        //this.nifty.resetEvents();
         
-        this.timeElapsed = 0;
-        this.closing = false;
+        //this.nifty.gotoScreen(this.nifty.getCurrentScreen().getScreenId());
         //this.nifty.gotoScreen("start");
-        
     }
 
-	
     /**
 	 * Scene geometry update.
 	 */
@@ -153,7 +163,10 @@ public class NiftyGuiView extends BaseViewState {
 		super.doRender(tpf);
 		
 	    if (nifty.render(false))  {
-	        if (this.isActive()) this.deactivate();
+	        if (this.isActive()) {
+	            this.deactivate();
+	            this.unload();
+	        }
 	    }
 		
 	}

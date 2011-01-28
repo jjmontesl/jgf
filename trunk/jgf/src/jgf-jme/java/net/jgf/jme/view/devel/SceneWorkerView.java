@@ -58,7 +58,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	@Override
 	public void doUpdate(float tpf) {
 		this.lastTpf = tpf;
-		super.update(tpf);
+		super.doUpdate(tpf);
 		//SceneMonitor.getMonitor().updateViewer(tpf);
 		sceneWorkerAppController.update();
 		if (this.inputHandler == null) inputHandler.update(tpf);

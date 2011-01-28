@@ -3,6 +3,7 @@ package net.jgf.view;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.core.state.StateHelper;
 import net.jgf.core.state.StateLifecycleEvent;
 import net.jgf.core.state.StateObserver;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
@@ -50,7 +51,7 @@ public class ViewSequencerNode extends BaseViewStateNode implements StateObserve
 	@Override
 	public void doActivate() {
 		super.doActivate();
-		if (children.size() > 0) children.get(0).activate();
+		if (children.size() > 0) StateHelper.activate(children.get(0));
 	}
 
 

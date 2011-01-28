@@ -45,20 +45,12 @@ public class StateHelper {
 		StateHelper.loadAndActivate(state);
 	}
 	
-	public static void deepDeactivate(String stateId) {
-	    State state = Jgf.getDirectory().getObjectAs(stateId, State.class);
-	    StateHelper.deepDeactivate(state);
+	public static void activate(State state) {
+	    if (!state.isActive()) state.activate();
 	}
 	
-	public static void deepDeactivate(State state) {
-	    if (!state.isLoaded()) return;
-	    if (state instanceof StateNode<?>) {
-	        StateNode<?> stateNode = (StateNode<?>) state;
-	        for (State child : stateNode.children()) {
-	            deepDeactivate(child);
-	        }
-	    }
-        if (!state.isActive()) state.deactivate();	    
+	public static void deactivate(State state) {
+	    if (state.isActive()) state.deactivate();
 	}
 	
 }

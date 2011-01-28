@@ -107,11 +107,8 @@ public class EffectsView extends BaseViewState {
 	@Override
 	public void doActivate() {
 		super.doActivate();
-		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		if (smokesNode == null) {
-			smokesNode = new Node("smokes");
-			scene.getRootNode().attachChild(smokesNode);
-		}
+		//scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
+		Jgf.getDirectory().register(this, "scene", "scene");
 	}
 
 	/*
@@ -286,5 +283,17 @@ public class EffectsView extends BaseViewState {
 
 		explosions.add(explosion);
 	}
+
+
+
+    public void setScene(DefaultJmeScene scene) {
+        this.scene = scene;
+        if (smokesNode == null) {
+            smokesNode = new Node("smokes");
+        }
+        scene.getRootNode().attachChild(smokesNode);
+    }
+	
+	
 
 }

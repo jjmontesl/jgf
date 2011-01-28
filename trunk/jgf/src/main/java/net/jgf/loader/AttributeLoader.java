@@ -6,8 +6,10 @@ import java.util.Map.Entry;
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
+import net.jgf.logic.action.control.ControllerAction;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
 
 
 
@@ -18,6 +20,12 @@ import org.apache.commons.beanutils.BeanUtils;
 @Configurable
 public class AttributeLoader<T> extends BaseLoader<T> {
 
+
+    /**
+     * Class logger.
+     */
+    private static final Logger logger = Logger.getLogger(AttributeLoader.class);
+    
 	@Override
 	public T load(T base, LoadProperties properties) throws LoaderException {
 
@@ -27,8 +35,11 @@ public class AttributeLoader<T> extends BaseLoader<T> {
 			
 			// Properties are prefixed with AttributeLoader
 			if (entry.getKey().startsWith("AttributeLoader")) {
-				String propertyName = entry.getKey().substring(15);
+				String propertyName = entry.getKey().substring(16);
 				try {
+				    if (logger.isTraceEnabled()) {
+				        logger.trace("Setting attribute " + propertyName + " to '" + entry.getValue() + "' on object " + base.toString());
+				    }
 					BeanUtils.setProperty(base, propertyName, entry.getValue());
 				} catch (IllegalAccessException e) {
 					throw new ConfigException("Could not set property '" + propertyName + "' on " + base + " at loader " + this);

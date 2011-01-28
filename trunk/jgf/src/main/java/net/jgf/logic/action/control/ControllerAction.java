@@ -78,10 +78,10 @@ public class ControllerAction extends BaseLogicAction {
 				StateHelper.deactivateAndUnload(state);
 			} else if (step.getType() == ActionStepType.activate) {
 				State state = Jgf.getDirectory().getObjectAs(step.getRef(), State.class);
-				state.activate();
+				StateHelper.activate(state);
 			} else if (step.getType() == ActionStepType.deactivate) {
 				State state = Jgf.getDirectory().getObjectAs(step.getRef(), State.class);
-				state.deactivate();
+				StateHelper.deactivate(state);
 			} else if (step.getType() == ActionStepType.load) {
 				State state = Jgf.getDirectory().getObjectAs(step.getRef(), State.class);
 				state.load();

@@ -39,6 +39,7 @@
 	<application>
 	
 		<!-- General application information -->
+		<key>mudvolley</key>
 		<name>MudVolley JGF Example 1: Introducing JGF</name>
 		<company>JGF</company>
 		<version>1.0</version>

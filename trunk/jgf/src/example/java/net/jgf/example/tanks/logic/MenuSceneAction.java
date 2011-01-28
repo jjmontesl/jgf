@@ -2,6 +2,7 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.state.StateHelper;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
 import net.jgf.logic.action.BaseLogicAction;
@@ -44,6 +45,9 @@ public class MenuSceneAction extends BaseLogicAction {
 
 		// Default Nodes
 		scene.getRootNode().attachChild(new Node("bullets"));
+		
+		// Enable view
+		StateHelper.loadAndActivate("view/root/main");
 
 	}
 
