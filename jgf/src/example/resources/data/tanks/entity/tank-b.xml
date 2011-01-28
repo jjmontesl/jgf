@@ -15,9 +15,9 @@
 		</loader>
 		
 		<loader id="!entity.attributes" class="net.jgf.loader.AttributeLoader" >
-			<property name="AttributeLoader.maxSpeed" value="1.9" />
-			<property name="AttributeLoader.firePerSecond" value="0.9" />
-			<property name="AttributeLoader.simultaneousBullets" value="5" />
+			<property name="AttributeLoader.maxSpeed" value="1.2" />
+			<property name="AttributeLoader.firePerSecond" value="1" />
+			<property name="AttributeLoader.simultaneousBullets" value="4" />
 		</loader>
 
 		<loader id="!entity.model" class="net.jgf.jme.loader.entity.EntityModelLoader" >

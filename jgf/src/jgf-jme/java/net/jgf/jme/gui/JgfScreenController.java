@@ -3,7 +3,6 @@ package net.jgf.jme.gui;
 import java.util.concurrent.Callable;
 
 import net.jgf.config.ConfigException;
-import net.jgf.core.state.StateHelper;
 import net.jgf.jme.view.gui.NiftyGuiView;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
@@ -46,9 +45,19 @@ public class JgfScreenController implements ScreenController {
         }
     }
     
+    private class QuitNotify implements EndNotify {
+        
+        @Override
+        public void perform() {
+            quit();
+        }
+    }
+    
     private class ActionNotify implements EndNotify {
         
-        String actionId = null;
+        String actionId = null; 
+        
+        
         
         JgfScreenController controller = null;
         
@@ -60,7 +69,11 @@ public class JgfScreenController implements ScreenController {
         @Override
         public void perform() {
             controller.view.deactivate();
+            controller.view.unload();
             doAction(actionId);
+            
+            //LogicAction action = Jgf.getDirectory().getObjectAs(actionId, LogicAction.class);
+            //action.perform(null);
         }
     };
     
@@ -96,6 +109,10 @@ public class JgfScreenController implements ScreenController {
         screen.endScreen(new ActionNotify(this, id));
     }
     
+    public void endScreenAndQuit() {
+        screen.endScreen(new QuitNotify());
+    }
+    
     public void doAction(String id) {
         
         LogicAction action = Jgf.getDirectory().getObjectAs(id, LogicAction.class);
@@ -107,14 +124,10 @@ public class JgfScreenController implements ScreenController {
             }
 
         }
-
-        
         
         //action.perform(null);
         Callable<Object> performTask = new ActionTask(action);
         GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE).enqueue(performTask);
-
-        
     }
     
     public void quit() {

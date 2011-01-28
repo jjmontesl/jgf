@@ -8,6 +8,7 @@ import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
 import net.jgf.example.tanks.entity.Tank;
 import net.jgf.example.tanks.loader.SceneReferencesProcessorLoader;
+import net.jgf.example.tanks.view.EffectsView;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -68,10 +69,12 @@ public class RestartAction extends BaseLogicAction {
 		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
 		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
         ViewState levelView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
+        EffectsView effectsView = Jgf.getDirectory().getObjectAs("view/root/level/fight/effects", EffectsView.class);
         
         if (rootEntity.isLoaded()) rootEntity.deactivate();
         if (inGameLogic.isLoaded()) inGameLogic.deactivate();
         if (levelView.isLoaded()) levelView.deactivate();
+        if (effectsView.isLoaded()) effectsView.deactivate();
         
 		// Load scene
 		SceneReferencesProcessorLoader sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene/referencesprocessor", SceneReferencesProcessorLoader.class);
@@ -93,10 +96,11 @@ public class RestartAction extends BaseLogicAction {
 		
 		StateHelper.loadAndActivate(inGameLogic);
 		StateHelper.loadAndActivate(levelView);
+		StateHelper.loadAndActivate(effectsView);
 		
         // Clear banner
         ViewState failedView = Jgf.getDirectory().getObjectAs("view/root/level/failed", ViewState.class);
-        failedView.deactivate();		
+        StateHelper.deactivateAndUnload(failedView);		
 
 	}
 

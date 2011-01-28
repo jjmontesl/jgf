@@ -32,8 +32,8 @@
         </panel>
       </panel>
       <panel id="panelDown" height="10%" width="100%" align="center" valign="center" backgroundColor="#000f" childLayout="vertical" visibleToMouse="true" >
-        <text id="text1" font="console.fnt"  color="#ffff" text="Created with 'JGF - Java Game Framework' - http://code.google.com/p/jgf/" align="center" valign="center" />
-        <text id="text2" font="console.fnt"  color="#ffff" text="(c) 2008-2011 JGF - Published under the BSD license" align="center" valign="center" />
+        <text id="text1" font="console.fnt"  color="#ffff" text="Created with 'JGF - Java Game Framework'" align="center" valign="center" />
+        <text id="text2" font="console.fnt"  color="#ffff" text="(c) 2008-2011 JGF - http://code.google.com/p/jgf/" align="center" valign="center" />
       </panel>
     </layer>
   </screen>
