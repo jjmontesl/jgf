@@ -11,7 +11,7 @@
   <useStyles filename="nifty-default-styles.xml" />
   <useControls filename="nifty-default-controls.xml" />
 
-  <screen id="start" controller="net.jgf.jme.gui.JgfScreenController">
+  <screen id="start" controller="net.jgf.jme.view.gui.JgfScreenController">
       
     <layer id="layer" backgroundColor="#0000" childLayout="vertical">
       

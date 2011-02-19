@@ -44,13 +44,13 @@ public class AITank extends Tank {
 
     protected float actionDistance = 19.0f;
 
-    protected Vector3f originalPosition = null;
+    protected Vector3f originalPosition;
 
-    protected Tile originalTile = null;
+    protected Tile originalTile;
 
     protected float nextEval;
     
-    protected Bresenham line = new Bresenham();; 
+    protected Bresenham line = new Bresenham();
 
     public float getFirePerSecond() {
         return firePerSecond;
@@ -172,8 +172,9 @@ public class AITank extends Tank {
 
         int bestValue = 1;
         LinkedList<Tile> candidates = new LinkedList<Tile>();
-        for (int i = 0; i < map.getHeight(); i++) {
-            for (int j = 0; j < map.getWidth(); j++) {
+
+        for (int i = 0; i < map.height; i++) {
+            for (int j = 0; j < map.width; j++) {
                 Tile tile = map.tiles[i][j];
 
                 int dist = ((tile.row - originalTile.row) * (tile.row - originalTile.row))
@@ -235,8 +236,8 @@ public class AITank extends Tank {
     public void evaluate() {
 
         // Initial settings
-        for (int i = 0; i < map.getHeight(); i++) {
-            for (int j = 0; j < map.getWidth(); j++) {
+        for (int i = 0; i < map.height; i++) {
+            for (int j = 0; j < map.width; j++) {
                 Tile tile = map.tiles[i][j];
                 tile.value = 9;
                 tile.dontGo = 0;

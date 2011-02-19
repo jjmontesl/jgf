@@ -72,7 +72,7 @@ public final class SceneWorkerView extends BaseViewState implements ISceneWorker
 	@Override
 	public void doRender(float tpf) {
 		this.lastTpf = tpf;
-		super.render(tpf);
+		super.doRender(tpf);
 		//SceneMonitor.getMonitor().renderViewer(DisplaySystem.getDisplaySystem().getRenderer());
 		sceneWorkerAppController.render();
 	}
