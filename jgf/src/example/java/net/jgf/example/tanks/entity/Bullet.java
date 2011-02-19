@@ -38,7 +38,7 @@ public class Bullet extends SpatialEntity {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(Bullet.class);
 
-	public final static float BULLET_SPEED = 3.3f;
+	public final static float BULLET_SPEED = 3.6f;
 
 	public static final float BULLET_TTL = 30.0f;
 

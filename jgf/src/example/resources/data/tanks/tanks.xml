@@ -289,7 +289,8 @@
 				autoLoad="true" autoActivate="true" >
 				
 				<unloadOnFinish>true</unloadOnFinish>
-
+                
+                <!-- 
 				<view id="view/root/intro/tech" class="net.jgf.jme.view.gui.NiftyGuiView"
 				   autoLoad="true" autoActivate="true">
 				   <file>tanks/gui/introtech.xml</file>
@@ -300,7 +301,9 @@
                    autoLoad="true" autoActivate="false">
                    <file>tanks/gui/title.xml</file>
                    <endAfter>3.0</endAfter>
-                </view>		
+                </view>	
+                
+                 -->	
 				
 				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
@@ -330,12 +333,15 @@
                 <view id="view/root/main/settings" class="net.jgf.jme.view.gui.SettingsConfigView"
                    autoLoad="false" autoActivate="false">
                    <file>tanks/gui/settings.xml</file>
-                   <page>
-                        <item setting="settings/input/key/up" />
-                        <item setting="settings/input/key/down" />
-                        <item setting="settings/input/key/left" />
-                        <item setting="settings/input/key/right" />
-                   </page>
+                   
+                   <items>
+                        <item type="setting" setting="settings/input/key/up" />
+                        <item type="setting" setting="settings/input/key/down" />
+                        <item type="separator" setting="separator1" />
+                        <item type="setting" setting="settings/input/key/left" />
+                        <item type="setting" setting="settings/input/key/right" />
+                        
+                   </items>
                 </view>  
 
 			</view>

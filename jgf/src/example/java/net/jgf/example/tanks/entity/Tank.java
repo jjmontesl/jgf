@@ -40,7 +40,7 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 
 	protected float speedRel;
 
-	protected float fireDelay = 0.250f;
+	protected float fireDelay = 0.200f;
 
 	protected float fireHold;
 
@@ -228,7 +228,7 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	 * @return
 	 */
 	protected boolean fire() {
-		// Spawn bullet
+		// Spawn bulletFirePerSe
 		// We don't contain logic to spawn other entities, as they could live longer than this entity
 		// An additional logic class is used
 		// TODO: On networked game this is likely to change
@@ -243,6 +243,9 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 			
 			bullet.addStateObserver(this);
 			currentBullets++;
+			
+			// Stop tank when firing
+			this.speedRel = 0;
 			
 			return true;
 		} else {

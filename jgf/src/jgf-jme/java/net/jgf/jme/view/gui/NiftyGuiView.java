@@ -10,7 +10,6 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.core.IllegalStateException;
-import net.jgf.jme.gui.JgfScreenController;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -114,15 +113,24 @@ public class NiftyGuiView extends BaseViewState {
 		if (! ((nifty.getCurrentScreen() == null) || (nifty.getCurrentScreen().isNull())) ) {
 		    nifty.exit();
 		}
+		nifty = null;
 	    super.doUnload();
 	}
 
 	
+	
+
+    @Override
+    public void doDeactivate() {
+        super.doDeactivate();
+    }
 
     @Override
     public void doActivate() {
         
         super.doActivate();
+        
+        closing = false;
         
         if (this.nifty == null) initNifty();
         

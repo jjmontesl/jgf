@@ -4,7 +4,11 @@ package net.jgf.example.tanks.loader;
 
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.jgf.config.Config;
@@ -29,6 +33,7 @@ import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.Spatial.TextureCombineMode;
 import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
@@ -39,6 +44,8 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 import com.jme.util.resource.ResourceLocatorTool;
+import com.sceneworker.app.undo.SpatialUndoAction;
+import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 /**
  */
@@ -118,6 +125,9 @@ public final class TanksSceneLoader extends SceneLoader {
 		scene.getCameraControllers().addCameraController(new TanksCamera("scene/camera/tanks"));
 		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/tanks", scene.getCameraControllers().getCameraController("scene/camera/tanks"));
 
+		partition(floorNode, 8);
+		partition(obstaclesNode, 8);
+		
 		fieldNode.attachChild(floorNode);
 		fieldNode.attachChild(obstaclesNode);
 
@@ -144,6 +154,44 @@ public final class TanksSceneLoader extends SceneLoader {
 
 		return scene;
 
+	}
+	
+	private void partition(Node node, int size) {
+	    Map<String, List<Spatial>> nodes = new Hashtable<String, List<Spatial>>();
+	    node.updateWorldBound(true);
+	    for (Spatial spatial : node.getChildren()) {
+	        
+	        spatial.setModelBound(new BoundingBox());
+	        spatial.updateModelBound();
+	        spatial.updateWorldBound();
+	        
+	        int blockX = -111;
+	        int blockY = -111;
+	        if (spatial.getWorldBound() != null) {
+	            blockX = (int) (((int)spatial.getWorldBound().getCenter().x) % size);
+	            blockY = (int) (((int)spatial.getWorldBound().getCenter().z) % size);
+	        }
+	        String nodeName = "block-" + size + "_" + (blockX*size) + "_" + (blockY*size);
+	        List<Spatial> blockNode = nodes.get(nodeName);
+	        if (blockNode == null) {
+	            blockNode = new ArrayList<Spatial>();
+	            nodes.put(nodeName, blockNode);
+	        }
+	        blockNode.add(spatial);
+	    }
+	    
+	    // Now attach all blocks
+	    node.detachAllChildren();
+	    for (java.util.Map.Entry<String, List<Spatial>>blockNode : nodes.entrySet()) {
+	        logger.debug("Adding new spatial partition: " + blockNode.getKey());
+	        Node tNode = new Node(blockNode.getKey());
+	        for (Spatial spatial : blockNode.getValue()) {
+	            tNode.attachChild(spatial);
+	        }
+	        tNode.updateWorldVectors();
+	        node.attachChild(tNode);
+	    }
+	    node.updateWorldVectors();
 	}
 	
 	private void fillMap(TanksMap map, String rawData) {

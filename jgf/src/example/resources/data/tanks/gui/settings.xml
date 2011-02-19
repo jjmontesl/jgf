@@ -11,7 +11,7 @@
   <useStyles filename="nifty-default-styles.xml" />
   <useControls filename="nifty-default-controls.xml" />
 
-   <screen id="start" controller="net.jgf.jme.gui.JgfScreenController">
+   <screen id="start" controller="net.jgf.jme.view.gui.JgfScreenController">
       
     <layer id="layer" backgroundColor="#0000" childLayout="center">
       
@@ -23,7 +23,7 @@
       
         <panel id="panelTop" height="100%" width="100%" align="center" valign="center" backgroundColor="#0000" childLayout="vertical" visibleToMouse="true">
             
-            <panel id="settings" height="*" align="right" childLayout="vertical" />
+            <panel id="settings" height="*" align="center" childLayout="vertical" />
             
             <panel align="right" childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Back" >
