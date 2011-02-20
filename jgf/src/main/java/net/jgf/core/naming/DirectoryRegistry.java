@@ -33,7 +33,9 @@
 
 package net.jgf.core.naming;
 
+import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -243,47 +245,12 @@ final class DirectoryRegistry {
 
         if (target != null) {
 
-            String setterName = "set" + String.valueOf(field.charAt(0)).toUpperCase();
-            if (field.length() > 1)
-                setterName += field.substring(1);
-
-            try {
-                logger.debug("Injecting field '" + field + "'=" + value + " of object " + target);
-                Method[] methods = target.getClass().getMethods();
-
-                // Find a setter with the appropriate parameter type
-                boolean found = false;
-                for (Method method : methods) {
-                    if (method.getName().equals(setterName)) {
-                        if ((method.getParameterTypes().length == 1)
-                                && (method.getReturnType() == void.class)) {
-                            if ((method.getParameterTypes()[0].isInstance(value))
-                                    || (value == null)) {
-                                found = true;
-                                // Call the setter
-                                // TODO: Cache the method when the object is registered
-                                method.invoke(target, value);
-                                break;
-                            }
-                        }
-                    }
+            if (!injectSetter(target, field, value)) {
+                if (!injectField(target, field, value, target.getClass())) {
+                    throw new NamingException("Field or setter for field '" + field + "' not found when injecting value on object " + target);
                 }
-
-                if (!found) {
-                    throw new ConfigException("No accessible setter (of correct type) '"
-                            + setterName + "' found in object " + target
-                            + " when setting value for directory resolved reference " + value);
-                }
-
-            } catch (IllegalAccessException e) {
-                throw new ConfigException("No accessible setter (of correct type) '" + setterName
-                        + "' found in object " + target
-                        + " when setting value for directory resolved reference " + value, e);
-            } catch (InvocationTargetException e) {
-                throw new ConfigException("Error calling setter '" + setterName
-                        + "' found in object " + target
-                        + " when setting value for directory resolved reference " + value, e);
             }
+            
 
         } else {
             // Everything should be unregistered
@@ -294,6 +261,104 @@ final class DirectoryRegistry {
                             + setter.targetToString + ")");
         }
 
+    }
+    
+    private boolean injectField(Object target, String field, Object value, Class<?> targetClass) {
+        
+        boolean injected = false;
+        
+        Field f = null;
+        Field[] fields = targetClass.getDeclaredFields();
+
+        // TODO: Search and store field reference to avoid repeated searches
+        for (Field tf : fields) {
+            if (tf.getName().equals(field)) {
+                f = tf;
+            }
+        }
+        
+        
+        if (f == null) {
+            // If field was not found: recursively try parent classes if they exist
+            
+            for (Class<?> interfaceClass : targetClass.getInterfaces()) {
+                injected = injected | injectField(target, field, value, interfaceClass);
+            }
+            // If field was not found: recursively try parent classes if they exist
+            if ((!injected) && (targetClass.getSuperclass() != null)) {
+                injected = injected | injectField(target, field, value, targetClass.getSuperclass());
+            } 
+            
+        } else {
+        
+            // If field was found:
+            if (logger.isDebugEnabled()) {
+                logger.debug("Injecting [field] field '" + field + "'=" + value + " on object " + target);
+            }
+        
+            try {
+                if (f.isAccessible()) {
+                    f.set(target, value);
+                } else {
+                    f.setAccessible(true);
+                    f.set(target, value);
+                    f.setAccessible(false);
+                }
+                injected = true;
+            } catch (IllegalAccessException e) {
+                throw new ConfigException("Could not access field '" + field
+                        + "' in object " + target
+                        + " when setting value for directory resolved reference " + value, e);
+            }
+            
+        }
+        
+        return injected;
+
+    }
+    
+    private boolean injectSetter(Object target, String field, Object value) {
+        
+        boolean injected = false;
+        
+        String setterName = "set" + String.valueOf(field.charAt(0)).toUpperCase();
+        if (field.length() > 1)
+            setterName += field.substring(1);
+        
+        try {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Injecting [setter] field '" + field + " with value " + value + " on object " + target);
+            }
+            Method[] methods = target.getClass().getMethods();
+
+            // Find a setter with the appropriate parameter type
+            for (Method method : methods) {
+                if (method.getName().equals(setterName)) {
+                    if ((method.getParameterTypes().length == 1)
+                            && (method.getReturnType() == void.class)) {
+                        if ((method.getParameterTypes()[0].isInstance(value))
+                                || (value == null)) {
+                            // Call the setter
+                            // TODO: Cache the method when the object is registered
+                            method.invoke(target, value);
+                            injected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+        } catch (IllegalAccessException e) {
+            throw new ConfigException("Can't access setter '" + setterName
+                    + "' found in object " + target
+                    + " when setting value for directory resolved reference " + value, e);
+        } catch (InvocationTargetException e) {
+            throw new ConfigException("Error calling setter '" + setterName
+                    + "' found in object " + target
+                    + " when setting value for directory resolved reference " + value, e);
+        }
+        
+        return injected;
     }
 
 }

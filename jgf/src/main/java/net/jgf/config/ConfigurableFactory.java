@@ -38,6 +38,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.jgf.core.naming.RegisterAnnotationProcessor;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -199,6 +201,9 @@ public final class ConfigurableFactory {
                     + classType.getCanonicalName() + " is not a @Configurable type");
         }
 
+        // Process Register Annotations
+        RegisterAnnotationProcessor.processRegisterAnnotation(newInstance);
+        
         return newInstance;
 
     }
