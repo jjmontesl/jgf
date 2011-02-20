@@ -3,6 +3,7 @@ package net.jgf.example.tanks.entity;
 import java.util.ArrayList;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.entity.Entity;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.entity.SpatialEntity;
@@ -44,13 +45,15 @@ public class Bullet extends SpatialEntity {
 
 	public static final float BULLET_HALFWIDTH = 0.08f;
 
+    @Register (ref = "scene")
+    private DefaultJmeScene scene;
+
+    @Register (ref = "logic/root/ingame/spawn")
+    private SpawnLogic spawnLogic;
+	
 	private float ttl;
 
 	private final Vector3f speed = new Vector3f();
-
-	private DefaultJmeScene scene;
-
-	private SpawnLogic spawnLogic;
 
 	private int numBounces = 0;
 
@@ -73,8 +76,6 @@ public class Bullet extends SpatialEntity {
 	@Override
 	public void doLoad() {
 		super.doLoad();
-		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
 
 		numBounces = 0;
 		ttl = BULLET_TTL;

@@ -1,6 +1,6 @@
 /*
  * JGF - Java Game Framework
- * $Id: Configurable.java 176 2009-11-01 02:45:50Z jjmontes $
+ * $Id: ConfigurableFactory.java 176 2009-11-01 02:45:50Z jjmontes $
  *
  * Copyright (c) 2008, JGF - Java Game Framework
  * All rights reserved.
@@ -33,24 +33,63 @@
 
 package net.jgf.core.naming;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
+import net.jgf.config.ConfigException;
 import net.jgf.core.naming.DirectoryRegistry.RegistryInjectionMethod;
+import net.jgf.entity.Entity;
+import net.jgf.system.Jgf;
+
+import org.apache.log4j.Logger;
 
 /**
  * <p>
- *
  * </p>
  * 
+ * @see Register
+ * @see DirectoryRegistry
+ * @see Directory
+ * @author jjmontes
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.FIELD, ElementType.METHOD })
-public @interface Register {
+public final class ObjectCreator {
 
-    public String ref();
+    /**
+     * Class logger.
+     */
+    private static final Logger logger = Logger.getLogger(ObjectCreator.class);
+
+    /**
+     * The constructor is private to Avoid instantiation.
+     */
+    private ObjectCreator() {
+    }
+
+    public static Object createObject(String className) {
+        try {
+            Class<?> clazz = (Class<?>) Class.forName(className);
+            return createObject(clazz);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigException("Invalid class '" + className + "' to be created.");
+        } 
+    }
+    
+    public static <T> T createObject(Class<T> expectedClass) {
         
-}
+        T newObject = null;
+        
+        try {
+            newObject = expectedClass.newInstance();
+        } catch (InstantiationException e) {
+            throw new ConfigException("Could not create class '" + expectedClass + "'.", e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigException("Could not create class '" + expectedClass + "'.", e);
+        }
+        
+        RegisterAnnotationProcessor.processRegisterAnnotation(newObject);
+        
+        return newObject;
 
+    }
+    
+}

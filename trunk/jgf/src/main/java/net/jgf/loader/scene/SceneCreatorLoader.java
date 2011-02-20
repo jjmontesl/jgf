@@ -3,6 +3,7 @@ package net.jgf.loader.scene;
 
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.ObjectCreator;
 import net.jgf.loader.LoadProperties;
 import net.jgf.scene.Scene;
 
@@ -40,16 +41,7 @@ public class SceneCreatorLoader extends SceneLoader {
 
 		// TODO: Add checks!
 
-		Scene scene = null;
-		try {
-			// It has been checked that this class is a Scene
-			@SuppressWarnings("unchecked") Class<Scene> sceneClass = (Class<Scene>) classUnchecked;
-			scene = sceneClass.newInstance();
-		} catch (InstantiationException e) {
-			throw new ConfigException("Could not create class '" + className + "' by " + this);
-		} catch (IllegalAccessException e) {
-			throw new ConfigException("Could not create class '" + className + "' by " + this);
-		}
+		Scene scene = (Scene) ObjectCreator.createObject(classUnchecked);
 
 		String sceneId = properties.get("SceneCreatorLoader.id");
 		if (sceneId != null) {

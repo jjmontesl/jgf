@@ -4,6 +4,7 @@ package net.jgf.jme.view;
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.ObjectCreator;
 import net.jgf.core.state.State;
 import net.jgf.view.BaseViewState;
 
@@ -89,14 +90,7 @@ public final class GameStateWrapperView extends BaseViewState {
 			throw new ConfigException ("Component " + this.getId() + " references a class " + className + " which is not a GameState");
 		}
 
-		try {
-			gameState = (GameState) gamestateClass.newInstance();
-		} catch (InstantiationException e) {
-			throw new ConfigException ("Could not instantiate GameState class '" + className + "'", e);
-		} catch (IllegalAccessException e) {
-			throw new ConfigException ("Could not instantiate GameState class '" + className + "'", e);
-		}
-
+		gameState = (GameState) ObjectCreator.createObject(gamestateClass);
 		gameState.setActive(true);
 
 	}

@@ -5,9 +5,9 @@ package net.jgf.example.tanks.camera;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.jme.camera.JmeCamera;
 import net.jgf.jme.entity.SpatialEntity;
-import net.jgf.system.Jgf;
 
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
@@ -22,34 +22,21 @@ public class TanksCamera extends JmeCamera {
 	
 	protected Vector3f lookAt = new Vector3f();
 
+	@Register (ref="entity/root/players/player1")
 	protected SpatialEntity target;
 
 	protected Vector3f lastTarget = new Vector3f();
 	
-	
 	public TanksCamera() {
-		this(null);
-	}
+        super();
+    }
+
+    public TanksCamera(String id) {
+        super(id);
+    }
 
 
-	public TanksCamera(String id) {
-		super(id);
-		Jgf.getDirectory().register(this, "target", "entity/root/players/player1");
-	}
-
-
-	
-	public SpatialEntity getTarget() {
-		return target;
-	}
-
-
-	public void setTarget(SpatialEntity target) {
-		this.target = target;
-	}
-
-
-	/**
+    /**
 	 * Updates the camera using its controller
 	 */
 	@Override

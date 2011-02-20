@@ -2,6 +2,7 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.core.state.StateHelper;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
@@ -32,16 +33,22 @@ import com.jme.scene.Spatial;
 @Configurable
 public class SpawnLogic extends BaseLogicState {
 
+    @Register (ref = "loader/entity/pool")
 	EntityPoolLoader entityLoader;
 
+    @Register (ref = "entity/root/players")
 	EntityGroup playerEntityGroup;
 
+    @Register (ref = "entity/root/bullets")
 	EntityGroup bulletEntityGroup;
 
+    @Register (ref = "entity/root/enemy")
 	EntityGroup enemyEntityGroup;
 
+    @Register (ref = "scene")
 	DefaultJmeScene scene;
 
+	@Register (ref = "view/root/level/fight/effects")
 	EffectsView effectsView;
 
 	int bullets = 0;
@@ -54,23 +61,10 @@ public class SpawnLogic extends BaseLogicState {
         super.doLoad();
     }
 	
-	
-	@Override
-	public void doActivate() {
-		super.doActivate();
-		entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
-		playerEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
-		bulletEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
-		enemyEntityGroup = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
-		effectsView = Jgf.getDirectory().getObjectAs("view/root/level/fight/effects", EffectsView.class);
-		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-	}
-
 	@Override
 	public void doUpdate(float tpf) {
 		// Nothing to do here
 	}
-
 
 	public Tank spawnPlayer() {
 

@@ -38,6 +38,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.jgf.core.naming.ObjectCreator;
 import net.jgf.core.naming.RegisterAnnotationProcessor;
 
 import org.apache.log4j.Logger;
@@ -153,22 +154,15 @@ public final class ConfigurableFactory {
         // Create the object
         T newInstance = null;
         try {
-            newInstance = boundedClassType.newInstance();
-        } catch (InstantiationException e) {
+            newInstance = ObjectCreator.createObject(boundedClassType);
+        } catch (ConfigException e) {
             throw new ConfigException(
                     "Element "
                             + configPath
                             + "could not be instantiated from config "
                             + "(tip: check it has a public void constructor, is not abstract...)",
                     e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigException(
-                    "Element "
-                            + configPath
-                            + " could not be instantiated from config "
-                            + "(tip: check it has a public void constructor, is not abstract...)",
-                    e);
-        }
+        } 
 
         // Call configurable object factory
         // Check the class is Configurable, otherwise we can't instantiate from
@@ -176,15 +170,29 @@ public final class ConfigurableFactory {
         if (classType.isAnnotationPresent(Configurable.class)) {
 
             try {
-                Method factoryMethod = classType.getMethod(Configurable.READCONFIG_METHOD_NAME,
-                        Config.class, String.class);
-                factoryMethod.invoke(newInstance, config, configPath);
-            } catch (NoSuchMethodException e) {
-                throw new ConfigException(
-                        "Element "
-                                + configPath
-                                + " is marked as @Configurable but doesn't provide a configuration method '"
-                                + Configurable.READCONFIG_METHOD_NAME + "'", e);
+                Class<?> readconfigClass = classType;
+                Method factoryMethod = null; 
+                
+                do {
+                    try {
+                    factoryMethod = readconfigClass.getMethod(Configurable.READCONFIG_METHOD_NAME,
+                            Config.class, String.class);
+                    } catch (NoSuchMethodException e) {
+                        // Nothing to do
+                    }
+                    readconfigClass = readconfigClass.getSuperclass();
+                } while (factoryMethod == null && readconfigClass != null);
+                
+                if (factoryMethod != null) {
+                    factoryMethod.invoke(newInstance, config, configPath);
+                } else {
+                    throw new ConfigException(
+                            "Element "
+                                    + configPath
+                                    + " is marked as @Configurable but doesn't provide a configuration method '"
+                                    + Configurable.READCONFIG_METHOD_NAME + "'");
+                }
+                
             } catch (IllegalAccessException e) {
                 throw new ConfigException(
                         "Element "
@@ -201,9 +209,6 @@ public final class ConfigurableFactory {
                     + classType.getCanonicalName() + " is not a @Configurable type");
         }
 
-        // Process Register Annotations
-        RegisterAnnotationProcessor.processRegisterAnnotation(newInstance);
-        
         return newInstance;
 
     }

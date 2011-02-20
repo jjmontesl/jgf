@@ -4,8 +4,8 @@ package net.jgf.example.mudvolley1.view;
 
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.example.mudvolley1.entity.PlayerEntity;
-import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -21,8 +21,10 @@ import com.jmex.game.state.GameState;
 @Configurable
 public class InputView extends BaseViewState {
 
+    @Register (ref = "entity/root/player1")
 	private PlayerEntity player1;
 
+    @Register (ref = "entity/root/player2")
 	private PlayerEntity player2;
 
 	/**
@@ -61,9 +63,6 @@ public class InputView extends BaseViewState {
 	public void doLoad() {
 
 		super.doLoad();
-
-		player1 = Jgf.getDirectory().getObjectAs("entity/root/player1", PlayerEntity.class);
-		player2 = Jgf.getDirectory().getObjectAs("entity/root/player2", PlayerEntity.class);
 
 		inputHandler = new InputHandler();
 		inputHandler.addAction(new KeyInputAction(), InputHandler.DEVICE_KEYBOARD, InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);

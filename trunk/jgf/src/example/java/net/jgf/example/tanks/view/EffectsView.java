@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.model.util.ModelUtil;
 import net.jgf.jme.scene.DefaultJmeScene;
@@ -108,7 +109,7 @@ public class EffectsView extends BaseViewState {
 	public void doActivate() {
 		super.doActivate();
 		//scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		Jgf.getDirectory().register(this, "scene", "scene");
+		//Jgf.getDirectory().register(this, "setScene", "scene");
 	}
 
 	/*
@@ -285,13 +286,15 @@ public class EffectsView extends BaseViewState {
 	}
 
 
-
+	@Register(ref = "scene")
     public void setScene(DefaultJmeScene scene) {
         this.scene = scene;
-        if (smokesNode == null) {
-            smokesNode = new Node("smokes");
+        if (scene != null) {
+            if (smokesNode == null) {
+                smokesNode = new Node("smokes");
+            }
+            scene.getRootNode().attachChild(smokesNode);
         }
-        scene.getRootNode().attachChild(smokesNode);
     }
 	
 	
