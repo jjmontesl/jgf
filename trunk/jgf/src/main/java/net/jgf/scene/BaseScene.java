@@ -44,7 +44,7 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 	/**
 	 * The current camera that will be used to render this scene.
 	 */
-	protected CameraController camera;
+	protected CameraController currentCameraController;
 
 	/**
 	 * Default constructor.
@@ -107,7 +107,7 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 	 * @return the camera
 	 */
 	public CameraController getCurrentCameraController() {
-		return camera;
+		return currentCameraController;
 	}
 
 
@@ -115,7 +115,7 @@ public abstract class BaseScene extends BaseComponent implements Scene {
 	 * @param camera the camera to set
 	 */
 	public void setCurrentCameraController(CameraController camera) {
-		this.camera = camera;
+		this.currentCameraController = camera;
 	}
 
 	/**
