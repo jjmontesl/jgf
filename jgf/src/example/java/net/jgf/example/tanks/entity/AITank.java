@@ -3,6 +3,7 @@ package net.jgf.example.tanks.entity;
 import java.util.LinkedList;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.ai.Bresenham;
@@ -26,16 +27,20 @@ public class AITank extends Tank {
 
     protected Vector3f targetPos = new Vector3f();
 
-    protected SpatialEntity targetEntity = null;
+    @Register (ref = "entity/root/players/player1")
+    protected SpatialEntity targetEntity;
 
     protected TanksMap map;
 
     protected Path path;
 
+    @Register (ref = "entity/root/players")
     protected EntityGroup players;
 
+    @Register (ref = "entity/root/enemy")
     protected EntityGroup enemies;
 
+    @Register (ref = "entity/root/bullets")
     protected EntityGroup bullets;
 
     protected float firePerSecond = 0.6f;
@@ -76,17 +81,9 @@ public class AITank extends Tank {
     @Override
     public void doLoad() {
         super.doLoad();
-        Jgf.getDirectory().register(this, "targetEntity", "entity/root/players/player1");
-        players = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
-        enemies = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
-        bullets = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
-        map = (TanksMap) scene.getProperties().get("map");
-    }
-
-    @Override
-    public void doUnload() {
-        super.doUnload();
-        Jgf.getDirectory().unregister(this, "targetEntity");
+        if (scene != null) {
+            map = (TanksMap) scene.getProperties().get("map");
+        }
     }
 
     @Override

@@ -33,9 +33,10 @@
 
 package net.jgf.core.naming;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
+import net.jgf.core.naming.DirectoryRegistry.RegistryInjectionMethod;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
@@ -61,20 +62,36 @@ public final class RegisterAnnotationProcessor {
      */
     private RegisterAnnotationProcessor() {
     }
-
+    
     public static void processRegisterAnnotation(Object object) {
-        
-        Field[] fields = object.getClass().getDeclaredFields();
+        processRegisterAnnotation(object, object.getClass());
+    }
 
+    private static void processRegisterAnnotation(Object object, Class<?> clazz) {
+        
+        // Recursively process parent classes
+        if (clazz.getSuperclass() != null) {
+            processRegisterAnnotation(object, clazz.getSuperclass());
+        }
+        
+        Field[] fields = clazz.getDeclaredFields();
         for (Field f : fields) {
             Register an = f.getAnnotation(Register.class);
             if (an != null) {
-                logger.trace("Processing 'Register' annotation for ref '" + an.ref() + "' on object " + object);
-                f.setAccessible(true);
-                Jgf.getDirectory().register(object, f.getName(), an.ref());
+                logger.trace("Processing 'Register' field annotation for ref '" + an.ref() + "' on object " + object);
+                Jgf.getDirectory().register(object, f.getName(), an.ref(), RegistryInjectionMethod.FIELD);
             }
         }
-
+        
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method m : methods) {
+            Register an = m.getAnnotation(Register.class);
+            if (an != null) {
+                logger.trace("Processing 'Register' method annotation for ref '" + an.ref() + "' on object " + object);
+                Jgf.getDirectory().register(object, m.getName(), an.ref(), RegistryInjectionMethod.SETTER);
+            }
+        }
+        
     }
     
 }

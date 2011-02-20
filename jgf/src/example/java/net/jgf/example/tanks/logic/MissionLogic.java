@@ -2,6 +2,7 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.core.state.State;
 import net.jgf.core.state.StateHelper;
 import net.jgf.entity.EntityGroup;
@@ -23,38 +24,25 @@ public class MissionLogic extends BaseLogicState {
 	 */
 	private static final Logger logger = Logger.getLogger(MissionLogic.class);
 
+	@Register (ref = "entity/root/players/player1")
 	protected PlayerTank player;
 	
-	protected float timeAfterDeath;
-	
+	@Register (ref = "view/root/level/failed")
 	protected State bannerFailed;
 	
+	@Register (ref = "entity/root/enemy")
 	protected EntityGroup enemies;
 	
 	protected boolean fighting;
 	
-	/* (non-Javadoc)
-	 * @see net.jgf.core.state.State#load()
-	 */
-	@Override
-	public void doLoad() {
-		super.doLoad();
-		Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
-		Jgf.getDirectory().register(this, "enemies", "entity/root/enemy");
-		bannerFailed = Jgf.getDirectory().getObjectAs("view/root/level/failed", State.class);
-		
-	}
+	protected float timeAfterDeath;
 	
-	
-
 	@Override
     public void doActivate() {
         super.doActivate();
         timeAfterDeath = 0;
         fighting = true;
     }
-
-
 
     @Override
 	public void doUpdate(float tpf) {
@@ -90,10 +78,8 @@ public class MissionLogic extends BaseLogicState {
 	        
 	        // Destroy all bullets
 	        
+	        
 	        // Enable victory screen
-	        
-	        
-	        
             if (!bannerFailed.isActive()) {
                 timeAfterDeath += tpf;
                 if (timeAfterDeath > 2.0f) {
@@ -104,30 +90,6 @@ public class MissionLogic extends BaseLogicState {
         }
         
     }
-
-
-	public PlayerTank getPlayer() {
-		return player;
-	}
-
-
-	public void setPlayer(PlayerTank player) {
-		this.player = player;
-	}
-
-
-
-    public EntityGroup getEnemies() {
-        return enemies;
-    }
-
-
-
-    public void setEnemies(EntityGroup enemies) {
-        this.enemies = enemies;
-    }
-
-
 
     public boolean isFighting() {
         return fighting;

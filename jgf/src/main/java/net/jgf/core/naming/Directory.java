@@ -38,7 +38,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
-import net.jgf.config.ConfigException;
+import net.jgf.core.naming.DirectoryRegistry.RegistryInjectionMethod;
 import net.jgf.core.service.ServiceException;
 import net.jgf.system.Jgf;
 
@@ -157,7 +157,7 @@ public final class Directory {
     public synchronized Object removeObject(String id) {
 
         if (StringUtils.isBlank(id)) {
-            throw new ConfigException(
+            throw new NamingException(
                     "Cannot remove object with a blank name: '" + id + "'");
         }
         if (id.charAt(0) == DIRECTORY_EXCLUDING_PREFIX) {
@@ -166,7 +166,7 @@ public final class Directory {
 
         final WeakReference<Object> reference = objects.remove(id);
         if (reference == null) {
-            throw new ConfigException(
+            throw new NamingException(
                     "Tried to remove a non existent object named '" + id
                             + "' from " + this);
         }
@@ -193,11 +193,11 @@ public final class Directory {
         logger.trace("Adding object " + object + " to " + this);
 
         if (object == null) {
-            throw new ConfigException("Trying to add a null object to " + this);
+            throw new NamingException("Trying to add a null object to " + this);
         }
 
         if (StringUtils.isBlank(id)) {
-            throw new ConfigException("Cannot add object " + object
+            throw new NamingException("Cannot add object " + object
                     + " with a blank name: '" + id + "'");
         }
 
@@ -212,7 +212,7 @@ public final class Directory {
         // TODO: Experimental: currently allowing overwriting, which seems to be better
         /*
         if (objects.containsKey(id)) {
-            throw new ConfigException("Cannot add object with name " + id 
+            throw new NamingException("Cannot add object with name " + id 
                     + " because an object with that name already exists");
         }
         */
@@ -260,23 +260,22 @@ public final class Directory {
                     "Trying to retrieve object with name 'null'");
         }
 
-        // TODO: This souldn't be a configexception. Review exceptions.
         WeakReference<Object> ref = objects.get(id);
         if (ref == null) {
-            throw new ConfigException(
+            throw new NamingException(
                     "No object found when resolving reference '" + id + "'");
         }
 
         Object o = ref.get();
         if (o == null) {
-            throw new ConfigException(
+            throw new NamingException(
                     "Trying to retrieve a garbage collected object '"
                             + id
                             + "' (the object does not exist anymore but it was not removed from the directory)");
         }
 
         if (!expectedClass.isAssignableFrom(o.getClass())) {
-            throw new ConfigException("Object retrieved " + o
+            throw new NamingException("Object retrieved " + o
                     + " is not an instance of the expected class "
                     + expectedClass);
         }
@@ -311,7 +310,7 @@ public final class Directory {
         }
 
         if (ref.get() == null) {
-            throw new ConfigException(
+            throw new NamingException(
                     "Detected a garbage collected object when evaluating if directory contains an object with name '"
                             + id
                             + "' (the object does not exist anymore but it was not removed from the directory)");
@@ -371,19 +370,30 @@ public final class Directory {
      * to synchronize it with the value in the repository. If the 'id' doesn't
      * exist in the Directory, null is injected.
      * </p>
+     * 
+     * @param object the object on which the field will be set.
+     * @param accesorName name of the field that will be set (a public setter needs to exist).
+     * @param id id that will be registered.
+     */
+    public synchronized void register(Object object, String accesorName, String id) {
+        registry.register(object, accesorName, id, RegistryInjectionMethod.ALL);
+    }
+    
+    /**
      * <p>
-     * The object resolved will be injected into the 'field' attribute using a
-     * public setter. An exception will be thrown at runtime if an appropriate
-     * setter for that field is not found in the target object. 
+     * Registers an object to be updated when the Directory entry named as the
+     * 'id' argument changes. The object will also be receive an initial update
+     * to synchronize it with the value in the repository. If the 'id' doesn't
+     * exist in the Directory, null is injected.
      * </p>
      * 
      * @param object the object on which the field will be set.
-     * @param field name of the field that will be set (a public setter needs to exist).
+     * @param accessorName name of the field that will be set (a public setter needs to exist).
      * @param id id that will be registered.
      */
-    public synchronized void register(Object object, String field, String id) {
-        registry.register(object, field, id);
-    }
+    public synchronized void register(Object object, String accessorName, String id, RegistryInjectionMethod injectionMethod) {
+        registry.register(object, accessorName, id, injectionMethod);
+    }    
 
     /**
      * <p>Unregisters a pair object+field from the directory registry, so it won't receive any

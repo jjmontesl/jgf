@@ -1,6 +1,7 @@
 package net.jgf.example.tanks.view;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.core.state.StateLifecycleEvent;
 import net.jgf.core.state.StateObserver;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
@@ -29,6 +30,7 @@ public class TanksView extends BaseViewState implements StateObserver {
 	
 	protected TextRenderer timeText;
 	
+	@Register (ref = "entity/root/players/player1")
 	protected PlayerTank player;
 	
 	protected NiftyGuiView niftyView;
@@ -45,8 +47,6 @@ public class TanksView extends BaseViewState implements StateObserver {
 		// Hook the activate event of the Nifty menu
 		niftyView = Jgf.getDirectory().getObjectAs("view/root/level/osd",  NiftyGuiView.class);
 		niftyView.addStateObserver(this);
-
-		Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
 	}
 
 	@Override

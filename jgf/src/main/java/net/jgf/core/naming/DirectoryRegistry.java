@@ -33,7 +33,6 @@
 
 package net.jgf.core.naming;
 
-import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +43,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.jgf.config.ConfigException;
 import net.jgf.system.Jgf;
 
 import org.apache.commons.lang.StringUtils;
@@ -80,20 +78,34 @@ final class DirectoryRegistry {
      */
     private static final Logger logger = Logger.getLogger(DirectoryRegistry.class);
 
+
+    public static enum RegistryInjectionMethod {
+        FIELD,
+        SETTER,
+        ALL
+    }
+    
     /**
      * A Registry Setter entry, which includes a field name and a WeakReference
      * to the object where the value resolved from the Directory will be set.
      */
-    private final class RegistrySetterEntry {
-
+    private static final class RegistrySetterEntry {
+        
         private WeakReference<Object> targetWeakRef;
         private String targetToString;
-        private String field;
+        private String accessorName;
+        private RegistryInjectionMethod injectionMethod;
+        
 
-        private RegistrySetterEntry(Object target, String fieldName) {
-            this.field = fieldName;
+        private RegistrySetterEntry(Object target, String accesorName, RegistryInjectionMethod type) {
+            this.accessorName = accesorName;
             this.targetWeakRef = new WeakReference<Object>(target);
             this.targetToString = target.toString();
+            this.injectionMethod = type;
+        }
+        
+        private RegistrySetterEntry(Object target, String accesorName) {
+            this (target, accesorName, RegistryInjectionMethod.ALL);
         }
 
     }
@@ -112,7 +124,7 @@ final class DirectoryRegistry {
 
         public RegistrySetterEntry getSetter(Object object, String fieldName) {
             for (RegistrySetterEntry setter : setters) {
-                if ((object == setter.targetWeakRef) && (fieldName == setter.field)) {
+                if ((object == setter.targetWeakRef) && (fieldName == setter.accessorName)) {
                     return setter;
                 }
             }
@@ -145,12 +157,12 @@ final class DirectoryRegistry {
      * Registers an object and field  with the directory registry.
      * @see Directory#register(String, Object, String)
      */
-    void register(Object target, String field, String id) {
+    void register(Object target, String accessorName, String id, RegistryInjectionMethod type) {
 
-        logger.debug("Registering field " + field + " for id " + id + " on object " + target);
+        logger.debug("Registering field " + accessorName + " for id " + id + " on object " + target);
 
-        if (StringUtils.isBlank(field)) {
-            throw new ConfigException("Tried to register object " + target + " for id '" + id
+        if (StringUtils.isBlank(accessorName)) {
+            throw new NamingException("Tried to register object " + target + " for id '" + id
                     + "' for a null or blank field");
         }
 
@@ -159,18 +171,18 @@ final class DirectoryRegistry {
         RegistryEntry entry = entries.get(id);
         if (entry == null) {
             entry = new RegistryEntry();
-            setter = new RegistrySetterEntry(target, field);
+            setter = new RegistrySetterEntry(target, accessorName, type);
             entry.setters.add(setter);
             entries.put(id, entry);
         } else {
-            setter = entry.getSetter(target, field);
+            setter = entry.getSetter(target, accessorName);
             if (setter == null) {
-                setter = new RegistrySetterEntry(target, field);
+                setter = new RegistrySetterEntry(target, accessorName);
                 entry.setters.add(setter);
             } else {
-                throw new ConfigException(
+                throw new NamingException(
                         "Tried to register an already registered Directory dependency on " + "id '"
-                                + id + "' for object " + target + " and field '" + field + "'");
+                                + id + "' for object " + target + " and field '" + accessorName + "'");
             }
         }
 
@@ -194,7 +206,7 @@ final class DirectoryRegistry {
         logger.debug("Unregistering field " + field + " on object " + object);
 
         if (StringUtils.isBlank(field)) {
-            throw new ConfigException("Tried to unregister object " + object
+            throw new NamingException("Tried to unregister object " + object
                     + " for a null or blank field");
         }
 
@@ -206,7 +218,7 @@ final class DirectoryRegistry {
             Iterator<RegistrySetterEntry> it = entry.setters.iterator();
             while (it.hasNext()) {
                 RegistrySetterEntry setter = (RegistrySetterEntry) it.next();
-                if ((setter.field == field) && (setter.targetWeakRef.get() == object)) {
+                if ((setter.accessorName == field) && (setter.targetWeakRef.get() == object)) {
                     it.remove();
                 }
             }
@@ -241,22 +253,31 @@ final class DirectoryRegistry {
     void updateObject(RegistrySetterEntry setter, Object value) {
 
         Object target = setter.targetWeakRef.get();
-        String field = setter.field;
+        String accessorName = setter.accessorName;
 
         if (target != null) {
 
-            if (!injectSetter(target, field, value)) {
-                if (!injectField(target, field, value, target.getClass())) {
-                    throw new NamingException("Field or setter for field '" + field + "' not found when injecting value on object " + target);
-                }
+            boolean injected = false;
+            
+            if (setter.injectionMethod == RegistryInjectionMethod.SETTER ||
+                    setter.injectionMethod == RegistryInjectionMethod.ALL) {
+                injected = injected | injectSetter(target, accessorName, value);
             }
             
+            if ((!injected) && ((setter.injectionMethod == RegistryInjectionMethod.FIELD ||
+                    setter.injectionMethod == RegistryInjectionMethod.ALL))) {
+                injected = injected | injectField(target, accessorName, value, target.getClass());
+            }
+            
+            if (!injected) {
+                throw new NamingException("Field or setter [injectionMethod=" + setter.injectionMethod.name() + "] named '" + accessorName + "' not found when injecting value on object " + target);
+            }
 
         } else {
             // Everything should be unregistered
-            throw new ConfigException(
+            throw new NamingException(
                     "Null reference for target object when injecting a Directory object "
-                            + value + " into field '" + field
+                            + value + " into field '" + accessorName
                             + "' (registered object no longer exists but wasn't unregistered, registered object was: "
                             + setter.targetToString + ")");
         }
@@ -306,7 +327,7 @@ final class DirectoryRegistry {
                 }
                 injected = true;
             } catch (IllegalAccessException e) {
-                throw new ConfigException("Could not access field '" + field
+                throw new NamingException("Could not access field '" + field
                         + "' in object " + target
                         + " when setting value for directory resolved reference " + value, e);
             }
@@ -317,17 +338,18 @@ final class DirectoryRegistry {
 
     }
     
-    private boolean injectSetter(Object target, String field, Object value) {
+    private boolean injectSetter(Object target, String setter, Object value) {
         
         boolean injected = false;
         
-        String setterName = "set" + String.valueOf(field.charAt(0)).toUpperCase();
-        if (field.length() > 1)
-            setterName += field.substring(1);
+        /*String setterName = "set" + String.valueOf(setter.charAt(0)).toUpperCase();
+        if (setter.length() > 1)
+            setterName += setter.substring(1); */
+        String setterName = setter;
         
         try {
             if (logger.isDebugEnabled()) {
-                logger.debug("Injecting [setter] field '" + field + " with value " + value + " on object " + target);
+                logger.debug("Injecting [setter] field '" + setter + " with value " + value + " on object " + target);
             }
             Method[] methods = target.getClass().getMethods();
 
@@ -349,11 +371,11 @@ final class DirectoryRegistry {
             }
 
         } catch (IllegalAccessException e) {
-            throw new ConfigException("Can't access setter '" + setterName
+            throw new NamingException("Can't access setter '" + setterName
                     + "' found in object " + target
                     + " when setting value for directory resolved reference " + value, e);
         } catch (InvocationTargetException e) {
-            throw new ConfigException("Error calling setter '" + setterName
+            throw new NamingException("Error calling setter '" + setterName
                     + "' found in object " + target
                     + " when setting value for directory resolved reference " + value, e);
         }

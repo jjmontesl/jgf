@@ -35,6 +35,7 @@ package net.jgf.example.tanks.view;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.example.tanks.entity.PlayerTank;
 import net.jgf.jme.settings.KeySetting;
 import net.jgf.jme.view.CursorRenderView;
@@ -71,6 +72,7 @@ public class InputView extends BaseViewState {
     /**
      * A reference to the player whose input is being handled.
      */
+    @Register (ref="entity/root/players/player1")
     private PlayerTank player;
 
     protected InputHandler inputHandler;
@@ -169,8 +171,6 @@ public class InputView extends BaseViewState {
 
         super.doLoad();
 
-        Jgf.getDirectory().register(this, "player", "entity/root/players/player1");
-
         inputHandler = new InputHandler();
         inputHandler.addAction(new KeyInputAction(), InputHandler.DEVICE_KEYBOARD,
                 InputHandler.BUTTON_ALL, InputHandler.AXIS_ALL, false);
@@ -198,11 +198,6 @@ public class InputView extends BaseViewState {
         inputHandler.update(tpf);
 
     }
-
-    public void setPlayer(PlayerTank player) {
-        this.player = player;
-    }
-
 
     @Override
     public void readConfig(Config config, String configPath) {

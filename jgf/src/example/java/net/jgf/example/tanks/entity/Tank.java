@@ -1,5 +1,6 @@
 package net.jgf.example.tanks.entity;
 
+import net.jgf.core.naming.Register;
 import net.jgf.core.state.StateLifecycleEvent;
 import net.jgf.core.state.StateObserver;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
@@ -36,6 +37,18 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 
 	protected float topRotationSpeed = TanksSettings.PLAYER_ROTATE_SPEED;
 
+    @Register (ref = "logic/root/ingame/spawn")
+    protected SpawnLogic spawnLogic;
+
+    @Register (ref = "audio/shot")
+    protected AudioItem audioItem;
+
+    @Register (ref = "scene")
+    protected DefaultJmeScene scene;
+
+    @Register (ref = "entity/root/enemy")
+    private EntityGroup enemyEntities;
+
 	protected final Vector3f direction = new Vector3f();
 
 	protected float speedRel;
@@ -46,14 +59,6 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 
 	protected float accelRel = 5.0f;
 
-	protected SpawnLogic spawnLogic;
-
-	//protected CursorRenderView cursorView;
-
-	protected AudioItem audioItem;
-
-	protected DefaultJmeScene scene;
-
 	private boolean firing;
 
 	private boolean mining;
@@ -63,8 +68,6 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	private final CollisionResults bulletResults = new TriangleCollisionResults();
 
 	private final CollisionResults obstaclesResults = new TriangleCollisionResults();
-	
-	private EntityGroup enemyEntities;
 	
 	private int simultaneousBullets = 5;
 	
@@ -85,13 +88,6 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	public void doLoad() {
 
 		super.doLoad();
-
-		spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
-		//cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor", CursorRenderView.class);
-		audioItem = Jgf.getDirectory().getObjectAs("audio/shot", AudioItem.class);
-		scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		
-		enemyEntities = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
 
 		hull = ((Node)((Node)spatial).getChild("Tank")).getChild("Hull");
 		canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");

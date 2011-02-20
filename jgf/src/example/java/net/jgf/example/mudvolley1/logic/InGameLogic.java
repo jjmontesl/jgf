@@ -2,6 +2,7 @@
 package net.jgf.example.mudvolley1.logic;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.entity.EntityManager;
 import net.jgf.example.mudvolley1.MudSettings;
 import net.jgf.example.mudvolley1.entity.BallEntity;
@@ -27,29 +28,20 @@ public class InGameLogic extends BaseLogicState {
 	 */
 	private static final Logger logger = Logger.getLogger(InGameLogic.class);
 
+	@Register (ref = "scene/manager")
 	private SceneManager sceneManager;
 
+	@Register (ref = "entity")
 	private EntityManager entityManager;
 
+	@Register (ref = "entity/root/player1")
 	private PlayerEntity player1;
 
+	@Register (ref = "entity/root/player2")
 	private PlayerEntity player2;
 
+	@Register (ref = "entity/root/ball")
 	private BallEntity ball;
-
-	/* (non-Javadoc)
-	 * @see net.jgf.core.state.State#load()
-	 */
-	@Override
-	public void doLoad() {
-		super.doLoad();
-		sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
-		entityManager = Jgf.getDirectory().getObjectAs("entity", EntityManager.class);
-
-		player1 = Jgf.getDirectory().getObjectAs("entity/root/player1", PlayerEntity.class);
-		player2 = Jgf.getDirectory().getObjectAs("entity/root/player2", PlayerEntity.class);
-		ball = Jgf.getDirectory().getObjectAs("entity/root/ball", BallEntity.class);
-	}
 
 	@Override
 	public void doUpdate(float tpf) {
