@@ -7,12 +7,12 @@ import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.TanksSettings;
+import net.jgf.example.tanks.logic.MissionLogic;
 import net.jgf.example.tanks.logic.SpawnLogic;
 import net.jgf.jme.audio.AudioItem;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
-import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -48,6 +48,9 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 
     @Register (ref = "entity/root/enemy")
     private EntityGroup enemyEntities;
+    
+    @Register (ref = "logic/root/ingame/mission")
+    protected MissionLogic missionLogic;
 
 	protected final Vector3f direction = new Vector3f();
 
@@ -65,9 +68,9 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 
 	protected final Vector3f target = new Vector3f();
 
-	private final CollisionResults bulletResults = new TriangleCollisionResults();
+	private CollisionResults bulletResults;
 
-	private final CollisionResults obstaclesResults = new TriangleCollisionResults();
+	private CollisionResults obstaclesResults;
 	
 	private int simultaneousBullets = 5;
 	
@@ -81,21 +84,21 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		super();
 	}
 
-	/**
-	 * Loads this entity.
-	 */
+	
+
 	@Override
-	public void doLoad() {
+    public void doActivate() {
+        super.doActivate();
+        direction.zero();
+        bulletResults = new TriangleCollisionResults();
+        obstaclesResults = new TriangleCollisionResults();
+        hull = ((Node)((Node)spatial).getChild("Tank")).getChild("Hull");
+        canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
+    }
 
-		super.doLoad();
 
-		hull = ((Node)((Node)spatial).getChild("Tank")).getChild("Hull");
-		canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
 
-		direction.zero();
-	}
-
-	/**
+    /**
 	 * Move the tank according to the controls
 	 */
 	protected void updateMovement(float tpf) {
@@ -332,11 +335,12 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		
 		updateCollisions(tpf);
 
-		updateHits(tpf);
-
-		updateWeapons(tpf);
-
-		updateCanon(tpf);
+	    updateCanon(tpf);
+		
+		if (missionLogic.isFighting()) {
+		    updateHits(tpf);
+		    updateWeapons(tpf);
+		}
 
 	}
 
@@ -396,7 +400,5 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	public void setSimultaneousBullets(int simultaneousBullets) {
 		this.simultaneousBullets = simultaneousBullets;
 	}
-
-	
 	
 }

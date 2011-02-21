@@ -35,6 +35,7 @@ public class CameraLoader extends BaseLoader<Scene> {
 		}
 
 		if (cameraRef != null) {
+		    Jgf.getDirectory().unregister(scene, "currentCameraController");
 			Jgf.getDirectory().register(scene, "currentCameraController", cameraRef);
 		}
 

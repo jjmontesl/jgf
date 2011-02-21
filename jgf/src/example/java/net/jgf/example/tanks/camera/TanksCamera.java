@@ -27,15 +27,6 @@ public class TanksCamera extends JmeCamera {
 
 	protected Vector3f lastTarget = new Vector3f();
 	
-	public TanksCamera() {
-        super();
-    }
-
-    public TanksCamera(String id) {
-        super(id);
-    }
-
-
     /**
 	 * Updates the camera using its controller
 	 */

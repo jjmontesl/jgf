@@ -42,7 +42,7 @@ public class StateHelper {
 
 	public static void deactivateAndUnload(String stateId) {
 		State state = Jgf.getDirectory().getObjectAs(stateId, State.class);
-		StateHelper.loadAndActivate(state);
+		StateHelper.deactivateAndUnload(state);
 	}
 	
 	public static void activate(State state) {

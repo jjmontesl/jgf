@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Java Game Framework GUI Configuration file.
+	This is a GUI configuration file for the Nifty GUI library
+	which JGF uses.
+ --> 	
+
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+
+  <useStyles filename="nifty-default-styles.xml" />
+  <useControls filename="nifty-default-controls.xml" />
+
+  <screen id="start" controller="net.jgf.jme.view.gui.JgfScreenController">
+      
+    <layer id="layer" backgroundColor="#0000" childLayout="vertical">
+      
+      <panel id="panelOuter" height="70%" width="40%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#0000" childLayout="center" visibleToMouse="true">
+        
+        <panel id="panelFailed" height="100%" width="100%" padding="5px,5px,5px,5px" align="center" valign="top" backgroundColor="#2c48" childLayout="center" visibleToMouse="true" >
+            <effect>
+                <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1500" startDelay="1500" inherit="true" post="false" />
+            </effect>
+      
+            <label color="#ffff" text="MISSION COMPLETE" align="center" valign="top" />
+            
+         </panel>
+            
+      </panel>
+            
+    </layer>    
+
+    <layer id="layer2" backgroundColor="#0000" childLayout="vertical">
+      
+        <panel id="panelOptions" height="100%" width="100%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#0000" childLayout="horizontal" visibleToMouse="true">
+          <effect>
+            <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="2000" startDelay="1500" inherit="true" post="false" />
+          </effect>
+          
+          <panel width="*" />
+          <control align="right" valign="bottom" width="30%" name="button" label="Continue" >
+              <interact onClick="endScreenAndDoAction(logic/action/nextmission)" />
+          </control>
+                    
+        </panel>      
+    </layer>
+
+  </screen>
+  
+</nifty>
+

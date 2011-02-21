@@ -34,26 +34,26 @@ import com.jme.scene.Spatial;
 public class SpawnLogic extends BaseLogicState {
 
     @Register (ref = "loader/entity/pool")
-	EntityPoolLoader entityLoader;
+	protected EntityPoolLoader entityLoader;
 
     @Register (ref = "entity/root/players")
-	EntityGroup playerEntityGroup;
+	protected EntityGroup playerEntityGroup;
 
     @Register (ref = "entity/root/bullets")
-	EntityGroup bulletEntityGroup;
+	protected EntityGroup bulletEntityGroup;
 
     @Register (ref = "entity/root/enemy")
-	EntityGroup enemyEntityGroup;
+	protected EntityGroup enemyEntityGroup;
 
     @Register (ref = "scene")
-	DefaultJmeScene scene;
+	protected DefaultJmeScene scene;
 
 	@Register (ref = "view/root/level/fight/effects")
-	EffectsView effectsView;
+	protected EffectsView effectsView;
 
 	int bullets = 0;
 
-	   /* (non-Javadoc)
+	/* (non-Javadoc)
      * @see net.jgf.core.state.State#load()
      */
     @Override
@@ -73,7 +73,7 @@ public class SpawnLogic extends BaseLogicState {
 
 		Vector3f position = ((SpatialReference)scene.getReferences().getReference("z")).getSpatial().getLocalTranslation();
 		Tank tank = (Tank) entityLoader.load(null, "FileChainLoader.resourceUrl=tanks/entity/tank.xml");
-		tank.setId("player1");
+		tank.setId("entity/root/players/player1");
 		Spatial hull = ((Node)((Node)tank.getSpatial()).getChild("Tank")).getChild("Hull");
 		// TODO: Model Bounds don't quite belong to logic...
 		// maybe to the entity or better yet, to loader
@@ -95,7 +95,7 @@ public class SpawnLogic extends BaseLogicState {
 		// TODO: Choose an empty one
 
 		Bullet bullet = (Bullet) entityLoader.load(null, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
-		bullet.setId("!bullet" + bullets++);
+		bullet.setId("!entity/root/bullets/bullet" + bullets++);
 		bullet.clearStateObservers();
 
 		// TODO: Model Bounds don't quite belong to logic...
@@ -146,7 +146,6 @@ public class SpawnLogic extends BaseLogicState {
 				PlayerTank player = (PlayerTank) bullet.getOwner();
 				player.setKills(player.getKills() + 1);
 			}
-			
 			tank.withdraw(enemyEntityGroup, scene.getRootNode());
 		}
 		effectsView.addExplosion(tank.getSpatial().getWorldTranslation(), EffectsView.EXPLOSION_TANK_TTL);

@@ -17,7 +17,7 @@
       
         <panel id="panelImage" height="100%" width="100%" padding="5px,5px,5px,5px" align="center" valign="top" backgroundColor="#0000" childLayout="center" visibleToMouse="true">
 	      <effect>
-	        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1500" startDelay="0" inherit="true" post="false" />
+	        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="2500" startDelay="1500" inherit="true" post="false" />
 	      </effect>
           <image filename="tanks/texture/logo/tech-jme.png" filter="true" width="256px" height="256px" align="center" valign="center" />
         </panel>      
@@ -28,7 +28,7 @@
       
         <panel id="panelFailed" height="100%" width="100%" padding="5px,5px,5px,5px" align="center" valign="top" backgroundColor="#0000" childLayout="center" visibleToMouse="true">
           <effect>
-            <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1500" startDelay="0" inherit="true" post="false" />
+            <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="2500" startDelay="1500" inherit="true" post="false" />
           </effect>
           <label color="#ffff" text="F A I L E D" align="center" valign="center" />
         </panel>      
@@ -38,7 +38,7 @@
       
         <panel id="panelOptions" height="100%" width="100%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#0000" childLayout="horizontal" visibleToMouse="true">
           <effect>
-            <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1500" startDelay="0" inherit="true" post="false" />
+            <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1500" startDelay="1500" inherit="true" post="false" />
           </effect>
           
           <panel width="*" />

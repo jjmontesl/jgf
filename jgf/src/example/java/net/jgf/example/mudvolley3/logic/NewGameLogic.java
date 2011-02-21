@@ -53,13 +53,14 @@ public class NewGameLogic extends BaseLogicState {
 		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
 		MudVolleyEntityLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity", MudVolleyEntityLoader.class);
 
-		PlayerEntity player1 = entityLoader.loadPlayer("player1", -1.0f);
+		PlayerEntity player1 = entityLoader.loadPlayer("entity/root/player1", -1.0f);
 		player1.integrate(rootEntity, scene.getRootNode(), new Vector3f(-7, 0, 0));
 
-		PlayerEntity player2 = entityLoader.loadPlayer("player2", 1.0f);
+		PlayerEntity player2 = entityLoader.loadPlayer("entity/root/player2", 1.0f);
 		player2.integrate(rootEntity, scene.getRootNode(), new Vector3f(7, 0, 0));
 
 		BallEntity ball = entityLoader.loadBall("ball");
+		ball.setId("entity/root/ball");
 		ball.integrate(rootEntity, scene.getRootNode());
 
 		scene.getRootNode().updateRenderState();
