@@ -4,7 +4,7 @@
  JGF - Java Game Framework
  $Id$
  
- Copyright (c) 2008, JGF - Java Game Framework
+ Copyright (c) 2008-2011, JGF - Java Game Framework
  All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
@@ -119,8 +119,8 @@
         </copy>
 		<copy todir="${dir.target.lib}">
             <fileset dir="${dir.target.packages}">
-                <include name="jgf-core.jar" />
-                <include name="jgf-jme.jar" />
+                <include name="jgf-core*.jar" />
+                <include name="jgf-jme*.jar" />
                 <include name="jgf-example*.jar" />
             </fileset>
         </copy>
@@ -189,7 +189,7 @@
 
 		<mkdir dir="${dir.target.packages}" />
 
-		<jar destfile="${dir.target.packages}/jgf-core.jar" basedir="${dir.target.classes}/main">
+		<jar destfile="${dir.target.packages}/jgf-core-${app.version}.jar" basedir="${dir.target.classes}/main">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
@@ -198,7 +198,7 @@
 			</manifest>
 		</jar>
 
-		<jar destfile="${dir.target.packages}/jgf-jme.jar" basedir="${dir.target.classes}/jgf-jme">
+		<jar destfile="${dir.target.packages}/jgf-jme-${app.version}.jar" basedir="${dir.target.classes}/jgf-jme">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
@@ -207,7 +207,7 @@
 			</manifest>
 		</jar>
 
-		<jar destfile="${dir.target.packages}/jgf-example.jar" basedir="${dir.target.classes}/example">
+		<jar destfile="${dir.target.packages}/jgf-example-${app.version}.jar" basedir="${dir.target.classes}/example">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
@@ -216,7 +216,7 @@
 			</manifest>
 		</jar>
 
-		<jar destfile="${dir.target.packages}/jgf-example-resources.jar" basedir="${dir.src}/example/resources">
+		<jar destfile="${dir.target.packages}/jgf-example-resources-${app.version}.jar" basedir="${dir.src}/example/resources">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
@@ -225,7 +225,7 @@
 			</manifest>
 		</jar>
 
-		<jar destfile="${dir.target.packages}/jgf-docs.jar" basedir="${dir.target.javadoc}">
+		<jar destfile="${dir.target.packages}/jgf-docs-${app.version}.jar" basedir="${dir.target.javadoc}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
@@ -251,7 +251,7 @@
 			</doctitle>
 
 			<bottom>
-				<![CDATA[<i>Copyright &#169; 2008-2010 Jose Juan Montes. All Rights Reserved.</i>]]>
+				<![CDATA[<i>Copyright &#169; 2008-2011 Jose Juan Montes. All Rights Reserved.</i>]]>
 			</bottom>
 
 			<tag name="todo" scope="all" description="To do:" />
