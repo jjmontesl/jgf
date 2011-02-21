@@ -30,6 +30,7 @@
 		<logger name="com.jme.scene.Node" level="WARN" />
 		<logger name="com.jme.scene.Point" level="WARN" />
 		<logger name="com.jme.scene.Line" level="WARN" />
+		<logger name="com.jmex.model.collada.ColladaImporter" level="WARN" />
 		<logger name="net.jgf.loader.FileChainLoader" level="WARN" />				
 	</service>
 
@@ -233,7 +234,16 @@
 				</logic>
 				
 				<logic id="logic/action/restart" class="net.jgf.example.tanks.logic.RestartAction" >
-				</logic>				
+				</logic>
+				
+                <logic id="logic/action/nextmission" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="deactivateAndUnload" ref="view/root/main" />
+                    <step type="runAction" ref="logic/action/nextmission/init" />
+                    <step type="runAction" ref="logic/action/restart" />
+                </logic>
+				
+				<logic id="logic/action/nextmission/init" class="net.jgf.example.tanks.logic.NextMissionAction" >
+                </logic>				
 				
 				<logic id="logic/action/menuscene" class="net.jgf.example.tanks.logic.MenuSceneAction" />
 				
@@ -400,6 +410,17 @@
 	                </view> 
 
 				</view>
+				
+				<view id="view/root/level/victory" class="net.jgf.view.ViewStateNode"
+                        autoLoad="false" autoActivate="false">
+
+                    <view id="view/root/level/victory/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
+                       autoLoad="true" autoActivate="true">
+                       <file>tanks/gui/victory.xml</file>
+                    </view> 
+
+                </view>
+				
 
                 <view id="view/root/level/osd" class="net.jgf.jme.view.gui.NiftyGuiView"
                    autoLoad="true" autoActivate="true">

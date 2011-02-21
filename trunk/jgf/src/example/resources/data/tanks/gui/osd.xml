@@ -16,7 +16,7 @@
       
     <layer id="layer" backgroundColor="#0000" childLayout="vertical">
       <effect>
-        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="5500" startDelay="500" inherit="true" post="false" />
+        <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="9500" startDelay="500" inherit="true" post="false" />
       </effect>
       
       <panel id="panelOuter" height="100%" width="100%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#0000" childLayout="horizontal" visibleToMouse="true">

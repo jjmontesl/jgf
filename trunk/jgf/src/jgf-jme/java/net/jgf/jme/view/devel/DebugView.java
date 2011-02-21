@@ -165,17 +165,6 @@ public class DebugView extends BaseViewState {
           "jgf_report", false)) {
       	logger.info("Report: \n" + NamingUtils.directoryReport());
       }
-      /*
-      if (KeyBindingManager.getKeyBindingManager().isValidCommand(
-              "parallel_projection", false)) {
-          if (DisplaySystem.getDisplaySystem().getRenderer().getCamera()
-                  .isParallelProjection()) {
-              cameraPerspective();
-          } else {
-              cameraParallel();
-          }
-      }
-      */
       if (KeyBindingManager.getKeyBindingManager().isValidCommand(
               "mem_report", false)) {
           logger.info(SystemInfoService.getSystemInfo());
@@ -186,29 +175,6 @@ public class DebugView extends BaseViewState {
             logger.info("Cursor Visibility set to " + MouseInput.get().isCursorVisible());
         }
 
-    }
-
-    // TODO: If allows change of mode, save camera previous values
-    protected void cameraPerspective() {
-        DisplaySystem display = DisplaySystem.getDisplaySystem();
-        Camera cam = display.getRenderer().getCamera();
-        cam.setFrustumPerspective(45.0f, (float) display.getWidth()
-                / (float) display.getHeight(), 1, 1000);
-        cam.setParallelProjection(false);
-        cam.update();
-    }
-
-    protected void cameraParallel() {
-        DisplaySystem display = DisplaySystem.getDisplaySystem();
-        Camera cam = display.getRenderer().getCamera();
-        cam.setParallelProjection(true);
-        // TODO: the camaraPararell should be parameterized in Debug config
-        // TODO: the previous camera data should be saved
-        // TODO: this needs to be combine with the camera settings??
-        float aspect = (float) display.getWidth() / display.getHeight();
-        cam.setFrustum(-100.0f, 1000.0f, -50.0f * aspect, 50.0f * aspect, -50.0f, 50.0f);
-        //cam.setFrustum(-100.0f, 1000.0f, -10.0f * aspect, 10.0f * aspect, -10.0f, 10.0f);
-        cam.update();
     }
 
     @Override

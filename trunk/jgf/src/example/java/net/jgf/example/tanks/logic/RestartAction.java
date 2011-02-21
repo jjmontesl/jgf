@@ -5,7 +5,9 @@ import net.jgf.config.Configurable;
 import net.jgf.core.state.StateHelper;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
+import net.jgf.example.mudvolley1.entity.PlayerEntity;
 import net.jgf.example.tanks.entity.Bullet;
+import net.jgf.example.tanks.entity.PlayerTank;
 import net.jgf.example.tanks.entity.Tank;
 import net.jgf.example.tanks.loader.SceneReferencesProcessorLoader;
 import net.jgf.example.tanks.view.EffectsView;
@@ -41,6 +43,9 @@ public class RestartAction extends BaseLogicAction {
 	public void perform(Object arg) {
 
 		logger.info ("Restarting level (logic)");
+		
+		StateHelper.deactivateAndUnload("view/root/level/failed");
+		StateHelper.deactivateAndUnload("view/root/level/victory");
 
 		EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
 		SpawnLogic spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
@@ -63,7 +68,10 @@ public class RestartAction extends BaseLogicAction {
 			((Tank) enemy).withdraw(enemies, scene.getRootNode());
 			StateHelper.deactivateAndUnload(enemy);
 		}
-		
+        EntityGroup players = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
+        for (Entity player : players.children()) {
+            ((PlayerTank)player).withdraw(players, scene.getRootNode());
+        }
 		
 		
 		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
@@ -98,9 +106,9 @@ public class RestartAction extends BaseLogicAction {
 		StateHelper.loadAndActivate(levelView);
 		StateHelper.loadAndActivate(effectsView);
 		
-        // Clear banner
-        ViewState failedView = Jgf.getDirectory().getObjectAs("view/root/level/failed", ViewState.class);
-        StateHelper.deactivateAndUnload(failedView);		
+        // Clear banners
+        //StateHelper.deactivateAndUnload("view/root/level/failed");
+        //StateHelper.deactivateAndUnload("view/root/level/victory");
 
 	}
 

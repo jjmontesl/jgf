@@ -66,6 +66,7 @@ public class EffectsView extends BaseViewState {
 		public float initialTtl;
 	}
 
+	@Register (ref = "scene")
 	private DefaultJmeScene scene;
 
 	private Node smokesNode;
@@ -74,6 +75,7 @@ public class EffectsView extends BaseViewState {
 
 	private ArrayList<ExplosionEffect> explosions = new ArrayList<ExplosionEffect>(30);
 
+	@Register (ref = "loader/model")
 	private Loader<Node> loader;
 
 	/*
@@ -84,7 +86,7 @@ public class EffectsView extends BaseViewState {
 	@Override
 	public void doLoad() {
 		super.doLoad();
-		loader = Jgf.getDirectory().getObjectAs("loader/model", Loader.class);
+		smokesNode = new Node("smokes");		
 	}
 
 
@@ -94,7 +96,8 @@ public class EffectsView extends BaseViewState {
 	 */
 	@Override
 	public void doUnload() {
-		super.doUnload();
+		smokesNode = null;
+	    super.doUnload();
 		// TODO: Unregister object from directory, do the same to cleanup other states
 	}
 
@@ -108,11 +111,20 @@ public class EffectsView extends BaseViewState {
 	@Override
 	public void doActivate() {
 		super.doActivate();
-		//scene = Jgf.getDirectory().getObjectAs("scene", DefaultJmeScene.class);
-		//Jgf.getDirectory().register(this, "setScene", "scene");
+		scene.getRootNode().attachChild(smokesNode);
 	}
 
-	/*
+	
+	
+	@Override
+    public void doDeactivate() {
+        super.doDeactivate();
+        scene.getRootNode().detachChild(smokesNode);
+    }
+
+
+
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see net.jgf.view.BaseViewState#update(float)
@@ -284,19 +296,5 @@ public class EffectsView extends BaseViewState {
 
 		explosions.add(explosion);
 	}
-
-
-	@Register(ref = "scene")
-    public void setScene(DefaultJmeScene scene) {
-        this.scene = scene;
-        if (scene != null) {
-            if (smokesNode == null) {
-                smokesNode = new Node("smokes");
-            }
-            scene.getRootNode().attachChild(smokesNode);
-        }
-    }
-	
-	
 
 }

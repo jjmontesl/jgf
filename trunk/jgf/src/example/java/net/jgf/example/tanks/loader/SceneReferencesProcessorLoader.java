@@ -164,7 +164,7 @@ public final class SceneReferencesProcessorLoader extends SceneLoader {
 
 					// TODO: This needs to be customizable?
 					EntityGroup group = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
-					entity.setId(ref.getName());
+					entity.setId("entity/root/enemy/" + ref.getName());
 					entity.integrate(group, scene.getRootNode());
 
 				} else {

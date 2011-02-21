@@ -2,6 +2,7 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -26,6 +27,15 @@ public class NewGameAction extends BaseLogicAction {
 	 */
 	private static final Logger logger = Logger.getLogger(NewGameAction.class);
 
+    @Register (ref = "logic/root/ingame/mission")
+    private MissionLogic missionLogic;
+    
+    @Register (ref = "scene/manager")
+    private SimpleSceneManager sceneManager;
+    
+    @Register (ref = "loader/scene")
+    private FileChainLoader<Scene> sceneLoader;
+	
 	/* (non-Javadoc)
 	 * @see net.jgf.logic.BaseLogicState#activate()
 	 */
@@ -33,15 +43,20 @@ public class NewGameAction extends BaseLogicAction {
 	public void perform(Object arg) {
 
 		logger.info ("Starting new tanks game (logic)");
-
-		// Prepare scene
-		SimpleSceneManager sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SimpleSceneManager.class);
-		FileChainLoader<Scene> sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene", FileChainLoader.class);
-		DefaultJmeScene scene =(DefaultJmeScene) sceneLoader.load(
-				null, "FileChainLoader.resourceUrl=tanks/level/mission2.xml"
+		missionLogic.setMission(1);
+	    EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
+	    entityLoader.preload(60, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
+	    
+	    loadMission();
+	}
+	
+	public void loadMission() {
+		
+	    DefaultJmeScene scene =(DefaultJmeScene) sceneLoader.load(
+				null, "FileChainLoader.resourceUrl=tanks/level/mission" + missionLogic.getMission() + ".xml"
 		);
 		sceneManager.setScene(scene);
-		Jgf.getDirectory().addObject(scene.getId(), scene);
+		Jgf.getDirectory().addObject("scene", scene);
 
 		// Default Nodes
 		scene.getRootNode().attachChild(new Node("bullets"));
@@ -50,10 +65,6 @@ public class NewGameAction extends BaseLogicAction {
 		// Set a camera
 		//SceneRenderView sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level/fight/scene", SceneRenderView.class);
 		//sceneRenderView.setCamera(scene.getCameraControllers().getCameraController("scene/camera/test"));
-		
-		
-		EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
-		entityLoader.preload(60, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
 
 	}
 

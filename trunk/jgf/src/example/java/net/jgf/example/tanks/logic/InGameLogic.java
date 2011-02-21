@@ -2,10 +2,10 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.entity.EntityManager;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.scene.SceneManager;
-import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -16,27 +16,12 @@ import org.apache.log4j.Logger;
 @Configurable
 public class InGameLogic extends BaseLogicState {
 
-	/**
-	 * Class logger
-	 */
-	private static final Logger logger = Logger.getLogger(InGameLogic.class);
-
+	@Register (ref = "scene/manager")
 	private SceneManager sceneManager;
 
+	@Register (ref = "entity")
 	private EntityManager entityManager;
 	
-	
-	/* (non-Javadoc)
-	 * @see net.jgf.core.state.State#load()
-	 */
-	@Override
-	public void doLoad() {
-		super.doLoad();
-		entityManager = Jgf.getDirectory().getObjectAs("entity", EntityManager.class);
-		sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class);
-	}
-	
-
 	@Override
 	public void doUpdate(float tpf) {
 
@@ -44,6 +29,5 @@ public class InGameLogic extends BaseLogicState {
 		sceneManager.update(tpf);
 		
 	}
-
 
 }

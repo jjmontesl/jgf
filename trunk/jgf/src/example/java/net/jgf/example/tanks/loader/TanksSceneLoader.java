@@ -13,6 +13,7 @@ import java.util.Set;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.ObjectCreator;
 import net.jgf.example.tanks.camera.TanksCamera;
 import net.jgf.example.tanks.loader.TanksMap.Tile;
 import net.jgf.jme.camera.StaticCamera;
@@ -52,13 +53,17 @@ import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 @Configurable
 public final class TanksSceneLoader extends SceneLoader {
 
-	/**
+
+
+    /**
 	 * Class logger
 	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(TanksSceneLoader.class);
 
-	public static int EXTENT_LIMIT = 5;
+	public static final int EXTENT_LIMIT = 5;
+	
+	private static final int PARTITION_SIZE = 16;
 	
 	protected int width;
 
@@ -115,18 +120,13 @@ public final class TanksSceneLoader extends SceneLoader {
 		//floorNode.setModelBound(new BoundingBox());
 		floorNode.updateModelBound();
 
-		// TODO: Create camera in the loader
-		scene.getCameraControllers().addCameraController(new StaticCamera(
-				"scene/camera/test", 
-				new Vector3f(0.5f * width, 0.45f * width, 0.5f * height),
-				new Vector3f(0.5f * width, 0, 0.49f * height)
-		));
-		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/test", scene.getCameraControllers().getCameraController("scene/camera/test"));
-		scene.getCameraControllers().addCameraController(new TanksCamera("scene/camera/tanks"));
-		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/tanks", scene.getCameraControllers().getCameraController("scene/camera/tanks"));
+		TanksCamera tanksCamera = ObjectCreator.createObject(TanksCamera.class);
+		tanksCamera.setId("scene/camera/tanks");
+		scene.getCameraControllers().addCameraController(tanksCamera);
+		net.jgf.system.Jgf.getDirectory().addObject("scene/camera/tanks", tanksCamera);
 
-		partition(floorNode, 8);
-		partition(obstaclesNode, 8);
+		partition(floorNode, PARTITION_SIZE);
+		partition(obstaclesNode, PARTITION_SIZE);
 		
 		fieldNode.attachChild(floorNode);
 		fieldNode.attachChild(obstaclesNode);

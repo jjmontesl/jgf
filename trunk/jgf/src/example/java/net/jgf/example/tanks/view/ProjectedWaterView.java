@@ -3,6 +3,7 @@ package net.jgf.example.tanks.view;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.IllegalStateException;
+import net.jgf.core.naming.Register;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.scene.SceneManager;
 import net.jgf.system.Jgf;
@@ -31,7 +32,8 @@ public class ProjectedWaterView extends BaseViewState {
     
     protected BasicPassManager pManager;
     
-	DefaultJmeScene scene;
+    @Register (ref = "scene")
+	private DefaultJmeScene scene;
     
     Node rootNode;
 
@@ -42,18 +44,15 @@ public class ProjectedWaterView extends BaseViewState {
 	}
 
     @Override
-    public void doLoad() {
+    public void doActivate() {
         
-    	super.doLoad();
+    	super.doActivate();
     	
     	pManager = new BasicPassManager();
     	
     	rootNode = new Node("projectedWaterView");
     	
     	setupFog();
-
-    	scene = (DefaultJmeScene) Jgf.getDirectory().getObjectAs("scene/manager", SceneManager.class).getScene();
-    	
 
         waterEffectRenderPass = new WaterRenderPass(DisplaySystem.getDisplaySystem().getRenderer().getCamera(), 4, true, true);
         waterEffectRenderPass.setClipBias(0.5f);

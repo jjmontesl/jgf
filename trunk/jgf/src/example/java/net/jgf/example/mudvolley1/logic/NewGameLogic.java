@@ -60,18 +60,19 @@ public class NewGameLogic extends BaseLogicState {
                 MudVolleyPlayerEntityLoader.class);
         
         PlayerEntity player1 = (PlayerEntity) playerLoader.load(null,
-                "MudVolleyPlayerEntityLoader.entityId=player1",
+                "MudVolleyPlayerEntityLoader.entityId=entity/root/player1",
                 "MudVolleyPlayerEntityLoader.side=-1.0f"
                 );
         player1.integrate(rootEntity, scene.getRootNode(), new Vector3f(-7, 0, 0));
 
         PlayerEntity player2 = (PlayerEntity) playerLoader.load(null, 
-                "MudVolleyPlayerEntityLoader.entityId=player2",
+                "MudVolleyPlayerEntityLoader.entityId=entity/root/player2",
                 "MudVolleyPlayerEntityLoader.side=1.0f"
                 );
         player2.integrate(rootEntity, scene.getRootNode(), new Vector3f(7, 0, 0));
 
         BallEntity ball = (BallEntity) ballLoader.load(null, "");
+        ball.setId("entity/root/ball");
         ball.integrate(rootEntity, scene.getRootNode());
 
         scene.getRootNode().updateRenderState();

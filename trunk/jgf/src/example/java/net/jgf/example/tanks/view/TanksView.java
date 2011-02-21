@@ -6,6 +6,7 @@ import net.jgf.core.state.StateLifecycleEvent;
 import net.jgf.core.state.StateObserver;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 import net.jgf.example.tanks.entity.PlayerTank;
+import net.jgf.example.tanks.logic.MissionLogic;
 import net.jgf.jme.view.gui.NiftyGuiView;
 import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
@@ -33,10 +34,11 @@ public class TanksView extends BaseViewState implements StateObserver {
 	@Register (ref = "entity/root/players/player1")
 	protected PlayerTank player;
 	
+	@Register (ref = "view/root/level/osd")
 	protected NiftyGuiView niftyView;
 	
-	// TODO: This should be game data
-	protected float gameTime;
+	@Register (ref = "logic/root/ingame/mission")
+	protected MissionLogic missionLogic;
 	
 	protected float timeElapsed;
 	
@@ -45,7 +47,6 @@ public class TanksView extends BaseViewState implements StateObserver {
 		super.doLoad();
 
 		// Hook the activate event of the Nifty menu
-		niftyView = Jgf.getDirectory().getObjectAs("view/root/level/osd",  NiftyGuiView.class);
 		niftyView.addStateObserver(this);
 	}
 
@@ -53,7 +54,6 @@ public class TanksView extends BaseViewState implements StateObserver {
     public void doActivate() {
         // TODO Auto-generated method stub
         super.doActivate();
-        gameTime = 0;
     }
 
 
@@ -62,8 +62,6 @@ public class TanksView extends BaseViewState implements StateObserver {
 	public void doUpdate(float tpf) {
 		super.doUpdate(tpf);
 		
-		// Order matters
-		gameTime += tpf;
 		updateOsd(tpf);
 	}
 
@@ -77,6 +75,7 @@ public class TanksView extends BaseViewState implements StateObserver {
 			
 			if (player != null) {
 				
+			    float gameTime = missionLogic.getGameTime();
 				int timeMinutes = (int) (gameTime / 60);
 				int timeSeconds = ((int) (gameTime)) % 60;
 				String timeString = String.format("%02d:%02d.%1d", (Object[]) new Integer[] {timeMinutes, timeSeconds, (int) ((gameTime - FastMath.floor(gameTime)) * 10)} );

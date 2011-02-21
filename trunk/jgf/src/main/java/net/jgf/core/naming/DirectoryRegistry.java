@@ -89,7 +89,7 @@ final class DirectoryRegistry {
      * A Registry Setter entry, which includes a field name and a WeakReference
      * to the object where the value resolved from the Directory will be set.
      */
-    private static final class RegistrySetterEntry {
+    private static final class RegistryInjectorEntry {
         
         private WeakReference<Object> targetWeakRef;
         private String targetToString;
@@ -97,14 +97,14 @@ final class DirectoryRegistry {
         private RegistryInjectionMethod injectionMethod;
         
 
-        private RegistrySetterEntry(Object target, String accesorName, RegistryInjectionMethod type) {
+        private RegistryInjectorEntry(Object target, String accesorName, RegistryInjectionMethod type) {
             this.accessorName = accesorName;
             this.targetWeakRef = new WeakReference<Object>(target);
             this.targetToString = target.toString();
             this.injectionMethod = type;
         }
         
-        private RegistrySetterEntry(Object target, String accesorName) {
+        private RegistryInjectorEntry(Object target, String accesorName) {
             this (target, accesorName, RegistryInjectionMethod.ALL);
         }
 
@@ -117,13 +117,13 @@ final class DirectoryRegistry {
      */
     private final class RegistryEntry {
 
-        private List<RegistrySetterEntry> setters = new ArrayList<RegistrySetterEntry>();
+        private List<RegistryInjectorEntry> setters = new ArrayList<RegistryInjectorEntry>();
 
         public RegistryEntry() {
         }
 
-        public RegistrySetterEntry getSetter(Object object, String fieldName) {
-            for (RegistrySetterEntry setter : setters) {
+        public RegistryInjectorEntry getSetter(Object object, String fieldName) {
+            for (RegistryInjectorEntry setter : setters) {
                 if ((object == setter.targetWeakRef) && (fieldName == setter.accessorName)) {
                     return setter;
                 }
@@ -167,17 +167,17 @@ final class DirectoryRegistry {
         }
 
         // Add the entry
-        RegistrySetterEntry setter = null;
+        RegistryInjectorEntry setter = null;
         RegistryEntry entry = entries.get(id);
         if (entry == null) {
             entry = new RegistryEntry();
-            setter = new RegistrySetterEntry(target, accessorName, type);
+            setter = new RegistryInjectorEntry(target, accessorName, type);
             entry.setters.add(setter);
             entries.put(id, entry);
         } else {
             setter = entry.getSetter(target, accessorName);
             if (setter == null) {
-                setter = new RegistrySetterEntry(target, accessorName);
+                setter = new RegistryInjectorEntry(target, accessorName);
                 entry.setters.add(setter);
             } else {
                 throw new NamingException(
@@ -215,9 +215,9 @@ final class DirectoryRegistry {
         // id was registered for the same object (which is anyway illegal).
 
         for (RegistryEntry entry : entries.values()) {
-            Iterator<RegistrySetterEntry> it = entry.setters.iterator();
+            Iterator<RegistryInjectorEntry> it = entry.setters.iterator();
             while (it.hasNext()) {
-                RegistrySetterEntry setter = (RegistrySetterEntry) it.next();
+                RegistryInjectorEntry setter = (RegistryInjectorEntry) it.next();
                 if ((setter.accessorName == field) && (setter.targetWeakRef.get() == object)) {
                     it.remove();
                 }
@@ -235,8 +235,13 @@ final class DirectoryRegistry {
 
         RegistryEntry entry = entries.get(id);
         if (entry != null) {
-            for (RegistrySetterEntry setter : entry.setters) {
-                updateObject(setter, value);
+            Iterator<RegistryInjectorEntry> it = entry.setters.iterator();
+            while (it.hasNext()) {
+                RegistryInjectorEntry setter = it.next();
+                if (!updateObject(setter, value)) {
+                    logger.debug("Automatically removed failed injection of " + setter.accessorName + " on " + setter.targetToString);
+                    it.remove();
+                }
             }
         }
 
@@ -250,15 +255,15 @@ final class DirectoryRegistry {
      * @param setter the registry setter entry that will be updated (including the target object and field name).
      * @param value the value to set.
      */
-    void updateObject(RegistrySetterEntry setter, Object value) {
+    private boolean updateObject(RegistryInjectorEntry setter, Object value) {
 
+        boolean injected = false;
+        
         Object target = setter.targetWeakRef.get();
         String accessorName = setter.accessorName;
 
         if (target != null) {
 
-            boolean injected = false;
-            
             if (setter.injectionMethod == RegistryInjectionMethod.SETTER ||
                     setter.injectionMethod == RegistryInjectionMethod.ALL) {
                 injected = injected | injectSetter(target, accessorName, value);
@@ -275,13 +280,15 @@ final class DirectoryRegistry {
 
         } else {
             // Everything should be unregistered
-            throw new NamingException(
+            logger.warn(
                     "Null reference for target object when injecting a Directory object "
                             + value + " into field '" + accessorName
                             + "' (registered object no longer exists but wasn't unregistered, registered object was: "
                             + setter.targetToString + ")");
         }
 
+        return injected;
+        
     }
     
     private boolean injectField(Object target, String field, Object value, Class<?> targetClass) {
@@ -348,9 +355,7 @@ final class DirectoryRegistry {
         String setterName = setter;
         
         try {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Injecting [setter] field '" + setter + " with value " + value + " on object " + target);
-            }
+
             Method[] methods = target.getClass().getMethods();
 
             // Find a setter with the appropriate parameter type
@@ -360,6 +365,11 @@ final class DirectoryRegistry {
                             && (method.getReturnType() == void.class)) {
                         if ((method.getParameterTypes()[0].isInstance(value))
                                 || (value == null)) {
+                            
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Injecting [setter] field '" + setter + " with value " + value + " on object " + target);
+                            }
+                            
                             // Call the setter
                             // TODO: Cache the method when the object is registered
                             method.invoke(target, value);
