@@ -14,10 +14,10 @@
   </security>
   <resources>
   
-    <jar href="jgf-core.jar" /> 
-    <jar href="jgf-example.jar"  />
-    <jar href="jgf-example-resources.jar"  />
-    <jar href="jgf-jme.jar" /> 
+    <jar href="jgf-core-0.6.jar" /> 
+    <jar href="jgf-example-0.6.jar"  />
+    <jar href="jgf-example-resources-0.6.jar"  />
+    <jar href="jgf-jme-0.6.jar" /> 
 
     <!-- <jar href="jgfapp.jar" /> -->
   
@@ -64,6 +64,11 @@
     <jar href="scenemonitor_jme2.jar" /> 
     <jar href="sceneworker.jar" /> 
     <jar href="sm_properties_jme2.jar" />    
+    
+    <jar href="nifty-1.2.jar" />
+    <jar href="nifty-default-controls-1.2.jar" />
+    <jar href="nifty-style-black-1.2.jar" />
+    <jar href="xpp3-1.1.4c.jar" />
 
   </resources>
  
@@ -82,7 +87,12 @@
     <nativelib href="jme-native-linux.jar"/>
   </resources>
   
-  <resources os="Linux" arch="i686">
+  <resources os="Linux" arch="x86_64">
+    <j2se version="1.5+"/>
+    <nativelib href="jme-native-linux.jar"/>
+  </resources>
+  
+  <resources os="Linux" arch="amd64">
     <j2se version="1.5+"/>
     <nativelib href="jme-native-linux.jar"/>
   </resources>  
