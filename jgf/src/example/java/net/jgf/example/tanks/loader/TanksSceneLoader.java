@@ -19,6 +19,7 @@ import net.jgf.example.tanks.loader.TanksMap.Tile;
 import net.jgf.jme.camera.StaticCamera;
 import net.jgf.jme.refs.SpatialReference;
 import net.jgf.jme.scene.DefaultJmeScene;
+import net.jgf.jme.scene.util.SceneUtils;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.scene.SceneLoader;
 import net.jgf.scene.Scene;
@@ -115,6 +116,9 @@ public final class TanksSceneLoader extends SceneLoader {
 	    fillMap (map, rawData);
 		groupTiles (map);
 	    generateTerrain (map, floorNode, obstaclesNode, scene, ts);
+	    /*LightState ls1 = (LightState) scene.getRootNode().getRenderState(StateType.Light);
+        ls1.detachAll();
+	    scene.getRootNode().setRenderState(SceneUtils.createDefaultLightState());*/
 
 		//floorNode.setCullHint(CullHint.Never);
 		//floorNode.setModelBound(new BoundingBox());
@@ -406,7 +410,6 @@ public final class TanksSceneLoader extends SceneLoader {
 						PointLight light = new PointLight();
 						//light.setLocation(referenceNode.getWorldTranslation().add(0, 1.5f, 0));
 						LightState ls = (LightState) scene.getRootNode().getRenderState(StateType.Light);
-						//if (ls.getLightList().size() < 6) {
 							ls.attach(light);
 							light.setEnabled(true);
 							light.setAttenuate(true);

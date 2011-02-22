@@ -197,23 +197,23 @@
 			<!-- A ViewStateNode groups other states so they are better organized and
 			also they can be activated and loaded together. All active children
 			are updated and rendered in every game iteration. -->
-			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
+			<view id="view/root/ingame" class="net.jgf.view.ViewStateNode">
 				
 				<!--  This is a custom view (note the mudvolley namespace). It handles
 				input for both players in the mudvolley example game. -->
-				<view id="view/root/level/input" class="net.jgf.example.mudvolley1.view.InputView"
+				<view id="view/root/ingame/input" class="net.jgf.example.mudvolley1.view.InputView"
 					autoLoad="true" autoActivate="true" >
 				</view>
 
                 <!--  This is a JGF view that renders the scene contained in the SceneManager -->
-				<view id="view/root/level/scene" class="net.jgf.jme.view.SceneRenderView"
+				<view id="view/root/ingame/scene" class="net.jgf.jme.view.SceneRenderView"
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />		
 				</view>
 				
 				<!-- This view renders the Skybox in the scene (the Scene needs to be 
 				loaded with a Skybox for it to work) -->
-				<view id="view/root/level/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+				<view id="view/root/ingame/skybox" class="net.jgf.jme.view.SkyboxRenderView"
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />	
 				</view>

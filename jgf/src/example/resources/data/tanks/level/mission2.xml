@@ -40,8 +40,8 @@
                 
             </cameras>
             
-            <!--  <camera ref="scene/camera/top" /> -->
-            <camera ref="scene/camera/tanks" />
+            <camera ref="scene/camera/top" />
+            <!-- <camera ref="scene/camera/tanks" /> -->
             
       </loader>
     

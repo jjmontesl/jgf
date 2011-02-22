@@ -259,7 +259,7 @@
 				
 				<logic id="logic/action/loadmenu" class="net.jgf.logic.action.control.ControllerAction" >
 					<step type="deactivateAndUnload" ref="logic/root/ingame" />
-					<step type="deactivateAndUnload" ref="view/root/level" />
+					<step type="deactivateAndUnload" ref="view/root/ingame" />
 					<step type="runAction" ref="logic/action/menuscene" />
                     <step type="runAction" ref="logic/action/showmenu" />
 				</logic>
@@ -312,8 +312,7 @@
                    <file>tanks/gui/title.xml</file>
                    <endAfter>3.0</endAfter>
                 </view>	
-                
-                 -->	
+                 -->
 				
 				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
@@ -357,64 +356,64 @@
 			</view>
 
 
-			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
+			<view id="view/root/ingame" class="net.jgf.view.ViewStateNode">
 			
-				<view id="view/root/level/fight" class="net.jgf.view.ViewStateNode"
+				<view id="view/root/ingame/game" class="net.jgf.view.ViewStateNode"
 					autoLoad="true" autoActivate="true" >
 					
 					
 					<!-- 
-					<view id="view/root/level/fight/spectator" class="net.jgf.jme.view.FreeCameraView"
+					<view id="view/root/ingame/game/spectator" class="net.jgf.jme.view.FreeCameraView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />
 					</view>
 					-->
 					 
 					<!--  
-					<view id="view/root/level/fight/scene" class="net.jgf.jme.view.SceneRenderView"
+					<view id="view/root/ingame/game/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
 					 -->
 					
-					<view id="view/root/level/fight/effects" class="net.jgf.example.tanks.view.EffectsView"
+					<view id="view/root/ingame/game/effects" class="net.jgf.example.tanks.view.EffectsView"
 						autoLoad="true" autoActivate="true" >
 					</view>					
 					
-					<view id="view/root/level/fight/input" class="net.jgf.example.tanks.view.InputView"
+					<view id="view/root/ingame/game/input" class="net.jgf.example.tanks.view.InputView"
 						autoLoad="true" autoActivate="true" >
 					</view>
 					
-					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+					<view id="view/root/ingame/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
 
-					<view id="view/root/level/fight/water" class="net.jgf.example.tanks.view.ProjectedWaterView"
+					<view id="view/root/ingame/game/water" class="net.jgf.example.tanks.view.ProjectedWaterView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
 					
-					<view id="view/root/level/fight/viewupdate" class="net.jgf.example.tanks.view.TanksView"
+					<view id="view/root/ingame/game/viewupdate" class="net.jgf.example.tanks.view.TanksView"
 						autoLoad="true" autoActivate="true" >
 					</view>
 					
 				</view>
 
-				<view id="view/root/level/failed" class="net.jgf.view.ViewStateNode"
+				<view id="view/root/ingame/failed" class="net.jgf.view.ViewStateNode"
 						autoLoad="false" autoActivate="false">
 
-	                <view id="view/root/level/failed/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
+	                <view id="view/root/ingame/failed/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
 	                   autoLoad="true" autoActivate="true">
 	                   <file>tanks/gui/failed.xml</file>
 	                </view> 
 
 				</view>
 				
-				<view id="view/root/level/victory" class="net.jgf.view.ViewStateNode"
+				<view id="view/root/ingame/victory" class="net.jgf.view.ViewStateNode"
                         autoLoad="false" autoActivate="false">
 
-                    <view id="view/root/level/victory/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
+                    <view id="view/root/ingame/victory/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
                        autoLoad="true" autoActivate="true">
                        <file>tanks/gui/victory.xml</file>
                     </view> 
@@ -422,13 +421,13 @@
                 </view>
 				
 
-                <view id="view/root/level/osd" class="net.jgf.jme.view.gui.NiftyGuiView"
+                <view id="view/root/ingame/osd" class="net.jgf.jme.view.gui.NiftyGuiView"
                    autoLoad="true" autoActivate="true">
                    <file>tanks/gui/osd.xml</file>
                 </view> 
 
 				
-				<view id="view/root/level/grid" class="net.jgf.jme.view.devel.AxisGridView" 
+				<view id="view/root/ingame/grid" class="net.jgf.jme.view.devel.AxisGridView" 
 					autoLoad="false" autoActivate="false" >
 					<sceneManager ref="scene/manager" />
 					<drawBehind>false</drawBehind>
@@ -436,17 +435,17 @@
 					<spacing>1</spacing>
 				</view>
 				 
-				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView" 
+				<view id="view/root/ingame/debug" class="net.jgf.jme.view.devel.DebugView" 
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
 				
-				<view id="view/root/level/ui/stats/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+				<view id="view/root/ingame/ui/stats/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
 					<key>KEY_F11</key>
 				
-					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.devel.StatsView"
+					<view id="view/root/ingame/ui/stats" class="net.jgf.jme.view.devel.StatsView"
 						autoLoad="true" autoActivate="false" >
 						<graphWidth>1.0</graphWidth>
 						<graphHeight>0.20</graphHeight>
@@ -455,29 +454,29 @@
 				
 				</view>
 			
-				<view id="view/root/level/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+				<view id="view/root/ingame/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
 					<key>KEY_F12</key>
 			
-					<!-- <view id="view/root/level/ui/scenemonitor" class="net.jgf.jme.view.devel.SceneMonitorView"
+					<!-- <view id="view/root/ingame/ui/scenemonitor" class="net.jgf.jme.view.devel.SceneMonitorView"
 						autoLoad="true" autoActivate="false" context="debug">
 						<sceneManager ref="scene/manager" />
 						<updateInterval>5</updateInterval>
 					</view>  -->
 					
-					<view id="view/root/level/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
+					<view id="view/root/ingame/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
 						autoLoad="true" autoActivate="false" context="debug">
 						<sceneManager ref="scene/manager" />
 						<register ref="view/root" />
-						<register ref="view/root/level/grid" />
+						<register ref="view/root/ingame/grid" />
 						<register ref="logic/root" />
 					</view>
 				
 				</view>
 		
 				
-				<view id="view/root/level/cursor" class="net.jgf.jme.view.CursorRenderView"
+				<view id="view/root/ingame/cursor" class="net.jgf.jme.view.CursorRenderView"
 					autoLoad="true" autoActivate="true" >
 					<textureUrl>tanks/texture/cursor.png</textureUrl>
 				</view>

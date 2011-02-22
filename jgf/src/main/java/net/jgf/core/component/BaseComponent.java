@@ -61,7 +61,7 @@ import net.jgf.system.Jgf;
  * 
  * <pre>
  * &#064;code
- * &lt;view id=&quot;view/root/level/fight/input&quot; class=&quot;net.jgf.example.tanks.view.InputView&quot; &gt;
+ * &lt;view id=&quot;view/root/ingame/game/input&quot; class=&quot;net.jgf.example.tanks.view.InputView&quot; &gt;
  *     &lt;settings ref=&quot;settings&quot;&gt;
  *         &lt;setting ref=&quot;settings/input/key/up&quot; field=&quot;keyUp&quot;  /&gt;
  *         &lt;setting ref=&quot;settings/input/key/down&quot; field=&quot;keyDown&quot; /&gt;
