@@ -61,7 +61,7 @@
 	
 	<property name="dir.target.classes" value="${dir.target}/classes" />
 	<property name="dir.target.packages" value="${dir.target}/packages" />
-	<property name="dir.target.dist" value="${dir.target}/dist" />
+	<property name="dir.target.dist" value="${dir.target}/jgfapp" />
 	<property name="dir.target.jws" value="${dir.target}/jws" />
 	<property name="dir.target.lib-signed" value="${dir.target}/lib-signed" />
 
@@ -119,6 +119,17 @@
 			</manifest>
 		</jar>
 
+	</target>
+	
+	<target name="appdir" depends="package">
+		
+		<mkdir dir="${dir.target.dist}" />
+		<mkdir dir="${dir.target.dist}/lib" />
+		
+		<copy todir="${dir.target.dist}/lib">
+              <fileset dir="${dir.target.lib-signed}" includes="*.jar" />
+        </copy>
+		
 	</target>
 
 </project>
