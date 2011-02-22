@@ -43,26 +43,25 @@
 		own game projects and build deployers for them.
 	</description>
 
-	
-	
+
+
 	<property name="dir.project" value="../.." />
 
-	<property name="app.version" value="0.6" />
+	<property name="app.version" value="0.5" />
 
 	<property name="dir.src" value="${dir.project}/src" />
 	<property name="dir.target" value="${dir.project}/target" />
 
 	<property name="dir.src.project-skel" value="${dir.src}/project-skel" />
-	
+
 	<property name="dir.lib.jme" value="${dir.project}/../jme/target" />
 	<property name="dir.lib.jme-native" value="${dir.project}/../jme/lib" />
-	
+
 
 	<property name="dir.target.javadoc" value="${dir.target}/docs/api" />
 	<property name="dir.target.classes" value="${dir.target}/classes" />
 	<property name="dir.target.packages" value="${dir.target}/packages" />
-	<property name="dir.target.project-skel" value="${dir.target}/project-skel" />
-	<property name="dir.target.dist" value="${dir.target}/dist" />
+	<property name="dir.target.dist" value="${dir.target}/jgf-${app.version}" />
 	<property name="dir.target.lib" value="${dir.target}/lib" />
 
 
@@ -92,10 +91,10 @@
 		<delete dir="${dir.target}" />
 	</target>
 
-	   
-	<target name="all" depends="package,package-jme-native,project-skel" />
-		
-	
+
+	<target name="all" depends="bundle" />
+
+
 	<target name="compile">
 		<mkdir dir="${dir.target.classes}/main" />
 		<javac includeantruntime="false" srcdir="${dir.src}/main/java" destdir="${dir.target.classes}/main" classpathref="classpath.main" debug="on" source="1.5" />
@@ -107,85 +106,93 @@
 		<javac includeantruntime="false"  srcdir="${dir.src}/example/java" destdir="${dir.target.classes}/example" classpathref="classpath.example" debug="on" source="1.5" />
 	</target>
 
-	<target name="copy-deps" depends="package, package-jme-native">
-		   
+	<target name="copy-deps" depends="jar, jar-jme-native">
+
 		<mkdir dir="${dir.target.lib}" />
-		
+
 		<copy todir="${dir.target.lib}">
-            <fileset dir="${dir.src}/main/lib" />
-        </copy>
+			<fileset dir="${dir.src}/main/lib" />
+		</copy>
 		<copy todir="${dir.target.lib}">
-            <fileset dir="${dir.src}/jgf-jme/lib" />
-        </copy>
+			<fileset dir="${dir.src}/jgf-jme/lib" />
+		</copy>
 		<copy todir="${dir.target.lib}">
-            <fileset dir="${dir.target.packages}">
-                <include name="jgf-core*.jar" />
-                <include name="jgf-jme*.jar" />
-                <include name="jgf-example*.jar" />
-            </fileset>
-        </copy>
-	    
+			<fileset dir="${dir.target.packages}">
+				<include name="jgf-core*.jar" />
+				<include name="jgf-jme*.jar" />
+				<include name="jgf-example*.jar" />
+			</fileset>
+		</copy>
+
 		<copy todir="${dir.target.lib}">
-			  <fileset dir="${dir.target.packages}" includes="jme-native*.jar" />
-        </copy>
-		
+			<fileset dir="${dir.target.packages}" includes="jme-native*.jar" />
+		</copy>
+
 		<copy todir="${dir.target.lib}" >
-		    <fileset dir="${dir.lib.jme}" includes="jme*.jar" />
-        </copy>
-        <copy todir="${dir.target.lib}" flatten="true">
-              <fileset dir="${dir.lib.jme-native}" includes="**/*.jar" />
-        </copy>		
-		
+			<fileset dir="${dir.lib.jme}" includes="jme*.jar" />
+		</copy>
+		<copy todir="${dir.target.lib}" flatten="true">
+			<fileset dir="${dir.lib.jme-native}" includes="**/*.jar" />
+		</copy>
+
 	</target>
-	
-	
-	<target name="project-skel" depends="copy-deps">
 
-		<mkdir dir="${dir.target.project-skel}" />
 
-		<copy todir="${dir.target.project-skel}">
+	<target name="dist" depends="copy-deps">
+
+		<mkdir dir="${dir.target.dist}" />
+		<mkdir dir="${dir.target.dist}/doc" />
+
+		<copy todir="${dir.target.dist}">
 			<fileset dir="${dir.src.project-skel}" />
 		</copy>
 
-		<copy todir="${dir.target.project-skel}/lib">
+		<copy todir="${dir.target.dist}/lib">
 			<fileset dir="${dir.target.lib}" />
 		</copy>
 
+		<copy todir="${dir.target.dist}/lib-native">
+			<fileset dir="${dir.target}/lib-native" />
+		</copy>
+		
+		<copy todir="${dir.target.dist}/doc">
+            <fileset dir="${dir.target.javadoc}" />
+        </copy>
 
 	</target>
 
-	<target name="package-jme-native">
-		
+	<target name="jar-jme-native">
+
 		<mkdir dir="${dir.target}/lib-native/windows" />
 		<copy todir="${dir.target}/lib-native/windows" flatten="true">
 			<fileset dir="${dir.lib.jme-native}" includes="**/*.dll" />
 		</copy>
 		<jar destfile="${dir.target.packages}/jme-native-windows.jar" basedir="${dir.target}/lib-native/windows">
 			<include name="**/*.dll"/>
-        </jar>
-		
+		</jar>
+
 		<mkdir dir="${dir.target}/lib-native/linux" />
-        <copy todir="${dir.target}/lib-native/linux" flatten="true">
-            <fileset dir="${dir.lib.jme-native}" includes="**/*.so" />
-        </copy>
+		<copy todir="${dir.target}/lib-native/linux" flatten="true">
+			<fileset dir="${dir.lib.jme-native}" includes="lwjgl/native/linux/*.so" />
+		</copy>
 		<jar destfile="${dir.target.packages}/jme-native-linux.jar" basedir="${dir.target}/lib-native/linux">
 			<include name="**/*.so"/>
-        </jar>	
-		
+		</jar>
 
-        <mkdir dir="${dir.target}/lib-native/macos" />
-        <copy todir="${dir.target}/lib-native/macos" flatten="true">
-            <fileset dir="${dir.lib.jme-native}" includes="**/*.jnilib" />
-        	<fileset dir="${dir.lib.jme-native}" includes="**/*.dylib" />
-        </copy>
+
+		<mkdir dir="${dir.target}/lib-native/macos" />
+		<copy todir="${dir.target}/lib-native/macos" flatten="true">
+			<fileset dir="${dir.lib.jme-native}" includes="**/*.jnilib" />
+			<fileset dir="${dir.lib.jme-native}" includes="**/*.dylib" />
+		</copy>
 		<jar destfile="${dir.target.packages}/jme-native-macos.jar" basedir="${dir.target}/lib-native/macos">
-			  <include name="**/*.jnilib"/>
-			  <include name="**/*.dylib"/>
-        </jar>  
+			<include name="**/*.jnilib"/>
+			<include name="**/*.dylib"/>
+		</jar>
 	</target>
 
-	
-	<target name="package" depends="compile,javadoc">
+
+	<target name="jar" depends="compile,javadoc">
 
 		<mkdir dir="${dir.target.packages}" />
 
@@ -243,32 +250,64 @@
 				<include name="main/java/**" />
 				<include name="jgf-jme/java/**" />
 				<include name="jgf-jmephysics/java/**" />
-				<exclude name="example/java/**" />
+				<include name="example/java/**" />
 			</fileset>
 
 			<doctitle>
 				<![CDATA[<h1>JGF - Java Game Framework Javadoc</h1>]]>
 			</doctitle>
 
-			<bottom>
-				<![CDATA[<i>Copyright &#169; 2008-2011 Jose Juan Montes. All Rights Reserved.</i>]]>
+		<bottom>
+			<![CDATA[<i>Copyright &#169; 2008-2011 Jose Juan Montes. All Rights Reserved.</i>]]>
 			</bottom>
 
-			<tag name="todo" scope="all" description="To do:" />
+	<tag name="todo" scope="all" description="To do:" />
 
-			<!--
+	<!--
 				<group title="Group 1 Packages" packages="com.dummy.test.a*"/>
 				<group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
 			-->
 
-			<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="C:\tmp" />
-			<!--
+	<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="C:\tmp" />
+	<!--
 				<link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
 			-->
+        
+        </javadoc>
+        
+        </target>
 
-		</javadoc>
+    <target name="bundle" depends="dist">
+        
+    	<!-- Sources -->
+    	<zip basedir="${dir.project}" destfile="${dir.target}/jgf-${app.version}-source.zip">
+        	<exclude name="target/**" />
+    		<exclude name="profile.*" />
+    		<exclude name=".checkstyle" />
+    		<exclude name="src/main/checkstyle" />
+    		<exclude name="src/main/checkstyle/**" />
+    		<exclude name=".project" />
+    		<exclude name=".classpath" />
+        </zip>
+    	<tar compression="gzip" basedir="${dir.project}" destfile="${dir.target}/jgf-${app.version}-source.tar.gz">
+    		<exclude name="target/**" />
+            <exclude name="profile.*" />
+            <exclude name=".checkstyle" />
+            <exclude name="src/main/checkstyle" />
+            <exclude name="src/main/checkstyle/**" />
+            <exclude name=".project" />
+            <exclude name=".classpath" />
+        </tar>
+        
+    	<!-- Distributable (sample project and libs) -->
+    	<zip basedir="${dir.target}" destfile="${dir.target}/jgf-${app.version}.zip">
+    		<include name="jgf-${app.version}/**/*" />
+        </zip>
+    	<tar compression="gzip" basedir="${dir.target}" destfile="${dir.target}/jgf-${app.version}.tar.gz">
+            <include name="jgf-${app.version}/**/*" />
+        </tar>
+    	
+    </target>
 
-	</target>
-	
 </project>
 

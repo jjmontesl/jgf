@@ -82,7 +82,7 @@ public class NewGameLogic extends BaseLogicState {
         LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame",
                 LogicState.class);
         StateHelper.loadAndActivate(inGameLogic);
-        ViewState sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level",
+        ViewState sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/ingame",
                 ViewState.class);
         StateHelper.loadAndActivate(sceneRenderView);
 

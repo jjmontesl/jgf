@@ -71,7 +71,7 @@ public class NewGameLogic extends BaseLogicState {
 		camera.setTarget(ball.getSpatial());
 
 		// Change states
-		ViewState sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
+		ViewState sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/ingame", ViewState.class);
 		StateHelper.loadAndActivate(sceneRenderView);
 		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
 		StateHelper.loadAndActivate(inGameLogic);

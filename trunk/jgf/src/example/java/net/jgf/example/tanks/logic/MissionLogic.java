@@ -28,10 +28,10 @@ public class MissionLogic extends BaseLogicState {
 	@Register (ref = "entity/root/players/player1")
 	protected PlayerTank player;
 	
-	@Register (ref = "view/root/level/failed")
+	@Register (ref = "view/root/ingame/failed")
 	protected State stateFailed;
 
-	@Register (ref = "view/root/level/victory")
+	@Register (ref = "view/root/ingame/victory")
     protected State stateVictory;
 	
 	@Register (ref = "entity/root/enemy")

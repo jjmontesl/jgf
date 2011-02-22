@@ -180,7 +180,7 @@ public class InputView extends BaseViewState {
     @Override
     public void doActivate() {
         super.doActivate();
-        CursorRenderView cursorView = Jgf.getDirectory().getObjectAs("view/root/level/cursor",
+        CursorRenderView cursorView = Jgf.getDirectory().getObjectAs("view/root/ingame/cursor",
                 CursorRenderView.class);
         cursorView.getMouse().registerWithInputHandler(inputHandler);
         inputHandler.addAction(new TankMouseInputAction(cursorView.getMouse()),

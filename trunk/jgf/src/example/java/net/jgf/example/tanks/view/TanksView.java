@@ -34,7 +34,7 @@ public class TanksView extends BaseViewState implements StateObserver {
 	@Register (ref = "entity/root/players/player1")
 	protected PlayerTank player;
 	
-	@Register (ref = "view/root/level/osd")
+	@Register (ref = "view/root/ingame/osd")
 	protected NiftyGuiView niftyView;
 	
 	@Register (ref = "logic/root/ingame/mission")

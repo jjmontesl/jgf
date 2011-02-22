@@ -44,8 +44,8 @@ public class RestartAction extends BaseLogicAction {
 
 		logger.info ("Restarting level (logic)");
 		
-		StateHelper.deactivateAndUnload("view/root/level/failed");
-		StateHelper.deactivateAndUnload("view/root/level/victory");
+		StateHelper.deactivateAndUnload("view/root/ingame/failed");
+		StateHelper.deactivateAndUnload("view/root/ingame/victory");
 
 		EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
 		SpawnLogic spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
@@ -76,8 +76,8 @@ public class RestartAction extends BaseLogicAction {
 		
 		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
 		LogicState inGameLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame", LogicState.class);
-        ViewState levelView = Jgf.getDirectory().getObjectAs("view/root/level", ViewState.class);
-        EffectsView effectsView = Jgf.getDirectory().getObjectAs("view/root/level/fight/effects", EffectsView.class);
+        ViewState levelView = Jgf.getDirectory().getObjectAs("view/root/ingame", ViewState.class);
+        EffectsView effectsView = Jgf.getDirectory().getObjectAs("view/root/ingame/game/effects", EffectsView.class);
         
         if (rootEntity.isLoaded()) rootEntity.deactivate();
         if (inGameLogic.isLoaded()) inGameLogic.deactivate();
@@ -107,8 +107,8 @@ public class RestartAction extends BaseLogicAction {
 		StateHelper.loadAndActivate(effectsView);
 		
         // Clear banners
-        //StateHelper.deactivateAndUnload("view/root/level/failed");
-        //StateHelper.deactivateAndUnload("view/root/level/victory");
+        //StateHelper.deactivateAndUnload("view/root/ingame/failed");
+        //StateHelper.deactivateAndUnload("view/root/ingame/victory");
 
 	}
 

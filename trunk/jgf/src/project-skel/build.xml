@@ -50,86 +50,127 @@
 	<property name="dir.project" value="." />
 
 	<property name="app.name" value="JGF Game" />
+	<property name="app.key" value="jgfdemo" />
 	<property name="app.vendor" value="JGF" />
 	<property name="app.version" value="1.0" />
 	<property name="app.mainclass" value="net.jgf.example.tanks.Tanks" />
+	
+	<property name="jws.codebase" value="http://jgf/jgf-jws" />
 
 	<property name="dir.src" value="${dir.project}/src" />
 	<property name="dir.lib" value="${dir.project}/lib" />
-	
+
 	<property name="dir.target" value="${dir.project}/target" />
-	
+
 	<property name="dir.target.classes" value="${dir.target}/classes" />
-	<property name="dir.target.packages" value="${dir.target}/packages" />
-	<property name="dir.target.dist" value="${dir.target}/jgfapp" />
+	<property name="dir.target.dist" value="${dir.target}/${app.key}" />
 	<property name="dir.target.jws" value="${dir.target}/jws" />
 	<property name="dir.target.lib-signed" value="${dir.target}/lib-signed" />
 
-	
+
 	<path id="classpath.main">
 		<fileset dir="${dir.lib}">
 			<include name="*.jar" />
 		</fileset>
 	</path>
-	
+
 
 	<target name="clean">
 		<delete dir="${dir.target}" />
 	</target>
 
-	
-	<target name="all" depends="dist-jws" />
-	
-	
-	<target name="sign-jars" depends="package" >
+
+	<target name="all" depends="bundle" />
+
+
+	<target name="sign-jars" depends="jar" >
 		<mkdir dir="${dir.target.lib-signed}" />
 		<signjar alias="jgf" storepass="jgfjgf" lazy="true" destDir="${dir.target.lib-signed}" >
-			  <path>
-			    <fileset dir="${dir.lib}" includes="**/*.jar" />
-			  	<fileset dir="${dir.target.packages}" includes="**/*.jar" />
-			  </path>
+			<path>
+				<fileset dir="${dir.lib}" includes="**/*.jar" />
+				<fileset dir="${dir.target}" includes="**/*.jar" />
+			</path>
 		</signjar>
 	</target>
-	
-	
+
+
 	<target name="compile">
 		<mkdir dir="${dir.target.classes}" />
 		<javac includeantruntime="false" srcdir="${dir.src}" destdir="${dir.target.classes}" classpathref="classpath.main" debug="on" source="1.5" />
 	</target>
-	
+
 	<target name="dist-jws" depends="sign-jars">
-	    <mkdir dir="${dir.target.jws}" />
+		<mkdir dir="${dir.target.jws}" />
 		<copy todir="${dir.target.jws}">
-			  <fileset dir="${dir.project}" includes="jgf.jnlp" />
-			  <fileset dir="${dir.target.lib-signed}" includes="*.jar" />
+			<fileset dir="${dir.target.lib-signed}" includes="*.jar" />
+		</copy>
+		
+		<copy todir="${dir.target.jws}">
+            <fileset dir="${dir.project}/app" includes="jgf.jnlp" />
+          <filterset>
+                <filter token="CODEBASE" value="${jws.codebase}.jar" />
+            </filterset>
         </copy>
-    </target>
+		
+	</target>
 
-	
-	<target name="package" depends="compile">
 
-		<mkdir dir="${dir.target.packages}" />
+	<target name="jar" depends="compile">
 
-		<jar destfile="${dir.target.packages}/jgfapp.jar" basedir="${dir.target.classes}">
+		<pathconvert property="app.classpath" pathsep=" ">
+			<path refid="classpath.main" />
+			<flattenmapper />
+		</pathconvert>
+
+		<mkdir dir="${dir.target}" />
+
+		<jar destfile="${dir.target}/${app.key}-${app.version}.jar" basedir="${dir.target.classes}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="${app.vendor}" />
 				<attribute name="Implementation-Title" value="${app.name}" />
 				<attribute name="Implementation-Version" value="${app.version}" />
+				<attribute name="Main-Class" value="${app.mainclass}" />
+				<attribute name="Class-Path" value="${app.classpath}" />
+
 			</manifest>
 		</jar>
 
 	</target>
-	
-	<target name="appdir" depends="package">
-		
+
+	<target name="dist" depends="jar">
+
 		<mkdir dir="${dir.target.dist}" />
 		<mkdir dir="${dir.target.dist}/lib" />
-		
+		<mkdir dir="${dir.target.dist}/lib-native" />
+
 		<copy todir="${dir.target.dist}/lib">
-              <fileset dir="${dir.target.lib-signed}" includes="*.jar" />
-        </copy>
-		
+			<fileset dir="${dir.lib}" includes="*.jar" />
+			<fileset dir="${dir.target}" includes="${app.key}-${app.version}.jar" />
+		</copy>
+
+		<copy todir="${dir.target.dist}/lib-native">
+			<fileset dir="${dir.project}/lib-native" includes="**/*" />
+		</copy>
+
+		<copy file="${dir.project}/app/app.bat" tofile="${dir.target.dist}/${app.key}.bat">
+			<filterset>
+				<filter token="JARNAME" value="${app.key}-${app.version}.jar" />
+			</filterset>
+		</copy>
+		<copy file="${dir.project}/app/app.sh" tofile="${dir.target.dist}/${app.key}.sh" >
+			<filterset>
+				<filter token="JARNAME" value="${app.key}-${app.version}.jar" />
+			</filterset>
+		</copy>
+		<chmod perm="555" file="${dir.target.dist}/${app.key}.sh" />
+
+	</target>
+
+	<target name="bundle" depends="dist" >
+		<zip basedir="${dir.target}" destfile="${dir.target}/${app.key}-${app.version}.zip">
+			<include name="${app.key}/**/*"  />
+		</zip>
 	</target>
 
 </project>

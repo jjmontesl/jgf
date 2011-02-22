@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+	Java Game Framework Configuration File
+ --> 	
+
+<jgf>
+
+	<!-- Application configuration -->
+	<application>
+	
+	    <key>jgfbaseproject</key>
+		<name>Base JGF Project</name>
+		<version>1.0</version>
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+		<debug>true</debug>
+		
+		<description>
+			Java Game Framework: Base Project
+		</description>
+		
+		<engine ref="engine" />
+		
+	</application>
+
+	<!-- 
+		Logging configuration
+	 -->
+	<service id="logging" class="net.jgf.util.system.LoggingConfigService">
+		<logger name="com.jme.scene.Node" level="WARN" />
+		<logger name="com.jme.scene.Point" level="WARN" />
+		<logger name="com.jme.scene.Line" level="WARN" />
+		<logger name="com.jmex.model.collada.ColladaImporter" level="WARN" />
+		<logger name="net.jgf.loader.FileChainLoader" level="WARN" />				
+	</service>
+
+    <!-- 
+        Settings configuration
+     -->
+    <service id="settings" class="net.jgf.settings.SettingsManager">
+        
+        <caseSensitive>true</caseSensitive>
+    
+        <settings>
+        
+            <setting id="settings/input/key/up" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Up" default="KEY_UP" />
+            <setting id="settings/input/key/down" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Down" default="KEY_DOWN" />
+            <setting id="settings/input/key/left" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Left" default="KEY_LEFT" />
+            <setting id="settings/input/key/right" class="net.jgf.jme.settings.KeySetting" 
+                     label="Move Right" default="KEY_RIGHT" />
+                     
+            <setting id="settings/input/key/screenshot" class="net.jgf.jme.settings.KeySetting" 
+                     label="Screenshot" default="KEY_F10" />                  
+            <setting id="settings/input/key/console" class="net.jgf.jme.settings.KeySetting" 
+                     label="Console" default="KEY_TAB" />
+              
+        </settings>
+    
+    </service>
+    
+    <service id="settingsStorage" class="net.jgf.settings.storage.PropertiesStorage">
+        <path>$USER_HOME/${application/key}.properties</path>
+        <settings ref="settings" />
+    </service>
+	
+	<!-- 
+		Engine service
+	 -->
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<timerCap>0.05</timerCap>
+		<collectStats>${application/debug}</collectStats>
+		
+		<logicManager ref="logic" />
+		<viewManager ref="view" />
+		
+	</service>
+	
+	<!-- 
+		Entity Manager: Just create groups. Entities are 
+		usually added dynamically or by loaders.
+	 -->
+	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
+		
+		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
+
+
+
+		</entity>
+			
+	</service> 
+		
+	
+	<!--
+		Scene Manager: Default Scene Manager.
+	 -->
+	<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager">
+	
+	</service>
+	
+	<!--
+		Model Loading: Model loader system configuration.
+	 -->
+	<service id="loader" class="net.jgf.loader.DefaultLoaderManager">
+		
+	</service>
+	
+	<!-- 
+		Logic Manager: contains the logic state tree.
+	 -->
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+	
+		<logic id="logic/root" class="net.jgf.logic.LogicStateNode">
+			
+			<logic id="logic/action" class="net.jgf.logic.LogicStateNode" 
+				autoActivate="false">
+				
+				<logic id="logic/action/newgame" class="net.jgf.logic.action.control.ControllerAction" >
+				</logic>
+				
+				<logic id="logic/action/quit" class="net.jgf.logic.action.QuitAction" />
+				
+			</logic>
+			
+			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode" >
+				
+			</logic>
+			
+		</logic>
+		
+	</service>
+	
+	<!-- 
+		View Manager: contains the view state tree.
+	 -->
+	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
+
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
+
+			<view id="view/root/intro" class="net.jgf.view.ViewSequencerNode" 
+				autoLoad="true" autoActivate="true" >
+				
+				<unloadOnFinish>true</unloadOnFinish>
+                
+				<view id="view/root/intro/tech" class="net.jgf.jme.view.gui.NiftyGuiView"
+				   autoLoad="true" autoActivate="true">
+				   <file>gui/introtech.xml</file>
+				   <endAfter>4.0</endAfter>
+				</view>
+				
+				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
+					autoLoad="true" autoActivate="false" >
+					<action ref="logic/action/newgame" />
+				</view>
+
+			</view>
+
+			<view id="view/root/ingame" class="net.jgf.view.ViewStateNode">
+			
+				<view id="view/root/ingame/game" class="net.jgf.view.ViewStateNode"
+					autoLoad="true" autoActivate="true" >
+					
+					<view id="view/root/ingame/game/spectator" class="net.jgf.jme.view.FreeCameraView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />
+					</view>
+					 
+					<view id="view/root/ingame/game/scene" class="net.jgf.jme.view.SceneRenderView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />		
+					</view>
+					
+					<!-- 
+					<view id="view/root/ingame/game/input" class="net.jgf.example.tanks.view.InputView"
+						autoLoad="true" autoActivate="true" >
+					</view>
+					 -->
+					
+					<view id="view/root/ingame/game/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />		
+					</view>
+
+				</view>
+
+				<view id="view/root/ingame/grid" class="net.jgf.jme.view.devel.AxisGridView" 
+					autoLoad="false" autoActivate="false" >
+					<sceneManager ref="scene/manager" />
+					<drawBehind>false</drawBehind>
+					<center>0.0 0.0 0.0</center>
+					<spacing>1</spacing>
+				</view>
+				 
+				<view id="view/root/ingame/debug" class="net.jgf.jme.view.devel.DebugView" 
+					autoLoad="true" autoActivate="true" >
+					<sceneManager ref="scene/manager" />
+				</view>
+				
+				<view id="view/root/ingame/ui/stats/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+					autoLoad="true" autoActivate="true" >
+
+					<key>KEY_F11</key>
+				
+					<view id="view/root/ingame/ui/stats" class="net.jgf.jme.view.devel.StatsView"
+						autoLoad="true" autoActivate="false" >
+						<graphWidth>1.0</graphWidth>
+						<graphHeight>0.20</graphHeight>
+						<graphAlpha>0.8</graphAlpha>
+					</view>
+				
+				</view>
+			
+				<view id="view/root/ingame/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+					autoLoad="true" autoActivate="true" >
+
+					<key>KEY_F12</key>
+			
+					<view id="view/root/ingame/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
+						autoLoad="true" autoActivate="false" context="debug">
+						<sceneManager ref="scene/manager" />
+						<register ref="view/root" />
+						<register ref="view/root/ingame/grid" />
+						<register ref="logic/root" />
+					</view>
+				
+				</view>
+				
+			</view>				
+			
+		</view>
+			
+	</service>
+	
+	<!-- 
+		Sound Jukebox Service
+	 -->
+	<service id="audio" class="net.jgf.jme.audio.SimpleSoundService">
+		
+	</service>
+
+	<!-- 
+		System Information Service
+	 -->
+	<service id="systemInfo" class="net.jgf.util.system.SystemInfoService" context="debug">
+		<reportInterval>20000</reportInterval>
+	</service>
+	
+</jgf>
+ 
+
+

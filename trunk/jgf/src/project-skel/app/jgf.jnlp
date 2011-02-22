@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://jgf/jgf-jws" href="jgf.jnlp">
+<jnlp spec="1.0+" codebase="@CODEBASE@" href="jgf.jnlp">
  
   <information>
     <title>Tanks</title>

@@ -63,7 +63,7 @@ public class NewGameAction extends BaseLogicAction {
 
 
 		// Set a camera
-		//SceneRenderView sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/level/fight/scene", SceneRenderView.class);
+		//SceneRenderView sceneRenderView = Jgf.getDirectory().getObjectAs("view/root/ingame/game/scene", SceneRenderView.class);
 		//sceneRenderView.setCamera(scene.getCameraControllers().getCameraController("scene/camera/test"));
 
 	}

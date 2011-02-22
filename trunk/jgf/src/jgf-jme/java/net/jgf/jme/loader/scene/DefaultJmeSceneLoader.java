@@ -31,18 +31,17 @@ public class DefaultJmeSceneLoader extends BaseLoader<Scene> {
 		SceneUtils.createCommonRenderStates(scene);
 
 		// Enable z-buffer by default
-    scene.getRootNode().setRenderState(scene.getCommonRenderStates().get("zBuffer"));
-
-    // Enable culling by default
-    scene.getRootNode().setRenderState(scene.getCommonRenderStates().get("cullBack"));
-
-    // Lighting
-    scene.getRootNode().setRenderState(SceneUtils.createDefaultLightState());
-
-    // Add fog
-    //scene.getRootNode().setRenderState(scene.getCommonRenderStates().get("fog"));
-
-
+        scene.getRootNode().setRenderState(scene.getCommonRenderStates().get("zBuffer"));
+    
+        // Enable culling by default
+        scene.getRootNode().setRenderState(scene.getCommonRenderStates().get("cullBack"));
+    
+        // Lighting
+        scene.getRootNode().setRenderState(SceneUtils.createDefaultLightState());
+    
+        // Add fog
+        //scene.getRootNode().setRenderState(scene.getCommonRenderStates().get("fog"));
+    
 		return scene;
 
 	}

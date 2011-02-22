@@ -178,46 +178,46 @@
 
 		<view id="view/root" class="net.jgf.view.ViewStateNode">
 
-			<view id="view/root/level" class="net.jgf.view.ViewStateNode">
+			<view id="view/root/ingame" class="net.jgf.view.ViewStateNode">
 			
-				<view id="view/root/level/match" class="net.jgf.view.ViewStateNode"
+				<view id="view/root/ingame/match" class="net.jgf.view.ViewStateNode"
 					autoLoad="true" autoActivate="true" >
 					
 					
-					<view id="view/root/level/match/input" class="net.jgf.example.mudvolley5.view.InputView"
+					<view id="view/root/ingame/match/input" class="net.jgf.example.mudvolley5.view.InputView"
 						autoLoad="true" autoActivate="true" >
 					</view>
 					
 					<!-- 
-					<view id="view/root/level/match/spectator" class="net.jgf.jme.view.FreeCameraView"
+					<view id="view/root/ingame/match/spectator" class="net.jgf.jme.view.FreeCameraView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />
 					</view>
 					 -->
 					
-					<view id="view/root/level/match/scene" class="net.jgf.jme.view.SceneRenderView"
+					<view id="view/root/ingame/match/scene" class="net.jgf.jme.view.SceneRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
 					
-					<view id="view/root/level/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+					<view id="view/root/ingame/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
 						autoLoad="true" autoActivate="true" >
 						<sceneManager ref="scene/manager" />		
 					</view>
 						
 				</view>
 				
-				<view id="view/root/level/debug" class="net.jgf.jme.view.devel.DebugView"
+				<view id="view/root/ingame/debug" class="net.jgf.jme.view.devel.DebugView"
 					autoLoad="true" autoActivate="true" >
 					<sceneManager ref="scene/manager" />
 				</view>
 				
-				<view id="view/root/level/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+				<view id="view/root/ingame/axis/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
 					<key>#{settings/input/key/axis}</key>
 
-					<view id="view/root/level/axis" class="net.jgf.jme.view.devel.AxisGridView" context="debug"
+					<view id="view/root/ingame/axis" class="net.jgf.jme.view.devel.AxisGridView" context="debug"
 						autoLoad="true" autoActivate="false" >
 
 						<sceneManager ref="scene/manager" />
@@ -229,12 +229,12 @@
 
 				</view>
 				
-				<view id="view/root/level/ui/stats/switch" class="net.jgf.jme.view.ToggleInputView" 
+				<view id="view/root/ingame/ui/stats/switch" class="net.jgf.jme.view.ToggleInputView" 
 					autoLoad="true" autoActivate="true" >
 					
 					<key>KEY_F11</key>
 				
-					<view id="view/root/level/ui/stats" class="net.jgf.jme.view.devel.StatsView" context="debug"
+					<view id="view/root/ingame/ui/stats" class="net.jgf.jme.view.devel.StatsView" context="debug"
 						autoLoad="true">
 						<graphWidth>1.0</graphWidth>
 						<graphHeight>0.20</graphHeight>
@@ -256,12 +256,12 @@
                 
             </view>				
 				
-				<view id="view/root/level/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+				<view id="view/root/ingame/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
 					<key>KEY_F12</key>
 			
-					<view id="view/root/level/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
+					<view id="view/root/ingame/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
 						autoLoad="true" autoActivate="false" context="debug">
 						<sceneManager ref="scene/manager" />
 						<updateInterval>5</updateInterval>

@@ -72,13 +72,13 @@ public class NextMissionAction extends BaseLogicAction {
 	            ((PlayerTank)player).withdraw(players, scene.getRootNode());
 	        }
 		
-		StateHelper.deactivateAndUnload("view/root/level");
+		StateHelper.deactivateAndUnload("view/root/ingame");
 		
 		// Increment mission number
 		missionLogic.setMission(missionLogic.getMission() + 1);
 		newGameAction.loadMission();
 		
-		StateHelper.loadAndActivate("view/root/level");
+		StateHelper.loadAndActivate("view/root/ingame");
 
 	}
 
