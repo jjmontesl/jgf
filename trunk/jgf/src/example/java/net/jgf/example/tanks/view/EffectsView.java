@@ -5,12 +5,16 @@ import java.util.Iterator;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.naming.Register;
+import net.jgf.core.state.StateHelper;
+import net.jgf.entity.Entity;
+import net.jgf.entity.EntityGroup;
+import net.jgf.example.tanks.entity.Explosion;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.model.util.ModelUtil;
+import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.BaseLoader;
-import net.jgf.loader.Loader;
-import net.jgf.system.Jgf;
+import net.jgf.loader.entity.pool.EntityPoolLoader;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -23,7 +27,6 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.TriMesh;
 import com.jme.scene.Spatial.CullHint;
-import com.jme.scene.Spatial.LightCombineMode;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.RenderState;
@@ -58,25 +61,18 @@ public class EffectsView extends BaseViewState {
 		public float ttl = 3.0f;
 	}
 
-	private class ExplosionEffect {
-		public Node node = null;
-		public Quaternion rotation = null;
-		public ColorRGBA fadeColor = null;
-		public float ttl;
-		public float initialTtl;
-	}
-
 	@Register (ref = "scene")
 	private DefaultJmeScene scene;
+	
+	@Register (ref = "entity/root/explosions")
+	private EntityGroup explosionsGroup;
+	
+	@Register (ref = "loader/entity/pool")
+    private EntityPoolLoader entityLoader;
 
 	private Node smokesNode;
 
 	private ArrayList<SmokeEffect> smokes = new ArrayList<SmokeEffect>(60);
-
-	private ArrayList<ExplosionEffect> explosions = new ArrayList<ExplosionEffect>(30);
-
-	@Register (ref = "loader/model")
-	private Loader<Node> loader;
 
 	/*
 	 * (non-Javadoc)
@@ -86,7 +82,10 @@ public class EffectsView extends BaseViewState {
 	@Override
 	public void doLoad() {
 		super.doLoad();
-		smokesNode = new Node("smokes");		
+		smokesNode = new Node("smokes");
+		StateHelper.loadAndActivate(explosionsGroup);
+		
+	    entityLoader.preload(50, "FileChainLoader.resourceUrl=tanks/entity/explosion.xml");
 	}
 
 
@@ -155,27 +154,6 @@ public class EffectsView extends BaseViewState {
 					smokesNode.detachChild(smoke.particles);
 					iterator.remove();
 				}
-			}
-		}
-
-		// Update explosions
-		for (Iterator<ExplosionEffect> iterator = explosions.iterator(); iterator.hasNext();) {
-			ExplosionEffect explosion = iterator.next();
-			explosion.ttl -= tpf;
-			if (explosion.ttl > 0) {
-				float scaleTpf = tpf * ((explosion.ttl) * (explosion.ttl) * 1.0f);
-				explosion.node.setLightCombineMode(LightCombineMode.Off);
-				explosion.node.getLocalScale().addLocal(scaleTpf, scaleTpf, scaleTpf);
-
-				explosion.node.getLocalRotation().multLocal(explosion.rotation);
-
-				explosion.fadeColor.a = (explosion.ttl) / explosion.initialTtl;
-
-				explosion.node.updateRenderState();
-
-			} else {
-				scene.getRootNode().detachChild(explosion.node);
-				iterator.remove();
 			}
 		}
 
@@ -253,48 +231,26 @@ public class EffectsView extends BaseViewState {
 
 	public void addExplosion(Vector3f location, float factor) {
 
-		Node node = (Node)((BaseLoader) loader).load(null, "ConverterLoader.resourceUrl=tanks/model/explosion/explosion.dae");
-		node.getLocalTranslation().set(location);
-		node.getLocalScale().set(0.2f, 0.2f, 0.2f);
-		BlendState bs = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
+	    Explosion explosion = (Explosion) entityLoader.load(null, "FileChainLoader.resourceUrl=tanks/entity/explosion.xml");
+        explosion.setId("!entity/root/explosions/explosion" + explosionsGroup.children().size());
+        explosion.clearStateObservers();
 
-		bs.setBlendEnabled(true);
-		bs.setSourceFunction(SourceFunction.SourceAlpha);
-		bs.setDestinationFunction(DestinationFunction.One);
-		bs.setBlendEquation(BlendEquation.Add);
-		bs.setEnabled(true);
+	    // TODO: Don't put them into the rootNode()
+	    Node explosionNode = (Node) scene.getRootNode();
+	    explosion.integrate(explosionsGroup, explosionNode);
+	    
+		explosion.getSpatial().getLocalTranslation().set(location);
+		explosion.getSpatial().getLocalScale().set(0.2f, 0.2f, 0.2f);
 
-		TriMesh mesh = (TriMesh) ModelUtil.findChild(node, "Sphere_001-explosion_jpg");
-		ColorRGBA fadecolor = new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
-		mesh.setDefaultColor(fadecolor);
-
-		MaterialState ms = (MaterialState) mesh.getRenderState(RenderState.RS_MATERIAL);
-		ms.setColorMaterial(ColorMaterial.AmbientAndDiffuse);
-		//ms.getSpecular().set(0,0,0,0);
-		//ms.setEnabled(false);
-
-		mesh.setRenderState(bs);
-		node.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
-		mesh.updateRenderState();
-
-		mesh.setRenderState(((DefaultJmeScene)scene).getCommonRenderStates().get("zBufferReadOnly"));
-
-		// TODO: Don't put explosions in the root node
-		scene.getRootNode().attachChild(node);
-		scene.getRootNode().updateRenderState();
-
-		ExplosionEffect explosion = new ExplosionEffect();
-		explosion.node = node;
 		explosion.rotation = new Quaternion();
-		explosion.fadeColor = fadecolor;
 		explosion.ttl = factor;
 		explosion.initialTtl = factor;
 		// TODO: Optimize
 		explosion.rotation.fromAngleAxis(FastMath.DEG_TO_RAD * 3.0f * FastMath.nextRandomFloat(),
 				new Vector3f(FastMath.nextRandomFloat(), FastMath.nextRandomFloat(), FastMath.nextRandomFloat()).normalizeLocal());
 
-
-		explosions.add(explosion);
+		StateHelper.loadAndActivate(explosion);
+		
 	}
 
 }

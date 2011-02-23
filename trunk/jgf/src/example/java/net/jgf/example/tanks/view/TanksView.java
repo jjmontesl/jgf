@@ -27,10 +27,6 @@ public class TanksView extends BaseViewState implements StateObserver {
 	 */
 	private static final Logger logger = Logger.getLogger(TanksView.class);
 
-	protected TextRenderer hitsText;
-	
-	protected TextRenderer timeText;
-	
 	@Register (ref = "entity/root/players/player1")
 	protected PlayerTank player;
 	
@@ -39,6 +35,10 @@ public class TanksView extends BaseViewState implements StateObserver {
 	
 	@Register (ref = "logic/root/ingame/mission")
 	protected MissionLogic missionLogic;
+	
+	protected TextRenderer hitsText;
+	    
+	protected TextRenderer timeText;
 	
 	protected float timeElapsed;
 	

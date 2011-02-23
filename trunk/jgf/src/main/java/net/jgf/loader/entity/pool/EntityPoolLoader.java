@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.jgf.config.Config;
+import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
 import net.jgf.entity.Entity;
@@ -76,6 +77,9 @@ public class EntityPoolLoader extends EntityLoader {
 	public void preload(int count, String properties) {
 		for (int i = 0; i < count; i ++) {
 			Entity entity = load(null, properties);
+			if (entity == null) {
+			    throw new ConfigException("Null entity loaded when preloading entities from " + this);
+			}
 			this.returnToPool(entity);
 		}
 	}
@@ -108,7 +112,7 @@ public class EntityPoolLoader extends EntityLoader {
 		}
 
 		if (!found) {
-			logger.warn("Tried to return an unexisted item " + item + " to " + this);
+			logger.error("Tried to return an unexiting " + item + " to pool " + this);
 		}
 
 	}
