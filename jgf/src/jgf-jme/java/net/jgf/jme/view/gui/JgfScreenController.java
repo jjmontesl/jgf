@@ -3,6 +3,7 @@ package net.jgf.jme.view.gui;
 import java.util.concurrent.Callable;
 
 import net.jgf.config.ConfigException;
+import net.jgf.core.state.StateHelper;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
 
@@ -57,8 +58,6 @@ public class JgfScreenController implements ScreenController {
         
         String actionId = null; 
         
-        
-        
         JgfScreenController controller = null;
         
         public ActionNotify(JgfScreenController controller, String actionId) {
@@ -74,6 +73,25 @@ public class JgfScreenController implements ScreenController {
             
             //LogicAction action = Jgf.getDirectory().getObjectAs(actionId, LogicAction.class);
             //action.perform(null);
+        }
+    };
+    
+    private class ActivateStateNotify implements EndNotify {
+        
+        String stateId = null; 
+        
+        JgfScreenController controller = null;
+        
+        public ActivateStateNotify(JgfScreenController controller, String actionId) {
+            this.controller = controller;
+            this.stateId = actionId;
+        }
+        
+        @Override
+        public void perform() {
+            controller.view.deactivate();
+            controller.view.unload();
+            StateHelper.loadAndActivate(stateId);
         }
     };
     
@@ -103,6 +121,10 @@ public class JgfScreenController implements ScreenController {
 
     public void gotoScreen(String id) {
       nifty.gotoScreen(id);
+    }
+    
+    public void endScreenAndActivateState(String id) {
+        screen.endScreen(new ActivateStateNotify(this, id));
     }
 
     public void endScreenAndDoAction(String id) {

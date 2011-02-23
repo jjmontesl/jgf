@@ -94,17 +94,6 @@ public final class TanksSceneLoader extends SceneLoader {
 
 		DefaultJmeScene scene = (DefaultJmeScene) base;
 
-			// Prepare some resources
-	    Texture floorTexture = TextureManager.loadTexture(
-	    	ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, "mudvolley/texture/hardwoodfloor.jpg"),
-				Texture.MinificationFilter.NearestNeighborLinearMipMap,
-				Texture.MagnificationFilter.NearestNeighbor);
-	  	
-	    floorTexture.setWrap(WrapMode.Repeat);
-	    TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
-	    ts.setTexture(floorTexture, 0);
-	    ts.setEnabled(true);
-	
 	    Node fieldNode = new Node("fieldNode");
 	    Node floorNode = new Node("floorNode");
 	    Node obstaclesNode = new Node("obstaclesNode");
@@ -115,7 +104,7 @@ public final class TanksSceneLoader extends SceneLoader {
 	    
 	    fillMap (map, rawData);
 		groupTiles (map);
-	    generateTerrain (map, floorNode, obstaclesNode, scene, ts);
+	    generateTerrain (map, floorNode, obstaclesNode, scene);
 	    /*LightState ls1 = (LightState) scene.getRootNode().getRenderState(StateType.Light);
         ls1.detachAll();
 	    scene.getRootNode().setRenderState(SceneUtils.createDefaultLightState());*/
@@ -369,13 +358,36 @@ public final class TanksSceneLoader extends SceneLoader {
 		
 	}
 	
-	private void generateTerrain(TanksMap map, Node floorNode, Node obstaclesNode, DefaultJmeScene scene, TextureState ts) {
+	private void generateTerrain(TanksMap map, Node floorNode, Node obstaclesNode, DefaultJmeScene scene) {
 
 		
-		LightState ls1 = (LightState) scene.getRootNode().getRenderState(StateType.Light);
+		
+	    
+	    // Light
+	    LightState ls1 = (LightState) scene.getRootNode().getRenderState(StateType.Light);
 		ls1.detachAll();
 		scene.getRootNode().updateRenderState();
 		
+		// Texture
+	      // Prepare some resources
+        Texture floorTexture = TextureManager.loadTexture(
+            ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, "mudvolley/texture/hardwoodfloor.jpg"),
+                Texture.MinificationFilter.NearestNeighborLinearMipMap,
+                Texture.MagnificationFilter.NearestNeighbor);
+        Texture rockTexture = TextureManager.loadTexture(
+                ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, "tanks/texture/wood02.jpg"),
+                    Texture.MinificationFilter.NearestNeighborLinearMipMap,
+                    Texture.MagnificationFilter.NearestNeighbor);
+
+        rockTexture.setWrap(WrapMode.Repeat);
+        floorTexture.setWrap(WrapMode.Repeat);
+        
+        TextureState tsFloor = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+        tsFloor.setTexture(floorTexture, 0);
+        tsFloor.setEnabled(true);
+        TextureState tsRock = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+        tsRock.setTexture(rockTexture, 0);
+        tsRock.setEnabled(true);
 		
 		Set<Integer> generatedBlocks = new HashSet<Integer>();
 		
@@ -388,7 +400,7 @@ public final class TanksSceneLoader extends SceneLoader {
 				
 				// Blocks
 				if (!generatedBlocks.contains(tile.group)) {
-					generateBlock(map, tile, floorNode, obstaclesNode, ts);
+					generateBlock(map, tile, floorNode, obstaclesNode, (tile.raise > 0) ? tsRock : tsFloor);
 					generatedBlocks.add(tile.group);
 				}
 				

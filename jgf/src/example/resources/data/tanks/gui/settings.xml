@@ -27,7 +27,7 @@
             
             <panel align="right" childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Back" >
-                <interact onClick="endScreenAndDoAction(logic/action/showmenu)" />
+                <interact onClick="endScreenAndActivateState(view/root/main/menu)" />
             </control>
         </panel>      
 

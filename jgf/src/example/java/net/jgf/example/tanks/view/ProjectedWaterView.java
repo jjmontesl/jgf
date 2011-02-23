@@ -42,6 +42,16 @@ public class ProjectedWaterView extends BaseViewState {
 		super.doUnload();
         waterEffectRenderPass.cleanup();
 	}
+    
+    
+
+    @Override
+    public void doDeactivate() {
+        super.doDeactivate();
+        ((Node) scene.getRootNode()).detachChild(projectedGrid);
+    }
+
+
 
     @Override
     public void doActivate() {

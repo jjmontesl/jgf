@@ -59,7 +59,7 @@ public class EntityPool extends BaseComponent {
 
 	public Entity getEntity() {
 
-		logger.debug("Trying to retrieve entity from pool " + this);
+		logger.debug("Obtaining entity from pool " + this);
 
 		Entity entity = null;
 		if (freeItems.size() > 0) {

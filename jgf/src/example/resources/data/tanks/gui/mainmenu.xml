@@ -30,12 +30,12 @@
             </control>
             <panel align="right"  childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Multiplayer" >
-                
+                <interact onClick="endScreenAndActivateState(view/root/main/network)" />
             </control>
             
             <panel align="right" childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Settings" >
-                <interact onClick="endScreenAndDoAction(logic/action/showsettings)" />
+                <interact onClick="endScreenAndActivateState(view/root/main/settings)" />
             </control>
             
             <panel align="right" childLayout="horizontal" height="8px" />

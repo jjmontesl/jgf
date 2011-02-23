@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="src/example/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/example/resources"/>
+	<classpathentry kind="src" path="src/jgf-network/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="src/main/lib/bsh-core-2.0b4.jar"/>
 	<classpathentry kind="lib" path="src/main/lib/commons-beanutils-bean-collections.jar"/>
