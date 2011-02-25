@@ -1,7 +1,6 @@
 #summary Wiki Sidebar
 
 * JGF
-  * [Overview]
   * [Features]
   * [GettingStarted Getting Started]
   * [FAQ]
@@ -11,8 +10,8 @@
   * [DownloadingJGF Downloading JGF]
 
 * Documentation
-  * [Overview]
   * [Examples Examples]
+  * [Overview]
   * [Javadoc Javadoc]
   * [FAQ]
 
