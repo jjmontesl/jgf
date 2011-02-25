@@ -3,13 +3,11 @@
 
 = JGF Features =
 
-We recommend spending some time getting familiar with JGF features. Learning what JGF provides may save you time.
+* Core
 
-*Logic and View states
-
-  * Logic and View States drive application logic and aspect.
-  * Entities, Scenes and other structures are easily handled by framework services.
-  * Many elements can be described in the configuration file.
+  * A State Engine drives application logic and aspect. 
+  * Entities, Scene and other structures are easily handled by framework services.
+  * Game componentes can be described in a configuration file.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-1.png
 
@@ -28,19 +26,19 @@ We recommend spending some time getting familiar with JGF features. Learning wha
   * Settings management.
   * Settings storage providers.
 
-  * Configuration Dialog for initial settings (_to be done_).
-  * Command Line Options parsing (_to be done_).
+  * Configuration Dialog for initial settings (_planned: currently using JME settings dialog_).
+  * Command Line Options parsing (_planned_).
  
 *Console System*
 
-  * Extensible and replaceable console system. Functionality, aspect and language can be customized.
+  * Extensible and replaceable console system. Functionality, aspect and syntax can be customized.
   * Basic graphical interface.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-console-1.png
 
 *Extensibility*
 
-JGF is designed to be extended. Base classes are provided for most of the components you'll need to implement to code your game. You can always provide new functionality writing your custom components if you need.
+JGF is designed to be extensible. Base classes are provided for most of the components you'll need to implement to code your game. You can always provide new functionality writing your custom components if you need.
 
 *Development*
 
@@ -58,8 +56,7 @@ JGF includes and provides components that easily allow you to add development to
 *Loaders and Art Pipeline*
 
   * Modular loading system for Entities, Scenes and Models. 
-  * Entity pools.
-  * Standard way to convert and cache converted resources (_to be refactored_).
+  * Entity Pools.
 
 *Audio*
 
@@ -67,26 +64,21 @@ JGF includes and provides components that easily allow you to add development to
 
 *Networking*
 
-  * Any system can be integrated. _No out of the box networking yet_.
+  * Any system can be used (_A JME3 SpiderMonkey backport for JME2 is currently included in JGF_).
 
-*Logging*
-
- * Using log4j (log4j).
- * Logging configuration.  
- * Informed startup, loading and shutdown procedures.
-
-*Services and Configuration System*
+*Components and Injection framework*
 
 JGF main configuration is done in a descriptive XML configuration file, which provides:
 
   * Easy overview of application parts and components.
   * Standard and practical way to configure components.
-  * Easy way to add or replace parts of the application.
+  * Easy way to add or replace parts of application.
   * Convenient environment for developing and rapid prototyping.
+  * Component injection (through annotations or naming API).
 
 *Build System*
 
-  * Out of the box build scripts to package games, convert then to Windows .exe, create installers, Java Web Start... (_20% done_).
+  * Out of the box build scripts to package games, create installers, and Java Web Start bundle (_partially implemented_).
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source] - [FAQ]
