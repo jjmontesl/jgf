@@ -5,9 +5,14 @@
 
 * Core
 
+  JGF is a components and injection framework,
+
   * A State Engine drives application logic and aspect. 
   * Entities, Scene and other structures are easily handled by framework services.
-  * Game componentes can be described in a configuration file.
+  * Configuration is done in a descriptive XML configuration file.
+  * Component injection (through annotations or API).
+  * Easy overview of application parts.
+  * Standard and practical way to configure application.
 
   http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-1.png
 
@@ -65,16 +70,6 @@ JGF includes and provides components that easily allow you to add development to
 *Networking*
 
   * Any system can be used (_A JME3 SpiderMonkey backport for JME2 is currently included in JGF_).
-
-*Components and Injection framework*
-
-JGF main configuration is done in a descriptive XML configuration file, which provides:
-
-  * Easy overview of application parts and components.
-  * Standard and practical way to configure components.
-  * Easy way to add or replace parts of application.
-  * Convenient environment for developing and rapid prototyping.
-  * Component injection (through annotations or naming API).
 
 *Build System*
 
