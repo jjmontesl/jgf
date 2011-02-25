@@ -5,13 +5,11 @@
 
 = Downloading JGF =
 
-_Note: JGF is currently in an early stage of development. Some functionality is yet to be built and some deep changes to the API should be expected. If you are interested in the project, please send us your feedback, join the user list, or contribute ideas or patches._
-
 There are currently no packages for JGF, so you need to download the source code using your favourite tool or IDE. It can be accessed following the instructions at:
 
 [http://code.google.com/p/jgf/source/checkout http://code.google.com/p/jgf/source/checkout]
 
-= Previous Steps =
+= Prerequisites =
 
 Before going on, you should ensure you are able to compile and run [http://www.jmonkeyengine.com JMonkeyEngine] 2 applications and examples. 
 
