@@ -11,15 +11,15 @@ As JGF is written in Java, so you need to know some Java. Also, JGF uses the [ht
 
 It is important to know your framework features. Just knowing they exist may save you time. The [Features] page contains a list of what you can expect from JGF.
 
-=== 2 - Check the tutorials ===
+=== 2 - Download JGF and run the test applications  ===
+
+Visit the [DownloadingJGF Download] page and get yourself a copy of JGF. The Download page includes information about how to build JGF.
+
+Run some examples to ensure everything works (also, examples are useful sources of configuration chunks, for you to cut and paste).
+
+=== 3 - Check the tutorials ===
 
   * [Examples Tutorials and Examples]
-
-=== 3 - Download JGF and run the test applications  ===
-
-Visit the [DownloadingJGF Download] page and get yourself a copy of JGF. 
-
-Run some examples to ensure everything works (also, examples are useful sources of configuration examples, for you to cut and paste).
 
 === 4 - Follow the tutorials and start coding  ===
 
