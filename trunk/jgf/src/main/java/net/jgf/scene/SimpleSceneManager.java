@@ -43,7 +43,6 @@ public class SimpleSceneManager extends BaseService implements SceneManager {
 	 * @see net.jgf.scene.SceneManager#getScene()
 	 */
 	public Scene getScene() {
-		if (scene == null) throw new ServiceException("Tried to retrieve a scene from " + this + " but no scene has been set");
 		return scene;
 	}
 	

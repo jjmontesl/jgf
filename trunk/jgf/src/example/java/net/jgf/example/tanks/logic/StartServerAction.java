@@ -1,9 +1,10 @@
 
-package net.jgf.example.tanks.logic.multiplayer;
+package net.jgf.example.tanks.logic;
+
+import java.io.IOException;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.naming.Register;
-import net.jgf.example.tanks.logic.MissionLogic;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
 import net.jgf.loader.entity.pool.EntityPoolLoader;
@@ -39,7 +40,11 @@ public class StartServerAction extends BaseLogicAction {
 	public void perform(Object arg) {
 
 		logger.info ("Starting server");
-		network.startServer();
+		try {
+            network.startServer();
+        } catch (IOException e) {
+            logger.error ("Could not start network server.", e);
+        }
 		
 	}
 

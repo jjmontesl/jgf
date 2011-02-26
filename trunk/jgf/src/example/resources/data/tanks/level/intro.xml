@@ -87,14 +87,7 @@
 					<property name="SpatialTransformerLoader.rotatePi" value="0.0 0.5 0.0" />
 				</loader>
 			</reference>
-			
-			<reference regexp="a.*" type="entity" target="entity/root/enemies">
-				<loader id="!loader/scene/referencesprocessor/enemy-a" class="net.jgf.loader.ReferenceLoader" >
-					<property name="ReferenceLoader.loader" value="loader/entity" />
-					<property name="FileChainLoader.resourceUrl" value="tanks/entity/tank-a.xml" />
-				</loader>
-			</reference>			
-			
+
 		</loader>
 		
 	</loader>

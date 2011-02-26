@@ -44,7 +44,7 @@ public class ActionView extends BaseViewState {
 		if (action != null) {
 			action.perform(null);
 		} else {
-			logger.warn ("Null action found when performing action at " + this);
+			logger.error ("No action set when performing action at " + this);
 		}
 
 		this.deactivate();

@@ -39,7 +39,7 @@
           
           <panel width="*" />
           <control align="right" valign="bottom" width="30%" name="button" label="Continue" >
-              <interact onClick="endScreenAndDoAction(logic/action/nextmission)" />
+              <interact onClick="endScreenAndDoAction(logic/action/game/nextmap)" />
           </control>
                     
         </panel>      

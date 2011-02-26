@@ -75,20 +75,31 @@ public class EntityPoolLoader extends EntityLoader {
 	}
 
 	public void preload(int count, String properties) {
-		for (int i = 0; i < count; i ++) {
+		ArrayList<Entity> preloaded = new ArrayList<Entity>(count);
+	    for (int i = 0; i < count; i ++) {
 			Entity entity = load(null, properties);
 			if (entity == null) {
 			    throw new ConfigException("Null entity loaded when preloading entities from " + this);
 			}
-			this.returnToPool(entity);
+			preloaded.add(entity);
 		}
+        for (Entity entity : preloaded) {
+            this.returnToPool(entity);
+        }
 	}
 	
 	public void preload(int count, LoadProperties properties) {
+	    ArrayList<Entity> preloaded = new ArrayList<Entity>(count);
 		for (int i = 0; i < count; i ++) {
 			Entity entity = load(null, properties);
-			this.returnToPool(entity);
+			if (entity == null) {
+                throw new ConfigException("Null entity loaded when preloading entities from " + this);
+            }
+            preloaded.add(entity);
 		}
+        for (Entity entity : preloaded) {
+            this.returnToPool(entity);
+        }
 	}
 
 	public void returnToPool(Entity item) {

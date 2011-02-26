@@ -156,6 +156,8 @@ public final class Directory {
      */
     public synchronized Object removeObject(String id) {
 
+        logger.debug("Removing object with id '" + id + "' from directory");
+        
         if (StringUtils.isBlank(id)) {
             throw new NamingException(
                     "Cannot remove object with a blank name: '" + id + "'");

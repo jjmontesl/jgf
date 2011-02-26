@@ -7,7 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
@@ -45,6 +48,8 @@ public final class PropertiesStorage extends BaseService {
 
     protected Settings settings;
     
+    protected Set<String> excludes = new HashSet<String>();
+    
     protected SettingHandler<String> path = new SettingHandler<String>(StringSetting.class);
     
     public PropertiesStorage() {
@@ -69,9 +74,25 @@ public final class PropertiesStorage extends BaseService {
         
         String settingsRef = config.getString(configPath + "/settings/@ref");
         Jgf.getDirectory().register(this, "settings", settingsRef);
+        
+        List<String> excludeList = config.getList(configPath + "/excludes/exclude/@pattern");
+        for (String exclude : excludeList) {
+            excludes.add(exclude);
+        }
 
     }
 
+    private boolean filterSetting(String settingId) {
+        boolean passes = true;
+        for (String exclude: excludes) {
+            if (settingId.matches(exclude)) {
+                passes = false;
+                break;
+            }
+        }
+        return passes;
+    }
+    
     @Override
     public void dispose() {
         this.writeSettings();
@@ -107,13 +128,15 @@ public final class PropertiesStorage extends BaseService {
         }
         
         for (Setting< ? > setting : settings.getSettings()) {
-            String propValue = properties.getProperty(setting.getId());
-            if (propValue != null) {
-                try {
-                    setting.readValue(propValue);
-                } catch (ConfigException e) {
-                    // If read value cannot be parsed:
-                    setting.reset();
+            if (filterSetting(setting.getId())) {
+                String propValue = properties.getProperty(setting.getId());
+                if (propValue != null) {
+                    try {
+                        setting.readValue(propValue);
+                    } catch (ConfigException e) {
+                        // If read value cannot be parsed:
+                        setting.reset();
+                    }
                 }
             }
         }
@@ -130,7 +153,9 @@ public final class PropertiesStorage extends BaseService {
         
         Properties properties = new Properties();
         for (Setting<?> setting : settings.getSettings()) { 
-            properties.put(setting.getId(), setting.toString());
+            if (filterSetting(setting.getId())) {
+                properties.put(setting.getId(), setting.toString());
+            }
         }
         
         File file = new File(epath);

@@ -48,7 +48,6 @@ public abstract class Setting<T> extends BaseComponent {
 	public void setDefaultValue(T defaultValue) {
 		this.defaultValue = defaultValue;
 	}
-
 	
 	public abstract T parseValue(String value);
 	

@@ -48,7 +48,7 @@ public class SpawnLogic extends BaseLogicState {
     @Register (ref = "scene")
 	protected DefaultJmeScene scene;
 
-	@Register (ref = "view/root/ingame/game/effects")
+	@Register (ref = "view/root/scene/effects")
 	protected EffectsView effectsView;
 
 	int bullets = 0;

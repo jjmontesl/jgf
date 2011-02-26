@@ -43,11 +43,11 @@
           
           <panel width="*" />
           <control align="right" valign="bottom" width="30%" name="button" label="Main Menu" >
-              <interact onClick="endScreenAndDoAction(logic/action/loadmenu)" />
+              <interact onClick="endScreenAndDoAction(logic/action/menu/main)" />
           </control>
           <panel width="20px" />
           <control align="right" valign="bottom" width="30%" name="button" label="Restart" >
-              <interact onClick="endScreenAndDoAction(logic/action/restart)" />
+              <interact onClick="endScreenAndDoAction(logic/action/game/resetmap)" />
           </control>
                     
         </panel>      

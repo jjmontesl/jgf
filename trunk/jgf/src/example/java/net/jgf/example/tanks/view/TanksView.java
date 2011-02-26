@@ -80,8 +80,8 @@ public class TanksView extends BaseViewState implements StateObserver {
 				int timeSeconds = ((int) (gameTime)) % 60;
 				String timeString = String.format("%02d:%02d.%1d", (Object[]) new Integer[] {timeMinutes, timeSeconds, (int) ((gameTime - FastMath.floor(gameTime)) * 10)} );
 
-				timeText.setText("Time: " +  timeString);
-				hitsText.setText("Hits: " +  player.getKills());
+				hitsText.setText("Score: " +  player.getKills());
+				timeText.setText("Time:  " +  timeString);
 			}
 			
 		}
