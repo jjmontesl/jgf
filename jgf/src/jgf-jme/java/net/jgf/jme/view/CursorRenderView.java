@@ -62,7 +62,7 @@ public class CursorRenderView extends BaseViewState {
 
     BlendState as1 = DisplaySystem.getDisplaySystem().getRenderer().createBlendState();
     as1.setBlendEnabled(true);
-    as1.setSourceFunction(BlendState.SourceFunction.One);
+    as1.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
     as1.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
     as1.setTestEnabled(true);
     as1.setTestFunction(BlendState.TestFunction.GreaterThan);
