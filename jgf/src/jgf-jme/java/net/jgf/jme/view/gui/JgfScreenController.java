@@ -141,8 +141,7 @@ public class JgfScreenController implements ScreenController {
         
         if (Jgf.getApp().isDebug()) {
             if (action == null) {
-                throw new ConfigException("Cannot run action from " + this
-                        + " (no action set)");
+                throw new ConfigException("Cannot find action called from GUI with name '" + id + "' from " + this);
             }
         }
         

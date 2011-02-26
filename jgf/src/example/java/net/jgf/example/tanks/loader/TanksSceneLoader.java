@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.image.Texture.WrapMode;
+import com.jme.light.DirectionalLight;
 import com.jme.light.PointLight;
 import com.jme.light.SimpleLightNode;
 import com.jme.math.FastMath;
@@ -86,6 +87,58 @@ public final class TanksSceneLoader extends SceneLoader {
 
 	}
 
+	public LightState createDefaultLightState() {
+
+	    DirectionalLight light = new DirectionalLight();
+	    light.setDirection (new Vector3f(-1.0f, -0.3f, -0.5f).normalizeLocal());
+	    light.setAmbient(new ColorRGBA(0.45f, 0.45f, 0.45f, 0.8f));
+	    light.setDiffuse(new ColorRGBA(0.45f, 0.45f, 0.45f, 0.8f));
+	    light.setSpecular(new ColorRGBA(0.45f, 0.45f, 0.45f, 0.8f));
+	    light.setConstant(0.0f);
+	    light.setLinear(0.0f);
+	    light.setQuadratic(0.0f);
+	    light.setShadowCaster(true);
+	    light.setEnabled(true);
+
+
+
+	    DirectionalLight light2 = new DirectionalLight();
+	    light2.setDirection (new Vector3f(-8.3f, -0.6f, 0.9f));
+	    light2.setAmbient(new ColorRGBA(0.2f, 0.2f, 0.45f, 0.5f));
+	    light2.setDiffuse(new ColorRGBA(0.2f, 0.2f, 0.45f, 0.5f));
+	    light2.setSpecular(new ColorRGBA(0.2f, 0.2f, 0.45f, 0.5f));
+	    light2.setConstant(0.0f);
+	    light2.setLinear(0.0f);
+	    light2.setQuadratic(0.0f);
+	    light2.setShadowCaster(true);
+	    light2.setEnabled(true);
+
+
+	    /*
+	    PointLight pl = new PointLight();
+	    pl.setLightMask(0);
+	    pl.setEnabled(true);
+	    pl.setDiffuse(new ColorRGBA(.7f, .7f, .7f, 1.0f));
+	    pl.setAmbient(new ColorRGBA(.25f, .25f, .25f, .25f));
+	    pl.setLocation(new Vector3f(-30,30,-80));
+	    pl.setSpecular(new ColorRGBA(0.2f, 0.2f, 0.3f, 0.0f));
+	    pl.setConstant(100.0f);
+	    pl.setLinear(100.0f);
+	    pl.setQuadratic(100.0f);
+	    pl.setShadowCaster(true);
+	    */
+
+	    LightState ls = DisplaySystem.getDisplaySystem().getRenderer().createLightState();
+	    ls.detachAll();
+	    ls.attach(light);
+	    ls.attach(light2);
+	    //ls.attach(pl);
+	    ls.setGlobalAmbient(new ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f));
+	    ls.setTwoSidedLighting(false);
+	    return ls;
+
+	    }
+	
 	/**
 	 * Loads a scene, including scene data
 	 */
@@ -102,12 +155,16 @@ public final class TanksSceneLoader extends SceneLoader {
 		// Generate map
 	    TanksMap map = new TanksMap(height, width);
 	    
+	    scene.getRootNode().setRenderState(this.createDefaultLightState());
+        scene.getRootNode().updateRenderState();
+        
 	    fillMap (map, rawData);
 		groupTiles (map);
 	    generateTerrain (map, floorNode, obstaclesNode, scene);
 	    /*LightState ls1 = (LightState) scene.getRootNode().getRenderState(StateType.Light);
         ls1.detachAll();
 	    scene.getRootNode().setRenderState(SceneUtils.createDefaultLightState());*/
+	    
 
 		//floorNode.setCullHint(CullHint.Never);
 		//floorNode.setModelBound(new BoundingBox());
@@ -365,7 +422,7 @@ public final class TanksSceneLoader extends SceneLoader {
 	    
 	    // Light
 	    LightState ls1 = (LightState) scene.getRootNode().getRenderState(StateType.Light);
-		ls1.detachAll();
+		//ls1.detachAll();
 		scene.getRootNode().updateRenderState();
 		
 		// Texture

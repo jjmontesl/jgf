@@ -136,8 +136,8 @@ public class AxisGridView extends BaseViewState {
 	 * @see net.jgf.view.BaseViewState#doLoad()
 	 */
 	@Override
-	public void doLoad() {
-		super.doLoad();
+	public void doActivate() {
+		super.doActivate();
 		rootNode = new Node("axisGrid");
 		rootNode.attachChild(buildGeometry());
 		rootNode.lock();
@@ -149,8 +149,8 @@ public class AxisGridView extends BaseViewState {
 	 * @see net.jgf.core.state.State#unload()
 	 */
 	@Override
-	public void doUnload() {
-		super.doUnload();
+	public void doDeactivate() {
+		super.doDeactivate();
 		if (rootNode != null) {
 			rootNode.detachAllChildren();
 			rootNode = null;

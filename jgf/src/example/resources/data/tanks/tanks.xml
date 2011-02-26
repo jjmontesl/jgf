@@ -30,9 +30,14 @@
 		<logger name="com.jme.scene.Node" level="WARN" />
 		<logger name="com.jme.scene.Point" level="WARN" />
 		<logger name="com.jme.scene.Line" level="WARN" />
-		<logger name="com.jmex.model.collada.ColladaImporter" level="WARN" />
+		<logger name="com.jmex.model.collada.ColladaImporter" level="FATAL" />
 		<logger name="net.jgf.loader.FileChainLoader" level="WARN" />
-		<!-- <logger name="net.jgf.core.state.BaseState" level="WARN" />	-->		
+		<logger name="net.jgf.core.state" level="DEBUG" /> 
+		<logger name="net.jgf.core.naming" level="TRACE" />
+		<logger name="net.jgf.jme.model" level="WARN" />	
+		<logger name="de.lessvoid.nifty" level="WARN" />
+		<logger name="com.jme.scene" level="WARN" />
+		<logger name="org.apache.commons.beanutils" level="WARN" />
 	</service>
 
     <!-- 
@@ -68,6 +73,18 @@
             <setting id="settings/input/key/console" class="net.jgf.jme.settings.KeySetting" 
                      label="Console" default="KEY_TAB" />
             
+            <setting id="settings/game/playername" class="net.jgf.settings.StringSetting" 
+                     label="Player Alias" default="UnnamedTank" />
+            
+            <setting id="settings/game/map" class="net.jgf.settings.StringSetting" 
+                     label="Current map" default="intro" />
+            <setting id="settings/game/timelimit" class="net.jgf.settings.FloatSetting" 
+                     label="Time limit" default="10.0" />
+            <setting id="settings/game/scorelimit" class="net.jgf.settings.IntegerSetting" 
+                     label="Score limit" default="7" />
+            <setting id="settings/game/mode" class="net.jgf.settings.StringSetting" 
+                     label="Game mode" default="single" />
+            
             <!-- <setting id="settings/game/level" class="net.jgf.settings.EnumSetting"
                      label="Difficulty Level" default="medium" enumClass="net.jgf.example.tanks.game.Difficulty" >
                      <value key="easy" label="Easy" />
@@ -86,6 +103,9 @@
     <service id="settingsStorage" class="net.jgf.settings.storage.PropertiesStorage">
         <path>$USER_HOME/taunklet.properties</path>
         <settings ref="settings" />
+        <excludes>
+            <exclude pattern="settings\/game\/.*" />
+        </excludes>
     </service>
 	
 	<!-- 
@@ -133,6 +153,9 @@
 	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
 		
 		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
+
+            <entity id="entity/root/clients" class="net.jgf.entity.EntityGroup">
+            </entity>
 
 			<entity id="entity/root/players" class="net.jgf.entity.EntityGroup">
 			</entity>
@@ -238,48 +261,103 @@
 			<logic id="logic/action" class="net.jgf.logic.LogicStateNode" 
 				autoActivate="false">
 				
-				<logic id="logic/action/newgame" class="net.jgf.logic.action.control.ControllerAction" >
-					<step type="deactivateAndUnload" ref="view/root/main" />
-					<step type="runAction" ref="logic/action/newgame/init" />
-					<step type="runAction" ref="logic/action/restart" />
-				</logic>
-				
-				<logic id="logic/action/multiplayer/newgame" class="net.jgf.logic.action.control.ControllerAction" >
-                    <step type="deactivateAndUnload" ref="view/root/main" />
-                    <step type="runAction" ref="logic/action/newgame/init" />
-                    <step type="runAction" ref="logic/action/multiplayer/newgame/init" />
-                    <step type="runAction" ref="logic/action/restart" />
-                </logic>
-				
-				<logic id="logic/action/multiplayer/newgame/init" class="net.jgf.example.tanks.logic.multiplayer.StartServerAction" >
-				</logic>
-				
-				<logic id="logic/action/newgame/init" class="net.jgf.example.tanks.logic.NewGameAction" >
-                </logic>
-				
-				<logic id="logic/action/restart" class="net.jgf.example.tanks.logic.RestartAction" >
-				</logic>
-				
-                <logic id="logic/action/nextmission" class="net.jgf.logic.action.control.ControllerAction" >
-                    <step type="deactivateAndUnload" ref="view/root/main" />
-                    <step type="runAction" ref="logic/action/nextmission/init" />
-                    <step type="runAction" ref="logic/action/restart" />
-                </logic>
-				
-				<logic id="logic/action/nextmission/init" class="net.jgf.example.tanks.logic.NextMissionAction" >
-                </logic>				
-				
-				<logic id="logic/action/menuscene" class="net.jgf.example.tanks.logic.MenuSceneAction" />
-				
-				<logic id="logic/action/loadmenu" class="net.jgf.logic.action.control.ControllerAction" >
-					<step type="deactivateAndUnload" ref="logic/root/ingame" />
-					<step type="deactivateAndUnload" ref="view/root/ingame" />
-					<step type="runAction" ref="logic/action/menuscene" />
-                    <step type="loadAndActivate" ref="view/root/main/menu" />
-				</logic>
-				
 				<logic id="logic/action/quit" class="net.jgf.logic.action.QuitAction" />
 				
+				<logic id="logic/action/menu/disable" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="deactivateAndUnload" ref="view/root/main" />
+                    <step type="deactivateAndUnload" ref="view/root/scene" />
+                </logic>
+                
+                <logic id="logic/action/menu/enable" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="loadAndActivate" ref="view/root/main" />
+                    <step type="loadAndActivate" ref="view/root/scene" />
+                </logic>                
+                
+                <logic id="logic/action/game/disable" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="deactivateAndUnload" ref="logic/root/ingame" />
+                    <step type="deactivateAndUnload" ref="view/root/ingame" />
+                    <step type="deactivateAndUnload" ref="view/root/scene" />
+                </logic>
+				
+				<logic id="logic/action/game/cleanup" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="runAction" ref="logic/action/game/cleanup/prepare" />
+                    <step type="deactivate" ref="entity/root" />
+                    <step type="deactivate" ref="logic/root/ingame" />
+                    <step type="deactivate" ref="view/root/ingame" />
+                    <step type="deactivate" ref="view/root/scene" />
+                </logic>
+                
+                <logic id="logic/action/game/enable" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="loadAndActivate" ref="logic/root/ingame" />
+                    <step type="loadAndActivate" ref="view/root/ingame" />
+                    <step type="loadAndActivate" ref="view/root/scene" />
+                </logic>                
+				
+                <logic id="logic/action/menu/main" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="runAction" ref="logic/action/game/disable" />
+                    <step type="runAction" ref="logic/action/game/cleanup" />
+                    <step type="runAction" ref="logic/action/menu/main/init" />
+                    <step type="runAction" ref="logic/action/menu/enable" />
+                </logic>
+				
+				<logic id="logic/action/game/new/single" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="runAction" ref="logic/action/menu/disable" />
+                    <step type="runAction" ref="logic/action/game/cleanup" />
+					<step type="runAction" ref="logic/action/game/new/single/prepare" />
+					<step type="runAction" ref="logic/action/game/loadscene" />
+					<step type="runAction" ref="logic/action/game/setup" />
+					<step type="runAction" ref="logic/action/game/enable" />
+				</logic>
+				
+                <logic id="logic/action/game/nextmap" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="runAction" ref="logic/action/game/disable" />
+                    <step type="runAction" ref="logic/action/game/cleanup" />
+                    <step type="runAction" ref="logic/action/game/nextmission/init" />
+                    <step type="runAction" ref="logic/action/game/loadscene" />
+                    <step type="runAction" ref="logic/action/game/setup" />
+                    <step type="runAction" ref="logic/action/game/enable" />
+                </logic>
+                
+                <logic id="logic/action/game/resetmap" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="runAction" ref="logic/action/game/disable" />
+                    <step type="runAction" ref="logic/action/game/cleanup" />
+                    <step type="runAction" ref="logic/action/game/setup" />
+                    <step type="runAction" ref="logic/action/game/enable" />
+                </logic>
+                                
+				
+				<logic id="logic/action/game/new/multiplayer" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="runAction" ref="logic/action/menu/disable" />
+                    <step type="runAction" ref="logic/action/game/cleanup" />
+                    <step type="runAction" ref="logic/action/multiplayer/newgame/init" />
+                    <step type="loadAndActivate" ref="logic/root/network/server" />
+                    <step type="runAction" ref="logic/action/restart" />
+                </logic>
+                
+                <logic id="logic/action/multiplayer/joingame" class="net.jgf.example.tanks.logic.JoinGameAction" >
+                    <step type="deactivateAndUnload" ref="view/root/main" />
+                    <step type="runAction" ref="logic/action/multiplayer/newgame/join" />
+                </logic>
+                
+                
+                <logic id="logic/action/menu/main/init" class="net.jgf.example.tanks.logic.MenuSceneAction" />
+                
+				<logic id="logic/action/game/new/multiplayer/join" class="net.jgf.example.tanks.logic.JoinGameAction" />
+				
+				<logic id="logic/action/game/new/multiplayer/init" class="net.jgf.example.tanks.logic.StartServerAction" />
+				
+				<logic id="logic/action/game/new/single/prepare" class="net.jgf.example.tanks.logic.NewGameAction" />
+				
+				<logic id="logic/action/game/cleanup/prepare" class="net.jgf.example.tanks.logic.CleanupAction" />
+				 
+				<logic id="logic/action/game/nextmission/init" class="net.jgf.example.tanks.logic.NextMissionAction" />
+				
+				<logic id="logic/action/game/setup" class="net.jgf.example.tanks.logic.SetupAction" />
+				
+				<logic id="logic/action/game/loadscene" class="net.jgf.example.tanks.logic.LoadSceneAction" />
+				
+				
+
 			</logic>
 			
 			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode" >
@@ -296,6 +374,11 @@
 					autoLoad="true" autoActivate="true" >
 				</logic>				
 			
+			</logic>
+			
+			<logic id="logic/root/network" class="net.jgf.logic.LogicStateNode" autoLoad="true" autoActivate="true">
+			     <logic id="logic/root/network/client" class="net.jgf.example.tanks.logic.ClientNetworkLogic" />
+			     <logic id="logic/root/network/server" class="net.jgf.example.tanks.logic.ServerNetworkLogic" />
 			</logic>
 			
 		</logic>
@@ -321,35 +404,54 @@
 				   <endAfter>3.0</endAfter>
 				</view>
 				
+				
                 <view id="view/root/intro/title" class="net.jgf.jme.view.gui.NiftyGuiView"
                    autoLoad="true" autoActivate="false">
                    <file>tanks/gui/title.xml</file>
                    <endAfter>3.0</endAfter>
-                </view>	
-                 -->
+                </view>
+                -->	
 				
 				<view id="view/root/intro/startlogic" class="net.jgf.view.ActionView" 
 					autoLoad="true" autoActivate="false" >
-					<action ref="logic/action/loadmenu" />
+					<action ref="logic/action/menu/main" />
 				</view>
 
 			</view>
 
+        <view id="view/root/scene" class="net.jgf.view.ViewStateNode" autoLoad="false" autoActivate="true">
+                    
+                    <!-- 
+                    <view id="view/root/ingame/game/spectator" class="net.jgf.jme.view.FreeCameraView"
+                        autoLoad="true" autoActivate="true" >
+                        <sceneManager ref="scene/manager" />
+                    </view>
+                    -->
+                     
+                    <!--  
+                    <view id="view/root/ingame/game/scene" class="net.jgf.jme.view.SceneRenderView"
+                        autoLoad="true" autoActivate="true" >
+                        <sceneManager ref="scene/manager" />        
+                    </view>
+                     -->
+                    
+                    <view id="view/root/scene/water" class="net.jgf.example.tanks.view.ProjectedWaterView" autoLoad="true" autoActivate="true">
+                    </view>
+                    
+                    <view id="view/root/scene/effects" class="net.jgf.example.tanks.view.EffectsView" autoLoad="true" autoActivate="true">
+                    </view>  
+
+                    <view id="view/root/scene/skybox" class="net.jgf.jme.view.SkyboxRenderView" autoLoad="true" autoActivate="true">
+                        <sceneManager ref="scene/manager" />        
+                    </view>
+                    
+                </view>
+
 			<view id="view/root/main" class="net.jgf.view.ViewStateNode"
 				autoLoad="false" autoActivate="false" >
 				
-				<view id="view/root/main/scene" class="net.jgf.example.tanks.view.ProjectedWaterView"
-					autoLoad="true" autoActivate="true" >
-					<sceneManager ref="scene/manager" />		
-				</view>
-				
-				<view id="view/root/main/scene/skybox" class="net.jgf.jme.view.SkyboxRenderView"
-					autoLoad="true" autoActivate="true" >
-					<sceneManager ref="scene/manager" />		
-				</view>
-				
                 <view id="view/root/main/menu" class="net.jgf.jme.view.gui.NiftyGuiView"
-                   autoLoad="false" autoActivate="false">
+                   autoLoad="true" autoActivate="true">
                    <file>tanks/gui/mainmenu.xml</file>
                 </view>
                 
@@ -376,49 +478,15 @@
 
 			<view id="view/root/ingame" class="net.jgf.view.ViewStateNode">
 			
-				<view id="view/root/ingame/game" class="net.jgf.view.ViewStateNode"
-					autoLoad="true" autoActivate="true" >
-					
-					
-					<!-- 
-					<view id="view/root/ingame/game/spectator" class="net.jgf.jme.view.FreeCameraView"
-						autoLoad="true" autoActivate="true" >
-						<sceneManager ref="scene/manager" />
-					</view>
-					-->
-					 
-					<!--  
-					<view id="view/root/ingame/game/scene" class="net.jgf.jme.view.SceneRenderView"
-						autoLoad="true" autoActivate="true" >
-						<sceneManager ref="scene/manager" />		
-					</view>
-					 -->
-					
-					<view id="view/root/ingame/game/effects" class="net.jgf.example.tanks.view.EffectsView"
-						autoLoad="true" autoActivate="true" >
-					</view>					
-					
-					<view id="view/root/ingame/game/input" class="net.jgf.example.tanks.view.InputView"
-						autoLoad="true" autoActivate="true" >
-					</view>
-					
-					<view id="view/root/ingame/match/skybox" class="net.jgf.jme.view.SkyboxRenderView"
-						autoLoad="true" autoActivate="true" >
-						<sceneManager ref="scene/manager" />		
-					</view>
+				
 
-					<view id="view/root/ingame/game/water" class="net.jgf.example.tanks.view.ProjectedWaterView"
-						autoLoad="true" autoActivate="true" >
-						<sceneManager ref="scene/manager" />		
+				<view id="view/root/ingame/input" class="net.jgf.example.tanks.view.InputView" autoLoad="true" autoActivate="true">
 					</view>
 					
-					<view id="view/root/ingame/game/viewupdate" class="net.jgf.example.tanks.view.TanksView"
-						autoLoad="true" autoActivate="true" >
+					<view id="view/root/ingame/viewupdate" class="net.jgf.example.tanks.view.TanksView" autoLoad="true" autoActivate="true">
 					</view>
 					
-				</view>
-
-				<view id="view/root/ingame/failed" class="net.jgf.view.ViewStateNode"
+					<view id="view/root/ingame/failed" class="net.jgf.view.ViewStateNode"
 						autoLoad="false" autoActivate="false">
 
 	                <view id="view/root/ingame/failed/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
@@ -426,32 +494,33 @@
 	                   <file>tanks/gui/failed.xml</file>
 	                </view> 
 
-				</view>
+			        </view>
+					
+					<view id="view/root/ingame/victory" class="net.jgf.view.ViewStateNode"
+	                        autoLoad="false" autoActivate="false">
+	
+	                    <view id="view/root/ingame/victory/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
+	                       autoLoad="true" autoActivate="true">
+	                       <file>tanks/gui/victory.xml</file>
+	                    </view> 
+	
+	                </view>
 				
-				<view id="view/root/ingame/victory" class="net.jgf.view.ViewStateNode"
-                        autoLoad="false" autoActivate="false">
 
-                    <view id="view/root/ingame/victory/banner" class="net.jgf.jme.view.gui.NiftyGuiView"
-                       autoLoad="true" autoActivate="true">
-                       <file>tanks/gui/victory.xml</file>
-                    </view> 
+	                <view id="view/root/ingame/osd" class="net.jgf.jme.view.gui.NiftyGuiView"
+	                   autoLoad="true" autoActivate="true">
+	                   <file>tanks/gui/osd.xml</file>
+	                </view> 
 
-                </view>
-				
-
-                <view id="view/root/ingame/osd" class="net.jgf.jme.view.gui.NiftyGuiView"
-                   autoLoad="true" autoActivate="true">
-                   <file>tanks/gui/osd.xml</file>
-                </view> 
-
-				
-				<view id="view/root/ingame/grid" class="net.jgf.jme.view.devel.AxisGridView" 
-					autoLoad="false" autoActivate="false" >
-					<sceneManager ref="scene/manager" />
-					<drawBehind>false</drawBehind>
-					<center>0.0 0.01 0.0</center>
-					<spacing>1</spacing>
-				</view>
+					<!-- 
+					<view id="view/root/ingame/grid" class="net.jgf.jme.view.devel.AxisGridView" 
+						autoLoad="true" autoActivate="true" >
+						<sceneManager ref="scene/manager" />
+						<drawBehind>false</drawBehind>
+						<center>0.0 0.0 0.0</center>
+						<spacing>2</spacing>
+					</view>
+					 -->
 				 
 				<view id="view/root/ingame/debug" class="net.jgf.jme.view.devel.DebugView" 
 					autoLoad="true" autoActivate="true" >
@@ -472,16 +541,10 @@
 				
 				</view>
 			
-				<view id="view/root/ingame/ui/scenemonitor/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
+				<view id="view/root/ingame/ui/scenemworker/switch" class="net.jgf.jme.view.ToggleInputView" context="debug"
 					autoLoad="true" autoActivate="true" >
 
 					<key>KEY_F12</key>
-			
-					<!-- <view id="view/root/ingame/ui/scenemonitor" class="net.jgf.jme.view.devel.SceneMonitorView"
-						autoLoad="true" autoActivate="false" context="debug">
-						<sceneManager ref="scene/manager" />
-						<updateInterval>5</updateInterval>
-					</view>  -->
 					
 					<view id="view/root/ingame/ui/sceneworker" class="net.jgf.jme.view.devel.SceneWorkerView"
 						autoLoad="true" autoActivate="false" context="debug">
@@ -499,20 +562,22 @@
 					<textureUrl>tanks/texture/cursor.png</textureUrl>
 				</view>
 				
-			</view>				
-			
-			<!-- Console View state that serves as interface to use the Console system -->
-			<view id="view/root/console/switch" class="net.jgf.jme.view.ToggleInputView"
-				autoLoad="true" autoActivate="true">
-
-				<key>KEY_TAB</key>
-
-				<view id="view/root/console" class="net.jgf.jme.view.ConsoleView"
-					autoLoad="true" autoActivate="false">
-					<console ref="console" />
-				</view>
-				
 			</view>
+
+	<!--
+		Console View state that serves as interface to use the Console system
+	-->
+	<view id="view/root/console/switch" class="net.jgf.jme.view.ToggleInputView"
+		autoLoad="true" autoActivate="true">
+
+		<key>KEY_TAB</key>
+
+		<view id="view/root/console" class="net.jgf.jme.view.ConsoleView"
+			autoLoad="true" autoActivate="false">
+			<console ref="console" />
+		</view>
+
+	</view>
 			
 		</view>
 			
@@ -533,7 +598,7 @@
 		System Information Service
 	 -->
 	<service id="systemInfo" class="net.jgf.util.system.SystemInfoService" context="debug">
-		<reportInterval>20000</reportInterval>
+		<reportInterval>60000</reportInterval>
 	</service>
 	
 </jgf>

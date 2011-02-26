@@ -5,12 +5,16 @@ import java.io.IOException;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.service.BaseService;
-import net.jgf.core.service.ServiceException;
+import net.jgf.example.tanks.messages.ConnectMessage;
+import net.jgf.example.tanks.messages.GameInfoMessage;
+import net.jgf.example.tanks.messages.PlayerUpdateMessage;
+import net.jgf.example.tanks.messages.SyncRequestMessage;
 
 import org.apache.log4j.Logger;
 
 import com.jme3.network.connection.Client;
 import com.jme3.network.connection.Server;
+import com.jme3.network.serializing.Serializer;
 
 /**
  * 
@@ -59,29 +63,45 @@ public final class SpiderMonkeyNetworkService extends BaseService {
 
     @Override
     public void dispose() {
+        try {
+            if (server != null) {
+                server.stop();
+            }
+        } catch (IOException e) {
+            logger.warn("Could not stop network server.", e);
+        }
+
+        try {
+            if (client != null) {
+                client.disconnect();
+            }
+        } catch (IOException e) {
+            logger.warn("Could not stop network client.", e);
+        }
+
         super.dispose();
     }
 
-    public Server startServer() throws ServiceException {
-        try {
-            server = new Server(DEFAULT_NETWORK_TCP_PORT, DEFAULT_NETWORK_UDP_PORT);
-            server.start();
-        } catch (IOException e) {
-            throw new ServiceException("Could not create network server", e);
-        }
+    public Server startServer() throws IOException {
+        server = new Server(DEFAULT_NETWORK_TCP_PORT, DEFAULT_NETWORK_UDP_PORT);
+        server.start();
+        registerMessages();
         return server;
     }
     
-    public Client connect() {
-        try {
-            client = new Client("localhost", DEFAULT_NETWORK_TCP_PORT, DEFAULT_NETWORK_UDP_PORT);
-            client.start();
-        } catch (IOException e) {
-            throw new ServiceException("Could not create client connection", e);
-        }
+    public Client connect() throws IOException {
+        client = new Client("localhost", DEFAULT_NETWORK_TCP_PORT, DEFAULT_NETWORK_UDP_PORT);
+        client.start();
+        registerMessages();
         return client;
     }
 
+    private void registerMessages() {
+        Serializer.registerClass(ConnectMessage.class);
+        Serializer.registerClass(GameInfoMessage.class);
+        Serializer.registerClass(PlayerUpdateMessage.class);
+        Serializer.registerClass(SyncRequestMessage.class);
+    }
     public Server getServer() {
         return server;
     }

@@ -40,8 +40,12 @@ import com.jme3.network.serializing.Serializable;
 /**
  * 
  */
-@Serializable(id = 1)
-public class ConnectMessage extends Message {
-   public String playerName;
+@Serializable(id = 4)
+public class PlayerUpdateMessage extends Message {
+
+    public String playername;
+
+    public int score;
+    
 }
 

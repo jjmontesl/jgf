@@ -26,7 +26,7 @@
       
         <panel id="panelTop" height="*" width="100%" align="center" valign="top" backgroundColor="#0000" childLayout="vertical" visibleToMouse="true">
             <control align="right" width="30%" name="button" label="Single Player Missions" >
-                <interact onClick="endScreenAndDoAction(logic/action/newgame)" />
+                <interact onClick="endScreenAndDoAction(logic/action/game/new/single)" />
             </control>
             <panel align="right"  childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Multiplayer" >

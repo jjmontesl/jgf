@@ -3,8 +3,10 @@ package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.state.StateHelper;
+import net.jgf.example.tanks.loader.SceneReferencesProcessorLoader;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
+import net.jgf.loader.LoadProperties;
 import net.jgf.logic.action.BaseLogicAction;
 import net.jgf.scene.Scene;
 import net.jgf.scene.SimpleSceneManager;
@@ -40,6 +42,11 @@ public class MenuSceneAction extends BaseLogicAction {
 		DefaultJmeScene scene =(DefaultJmeScene) sceneLoader.load(
 				null, "FileChainLoader.resourceUrl=tanks/level/intro.xml"
 		);
+		
+	    // Load scene
+		SceneReferencesProcessorLoader refprocLoader = Jgf.getDirectory().getObjectAs("loader/scene/referencesprocessor", SceneReferencesProcessorLoader.class);
+        refprocLoader.load(scene, new LoadProperties());
+		
 		sceneManager.setScene(scene);
 		Jgf.getDirectory().addObject(scene.getId(), scene);
 
@@ -48,6 +55,7 @@ public class MenuSceneAction extends BaseLogicAction {
 		
 		// Enable view
 		StateHelper.loadAndActivate("view/root/main");
+		StateHelper.loadAndActivate("view/root/scene");
 
 	}
 

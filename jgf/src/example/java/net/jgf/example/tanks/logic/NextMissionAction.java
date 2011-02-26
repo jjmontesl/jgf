@@ -16,6 +16,7 @@ import net.jgf.loader.entity.pool.EntityPoolLoader;
 import net.jgf.logic.action.BaseLogicAction;
 import net.jgf.scene.Scene;
 import net.jgf.scene.SimpleSceneManager;
+import net.jgf.settings.StringSetting;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
@@ -40,46 +41,19 @@ public class NextMissionAction extends BaseLogicAction {
     @Register (ref = "logic/action/newgame/init")
     private NewGameAction newGameAction;
     
+    @Register (ref = "settings/game/map")
+    private StringSetting mapSetting;
+    
 	/* (non-Javadoc)
 	 * @see net.jgf.logic.BaseLogicState#activate()
 	 */
 	@Override
 	public void perform(Object arg) {
 
-		logger.info ("Next mission action");
-
-	      EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
-	        SimpleSceneManager sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SimpleSceneManager.class);
-	        DefaultJmeScene scene = (DefaultJmeScene) sceneManager.getScene();
-	        Node bulletNode = (Node) scene.getRootNode().getChild("bullets");
-		
-	      EntityGroup bullets = Jgf.getDirectory().getObjectAs("entity/root/bullets", EntityGroup.class);
-	        for (Entity bullet : bullets.children()) {
-	            if (bullet.isActive()) {
-	                ((Bullet)bullet).withdraw(bullets, bulletNode);
-	                StateHelper.deactivateAndUnload(bullet);
-	                bullet.clearStateObservers();
-	                entityLoader.returnToPool(bullet);
-	            }
-	        }
-	        EntityGroup enemies = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
-	        for (Entity enemy : enemies.children()) {
-	            ((Tank) enemy).withdraw(enemies, scene.getRootNode());
-	            StateHelper.deactivateAndUnload(enemy);
-	        }
-	        EntityGroup players = Jgf.getDirectory().getObjectAs("entity/root/players", EntityGroup.class);
-	        for (Entity player : players.children()) {
-	            ((PlayerTank)player).withdraw(players, scene.getRootNode());
-	        }
-		
-		StateHelper.deactivateAndUnload("view/root/ingame");
-		
 		// Increment mission number
 		missionLogic.setMission(missionLogic.getMission() + 1);
-		newGameAction.loadMission();
+		mapSetting.setValue("mission" + missionLogic.getMission());
 		
-		StateHelper.loadAndActivate("view/root/ingame");
-
 	}
 
 }

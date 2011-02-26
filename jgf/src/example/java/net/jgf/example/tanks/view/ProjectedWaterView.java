@@ -64,6 +64,9 @@ public class ProjectedWaterView extends BaseViewState {
     	
     	setupFog();
 
+        // Update the camera controller
+        scene.getCurrentCameraController().update(0.0f);
+    	
         waterEffectRenderPass = new WaterRenderPass(DisplaySystem.getDisplaySystem().getRenderer().getCamera(), 4, true, true);
         waterEffectRenderPass.setClipBias(0.5f);
         waterEffectRenderPass.setWaterMaxAmplitude(5.0f);
@@ -84,7 +87,6 @@ public class ProjectedWaterView extends BaseViewState {
 
 
         waterEffectRenderPass.setWaterEffectOnSpatial(projectedGrid);
-        ((Node) scene.getRootNode()).attachChild(projectedGrid);
 
         waterEffectRenderPass.setReflectedScene((Node) scene.getRootNode());
         waterEffectRenderPass.setSkybox(scene.getSky().getRootNode());
@@ -96,6 +98,11 @@ public class ProjectedWaterView extends BaseViewState {
 
         rootNode.setCullHint(Spatial.CullHint.Never);
         rootNode.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+        
+        ((Node) scene.getRootNode()).attachChild(rootNode);
+        projectedGrid.updateRenderState();
+        rootNode.attachChild(projectedGrid);
+        rootNode.updateRenderState();
     }
 
 	/**

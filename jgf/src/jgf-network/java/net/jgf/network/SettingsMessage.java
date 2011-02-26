@@ -32,7 +32,14 @@
  */
 
 
-package net.jgf.example.tanks.messages;
+package net.jgf.network;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import net.jgf.settings.Setting;
+import net.jgf.settings.Settings;
+import net.jgf.system.Jgf;
 
 import com.jme3.network.message.Message;
 import com.jme3.network.serializing.Serializable;
@@ -40,8 +47,30 @@ import com.jme3.network.serializing.Serializable;
 /**
  * 
  */
-@Serializable(id = 1)
-public class ConnectMessage extends Message {
-   public String playerName;
+@Serializable()
+public abstract class SettingsMessage extends Message {
+    
+    public Map<String, String> payload;
+    
+    public abstract String[] getSettingIds();
+    
+    public abstract Settings getSettings();
+    
+    public void settingsToMessage() {
+            
+        payload  = new HashMap<String, String>();
+        for (String settingId : getSettingIds()) {
+            Setting<?> setting = this.getSettings().getSetting(settingId);
+            payload.put(settingId, setting.toString());
+        }
+    }
+    
+    public void messageToSettings() {
+        for (String settingId : getSettingIds()) {
+            Setting<?> setting = this.getSettings().getSetting(settingId);
+            setting.readValue(payload.get(settingId));
+        }
+    }
+    
 }
 

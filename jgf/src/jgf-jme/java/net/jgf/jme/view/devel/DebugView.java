@@ -53,9 +53,9 @@ public class DebugView extends BaseViewState {
     protected SceneManager sceneManager;
 
     @Override
-		public void doLoad() {
+		public void doActivate() {
 
-    	super.doLoad();
+    	super.doActivate();
 
     	if (sceneManager == null) {
     		throw new ConfigException(this.toString() + " cannot be loaded because no SceneManager has been set.");
