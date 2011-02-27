@@ -15,7 +15,7 @@ Run some examples to ensure everything works (also, examples are useful sources 
 
 Once you grasp the basics, you can use the [application skeleton] and start your own application.
 
-=== 4 - Explore the Feature List ===
+=== 3 - Explore the Feature List ===
 
 Knowing the existing components may save you time. The [Features] page contains a list of what you can expect from JGF. Inspecting JGF component class hierarchy is also suggested.
 
