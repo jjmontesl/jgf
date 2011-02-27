@@ -32,9 +32,9 @@ Remember that components can always be extended or replaced if the default ones 
 
 JGF base project skeleton makes starting a new JGF project a cut-and-paste matter. Includes Ant build script and libraries.
 
-==Tanklet Game==
+==Taunklet Game==
 
-A complete game is included: [Tanklet]. Follow the link to learn more about it.
+A complete game is included: [Taunklet]. Follow the link to learn more about it.
 
 <wiki:video url="http://www.youtube.com/watch?v=b09Xyveo24I"/>
 
