@@ -3,30 +3,21 @@
 
 = Getting Started =
 
-First of all, please note that getting started with any development framework requires some effort, because you need to get used with "how things are done". We hope JGF is worth the effort and that you enjoy the results.
-
-As JGF is written in Java, so you need to know some Java. Also, JGF uses the [http://www.jmonkeyengine.com/ jMonkeyEngine] 3D Engine, so you will end up being familiar with it too (if you are not already).
-
-=== 1 - Explore the Feature List ===
-
-It is important to know your framework features. Just knowing they exist may save you time. The [Features] page contains a list of what you can expect from JGF.
-
-=== 2 - Download JGF and run the test applications  ===
+=== 1 - Download JGF and run the test applications  ===
 
 Visit the [DownloadingJGF Download] page and get yourself a copy of JGF. The Download page includes information about how to build JGF.
 
 Run some examples to ensure everything works (also, examples are useful sources of configuration chunks, for you to cut and paste).
 
-=== 3 - Check the tutorials ===
+=== 2 - Check the examples ===
 
   * [Examples Tutorials and Examples]
 
-=== 4 - Follow the tutorials and start coding  ===
+Once you grasp the basics, you can use the [application skeleton] and start your own application.
 
-Follow the tutorials that you find interesting. 
+=== 4 - Explore the Feature List ===
 
-Once you understand the basics, you can copy the [application skeleton] and start your own game.
-
+Knowing the existing components may save you time. The [Features] page contains a list of what you can expect from JGF. Inspecting JGF component class hierarchy is also suggested.
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source]
