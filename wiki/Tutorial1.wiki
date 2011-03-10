@@ -2,6 +2,8 @@
 
 = JGF Tutorial 1: First Application with JGF =
 
+<wiki:toc max_depth="4" />
+
 ==Setting up==
 
 In this tutorial we will build the a simple volleyball game, which will evolve during following tutorials.
@@ -79,6 +81,12 @@ Every JGF game requires an application section containing some information about
 }}}
 
 
+===Services===
+
+The rest of the configuration file consists of services and components. JGF components must have an `id` attribute that identifies them uniquely. Components use these ids to obtain references to other components.
+
+Each component also requires a `class` attribute that defines the name of the implementation class of a service or component.
+
 ===Engine section===
 
 The engine service initializes the game engine to use. Currently, the only supported game engine is JMonkeyEngine, and this service is implemented by the net.jgf.jme.engine.JMEEngine class.
@@ -103,16 +111,18 @@ Note you need to provide some parameters to this service (see comments).
 	</service>
 }}}
 
+We need to provide references to other components (logic, view) which will be defined later.
+
 ===Scene section===
 
-JGF scene rendering relies on a service called the SceneManager. It basically contains a simple "scene" object.
+Scene rendering relies on a service called the Scene Manager. It contains a Scene object.
 
 A JGF JME scene contains the root element of the scene graph hierarchy. It can also contain cameras, skyboxes or other information relative to the scene being rendered.
 
 Normally, scenes can be loaded by loaders, but in this simple example the scene is also defined in the configuration file, as well as a camera for the scene.
 
 {{{
-<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager" depends="engine">
+	<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager" depends="engine">
 			
 			<!-- DefaultJmeScene is a jMonkeyEngine scene which includes camera
 			management, an optional skybox and some tooling -->
@@ -137,6 +147,37 @@ Normally, scenes can be loaded by loaders, but in this simple example the scene 
 			
 	</service>
 }}}
+
+===Loading system===
+
+The Loading System provides loading capabilities for scenes, entities and models.
+The loading system defines a number of loaders. The game code uses these loaders to load scenes, entities, models... 
+
+JGF provides some general-purpose loaders, but in this example we use custom loaders that create the necessary geometry for the mudvolley game players and field.
+
+_(Note that using JGF loader system is entirely optional. You can use your own preferred way of loading assets, or combine JGF and custom loaders.)_
+
+We define three custom loaders (for the scene and entities):
+
+{{{
+	<service id="loader" class="net.jgf.loader.DefaultLoaderManager">
+				
+		<loader id="loader/scene" class="net.jgf.example.mudvolley1.loader.MudVolleySceneLoader">
+		</loader>
+
+		<loader id="loader/entity/player" class="net.jgf.example.mudvolley1.loader.MudVolleyPlayerEntityLoader" >
+		</loader>
+		<loader id="loader/entity/ball" class="net.jgf.example.mudvolley1.loader.MudVolleyBallEntityLoader" >
+		</loader> 	
+				
+	</service>
+}}}
+
+Note that, since these are custom loaders, their implementations are located within the net.jgf.example.mudvolley1 package.
+
+====Scene Loader====
+
+This example uses a very simple scene loader that builds the playfield using simple boxes.
 
 
 
