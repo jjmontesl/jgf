@@ -9,7 +9,9 @@
 
 Main JGF package includes all that's needed to build games with JGF and JMonkeyEngine. The *base project* is a quick way to start development with JGF (visit the [BuildingFromSource building from source] page if you are interested in building JGF from sources).
 
-Download the jgf-base-project package and unzip it to your projects folder.
+Go to the [http://code.google.com/p/jgf/downloads/list Downloads] page and grab the latest jgf-base-project package.
+
+Unzip it to your projects folder.
 
 You will need to configure this project as a Java project in your Development Environment, so you can build it and run examples:
 
