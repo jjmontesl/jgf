@@ -1,0 +1,142 @@
+#summary JGF Tutorial 1: First Application with JGF
+
+= JGF Tutorial 1: First Application with JGF =
+
+==Setting up==
+
+In this tutorial we will build the a simple volleyball game, which will evolve during following tutorials.
+
+http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/mudvolley-ingame.png
+
+The game will feature two sphere-like players and a spherical ball. Players will be able to move left, right and jump.
+
+Firstly, check the [DownloadingJGF JGF Base Project] page, and grab the latest `jgf-project-skel` package. Ensure you are able to run JGF samples as explained there.
+
+You can run the result of this tutorial running the JGF class `net.jgf.example.mudvolley1`.
+
+==Introduction==
+
+JGF games are defined using a central configuration file where different aspects of the game are described.
+
+Let's create the main entry point for the application. In JGF, applications are started calling `start()` on an Application object, which receives the path to the configuration resource within the 'data' dir:
+
+{{{
+public class MudVolley1 {
+
+	/**
+	 * Entry point to the application. JGF applications should just create
+	 * the Application object and call .start() on it.
+	 * @see Application
+	 */
+
+	public static void main(String[] args) throws Exception {
+
+		Application app = new Application("mudvolley/mudvolley1.xml", args);
+		app.start();
+
+	}
+}
+}}}
+
+==Configuration==
+
+We will discuss the [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/resources/data/mudvolley/mudvolley1.xml mudvolley1.xml] file.
+
+The configuration file is an XML file containing with a root 'jgf' node. Inside, different JGF services are defined. JGF reads this file and creates all services and components.
+
+Feel free to remove comments if you feel they are unnecessary in order to make the configuration file easier to read for you.
+
+===Application section===
+
+Every JGF game requires an application section containing some information about the application. These entries are mandatory:
+
+{{{
+	<application>
+	
+		<!-- General application information -->
+		<key>mudvolley</key>
+		<name>MudVolley JGF Example 1: Introducing JGF</name>
+		<company>JGF</company>
+		<version>1.0</version>
+		<networkProtocolVersion>1.0</networkProtocolVersion>
+		
+
+		<!-- In debug mode more verbose logging is produced, and some extra checks
+			 are performed during runtime. This is a boolean parameter (true|false). -->
+		<debug>true</debug>
+		
+		<!-- Application description: to be used in short listings and command line help -->
+		<description>
+			MudVolley is a Slime Volley clone that shows some of
+			Java Game Framework (JGF) features.
+		</description>
+		
+		<!-- A reference to the engine service being used. Currently, only JMonkeyEngine is
+		supported. This service is defined below -->
+		<engine ref="engine" />
+		
+	</application>
+}}}
+
+
+===Engine section===
+
+The engine service initializes the game engine to use. Currently, the only supported game engine is JMonkeyEngine, and this service is implemented by the net.jgf.jme.engine.JMEEngine class.
+
+Note you need to provide some parameters to this service (see comments).
+
+{{{
+
+	<service id="engine" class="net.jgf.jme.engine.JMEEngine">
+
+		<!-- 'collectStats' parameter causes JMEEngine to collect engine statistics
+		like FPSs, objects drawn, number of textures... Here,
+		we use variable interpolation to apply the same value for 'debug', defined above.  -->
+		<collectStats>${application/debug}</collectStats>
+		
+		<!--  Reference to the LogicManager service, defined below -->
+		<logicManager ref="logic" />
+		
+		<!--  Reference to the ViewManager service, defined below -->
+		<viewManager ref="view" />
+		
+	</service>
+}}}
+
+===Scene section===
+
+JGF scene rendering relies on a service called the SceneManager. It basically contains a simple "scene" object.
+
+A JGF JME scene contains the root element of the scene graph hierarchy. It can also contain cameras, skyboxes or other information relative to the scene being rendered.
+
+Normally, scenes can be loaded by loaders, but in this simple example the scene is also defined in the configuration file, as well as a camera for the scene.
+
+{{{
+<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager" depends="engine">
+			
+			<!-- DefaultJmeScene is a jMonkeyEngine scene which includes camera
+			management, an optional skybox and some tooling -->
+			<scene id="scene" class="net.jgf.jme.scene.DefaultJmeScene">
+			
+			    <!-- It is possible to define cameras inside DefaultJmeScene configuration,
+				    using the "cameras" element below.
+				    This is not the only place to define cameras. Games load
+				    camera information from data or create them dynamically. -->
+				<cameras>
+					<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
+						<target>0.0 4.0 0.0</target>
+						<location>0.0 4.0 20.0</location>
+					</camera>
+				</cameras>
+
+                <!-- This "camera" element defines the Scene "current" camera. 
+                    Here we reference the fixed camera defined above. -->
+				<camera ref="scene/cameras/overview" />
+			
+			</scene>
+			
+	</service>
+}}}
+
+
+
