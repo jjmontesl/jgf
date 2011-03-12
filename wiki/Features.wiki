@@ -5,18 +5,11 @@
 
 * Core
 
-  JGF is a components and injection framework,
-
-  * A State Engine drives application logic and aspect. 
-  * Entities, Scene and other structures are easily handled by framework services.
+  * Logic and View states drive application logic and aspect. 
+  * Entities, Scene and other structures are managed by framework services.
   * Configuration is done in a descriptive XML configuration file.
-  * Component injection (through annotations or API).
+  * Component injection (via annotations or API).
   * Easy overview of application parts.
-  * Standard and practical way to configure application.
-
-  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-1.png
-
-  http://jgf.googlecode.com/svn/trunk/jgf/doc/screenshots/sample-displayitems-2.png
 
 *Render Engine*
 
@@ -24,12 +17,12 @@
 
 *GUI System*
 
-  * NiftyGUI is included out of the box.
+  * A GUI system (NiftyGUI) is included out of the box.
 
 *Settings System*
 
   * Settings management.
-  * Settings storage providers.
+  * Settings storage.
 
   * Configuration Dialog for initial settings (_planned: currently using JME settings dialog_).
   * Command Line Options parsing (_planned_).
@@ -43,7 +36,7 @@
 
 *Extensibility*
 
-JGF is designed to be extensible. Base classes are provided for most of the components you'll need to implement to code your game. You can always provide new functionality writing your custom components if you need.
+JGF is designed to be extensible. Base classes or complete implementations are provided for most of the components needed to make a game. You can always provide new functionality writing your custom components if you need.
 
 *Development*
 
@@ -61,19 +54,15 @@ JGF includes and provides components that easily allow you to add development to
 *Loaders and Art Pipeline*
 
   * Modular loading system for Entities, Scenes and Models. 
-  * Entity Pools.
+  * Transparent pooling system.
 
 *Audio*
 
   * A simple, easy to use sound effects system is provided out of the box.
 
-*Networking*
-
-  * Any system can be used (_A JME3 SpiderMonkey backport for JME2 is currently included in JGF_).
-
 *Build System*
 
-  * Out of the box build scripts to package games, create installers, and Java Web Start bundle (_partially implemented_).
+  * Out of the box build scripts to package games, installers and Java Web Start.
 
 
 [http://code.google.com/p/jgf JGF Home] - [Features] - [Overview] - [GettingStarted Getting Started] - [http://code.google.com/p/jgf/source/browse/#svn/trunk/jgf Browse the Source] - [FAQ]
