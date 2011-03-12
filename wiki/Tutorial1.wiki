@@ -111,7 +111,7 @@ Note you need to provide some parameters to this service (see comments).
 	</service>
 }}}
 
-We need to provide references to other components (logic, view) which will be defined later.
+We also provide references to other components ("logic" and "view") which are defined later.
 
 ===Scene section===
 
@@ -148,12 +148,33 @@ Normally, scenes can be loaded by loaders, but in this simple example the scene 
 	</service>
 }}}
 
+
+===Entity Management===
+
+The Entity Manager is a simple service that contains a tree of game entities.
+
+You can use entities to manage every object or player that needs to be updated every logic step. Commonly, entities are arranged in EntityGroups for easier management.
+
+{{{
+
+	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
+		
+		<!-- In this mudvolley example, an empty EntityGroup is created. Entities
+        (players and ball) will be added to this group later. As this is a very simple
+        game, we put all entities in the same container group. -->
+		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
+				
+		</entity>
+			
+	</service> 
+}}}
+
 ===Loading system===
 
 The Loading System provides loading capabilities for scenes, entities and models.
 The loading system defines a number of loaders. The game code uses these loaders to load scenes, entities, models... 
 
-JGF provides some general-purpose loaders, but in this example we use custom loaders that create the necessary geometry for the mudvolley game players and field.
+JGF provides some general-purpose loaders, but in this example we use custom loaders that create the necessary geometry for the mudvolley game players and field. For simplicity we use boxes and spheres for the field and players in this first tutorial . 
 
 _(Note that using JGF loader system is entirely optional. You can use your own preferred way of loading assets, or combine JGF and custom loaders.)_
 
@@ -173,11 +194,86 @@ We define three custom loaders (for the scene and entities):
 	</service>
 }}}
 
-Note that, since these are custom loaders, their implementations are located within the net.jgf.example.mudvolley1 package.
+Note that, since these are custom loaders, their implementations are located within the net.jgf.example.mudvolley1 package. 
 
-====Scene Loader====
+Check implementations to see what's going on during scene and entity loading:
 
-This example uses a very simple scene loader that builds the playfield using simple boxes.
+  * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/java/net/jgf/example/mudvolley1/loader/MudVolleySceneLoader.java net.jgf.example.mudvolley1.loader.MudVolleySceneLoader]
+  * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/java/net/jgf/example/mudvolley1/loader/MudVolleyPlayerEntityLoader.java net.jgf.example.mudvolley1.loader.MudVolleyPlayerEntityLoader]
+  * [http://code.google.com/p/jgf/source/browse/trunk/jgf/src/example/java/net/jgf/example/mudvolley1/loader/MudVolleyBallEntityLoader.java net.jgf.example.mudvolley1.loader.MudVolleyBallEntityLoader]
 
+This game requires two types of entities: Ball and Player. Entities have an `update()` method that is usually called every game step. In this game, entity movement is performed in the update method, but collisions are checked for in a separate "logic state".
 
+===Game Logic===
 
+The Logic Manager contains a tree of states that the game may be active at a given point in time. 
+
+The combination and activation of these states is what drives the actual "logic" of the game. Active children are updated every iteration of the game.
+
+{{{
+	<service id="logic" class="net.jgf.logic.DefaultLogicManager">
+	
+	    <!-- The ExclusiveLogicNode ensures that only one of its child LogicNodes is
+	         active at the same time. -->
+		<logic id="logic/root" class="net.jgf.logic.ExclusiveLogicNode">
+			
+			<!-- This is a custom logic state that, when activated, loads the scene
+			    and entities and moves to the next logic state. -->
+			<logic id="logic/root/newgame" class="net.jgf.example.mudvolley1.logic.NewGameLogic" 
+				autoLoad="true" autoActivate="true" >
+			</logic>
+			
+			<!--  This logic state runs during game. It updates the scene (moving players,
+			     ball, calculating collisions... -->
+			<logic id="logic/root/ingame" class="net.jgf.logic.LogicStateNode">
+			
+				<logic id="logic/root/ingame/ingame" class="net.jgf.example.mudvolley1.logic.InGameLogic" 
+					autoLoad="true" autoActivate="true" >
+				</logic>
+			
+			</logic>
+			
+		</logic>
+		
+	</service>
+}}}
+
+===Game Aspect and Rendering===
+
+View Manager contains a tree of states that the application may be rendering at a given point in time. The combination and activation of these states is what drives the actual "aspect" of the game. Input processing is also done at this level.
+
+{{{
+	<service id="view" class="net.jgf.view.DefaultViewManager" >
+
+		<view id="view/root" class="net.jgf.view.ViewStateNode">
+			
+			<!-- A ViewStateNode groups other states so they are better organized and
+			also they can be activated and loaded together. All active children
+			are updated and rendered in every game iteration. -->
+			<view id="view/root/ingame" class="net.jgf.view.ViewStateNode">
+				
+				<!--  This is a custom view (note the mudvolley namespace). It handles
+				input for both players in the mudvolley example game. -->
+				<view id="view/root/ingame/input" class="net.jgf.example.mudvolley1.view.InputView"
+					autoLoad="true" autoActivate="true" >
+				</view>
+
+                <!--  This is a JGF view that renders the scene contained in the SceneManager -->
+				<view id="view/root/ingame/scene" class="net.jgf.jme.view.SceneRenderView"
+					autoLoad="true" autoActivate="true" >
+					<sceneManager ref="scene/manager" />		
+				</view>
+				
+				<!-- This view renders the Skybox in the scene (the Scene needs to be 
+				loaded with a Skybox for it to work) -->
+				<view id="view/root/ingame/skybox" class="net.jgf.jme.view.SkyboxRenderView"
+					autoLoad="true" autoActivate="true" >
+					<sceneManager ref="scene/manager" />	
+				</view>
+				
+			</view>
+							
+		</view>
+			
+	</service>
+}}}
