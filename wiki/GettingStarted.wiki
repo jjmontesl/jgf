@@ -13,7 +13,7 @@ Run some examples to ensure everything works (also, examples are useful sources 
 
   * [Examples Tutorials and Examples]
 
-Once you grasp the basics, you can use the [application skeleton] and start your own application.
+Once you grasp the basics, you can use the base project and start your own application.
 
 === 3 - Explore the Feature List ===
 
