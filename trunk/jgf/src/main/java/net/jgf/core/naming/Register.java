@@ -38,13 +38,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import net.jgf.core.naming.DirectoryRegistry.RegistryInjectionMethod;
-
 /**
  * <p>
- *
+ * The Register annotation marks fields and methods that need to be registered
+ * with JGF {@link Directory}. The directory registry will inject the referenced object
+ * whenever the corresponding key changes in the Directory.
  * </p>
- * 
+ * <p>The annotation takes a 'ref' argument with the name of the object to
+ * inject.</p>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target( { ElementType.FIELD, ElementType.METHOD })

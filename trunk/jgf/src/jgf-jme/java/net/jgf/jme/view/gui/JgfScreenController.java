@@ -3,6 +3,7 @@ package net.jgf.jme.view.gui;
 import java.util.concurrent.Callable;
 
 import net.jgf.config.ConfigException;
+import net.jgf.core.naming.NamingException;
 import net.jgf.core.state.StateHelper;
 import net.jgf.logic.action.LogicAction;
 import net.jgf.system.Jgf;
@@ -137,7 +138,13 @@ public class JgfScreenController implements ScreenController {
     
     public void doAction(String id) {
         
-        LogicAction action = Jgf.getDirectory().getObjectAs(id, LogicAction.class);
+        LogicAction action = null;
+        
+        try {
+            action  = Jgf.getDirectory().getObjectAs(id, LogicAction.class);
+        } catch (NamingException e) {
+            throw new NamingException ("Could not find action " + id + " defined at Nifty file " + view.getFile(), e);
+        }
         
         if (Jgf.getApp().isDebug()) {
             if (action == null) {

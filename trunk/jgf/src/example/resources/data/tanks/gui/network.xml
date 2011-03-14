@@ -28,12 +28,12 @@
 
             <panel align="right"  childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Start Server" >
-                <interact onClick="endScreenAndDoAction(logic/action/multiplayer/newgame)" />
+                <interact onClick="endScreenAndDoAction(logic/action/game/new/multiplayer)" />
             </control>
             
             <panel align="right" childLayout="horizontal" height="8px" />
             <control align="right" width="30%" name="button" label="Join Game" >
-                <interact onClick="endScreenAndDoAction(logic/action/multiplayer/joingame)" />
+                <interact onClick="endScreenAndDoAction(logic/action/game/new/join)" />
             </control>
             
             <panel align="right" childLayout="horizontal" height="16px" />

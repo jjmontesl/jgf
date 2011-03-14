@@ -1,5 +1,5 @@
 
-package net.jgf.example.tanks.logic;
+package net.jgf.example.tanks.logic.flow;
 
 import net.jgf.config.Configurable;
 import net.jgf.core.naming.Register;
@@ -8,8 +8,10 @@ import net.jgf.core.state.StateHelper;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
-import net.jgf.example.tanks.entity.PlayerTank;
-import net.jgf.logic.BaseLogicState;
+import net.jgf.example.tanks.entity.Player;
+import net.jgf.example.tanks.entity.Tank;
+import net.jgf.example.tanks.logic.SpawnLogic;
+import net.jgf.settings.StringSetting;
 
 import org.apache.log4j.Logger;
 
@@ -18,15 +20,15 @@ import org.apache.log4j.Logger;
  *
  */
 @Configurable
-public class MissionLogic extends BaseLogicState {
+public class FreeForAllLogic extends BaseFlowLogic {
 
 	/**
 	 * Class logger
 	 */
-	private static final Logger logger = Logger.getLogger(MissionLogic.class);
+	private static final Logger logger = Logger.getLogger(FreeForAllLogic.class);
 
-	@Register (ref = "entity/root/players/player1")
-	protected PlayerTank player;
+	@Register (ref = "entity/root/tanks/player1")
+	protected Tank player;
 	
 	@Register (ref = "view/root/ingame/failed")
 	protected State stateFailed;
@@ -34,7 +36,7 @@ public class MissionLogic extends BaseLogicState {
 	@Register (ref = "view/root/ingame/victory")
     protected State stateVictory;
 	
-	@Register (ref = "entity/root/enemy")
+	@Register (ref = "entity/root/enemies")
 	protected EntityGroup enemies;
 	
     @Register (ref = "entity/root/bullets")
@@ -43,12 +45,13 @@ public class MissionLogic extends BaseLogicState {
     @Register (ref = "logic/root/ingame/spawn")
     protected SpawnLogic spawnLogic;
     
+    @Register (ref = "settings/game/map")
+    private StringSetting mapSetting;
+    
 	protected boolean fighting;
 	
     protected float gameTime;
     
-    protected int mission = 1;
-	
 	@Override
     public void doActivate() {
         super.doActivate();
@@ -70,6 +73,9 @@ public class MissionLogic extends BaseLogicState {
 		
 	}
 	
+    
+    
+    
 	private void checkPlayerAlive(float tpf) {
 		
 		if ((player == null) && (fighting == true)) {
@@ -120,12 +126,20 @@ public class MissionLogic extends BaseLogicState {
         return gameTime;
     }
 
-    public int getMission() {
-        return mission;
+    @Override
+    public void newPlayer(Player player) {
+        // TODO Auto-generated method stub
+        
     }
 
-    public void setMission(int mission) {
-        this.mission = mission;
+    @Override
+    public void nextMap() {
+        //
+    }
+
+    @Override
+    public void setup() {
+        mapSetting.setValue("dm1");
     }
 
 }

@@ -47,14 +47,14 @@ public class UnsupportedOperationException extends JgfRuntimeException {
     private static final long serialVersionUID = -8971616437376909601L;
 
     /**
-     * Builds a new IllegalStateException with the message specified.
+     * Builds a new UnsupportedOperationException with the message specified.
      */
     public UnsupportedOperationException(String message) {
         super(message);
     }
 
     /**
-     * Builds a new IllegalStateException with the given message and the given
+     * Builds a new UnsupportedOperationException with the given message and the given
      * nested exception.
      */
     public UnsupportedOperationException(String message, Throwable cause) {

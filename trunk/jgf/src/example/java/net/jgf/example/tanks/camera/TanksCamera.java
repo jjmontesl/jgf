@@ -6,6 +6,7 @@ package net.jgf.example.tanks.camera;
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
 import net.jgf.core.naming.Register;
+import net.jgf.example.tanks.entity.Player;
 import net.jgf.jme.camera.JmeCamera;
 import net.jgf.jme.entity.SpatialEntity;
 
@@ -22,7 +23,9 @@ public class TanksCamera extends JmeCamera {
 	
 	protected Vector3f lookAt = new Vector3f();
 
-	@Register (ref="entity/root/players/player1")
+	@Register (ref="entity/root/links/self")
+	protected Player player;
+	
 	protected SpatialEntity target;
 
 	protected Vector3f lastTarget = new Vector3f();
@@ -33,6 +36,7 @@ public class TanksCamera extends JmeCamera {
 	@Override
 	public void update(float tpf) {
 
+	    target = (player == null) ? null : player.getTank();
 		if (target != null) {
 			lastTarget.set(target.getSpatial().getWorldTranslation());
 		}

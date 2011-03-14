@@ -9,6 +9,7 @@ import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.entity.Bullet;
 import net.jgf.example.tanks.entity.PlayerTank;
 import net.jgf.example.tanks.entity.Tank;
+import net.jgf.example.tanks.logic.flow.MissionLogic;
 import net.jgf.example.tanks.view.ProjectedWaterView;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
@@ -35,14 +36,14 @@ public class NextMissionAction extends BaseLogicAction {
 	 */
 	private static final Logger logger = Logger.getLogger(NextMissionAction.class);
 
-    @Register (ref = "logic/root/ingame/mission")
+    @Register (ref = "logic/root/flow/mission")
     private MissionLogic missionLogic;
-    
-    @Register (ref = "logic/action/newgame/init")
-    private NewGameAction newGameAction;
     
     @Register (ref = "settings/game/map")
     private StringSetting mapSetting;
+    
+    @Register (ref = "settings/game/mode")
+    private StringSetting gamemodeSetting;
     
 	/* (non-Javadoc)
 	 * @see net.jgf.logic.BaseLogicState#activate()
@@ -50,9 +51,12 @@ public class NextMissionAction extends BaseLogicAction {
 	@Override
 	public void perform(Object arg) {
 
-		// Increment mission number
-		missionLogic.setMission(missionLogic.getMission() + 1);
-		mapSetting.setValue("mission" + missionLogic.getMission());
+		GameMode gameMode = GameMode.valueOf(gamemodeSetting.getValue());
+        if (gameMode == GameMode.Missions) {
+            missionLogic.nextMap();
+        } else if (gameMode == GameMode.FreeForAll) {
+            //StateHelper.loadAndActivate(ffaLogic);
+        }
 		
 	}
 

@@ -81,7 +81,7 @@
 	</service>
 
 	
-	<!-- The SceneManager service holds a reference to the scene being drawn. -->
+	<!-- The SceneManager service holds a reference to the scene -->
 	<service id="scene/manager" class="net.jgf.scene.SimpleSceneManager" depends="engine">
 			
 			<!-- DefaultJmeScene is a jMonkeyEngine scene which includes camera
@@ -91,12 +91,11 @@
 			    <!-- It is possible to define cameras inside DefaultJmeScene configuration,
 				    using the "cameras" element below.
 				    This is not the only place to define cameras. Games load
-				    camera information from data or creating them dynamically. -->
+				    camera information from data or create them dynamically. -->
 				<cameras>
-					<!-- A StaticCamera is a... fixed camera -->
 					<camera id="scene/cameras/overview" class="net.jgf.jme.camera.StaticCamera" >
 						<target>0.0 4.0 0.0</target>
-						<location>0.0 4.0 24.0</location>
+						<location>0.0 4.0 20.0</location>
 					</camera>
 				</cameras>
 
@@ -114,8 +113,8 @@
 		(when preparing the scene). In mudvolley1, these loaders are not general-use loaders,
 		but custom loaders that create the necessary geometry for the mudvolley game players and field.
 		In your own applications, you can use this approach but you can also use JGF
-		loaders to read models from disk, and to load scenes and entities from a combination of models,
-		xml configuration files and other entities. Please read the "loaders" examples
+		loaders to read models from disk, and load scenes and entities from a combination of models,
+		xml configuration files and custom loaders. Please read the "loaders" examples
 		and documentation in order to find more about Loaders in JGF.
 	 -->
 	<service id="loader" class="net.jgf.loader.DefaultLoaderManager">
@@ -143,7 +142,7 @@
 	 -->
 	<service id="entity" class="net.jgf.entity.DefaultEntityManager">
 		
-		<!-- In this mudvolley example, an empty EntityGroup is created, as entities
+		<!-- In this mudvolley example, an empty EntityGroup is created. Entities
         (players and ball) will be added to this group later. As this is a very simple
         game, the example puts all entities in the same container group. -->
 		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
@@ -190,7 +189,7 @@
         states is what drives the actual "aspect" of the game. Input processing is
         also done at this level.
 	 -->
-	<service id="view" class="net.jgf.view.DefaultViewManager" depends="engine">
+	<service id="view" class="net.jgf.view.DefaultViewManager">
 
 		<view id="view/root" class="net.jgf.view.ViewStateNode">
 			

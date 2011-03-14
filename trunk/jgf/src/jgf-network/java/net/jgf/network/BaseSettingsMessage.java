@@ -39,7 +39,6 @@ import java.util.Map;
 
 import net.jgf.settings.Setting;
 import net.jgf.settings.Settings;
-import net.jgf.system.Jgf;
 
 import com.jme3.network.message.Message;
 import com.jme3.network.serializing.Serializable;
@@ -48,7 +47,7 @@ import com.jme3.network.serializing.Serializable;
  * 
  */
 @Serializable()
-public abstract class SettingsMessage extends Message {
+public abstract class BaseSettingsMessage extends Message {
     
     public Map<String, String> payload;
     

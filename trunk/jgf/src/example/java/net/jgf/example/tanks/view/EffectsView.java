@@ -85,7 +85,7 @@ public class EffectsView extends BaseViewState {
 		smokesNode = new Node("smokes");
 		StateHelper.loadAndActivate(explosionsGroup);
 		
-	    entityLoader.preload(50, "FileChainLoader.resourceUrl=tanks/entity/explosion.xml");
+	    entityLoader.preload(40, "FileChainLoader.resourceUrl=tanks/entity/explosion.xml");
 	}
 
 

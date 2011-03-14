@@ -72,8 +72,8 @@ public class InputView extends BaseViewState {
     /**
      * A reference to the player whose input is being handled.
      */
-    @Register (ref="entity/root/players/player1")
-    private PlayerTank player;
+    @Register (ref="entity/root/links/self")
+    private net.jgf.example.tanks.entity.Player self;
 
     protected InputHandler inputHandler;
 
@@ -98,18 +98,22 @@ public class InputView extends BaseViewState {
             // ",time=" + evt.getTime() + ",press=" + evt.getTriggerPressed() +
             // ")");
 
-            if (player == null) {
+            net.jgf.example.tanks.entity.Tank tank = self.getTank();
+            
+            if ((tank == null) || (! (tank instanceof PlayerTank))) {
                 return;
             }
 
+            PlayerTank playerTank = (PlayerTank) tank;
+            
             if (evt.getTriggerIndex() == keyLeft.getValue()) {
-                player.setWalkLeft(evt.getTriggerPressed());
+                playerTank.setWalkLeft(evt.getTriggerPressed());
             } else if (evt.getTriggerIndex() == keyRight.getValue()) {
-                player.setWalkRight(evt.getTriggerPressed());
+                playerTank.setWalkRight(evt.getTriggerPressed());
             } else if (evt.getTriggerIndex() == keyUp.getValue()) {
-                player.setWalkUp(evt.getTriggerPressed());
+                playerTank.setWalkUp(evt.getTriggerPressed());
             } else if (evt.getTriggerIndex() == keyDown.getValue()) {
-                player.setWalkDown(evt.getTriggerPressed());
+                playerTank.setWalkDown(evt.getTriggerPressed());
             }
 
         }
@@ -130,8 +134,7 @@ public class InputView extends BaseViewState {
 
         public void performAction(InputActionEvent evt) {
 
-            if (player == null)
-                return;
+            if ((self == null) || (self.getTank() == null)) return;
 
             // logger.info("Key pressed (index=" + evt.getTriggerIndex() +
             // ",time=" + evt.getTime() + ",press=" + evt.getTriggerPressed() +
@@ -151,10 +154,10 @@ public class InputView extends BaseViewState {
             Plane plane = new Plane();
             plane.setPlanePoints(new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(10.0f, 0.0f, 0.0f),
                     new Vector3f(0.0f, 0.0f, 10.0f));
-            ray.intersectsWherePlane(plane, player.getTarget());
+            ray.intersectsWherePlane(plane, self.getTank().getTarget());
 
             if (evt.getTriggerPressed()) {
-                player.setFiring(true);
+                self.getTank().setFiring(true);
             }
             
         }

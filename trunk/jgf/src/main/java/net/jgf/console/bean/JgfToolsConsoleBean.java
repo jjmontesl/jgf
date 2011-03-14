@@ -37,12 +37,14 @@ package net.jgf.console.bean;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
+import net.jgf.system.Jgf;
 import net.jgf.util.system.NamingUtils;
 
 import org.apache.log4j.Logger;
 
 /**
- * Implements the console commands.
+ * Implements generic JGF console commands.
+ * @see BaseBeanConsole
  */
 @Configurable
 public class JgfToolsConsoleBean {
@@ -61,6 +63,11 @@ public class JgfToolsConsoleBean {
 	public void dumpDirectory() {
 		logger.info("JGF Directory Dump: \n" + NamingUtils.directoryReport());
 	}
+	
+    public void quit() {
+        Jgf.getApp().dispose();
+    }
+	    
 	
 	
 }

@@ -4,10 +4,9 @@ package net.jgf.example.tanks.logic;
 import net.jgf.config.Configurable;
 import net.jgf.core.naming.Register;
 import net.jgf.entity.EntityManager;
+import net.jgf.example.tanks.entity.Player;
 import net.jgf.logic.BaseLogicState;
 import net.jgf.scene.SceneManager;
-
-import org.apache.log4j.Logger;
 
 
 /**

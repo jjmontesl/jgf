@@ -62,6 +62,7 @@ public class JoinGameAction extends BaseLogicAction {
 		try {
 		    network.connect();
 		    StateHelper.loadAndActivate("logic/root/network/client");
+		    try {Thread.sleep(3000); } catch (InterruptedException e) {}
 		    network.getClient().send(connectMessage);
 		} catch (IOException e) {
 		    logger.error("Could not start network connection to server.", e);

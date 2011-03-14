@@ -39,7 +39,7 @@ import net.jgf.core.component.BaseComponent;
 import org.apache.log4j.Logger;
 
 /**
- * <p>Base {@link Service} class. Users creating their own services should extend this class or a
+ * <p>Base {@link Service} class. Users creating their own services should extend this class or its
  * subclasses where appropriate.</p>
  *
  * @see Service

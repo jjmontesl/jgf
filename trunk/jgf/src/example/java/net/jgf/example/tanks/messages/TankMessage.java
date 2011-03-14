@@ -34,18 +34,53 @@
 
 package net.jgf.example.tanks.messages;
 
+import net.jgf.example.tanks.entity.PlayerTank;
+import net.jgf.example.tanks.entity.Tank;
+
+import com.jme.math.Vector3f;
 import com.jme3.network.message.Message;
 import com.jme3.network.serializing.Serializable;
 
 /**
  * 
  */
-@Serializable(id = 4)
-public class PlayerUpdateMessage extends Message {
+@Serializable(id = 5)
+public class TankMessage extends Message {
+   
+    public String tankId;
+    
+    public String playerId;
+    
+    public Vector3f direction;
+    
+    public Vector3f orientation;
+    
+    public Vector3f target;
+    
+    public Vector3f translation;
+    
+    public String tankModel;
 
-    public String playername;
-
-    public int score;
+    public boolean destroy;
+    
+    public TankMessage() {
+        super();
+    }
+    
+    public TankMessage(Tank tank) {
+        this.tankId = tank.getId();
+        this.direction = tank.getDirection();
+        this.orientation = tank.getOrientation();
+        this.target = tank.getTarget();
+        this.translation = tank.getSpatial().getLocalTranslation();
+        this.tankModel = tank.getTankModel();
+        this.destroy = ! tank.isActive();
+        if (tank instanceof PlayerTank) {
+            this.playerId = ((PlayerTank)tank).getPlayer().getId();
+        }
+    }
+    
+    
     
 }
 

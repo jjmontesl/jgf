@@ -21,9 +21,9 @@
       
       <panel id="panelOuter" height="100%" width="100%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#0000" childLayout="horizontal" visibleToMouse="true">
       
-        <panel id="panelTop" width="20%" padding="5px,5px,5px,5px" align="left" valign="bottom" backgroundColor="#aaf3" childLayout="vertical" visibleToMouse="true">
-            <label id="labelHits" color="#ffff" text="Score: 0" align="left" valign="top" />
-            <label id="labelTime" color="#ffff" text="Time:  00:00.0" align="left" valign="top" />
+        <panel id="panelTop" width="20%" padding="5px,5px,5px,5px" align="left" valign="bottom" backgroundColor="#aaf8" childLayout="vertical" visibleToMouse="true">
+            <label id="labelHits" color="#fffb" text="Score: 0" align="left" valign="top" />
+            <label id="labelTime" color="#fffb" text="Time:  00:00.0" align="left" valign="top" />
         </panel>      
     
       </panel>

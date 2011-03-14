@@ -36,15 +36,14 @@ package net.jgf.camera;
 import net.jgf.core.component.BaseComponent;
 
 /**
- * <p>A camera controller manages a camera in the scene. Many cameras
- * can be defined in the scene or in entities. The active camera
- * is used to render the scene.</p>
- * <p>Only the active camera controller is updated during the game loop.</p> 
+ * <p>A camera controller manages a camera in the scene.</p>
+ * <p>Camera Controllers provide different camera behaviors.
+ * Active controllers are updated every frame before rendering.</p>
  */
 public abstract class CameraController extends BaseComponent {
 
-
-	public CameraController() {
+    
+    public CameraController() {
 		super();
 	}
 
@@ -53,7 +52,7 @@ public abstract class CameraController extends BaseComponent {
 	}
 
 	/**
-	 * Updates the camera using its controller
+	 * Updates the camera information.
 	 */
 	public abstract void update(float tpf);
 	

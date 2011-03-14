@@ -7,8 +7,8 @@ import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
 import net.jgf.example.tanks.TanksSettings;
-import net.jgf.example.tanks.logic.MissionLogic;
 import net.jgf.example.tanks.logic.SpawnLogic;
+import net.jgf.example.tanks.logic.flow.MissionLogic;
 import net.jgf.jme.audio.AudioItem;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.model.util.TransientSavable;
@@ -46,10 +46,10 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
     @Register (ref = "scene")
     protected DefaultJmeScene scene;
 
-    @Register (ref = "entity/root/enemy")
+    @Register (ref = "entity/root/enemies")
     private EntityGroup enemyEntities;
     
-    @Register (ref = "logic/root/ingame/mission")
+    @Register (ref = "logic/root/flow/mission")
     protected MissionLogic missionLogic;
 
 	protected final Vector3f direction = new Vector3f();
@@ -75,6 +75,10 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	private int simultaneousBullets = 5;
 	
 	private int currentBullets = 0;
+	
+	private String tankModel;
+	
+	protected Player player;
 
 	Spatial hull;
 
@@ -96,7 +100,10 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
         canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
     }
 
-
+	public Vector3f getOrientation() {
+	    if (!this.isActive()) return Vector3f.ZERO;
+	    return hull.getWorldRotation().mult(Vector3f.UNIT_Y).normalizeLocal();
+	}
 
     /**
 	 * Move the tank according to the controls
@@ -106,7 +113,7 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		// TODO: Stop the tank when shooting?
 		//if (fireHold > 0.1f) direction.set(0,0,0);
 
-		Vector3f orientation = hull.getWorldRotation().mult(Vector3f.UNIT_Y).normalizeLocal();
+		Vector3f orientation = getOrientation();
 
 		// The tank needs to rotate in the optimal way towards the desired direction
 		// Here the shortest rotation is calculated
@@ -118,6 +125,8 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		boolean throttling = false;
 		if (direction.length() > 0.01f) {
 
+		    if (direction.length() > 1.0f) direction.normalizeLocal();
+		    
 			// Calculate the new normalized speed and find out if we are accelerating
 			// (as the tank may be rotating only)
 			// TODO: Move this to a constant
@@ -158,29 +167,32 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		
 		for (Entity entity : enemyEntities.children()) {
 			Tank tank = (Tank) entity;
-			obstaclesResults.clear();
-			hull.calculateCollisions(tank.hull, obstaclesResults);
-			for (int i = 0 ; i < obstaclesResults.getNumber(); i++) {
-
-				CollisionData data = obstaclesResults.getCollisionData(i);
-				if ((data.getTargetTris().size() > 0)||(data.getSourceTris().size() > 0)) {
-					
-					Vector3f targetPos = obstaclesResults.getCollisionData(i).getTargetMesh().getWorldBound().getCenter().clone();
-					Vector3f sourcePos = obstaclesResults.getCollisionData(i).getSourceMesh().getWorldBound().getCenter().clone();
-					targetPos.y = sourcePos.y = 0;
-					Vector3f diff = targetPos.subtract(sourcePos);
-					diff.y = 0;
-					diff.normalizeLocal();
-
-					tank.getSpatial().getLocalTranslation().addLocal(diff.mult(topWalkSpeed * tpf));
-					tank.getSpatial().getLocalTranslation().y = 0;
-				}
-			}
-
-			tank.getSpatial().updateWorldVectors();
+			updateCollisionsTank(tpf, tank);
 		}
 		
-		
+	}
+	
+	protected void updateCollisionsTank(float tpf, Tank tank) {
+	    obstaclesResults.clear();
+        hull.calculateCollisions(tank.hull, obstaclesResults);
+        for (int i = 0 ; i < obstaclesResults.getNumber(); i++) {
+
+            CollisionData data = obstaclesResults.getCollisionData(i);
+            if ((data.getTargetTris().size() > 0)||(data.getSourceTris().size() > 0)) {
+                
+                Vector3f targetPos = obstaclesResults.getCollisionData(i).getTargetMesh().getWorldBound().getCenter().clone();
+                Vector3f sourcePos = obstaclesResults.getCollisionData(i).getSourceMesh().getWorldBound().getCenter().clone();
+                targetPos.y = sourcePos.y = 0;
+                Vector3f diff = targetPos.subtract(sourcePos);
+                diff.y = 0;
+                diff.normalizeLocal();
+
+                tank.getSpatial().getLocalTranslation().addLocal(diff.mult(topWalkSpeed * tpf));
+                tank.getSpatial().getLocalTranslation().y = 0;
+            }
+        }
+
+        tank.getSpatial().updateWorldVectors();
 	}
 	
 	/**
@@ -234,7 +246,7 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		
 		if ((fireHold < 0) && (currentBullets < simultaneousBullets)) {
 
-			Bullet bullet = spawnLogic.spawnBullet(canon.getWorldTranslation().clone(), canon.getWorldRotation().clone());
+			Bullet bullet = spawnLogic.spawnBullet(canon.getWorldTranslation().clone(), canon.getWorldRotation().mult(Vector3f.UNIT_Z));
 			bullet.setOwner(this);
 
 			audioItem.play();
@@ -286,17 +298,15 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	 */
 	protected void updateCanon (float tpf) {
 		// Canon
-		Spatial canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
 		target.setY(canon.getLocalTranslation().y);
 		canon.lookAt(target, Vector3f.UNIT_Y);
 	}
-
+	
 	/**
 	 */
 	protected void updateHits (float tpf) {
 		// Check collisions
 
-		canon = ((Node)((Node)spatial).getChild("Tank")).getChild("Canon");
 		bulletResults.clear();
 		canon.calculateCollisions(scene.getRootNode().getChild("bullets"), bulletResults);
 
@@ -379,6 +389,10 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 		return direction;
 	}
 
+	public void setDirection(Vector3f direction) {
+	    this.direction.set(direction);
+	}
+	
 	/**
 	 * @return the target
 	 */
@@ -400,5 +414,31 @@ public abstract class Tank extends SpatialEntity implements StateObserver {
 	public void setSimultaneousBullets(int simultaneousBullets) {
 		this.simultaneousBullets = simultaneousBullets;
 	}
+
+
+
+    public String getTankModel() {
+        return tankModel;
+    }
+
+
+
+    public void setTankModel(String tankModel) {
+        this.tankModel = tankModel;
+    }
+
+	
+
+    public Player getPlayer() {
+        return player;
+    }
+
+
+
+    public void setPlayer(Player player) {
+        this.player = player;
+        if (player != null) player.setTank(this);
+    }   
+	
 	
 }

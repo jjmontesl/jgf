@@ -469,7 +469,7 @@ public final class TanksSceneLoader extends SceneLoader {
 						Node referenceNode = new Node("referenceNode-" + referenceIndex);
 						referenceNode.setLocalTranslation(new Vector3f(0.5f + tile.col, 0.5f * tile.raise, 0.5f + tile.row));
 						SpatialReference reference = null;
-						if ((valChar == 'x' || valChar == 'z')) {
+						if ((valChar == 'x' || valChar == 'y' || valChar == 'z')) {
 							reference = new SpatialReference(tile.tag, referenceNode);
 						} else {
 							reference = new SpatialReference(tile.tag+"_"+referenceIndex, referenceNode);

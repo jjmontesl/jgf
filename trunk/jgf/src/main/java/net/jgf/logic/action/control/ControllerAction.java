@@ -49,6 +49,10 @@ public class ControllerAction extends BaseLogicAction {
 
 	}
 
+	public List<ActionStep> getSteps() {
+	    return steps;
+	}
+	
 	/* (non-Javadoc)
 	 * @see net.jgf.core.state.State#toString()
 	 */

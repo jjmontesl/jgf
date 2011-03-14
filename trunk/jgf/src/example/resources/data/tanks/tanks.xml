@@ -27,16 +27,15 @@
 		Logging configuration
 	 -->
 	<service id="logging" class="net.jgf.util.system.LoggingConfigService">
-		<logger name="com.jme.scene.Node" level="WARN" />
-		<logger name="com.jme.scene.Point" level="WARN" />
-		<logger name="com.jme.scene.Line" level="WARN" />
+		<logger name="com.jme.scene" level="ERROR" />
 		<logger name="com.jmex.model.collada.ColladaImporter" level="FATAL" />
 		<logger name="net.jgf.loader.FileChainLoader" level="WARN" />
-		<logger name="net.jgf.core.state" level="DEBUG" /> 
-		<logger name="net.jgf.core.naming" level="TRACE" />
+		<logger name="net.jgf.core.state" level="WARN" /> 
+		<logger name="net.jgf.core.naming" level="WARN" />
+		<logger name="net.jgf.loader" level="WARN" />
+		<logger name="net.jgf.example.tanks.loader.TanksSceneLoader" level="WARN" />
 		<logger name="net.jgf.jme.model" level="WARN" />	
 		<logger name="de.lessvoid.nifty" level="WARN" />
-		<logger name="com.jme.scene" level="WARN" />
 		<logger name="org.apache.commons.beanutils" level="WARN" />
 	</service>
 
@@ -83,7 +82,7 @@
             <setting id="settings/game/scorelimit" class="net.jgf.settings.IntegerSetting" 
                      label="Score limit" default="7" />
             <setting id="settings/game/mode" class="net.jgf.settings.StringSetting" 
-                     label="Game mode" default="single" />
+                     label="Game mode" default="Missions" />
             
             <!-- <setting id="settings/game/level" class="net.jgf.settings.EnumSetting"
                      label="Difficulty Level" default="medium" enumClass="net.jgf.example.tanks.game.Difficulty" >
@@ -144,7 +143,18 @@
 	</service>
 	 -->
 	
-	<service id="network" class="net.jgf.network.SpiderMonkeyNetworkService" />
+	<service id="network" class="net.jgf.network.SpiderMonkeyNetworkService" >
+	   <messageClasses>
+	       <message class="net.jgf.example.tanks.messages.BulletMessage" />
+	       <message class="net.jgf.example.tanks.messages.ConnectMessage" />
+	       <message class="net.jgf.example.tanks.messages.ControlsMessage" />
+	       <message class="net.jgf.example.tanks.messages.GameInfoMessage" />
+	       <message class="net.jgf.example.tanks.messages.PlayerMessage" />
+	       <message class="net.jgf.example.tanks.messages.SyncRequestMessage" />
+	       <message class="net.jgf.example.tanks.messages.TankMessage" />
+	       <message class="net.jgf.network.ActionStepMessage" />
+	   </messageClasses>
+	</service>
 	
 	<!-- 
 		Entity Manager: Just create groups. Entities are 
@@ -154,19 +164,19 @@
 		
 		<entity id="entity/root" class="net.jgf.entity.EntityGroup" >
 
-            <entity id="entity/root/clients" class="net.jgf.entity.EntityGroup">
+            <entity id="entity/root/players" class="net.jgf.entity.EntityGroup">
             </entity>
 
-			<entity id="entity/root/players" class="net.jgf.entity.EntityGroup">
+			<entity id="entity/root/tanks" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
-			<entity id="entity/root/enemy" class="net.jgf.entity.EntityGroup">
+			<entity id="entity/root/enemies" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
 			<entity id="entity/root/bullets" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
-			<entity id="entity/root/mine" class="net.jgf.entity.EntityGroup">
+			<entity id="entity/root/mines" class="net.jgf.entity.EntityGroup">
 			</entity>
 			
 			<entity id="entity/root/explosions" class="net.jgf.entity.EntityGroup">
@@ -285,12 +295,16 @@
                     <step type="deactivate" ref="logic/root/ingame" />
                     <step type="deactivate" ref="view/root/ingame" />
                     <step type="deactivate" ref="view/root/scene" />
+                    <step type="deactivateAndUnload" ref="view/root/ingame/failed" />
+                    <step type="deactivateAndUnload" ref="view/root/ingame/victory" />
+                    
                 </logic>
                 
                 <logic id="logic/action/game/enable" class="net.jgf.logic.action.control.ControllerAction" >
                     <step type="loadAndActivate" ref="logic/root/ingame" />
                     <step type="loadAndActivate" ref="view/root/ingame" />
                     <step type="loadAndActivate" ref="view/root/scene" />
+                    <step type="loadAndActivate" ref="entity/root" />
                 </logic>                
 				
                 <logic id="logic/action/menu/main" class="net.jgf.logic.action.control.ControllerAction" >
@@ -299,15 +313,6 @@
                     <step type="runAction" ref="logic/action/menu/main/init" />
                     <step type="runAction" ref="logic/action/menu/enable" />
                 </logic>
-				
-				<logic id="logic/action/game/new/single" class="net.jgf.logic.action.control.ControllerAction" >
-                    <step type="runAction" ref="logic/action/menu/disable" />
-                    <step type="runAction" ref="logic/action/game/cleanup" />
-					<step type="runAction" ref="logic/action/game/new/single/prepare" />
-					<step type="runAction" ref="logic/action/game/loadscene" />
-					<step type="runAction" ref="logic/action/game/setup" />
-					<step type="runAction" ref="logic/action/game/enable" />
-				</logic>
 				
                 <logic id="logic/action/game/nextmap" class="net.jgf.logic.action.control.ControllerAction" >
                     <step type="runAction" ref="logic/action/game/disable" />
@@ -325,37 +330,48 @@
                     <step type="runAction" ref="logic/action/game/enable" />
                 </logic>
                                 
+                <logic id="logic/action/game/new/single" class="net.jgf.logic.action.control.ControllerAction" >
+                    <step type="runAction" ref="logic/action/menu/disable" />
+                    <step type="runAction" ref="logic/action/game/cleanup" />
+                    <step type="runAction" ref="logic/action/game/new/single/prepare" />
+                    <step type="runAction" ref="logic/action/game/loadscene" />
+                    <step type="runAction" ref="logic/action/game/setup" />
+                    <step type="runAction" ref="logic/action/game/enable" />
+                </logic>
 				
 				<logic id="logic/action/game/new/multiplayer" class="net.jgf.logic.action.control.ControllerAction" >
                     <step type="runAction" ref="logic/action/menu/disable" />
                     <step type="runAction" ref="logic/action/game/cleanup" />
-                    <step type="runAction" ref="logic/action/multiplayer/newgame/init" />
+                    <step type="runAction" ref="logic/action/game/new/single/prepare" />
+                    <step type="runAction" ref="logic/action/game/network/startserver" />
                     <step type="loadAndActivate" ref="logic/root/network/server" />
-                    <step type="runAction" ref="logic/action/restart" />
+                    <step type="runAction" ref="logic/action/game/loadscene" />
+                    <step type="runAction" ref="logic/action/game/setup" />
+                    <step type="runAction" ref="logic/action/game/enable" />
                 </logic>
                 
-                <logic id="logic/action/multiplayer/joingame" class="net.jgf.example.tanks.logic.JoinGameAction" >
-                    <step type="deactivateAndUnload" ref="view/root/main" />
-                    <step type="runAction" ref="logic/action/multiplayer/newgame/join" />
+                <logic id="logic/action/game/new/join" class="net.jgf.example.tanks.logic.JoinGameAction" >
+                    <step type="runAction" ref="logic/action/menu/disable" />
+                    <step type="runAction" ref="logic/action/game/cleanup" />
+                    <step type="runAction" ref="logic/action/game/network/join" />
                 </logic>
                 
                 
                 <logic id="logic/action/menu/main/init" class="net.jgf.example.tanks.logic.MenuSceneAction" />
                 
-				<logic id="logic/action/game/new/multiplayer/join" class="net.jgf.example.tanks.logic.JoinGameAction" />
+				<logic id="logic/action/game/network/join" class="net.jgf.example.tanks.logic.JoinGameAction" />
 				
-				<logic id="logic/action/game/new/multiplayer/init" class="net.jgf.example.tanks.logic.StartServerAction" />
+				<logic id="logic/action/game/network/startserver" class="net.jgf.example.tanks.logic.network.StartServerAction" />
 				
 				<logic id="logic/action/game/new/single/prepare" class="net.jgf.example.tanks.logic.NewGameAction" />
 				
-				<logic id="logic/action/game/cleanup/prepare" class="net.jgf.example.tanks.logic.CleanupAction" />
+				<logic id="logic/action/game/cleanup/prepare" class="net.jgf.example.tanks.logic.CleanupGameAction" />
 				 
 				<logic id="logic/action/game/nextmission/init" class="net.jgf.example.tanks.logic.NextMissionAction" />
 				
 				<logic id="logic/action/game/setup" class="net.jgf.example.tanks.logic.SetupAction" />
 				
 				<logic id="logic/action/game/loadscene" class="net.jgf.example.tanks.logic.LoadSceneAction" />
-				
 				
 
 			</logic>
@@ -366,19 +382,20 @@
 					autoLoad="true" autoActivate="true" >
 				</logic>
 			
-				<logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic"
-					autoLoad="true" autoActivate="true" > 
-				</logic>
-				
-				<logic id="logic/root/ingame/mission" class="net.jgf.example.tanks.logic.MissionLogic"
-					autoLoad="true" autoActivate="true" >
-				</logic>				
-			
+                <logic id="logic/root/ingame/ingame" class="net.jgf.example.tanks.logic.InGameLogic"
+                    autoLoad="true" autoActivate="true" > 
+                </logic>
+
 			</logic>
 			
+            <logic id="logic/root/flow" class="net.jgf.logic.LogicStateNode" autoLoad="true" autoActivate="true">
+                    <logic id="logic/root/flow/mission" class="net.jgf.example.tanks.logic.flow.MissionLogic" />
+                    <logic id="logic/root/flow/ffa" class="net.jgf.example.tanks.logic.flow.FreeForAllLogic" />
+                </logic>
+			
 			<logic id="logic/root/network" class="net.jgf.logic.LogicStateNode" autoLoad="true" autoActivate="true">
-			     <logic id="logic/root/network/client" class="net.jgf.example.tanks.logic.ClientNetworkLogic" />
-			     <logic id="logic/root/network/server" class="net.jgf.example.tanks.logic.ServerNetworkLogic" />
+			     <logic id="logic/root/network/client" class="net.jgf.example.tanks.logic.network.ClientNetworkLogic" />
+			     <logic id="logic/root/network/server" class="net.jgf.example.tanks.logic.network.ServerNetworkLogic" />
 			</logic>
 			
 		</logic>

@@ -6,10 +6,11 @@ import net.jgf.config.Configurable;
 import net.jgf.core.naming.Register;
 import net.jgf.entity.Entity;
 import net.jgf.example.tanks.logic.SpawnLogic;
+import net.jgf.example.tanks.logic.network.ClientNetworkLogic;
+import net.jgf.example.tanks.logic.network.ServerNetworkLogic;
 import net.jgf.jme.entity.SpatialEntity;
 import net.jgf.jme.model.util.TransientSavable;
 import net.jgf.jme.scene.DefaultJmeScene;
-import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 
@@ -50,7 +51,13 @@ public class Bullet extends SpatialEntity {
 
     @Register (ref = "logic/root/ingame/spawn")
     private SpawnLogic spawnLogic;
+    
+    @Register (ref = "logic/root/network/server")
+    protected ServerNetworkLogic serverLogic;
 	
+    @Register (ref = "logic/root/network/client")
+    protected ClientNetworkLogic clientLogic;
+    
 	private float ttl;
 
 	private final Vector3f speed = new Vector3f();
@@ -217,6 +224,9 @@ public class Bullet extends SpatialEntity {
 		// Check collisions with other bullets
 
 		bulletResults.clear();
+		
+		if (clientLogic.isActive()) return;
+		
 		this.getSpatial().calculateCollisions(scene.getRootNode().getChild("bullets"), bulletResults);
 
 		if (bulletResults.getNumber() > 0) {
@@ -254,5 +264,14 @@ public class Bullet extends SpatialEntity {
 		this.owner = owner;
 	}
 
+
+    public int getNumBounces() {
+        return numBounces;
+    }
+
+
+    public void setNumBounces(int numBounces) {
+        this.numBounces = numBounces;
+    }
 
 }

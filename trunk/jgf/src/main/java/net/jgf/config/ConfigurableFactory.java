@@ -107,8 +107,8 @@ public final class ConfigurableFactory {
 
     /**
      * <p>
-     * Creates a component loading parameters from configuration, and if it is
-     * {@link Configurable}, configures it recursively.
+     * Creates a component and loads its parameters from configuration.
+     * Object class needs to be annotated as {@link Configurable}.
      * </p>
      * 
      * @param <T> generic type used to return a typed object.

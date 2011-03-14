@@ -39,8 +39,10 @@ import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
-// TODO: Review / refactor / test and document (untested: comes from other project)
-
+/**
+ * @todo Review / test and document (untested: comes from other project)
+ */
+//TODO: Review / test and document (untested: comes from other project)
 public class TextConsoleThread extends Thread {
 
     /**

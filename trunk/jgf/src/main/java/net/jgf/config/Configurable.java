@@ -40,12 +40,12 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * Defines whether a class provides a method that initializes an object from
+ * Defines whether a class provides a method that initializes an object from XML
  * configuration.
  * </p>
  * <p>
- * A class must be annotated with {@link Configurable} if it is going to be used
- * from the configuration file.
+ * A class must be annotated with {@link Configurable} if it is going to be created
+ * by the framework from the configuration file.
  * </p>
  * <p>
  * Classes annotated with this interface must provide a configuration method

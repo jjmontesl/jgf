@@ -2,12 +2,16 @@
 package net.jgf.example.tanks.entity;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 
 /**
  */
 @Configurable
 public class PlayerTank extends Tank {
 
+    @Register (ref="entity/root/links/self")
+    private net.jgf.example.tanks.entity.Player self;
+    
 	private boolean walkLeft;
 
 	private boolean walkRight;
@@ -17,16 +21,18 @@ public class PlayerTank extends Tank {
 	private boolean walkDown;
 	
 	private int kills = 0;
-
+	
 	@Override
 	public void doUpdate(float tpf) {
 
-		direction.set(0, 0, 0);
-		if (walkLeft) direction.x = -1;
-		if (walkRight) direction.x = 1;
-		if (walkUp) direction.z = -1;
-		if (walkDown) direction.z = 1;
-		direction.normalizeLocal();
+	    if ((this.player != null) && (this.player.getId().equals(self.getId()))) {
+    		direction.set(0, 0, 0);
+    		if (walkLeft) direction.x = -1;
+    		if (walkRight) direction.x = 1;
+    		if (walkUp) direction.z = -1;
+    		if (walkDown) direction.z = 1;
+    		direction.normalizeLocal();
+	    }
 
 		super.doUpdate(tpf);
 
@@ -117,6 +123,5 @@ public class PlayerTank extends Tank {
 	public void setWalkDown(boolean walkDown) {
 		this.walkDown = walkDown;
 	}
-
 
 }

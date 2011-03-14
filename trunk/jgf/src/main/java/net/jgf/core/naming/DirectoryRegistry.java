@@ -337,6 +337,8 @@ final class DirectoryRegistry {
                 throw new NamingException("Could not access field '" + field
                         + "' in object " + target
                         + " when setting value for directory resolved reference " + value, e);
+            } catch (IllegalArgumentException  e) {
+                throw new NamingException ("Cannot inject value " + value + " on field '" + field + "' of object " + target);
             }
             
         }

@@ -4,6 +4,7 @@ package net.jgf.example.tanks.logic;
 import net.jgf.config.Configurable;
 import net.jgf.core.naming.Register;
 import net.jgf.example.tanks.loader.SceneReferencesProcessorLoader;
+import net.jgf.example.tanks.logic.network.ServerNetworkLogic;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.FileChainLoader;
 import net.jgf.loader.LoadProperties;
@@ -38,6 +39,9 @@ public class LoadSceneAction extends BaseLogicAction {
     
     @Register (ref = "settings/game/map")
     private StringSetting mapSetting;
+    
+    @Register (ref = "logic/root/network/server")
+    protected ServerNetworkLogic serverLogic;
 	
 	/* (non-Javadoc)
 	 * @see net.jgf.logic.BaseLogicState#activate()
@@ -46,6 +50,9 @@ public class LoadSceneAction extends BaseLogicAction {
 	public void perform(Object arg) {
 
 		logger.info ("Loading map: " + mapSetting.getValue());
+		
+	    // Update network
+		if (serverLogic.isActive()) serverLogic.sendGameInfo(null);
 		
         EntityPoolLoader entityLoader = Jgf.getDirectory().getObjectAs("loader/entity/pool", EntityPoolLoader.class);
         entityLoader.preload(60, "FileChainLoader.resourceUrl=tanks/entity/bullet.xml");
