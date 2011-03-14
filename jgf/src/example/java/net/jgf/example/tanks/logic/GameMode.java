@@ -8,7 +8,7 @@ package net.jgf.example.tanks.logic;
  */
 public enum GameMode {
 
-    SinglePlayer,
+    Missions,
     
     FreeForAll,
     

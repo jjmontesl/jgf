@@ -27,17 +27,16 @@ public class AITank extends Tank {
 
     protected Vector3f targetPos = new Vector3f();
 
-    @Register (ref = "entity/root/players/player1")
     protected SpatialEntity targetEntity;
 
     protected TanksMap map;
 
     protected Path path;
 
-    @Register (ref = "entity/root/players")
-    protected EntityGroup players;
+    @Register (ref = "entity/root/tanks")
+    protected EntityGroup tanks;
 
-    @Register (ref = "entity/root/enemy")
+    @Register (ref = "entity/root/enemies")
     protected EntityGroup enemies;
 
     @Register (ref = "entity/root/bullets")
@@ -47,7 +46,7 @@ public class AITank extends Tank {
 
     protected float maxSpeed = 0.7f;
 
-    protected float actionDistance = 19.0f;
+    protected float actionDistance = 28.0f;
 
     protected Vector3f originalPosition;
 
@@ -96,6 +95,16 @@ public class AITank extends Tank {
     @Override
     public void doUpdate(float tpf) {
 
+        if ((targetEntity != null) && (!targetEntity.isActive())) {
+            targetEntity = null;
+        }
+        if (tanks.children().size() > 0) {
+            if ((targetEntity == null) || (FastMath.rand.nextFloat() > (0.95f * tpf)) ) {
+                int i = FastMath.rand.nextInt(tanks.children().size());
+                targetEntity = (Tank) tanks.children().get(i);
+            }
+        }
+        
         if (targetEntity != null) {
 
             if (targetEntity.getSpatial().getWorldTranslation().distanceSquared(
@@ -246,7 +255,7 @@ public class AITank extends Tank {
         }
 
         // Account for player
-        for (Entity player : players.children()) {
+        for (Entity player : tanks.children()) {
             PlayerTank tank = (PlayerTank) player;
             Tile tile = map.worldToTile(tank.getSpatial().getWorldTranslation());
             round(tile.row, tile.col, 8, 2, 0);

@@ -2,14 +2,21 @@
 package net.jgf.example.tanks.logic;
 
 import net.jgf.config.Configurable;
+import net.jgf.core.naming.Register;
 import net.jgf.core.state.StateHelper;
 import net.jgf.entity.Entity;
 import net.jgf.entity.EntityGroup;
+import net.jgf.example.tanks.entity.Player;
+import net.jgf.example.tanks.entity.PlayerTank;
 import net.jgf.example.tanks.loader.SceneReferencesProcessorLoader;
+import net.jgf.example.tanks.logic.flow.FreeForAllLogic;
+import net.jgf.example.tanks.logic.flow.MissionLogic;
+import net.jgf.example.tanks.logic.network.ServerNetworkLogic;
 import net.jgf.jme.scene.DefaultJmeScene;
 import net.jgf.loader.LoadProperties;
 import net.jgf.logic.action.BaseLogicAction;
 import net.jgf.scene.SimpleSceneManager;
+import net.jgf.settings.StringSetting;
 import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
@@ -25,6 +32,18 @@ public class SetupAction extends BaseLogicAction {
 	 * Class logger
 	 */
 	private static final Logger logger = Logger.getLogger(SetupAction.class);
+	
+    @Register (ref = "logic/root/network/server")
+    protected ServerNetworkLogic serverLogic;
+    
+    @Register (ref = "logic/root/flow/mission")
+    private MissionLogic missionLogic;
+    
+    @Register (ref = "logic/root/flow/ffa")
+    private FreeForAllLogic ffaLogic;
+    
+    @Register (ref = "settings/game/mode")
+    private StringSetting gamemodeSetting;
 
 	/* (non-Javadoc)
 	 * @see net.jgf.logic.BaseLogicState#activate()
@@ -32,28 +51,13 @@ public class SetupAction extends BaseLogicAction {
 	@Override
 	public void perform(Object arg) {
 
-		SpawnLogic spawnLogic = Jgf.getDirectory().getObjectAs("logic/root/ingame/spawn", SpawnLogic.class);
-		SimpleSceneManager sceneManager = Jgf.getDirectory().getObjectAs("scene/manager", SimpleSceneManager.class);
-		DefaultJmeScene scene = (DefaultJmeScene) sceneManager.getScene();
-		EntityGroup enemies = Jgf.getDirectory().getObjectAs("entity/root/enemy", EntityGroup.class);
-		EntityGroup rootEntity = Jgf.getDirectory().getObjectAs("entity/root", EntityGroup.class);
-        
-		// Load scene
-		SceneReferencesProcessorLoader sceneLoader = Jgf.getDirectory().getObjectAs("loader/scene/referencesprocessor", SceneReferencesProcessorLoader.class);
-		sceneLoader.load(scene, new LoadProperties());
-		
-		// Spawn player
-		StateHelper.loadAndActivate(spawnLogic);
-		spawnLogic.spawnPlayer();
-
-		// Prepare entities
-		
-		StateHelper.loadAndActivate(rootEntity);
-
-        for (Entity enemy : enemies.children()) {
-            StateHelper.loadAndActivate(enemy);
+        GameMode gameMode = GameMode.valueOf(gamemodeSetting.getValue());
+        if (gameMode == GameMode.Missions) {
+            missionLogic.setup();
+        } else if (gameMode == GameMode.FreeForAll) {
+            ffaLogic.setup();
         }
-
+		
 	}
 
 }

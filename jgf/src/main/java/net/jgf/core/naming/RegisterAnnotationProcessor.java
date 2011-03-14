@@ -43,6 +43,8 @@ import org.apache.log4j.Logger;
 
 /**
  * <p>
+ * This helper class processes a class {@link Register} annotations and registers every
+ * annotated field or method with the Directory Registry. 
  * </p>
  * 
  * @see Register

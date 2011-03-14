@@ -82,14 +82,19 @@ import org.apache.log4j.Logger;
  * a particular directory entry is modified (using {@link Directory#register(Object, String, String)}).
  * This is a convenient way of ensuring that an object field contains a reference to a defined
  * directory entry, even if that entry hasn't yet been added to the Directory.</p>
+ * <p>Registering can also be done using the {@link Register} annotation on fields or setters
+ * that hold references to objects held in the Registry. Objects created by the framework will
+ * have those fields registered for injection (if you wish to inject your own objects,
+ * use the {@link ObjectCreator} or the {@link RegisterAnnotationProcessor} helper classes).</p>
  * <p>Numerous examples of both types of usage are spread along JGF examples.</p>  
  * <p>
  * This class is thread safe. All accesses to fields are synchronized. Reference
  * fields are never returned.
  * </p>
  * 
- * @author jjmontes
- * @version 1.0
+ * @see Register 
+ * @see ObjectCreator
+ * @see RegisterAnnotationProcessor
  */
 public final class Directory {
 
@@ -102,7 +107,7 @@ public final class Directory {
      * Initial default estimated directory size. This is the initial capacity of
      * the underlying map.
      */
-    private static final int DIRECTORY_DEFAULT_SIZE = 256;
+    private static final int DIRECTORY_DEFAULT_SIZE = 512;
 
     /**
      * <p>
@@ -168,9 +173,10 @@ public final class Directory {
 
         final WeakReference<Object> reference = objects.remove(id);
         if (reference == null) {
-            throw new NamingException(
-                    "Tried to remove a non existent object named '" + id
-                            + "' from " + this);
+            return null;
+            //throw new NamingException(
+              //      "Tried to remove a non existent object named '" + id
+                //            + "' from " + this);
         }
 
         // Update the registered objects
@@ -258,22 +264,24 @@ public final class Directory {
          */
 
         if (id == null) {
-            throw new ServiceException(
+            throw new NamingException(
                     "Trying to retrieve object with name 'null'");
         }
 
         WeakReference<Object> ref = objects.get(id);
         if (ref == null) {
-            throw new NamingException(
-                    "No object found when resolving reference '" + id + "'");
+            return null;
+            //throw new NamingException(
+              //      "No object found when resolving reference '" + id + "'");
         }
 
         Object o = ref.get();
         if (o == null) {
-            throw new NamingException(
-                    "Trying to retrieve a garbage collected object '"
-                            + id
-                            + "' (the object does not exist anymore but it was not removed from the directory)");
+            return null;
+//            throw new NamingException(
+//                    "Trying to retrieve a garbage collected object '"
+//                            + id
+//                            + "' (the object does not exist anymore but it was not removed from the directory)");
         }
 
         if (!expectedClass.isAssignableFrom(o.getClass())) {
@@ -312,10 +320,11 @@ public final class Directory {
         }
 
         if (ref.get() == null) {
-            throw new NamingException(
-                    "Detected a garbage collected object when evaluating if directory contains an object with name '"
-                            + id
-                            + "' (the object does not exist anymore but it was not removed from the directory)");
+            return false;
+            //throw new NamingException(
+//                    "Detected a garbage collected object when evaluating if directory contains an object with name '"
+//                            + id
+//                            + "' (the object does not exist anymore but it was not removed from the directory)");
         }
 
         return true;

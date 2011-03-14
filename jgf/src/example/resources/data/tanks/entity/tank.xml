@@ -20,6 +20,7 @@
 
         <loader id="!entity.attributes" class="net.jgf.loader.AttributeLoader" >
             <property name="AttributeLoader.simultaneousBullets" value="5" />
+            <property name="AttributeLoader.tankModel" value="tanks/model/tank/tank.dae" />
         </loader>
 		
 	</loader>

@@ -18,6 +18,7 @@
 			<property name="AttributeLoader.maxSpeed" value="0.9" />
 			<property name="AttributeLoader.firePerSecond" value="0.6" />
 			<property name="AttributeLoader.simultaneousBullets" value="5" />
+			<property name="AttributeLoader.tankModel" value="tanks/model/enemygreen/greentank.dae" />
 		</loader>
 
 		<loader id="!entity.model" class="net.jgf.jme.loader.entity.EntityModelLoader" >

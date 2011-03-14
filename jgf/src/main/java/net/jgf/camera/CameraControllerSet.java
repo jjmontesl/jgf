@@ -10,7 +10,9 @@ import org.apache.commons.lang.StringUtils;
 
 
 /**
- * CameraControllerSet manages the cameras attached to an entity or other component.
+ * CameraControllerSet manages the camera controllers attached to an entity or other component.
+ * 
+ * @see CameraController
  */
 public class CameraControllerSet {
 

@@ -5,6 +5,7 @@
 
 package net.jgf.core.state;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -57,6 +58,15 @@ public abstract class BaseStateNode<T extends State> extends BaseState implement
 		if (!removed) {
 			throw new ServiceException("Trying to dettach an unexistent children " + state + " from " + this);
 		}
+	}
+	
+	public T findChild(String id) {
+	    for (T state : children) {
+	        if (id.equals(state.getId())) {
+	            return state;
+	        }
+	    }
+	    return null;
 	}
 
 	public boolean containsChild(T state) {

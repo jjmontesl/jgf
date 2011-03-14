@@ -33,13 +33,7 @@
 
 package net.jgf.core.naming;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import net.jgf.config.ConfigException;
-import net.jgf.core.naming.DirectoryRegistry.RegistryInjectionMethod;
-import net.jgf.entity.Entity;
-import net.jgf.system.Jgf;
 
 import org.apache.log4j.Logger;
 

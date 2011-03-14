@@ -34,7 +34,7 @@ public class DefaultLogicManager extends BaseService implements LogicManager {
 	@Override
 	public void dispose() {
 		super.dispose();
-		rootState.unload();
+		StateHelper.deactivateAndUnload(rootState);
 	}
 
 	/**

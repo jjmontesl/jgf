@@ -13,7 +13,13 @@ public class ActionStep {
 
 	protected String ref;
 
-	/**
+	
+	
+	public ActionStep() {
+        super();
+    }
+
+    /**
 	 * @return the type
 	 */
 	public ActionStepType getType() {
@@ -26,6 +32,15 @@ public class ActionStep {
 	public void setType(ActionStepType type) {
 		this.type = type;
 	}
+	
+   /**
+     * @param type the type to set
+     */
+    public ActionStep(ActionStepType type, String ref) {
+        super();
+        this.type = type;
+        this.ref = ref;
+    }
 
 	/**
 	 * @return the ref

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+    Java Game Framework 
+    Scene Loader File
+    $Id: mission1.xml 173 2009-10-31 23:02:35Z jjmontes $
+ -->    
+
+<jgf>
+
+    <loader>
+    
+        <loader id="!scene.creation" class="net.jgf.loader.scene.SceneCreatorLoader" >
+            <property name="SceneCreatorLoader.id" value="scene" />
+            <property name="SceneCreatorLoader.sceneClass" value="net.jgf.jme.scene.DefaultJmeScene" /> 
+        </loader>
+                
+        <loader id="!scene.initialize" class="net.jgf.jme.loader.scene.DefaultJmeSceneLoader" >
+            <property name="DefaultJmeSceneLoader.title" value="Arena #1" />
+            <property name="DefaultJmeSceneLoader.subtitle" value="The Camp and The Barrier" />
+        </loader>
+        
+        <loader id="!scene.skybox" class="net.jgf.jme.loader.scene.SkyboxLoader" >
+            <property name="SkyboxLoader.prefix" value="mudvolley/skybox/grandcanyon/" />
+            <property name="SkyboxLoader.suffix" value=".jpg" />
+        </loader>
+    
+      <loader id="!scene.cameras" class="net.jgf.jme.loader.scene.CameraLoader">
+            
+            <cameras>
+                
+                <camera id="scene/camera/intermission" class="net.jgf.jme.camera.StaticCamera" >
+                    <target>15.0 -7.0 2.0</target>
+                    <location>3.0 7.0 14.0</location>
+                </camera>
+                <camera id="scene/camera/top" class="net.jgf.jme.camera.StaticCamera" >
+                    <target>13.0 -7.0 8.0</target>
+                    <location>13.0 24.0 12.0</location>
+                </camera>
+                
+            </cameras>
+            
+            <camera ref="scene/camera/top" />
+            <!-- <camera ref="scene/camera/tanks" /> -->
+            
+      </loader>
+    
+        <loader id="!scene.tanks" class="net.jgf.example.tanks.loader.TanksSceneLoader">
+            
+            <map>
+                5 6  6 4 6 6H 6 6 5 5 4  3 2 2  2 2 2 3H 4  5 6 6 6T 6 6 6 
+                5 3T 3 3 3 .  . . . . .  . . .  . . . .  .  . . . .  . . 5
+                5 3  1 1 . .  . . . . .  . . .  . . . .x .  . . . .  . . 5
+                5 3  1 . . .  . . . 2 1  . . .  . . . .  .  . . . .  . . 2
+                4 3  . . . .  . . . 1 2L . . .  . . . .  .  . . . .  . . 2
+                4 .  . . . .x . . . . .  . . .  . . . .  .  . . . .x . . 4
+                2 .  . . . .  . . . . .  . . .  . . . 3  3  . . . .  . . 4
+                4 .  . . . .  . . . . .x . . .  . . . 2T 3  . . . .  . . 4
+                7 .  . . . .  . . . . .  . . .  . . . .  .  . . . .  . . 4
+                7 .  . . . .  . . . . .  . . .  . . . .  .  . . . .  . . 4
+                7 .  . . . 1  1 1 . . .  . . .  . . . x  .  . . . .  . . 4
+                6 .  . . . 3  3 1 . . .  . . .  . . . .  .  . . . .  . . 4
+                5 .  . . . 3T 3 1 . . .  . . .  . . . .  .  . . . .  . . 4
+                4 .  . . . .  . . . . .  . 1 1  2 2 2 2L 2  2 . . .x . . 3
+                3 .  . . . .  . . . . .  . . .  . . . .  .  . . . .  . 1 3
+                2 .  . . . .x . . . . .x . . .  . . . .x .  . . . .  . 1 2
+                6 .  . . . .  . . . . .  . . .  . . . .  .  . . . 1  1 1 2
+                8 8  7 7 7 6T 5 4 3 3 3H 3 4 4  3 2 5 2  2  4 5 5 2  2 2 2
+            </map>
+            
+            <width>26</width>
+            <height>18</height>
+
+        </loader> 
+        
+        <loader id="!scene.referencesProcessor" class="net.jgf.example.tanks.loader.SceneReferencesProcessorLoader">
+        
+            <reference regexp=".*L.*" type="model">
+                <loader id="!scene.referencesProcessor.lamps" class="net.jgf.loader.ReferenceLoader">
+                    <property name="ReferenceLoader.loader" value="loader/model" />
+                    <property name="ConverterLoader.resourceUrl" value="tanks/model/lamppost/lamppost.dae" />
+                </loader>
+            </reference>
+
+            <reference regexp="T.*" type="model">
+                <loader id="!scene.referencesProcessor.fir" class="net.jgf.loader.ReferenceLoader">
+                    <property name="ReferenceLoader.loader" value="loader/model" />
+                    <property name="ConverterLoader.resourceUrl" value="tanks/model/fir/fir.dae" />
+                </loader>
+            </reference>  
+            
+            <reference regexp="H.*" type="model">
+                <loader id="!scene.referencesProcessor.fir" class="net.jgf.loader.ReferenceLoader">
+                    <property name="ReferenceLoader.loader" value="loader/model" />
+                    <property name="ConverterLoader.resourceUrl" value="tanks/model/hanginggrass/hanginggrass.dae" />
+                </loader>
+            </reference>            
+
+            <reference regexp=".*H.*" type="model">
+                <loader id="!scene.referencesProcessor.lampsRot" class="net.jgf.jme.loader.model.SpatialTransformerLoader" >
+                    <property name="SpatialTransformerLoader.rotatePi" value="0.0 0.5 0.0" />
+                </loader>
+            </reference>
+            
+        </loader>
+        
+    </loader>
+    
+    
+</jgf>
+ 
+
+

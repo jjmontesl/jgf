@@ -45,11 +45,12 @@ import net.jgf.core.service.BaseService;
 import org.apache.log4j.Logger;
 
 /**
- * <p>This is a wrapper for the StandardGameEngine that is able to accept one character at a time.
+ * <p>This is a wrapper for the Console interface that is able to accept one character at a time.
  * It can be used when you need a character based console.</p>
  * <p>This wrappers manages the command line (current buffer, backspaces, enter) and
  * calls {@link Console#processCommand(String)} on the underlying console
  * when the user presses Enter.</p>
+ * 
  * @see Console
  */
 @Configurable

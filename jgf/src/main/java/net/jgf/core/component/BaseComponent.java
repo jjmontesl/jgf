@@ -35,8 +35,6 @@ package net.jgf.core.component;
 
 import net.jgf.config.Config;
 import net.jgf.config.Configurable;
-import net.jgf.settings.Settings;
-import net.jgf.system.Jgf;
 
 /**
  * <p>
@@ -47,31 +45,6 @@ import net.jgf.system.Jgf;
  * <p>
  * This base class provides a XML config file reading capabilities, which will
  * set the component id (as defined in the XML node through the "id" attribute).
- * </p>
- * <p>
- * This class also provides JGF settings support. Settings dependencies can be
- * defined in XML. The configured component is then registered with the settings
- * component to receive updates for setting changes.
- * </p>
- * <p>
- * This is an example of a component configured using BaseComponent reading
- * capabilities (taken from the example game "Taunklet"). Here, the InputView
- * uses settings registering to receive the values defined in the settings
- * component:
- * 
- * <pre>
- * &#064;code
- * &lt;view id=&quot;view/root/ingame/game/input&quot; class=&quot;net.jgf.example.tanks.view.InputView&quot; &gt;
- *     &lt;settings ref=&quot;settings&quot;&gt;
- *         &lt;setting ref=&quot;settings/input/key/up&quot; field=&quot;keyUp&quot;  /&gt;
- *         &lt;setting ref=&quot;settings/input/key/down&quot; field=&quot;keyDown&quot; /&gt;
- *         &lt;setting ref=&quot;settings/input/key/left&quot; field=&quot;keyLeft&quot; /&gt;
- *         &lt;setting ref=&quot;settings/input/key/right&quot; field=&quot;keyRight&quot; /&gt;
- *     &lt;/settings&gt;
- * &lt;/view&gt;
- * }
- * </pre>
- * 
  * </p>
  * <p>
  * This class has been designed to be extended, although users often will prefer
@@ -95,7 +68,7 @@ public abstract class BaseComponent implements Component {
      * Component id.
      */
     private String id;
-
+    
     /**
      * Builds a new Component with a null id.
      */

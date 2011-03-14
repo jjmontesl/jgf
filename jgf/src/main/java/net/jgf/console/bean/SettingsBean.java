@@ -43,7 +43,8 @@ import net.jgf.system.Jgf;
 import org.apache.log4j.Logger;
 
 /**
- * Implements the console commands.
+ * Implements console commands to manage settings.
+ * @see BaseBeanConsole
  */
 @Configurable
 public class SettingsBean {

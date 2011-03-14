@@ -51,7 +51,7 @@ public class Globals {
     /**
      * The JGF library version.
      */
-    public static final String JGF_VERSION = "1.0a";
+    public static final String JGF_VERSION = "0.6";
 
     /**
      * JGF library name.

@@ -75,8 +75,8 @@ import com.jme.util.resource.ResourceLocatorTool;
  * </p>
  * <p>
  * This class is thread safe: Commons Configuration XMLConfiguration is thread
- * safe only for read only operations. As Config doesn't allow writing, it is
- * thread safe.
+ * safe only for read only operations. As this class doesn't allow writing, it is
+ * declared as thread safe.
  * </p>
  * 
  * @see ConfigurableFactory

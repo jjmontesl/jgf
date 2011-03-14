@@ -6,9 +6,9 @@ import net.jgf.core.state.StateLifecycleEvent;
 import net.jgf.core.state.StateObserver;
 import net.jgf.core.state.StateLifecycleEvent.LifecycleEventType;
 import net.jgf.example.tanks.entity.PlayerTank;
-import net.jgf.example.tanks.logic.MissionLogic;
+import net.jgf.example.tanks.entity.Tank;
+import net.jgf.example.tanks.logic.flow.MissionLogic;
 import net.jgf.jme.view.gui.NiftyGuiView;
-import net.jgf.system.Jgf;
 import net.jgf.view.BaseViewState;
 
 import org.apache.log4j.Logger;
@@ -27,13 +27,13 @@ public class TanksView extends BaseViewState implements StateObserver {
 	 */
 	private static final Logger logger = Logger.getLogger(TanksView.class);
 
-	@Register (ref = "entity/root/players/player1")
-	protected PlayerTank player;
+	@Register (ref = "entity/root/tanks/player1")
+	protected Tank player;
 	
 	@Register (ref = "view/root/ingame/osd")
 	protected NiftyGuiView niftyView;
 	
-	@Register (ref = "logic/root/ingame/mission")
+	@Register (ref = "logic/root/flow/mission")
 	protected MissionLogic missionLogic;
 	
 	protected TextRenderer hitsText;
@@ -73,14 +73,14 @@ public class TanksView extends BaseViewState implements StateObserver {
 		
 			timeElapsed = 0.0f;
 			
-			if (player != null) {
+			if ((player != null) && (player instanceof PlayerTank)) {
 				
 			    float gameTime = missionLogic.getGameTime();
 				int timeMinutes = (int) (gameTime / 60);
 				int timeSeconds = ((int) (gameTime)) % 60;
 				String timeString = String.format("%02d:%02d.%1d", (Object[]) new Integer[] {timeMinutes, timeSeconds, (int) ((gameTime - FastMath.floor(gameTime)) * 10)} );
 
-				hitsText.setText("Score: " +  player.getKills());
+				hitsText.setText("Score: " +  ((PlayerTank)player).getKills());
 				timeText.setText("Time:  " +  timeString);
 			}
 			
@@ -88,13 +88,6 @@ public class TanksView extends BaseViewState implements StateObserver {
 		
 	}
 	
-
-	public PlayerTank getPlayer() {
-		return player;
-	}
-
-
-
 	public void setPlayer(PlayerTank player) {
 		this.player = player;
 	}

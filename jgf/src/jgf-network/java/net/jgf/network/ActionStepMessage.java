@@ -32,12 +32,11 @@
  */
 
 
-package net.jgf.example.tanks.messages;
+package net.jgf.network;
 
-import net.jgf.network.BaseSettingsMessage;
-import net.jgf.settings.Settings;
-import net.jgf.settings.SettingsManager;
-import net.jgf.system.Jgf;
+import net.jgf.logic.action.control.ActionStep;
+import net.jgf.logic.action.control.ActionStepType;
+import net.jgf.logic.action.control.ControllerAction;
 
 import com.jme3.network.message.Message;
 import com.jme3.network.serializing.Serializable;
@@ -45,22 +44,27 @@ import com.jme3.network.serializing.Serializable;
 /**
  * 
  */
-@Serializable(id = 2)
-public class GameInfoMessage extends BaseSettingsMessage {
-
-    @Override
-    public String[] getSettingIds() {
-        return new String[] {
-            "settings/game/map",
-            "settings/game/timelimit",
-            "settings/game/scorelimit",
-            "settings/game/mode"
-        };
+@Serializable(id = 9)
+public class ActionStepMessage extends Message {
+    
+    public String stepType;
+    
+    public String stepRef;
+    
+    public ActionStepMessage() {
+        
     }
-
-    @Override
-    public Settings getSettings() {
-        return Jgf.getDirectory().getObjectAs("settings", Settings.class);
+    
+    public ActionStepMessage(ActionStep step) {
+        stepType = step.getType().name();
+        stepRef = step.getRef();
+    }
+    
+    public void perform(Object object) {
+        ActionStep step = new ActionStep(ActionStepType.valueOf(stepType), stepRef);
+        ControllerAction controller = new ControllerAction();
+        controller.getSteps().add(step);
+        controller.perform(object);
     }
     
 }

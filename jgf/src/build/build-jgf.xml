@@ -47,7 +47,7 @@
 
 	<property name="dir.project" value="../.." />
 
-	<property name="app.version" value="0.5" />
+	<property name="app.version" value="0.6" />
 
 	<property name="dir.src" value="${dir.project}/src" />
 	<property name="dir.target" value="${dir.project}/target" />
@@ -166,7 +166,7 @@
 		</copy>
 		
 		<copy todir="${dir.target.dist}/doc">
-            <fileset dir="${dir.target.javadoc}" />
+            <fileset file="${dir.target.packages}/jgf-${app.version}-javadoc.jar" />
         </copy>
 
 	</target>
@@ -251,7 +251,7 @@
 			</manifest>
 		</jar>
 
-		<jar destfile="${dir.target.packages}/jgf-docs-${app.version}.jar" basedir="${dir.target.javadoc}">
+		<jar destfile="${dir.target.packages}/jgf-${app.version}-javadoc.jar" basedir="${dir.target.javadoc}">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
@@ -319,13 +319,13 @@
             <exclude name=".classpath" />
         </tar>
         
-    	<!-- Distributable (sample project and libs) -->
-    	<zip basedir="${dir.target}" destfile="${dir.target}/jgf-${app.version}.zip">
-    		<include name="jgf-${app.version}/**/*" />
-        </zip>
-    	<tar compression="gzip" basedir="${dir.target}" destfile="${dir.target}/jgf-${app.version}.tar.gz">
+        <!-- Distributable (sample project and libs) -->
+        <zip basedir="${dir.target}" destfile="${dir.target}/jgf-${app.version}-project-skel.zip">
             <include name="jgf-${app.version}/**/*" />
-        </tar>
+        </zip>
+        <tar compression="gzip" basedir="${dir.target}" destfile="${dir.target}/jgf-${app.version}-project-skel.tar.gz">
+            <include name="jgf-${app.version}/**/*" />
+        </tar>    	
     	
     </target>
 

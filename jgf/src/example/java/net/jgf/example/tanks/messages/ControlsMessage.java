@@ -34,34 +34,26 @@
 
 package net.jgf.example.tanks.messages;
 
-import net.jgf.network.BaseSettingsMessage;
-import net.jgf.settings.Settings;
-import net.jgf.settings.SettingsManager;
-import net.jgf.system.Jgf;
+import net.jgf.example.tanks.entity.PlayerTank;
+import net.jgf.example.tanks.entity.Tank;
 
+import com.jme.math.Vector3f;
 import com.jme3.network.message.Message;
 import com.jme3.network.serializing.Serializable;
 
 /**
  * 
  */
-@Serializable(id = 2)
-public class GameInfoMessage extends BaseSettingsMessage {
-
-    @Override
-    public String[] getSettingIds() {
-        return new String[] {
-            "settings/game/map",
-            "settings/game/timelimit",
-            "settings/game/scorelimit",
-            "settings/game/mode"
-        };
-    }
-
-    @Override
-    public Settings getSettings() {
-        return Jgf.getDirectory().getObjectAs("settings", Settings.class);
-    }
+@Serializable(id = 8)
+public class ControlsMessage extends Message {
+   
+    
+    public Vector3f direction;
+    
+    public Vector3f target;
+    
+    public boolean fire;
+    
     
 }
 

@@ -8,6 +8,7 @@ import net.jgf.config.Config;
 import net.jgf.config.ConfigException;
 import net.jgf.config.Configurable;
 import net.jgf.config.ConfigurableFactory;
+import net.jgf.core.service.ServiceException;
 import net.jgf.entity.Entity;
 import net.jgf.loader.LoadProperties;
 import net.jgf.loader.Loader;
@@ -74,10 +75,14 @@ public class EntityPoolLoader extends EntityLoader {
 		return entity;
 	}
 
-	public void preload(int count, String properties) {
+	public void flush() {
+	    
+	}
+	
+	public void preload(int count, String... properties) {
 		ArrayList<Entity> preloaded = new ArrayList<Entity>(count);
 	    for (int i = 0; i < count; i ++) {
-			Entity entity = load(null, properties);
+			Entity entity = this.load(null, loadPropertiesFromString(properties));
 			if (entity == null) {
 			    throw new ConfigException("Null entity loaded when preloading entities from " + this);
 			}
@@ -91,7 +96,7 @@ public class EntityPoolLoader extends EntityLoader {
 	public void preload(int count, LoadProperties properties) {
 	    ArrayList<Entity> preloaded = new ArrayList<Entity>(count);
 		for (int i = 0; i < count; i ++) {
-			Entity entity = load(null, properties);
+			Entity entity = this.load(null, properties);
 			if (entity == null) {
                 throw new ConfigException("Null entity loaded when preloading entities from " + this);
             }
@@ -123,7 +128,8 @@ public class EntityPoolLoader extends EntityLoader {
 		}
 
 		if (!found) {
-			logger.error("Tried to return an unexiting " + item + " to pool " + this);
+		    logger.debug("Tried to return an unexisting " + item + " to pool " + this);
+		    //throw new ServiceException("Object " + item + " not found when returning to pool " + this);
 		}
 
 	}

@@ -31,22 +31,27 @@ public abstract class BaseLoader<E> extends BaseComponent implements Loader<E> {
 		}
 	}
 
+	protected LoadProperties loadPropertiesFromString(String... properties) {
+	    LoadProperties map = new LoadProperties(properties.length);
+        for (String property : properties) {
+            if (StringUtils.isNotBlank(property)) {
+                int pos = property.indexOf('=');
+                if ((pos > property.length() - 2) || (pos < 1)) {
+                    throw new ConfigException("Invalid property (key=value) found when loading " + this + " from a list of properties: " + property);
+                }
+                String key = property.substring(0, pos);
+                String value = property.substring(pos + 1);
+                map.put(key, value);
+            }
+        }
+        return map;
+	}
+	
 	public E load(E base, String... properties) {
 	    
 	    logger.debug("Loader " + this + " loading over " + base);
 	    
-		LoadProperties map = new LoadProperties(properties.length);
-		for (String property : properties) {
-		    if (StringUtils.isNotBlank(property)) {
-    			int pos = property.indexOf('=');
-    			if ((pos > property.length() - 2) || (pos < 1)) {
-    				throw new ConfigException("Invalid property (key=value) found when loading " + this + " from a list of properties: " + property);
-    			}
-    			String key = property.substring(0, pos);
-    			String value = property.substring(pos + 1);
-    			map.put(key, value);
-		    }
-		}
+		LoadProperties map = loadPropertiesFromString(properties);
 		return load(base, map);
 	}
 
