@@ -12,7 +12,7 @@
 * Documentation
   * [Examples Examples]
   * [Overview]
-  * [Javadoc Javadoc]
+  * [http://code.google.com/p/jgf/downloads/list Javadoc]
   * [FAQ]
 
 * More information
