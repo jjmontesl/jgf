@@ -11,6 +11,7 @@
 
 * Documentation
   * [Examples Examples]
+  * [Examples Tutorials]
   * [Overview]
   * [http://code.google.com/p/jgf/downloads/list Javadoc]
   * [FAQ]
