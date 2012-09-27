@@ -87,7 +87,7 @@
 		<dirset dir="${dir.target.classes}/jgf-jme" />
     </path>
 	
-	<path id="classpath.example">
+	<path id="classpath.example-jme">
 		<path refid="classpath.jgf-jme" />
 		<dirset dir="${dir.target.classes}/jgf-jme" />
 		<dirset dir="${dir.target.classes}/jgf-network" />
@@ -111,8 +111,8 @@
 		<mkdir dir="${dir.target.classes}/jgf-network" />
         <javac includeantruntime="false"  srcdir="${dir.src}/jgf-network/java" destdir="${dir.target.classes}/jgf-network" classpathref="classpath.jgf-network" debug="on" source="1.5" />
 		
-		<mkdir dir="${dir.target.classes}/example" />
-		<javac includeantruntime="false"  srcdir="${dir.src}/example/java" destdir="${dir.target.classes}/example" classpathref="classpath.example" debug="on" source="1.5" />
+		<mkdir dir="${dir.target.classes}/example-jme" />
+		<javac includeantruntime="false"  srcdir="${dir.src}/example-jme/java" destdir="${dir.target.classes}/example-jme" classpathref="classpath.example-jme" debug="on" source="1.5" />
 	</target>
 
 	<target name="copy-deps" depends="jar, jar-jme-native">
@@ -129,7 +129,7 @@
 			<fileset dir="${dir.target.packages}">
 				<include name="jgf-core*.jar" />
 				<include name="jgf-jme*.jar" />
-				<include name="jgf-example*.jar" />
+				<include name="jgf-example-jme*.jar" />
 				<include name="jgf-network*.jar" />
 			</fileset>
 		</copy>
@@ -233,20 +233,20 @@
 	            </manifest>
 	        </jar>
 		
-		<jar destfile="${dir.target.packages}/jgf-example-${app.version}.jar" basedir="${dir.target.classes}/example">
+		<jar destfile="${dir.target.packages}/jgf-example-jme-${app.version}.jar" basedir="${dir.target.classes}/example-jme">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
-				<attribute name="Implementation-Title" value="JGF Examples" />
+				<attribute name="Implementation-Title" value="JGF JME Examples" />
 				<attribute name="Implementation-Version" value="${app.version}" />
 			</manifest>
 		</jar>
 
-		<jar destfile="${dir.target.packages}/jgf-example-resources-${app.version}.jar" basedir="${dir.src}/example/resources">
+		<jar destfile="${dir.target.packages}/jgf-example-jme-resources-${app.version}.jar" basedir="${dir.src}/example-jme/resources">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Vendor" value="Java Game Framework JGF" />
-				<attribute name="Implementation-Title" value="JGF Example Resources" />
+				<attribute name="Implementation-Title" value="JGF Example JME Resources" />
 				<attribute name="Implementation-Version" value="${app.version}" />
 			</manifest>
 		</jar>
@@ -270,7 +270,7 @@
 				<include name="jgf-jme/java/**" />
 				<include name="jgf-network/java/**" />
 				<include name="jgf-jmephysics/java/**" />
-				<include name="example/java/**" />
+				<include name="example-jme/java/**" />
 			</fileset>
 
 			<doctitle>
