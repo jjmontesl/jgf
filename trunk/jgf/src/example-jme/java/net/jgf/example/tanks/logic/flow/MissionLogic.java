@@ -238,6 +238,11 @@ public class MissionLogic extends BaseFlowLogic {
             StateHelper.loadAndActivate(enemy);
         }        
         
+        if (!fighting) {
+            fighting = true;
+            mapSetting.setValue("mission" + mission);
+        }
+        
     }
 
 
@@ -245,12 +250,7 @@ public class MissionLogic extends BaseFlowLogic {
     @Override
     public void nextMap() {
         // Increment mission number
-        
-        if (!fighting) {
-            this.mission++;
-            mapSetting.setValue("mission" + mission);
-            fighting = true;
-        }
+        this.mission++;
     }
 
 }

@@ -17,7 +17,7 @@
       
       <panel id="panelOuter" height="70%" width="40%" padding="20px,20px,20px,20px" align="center" valign="center" backgroundColor="#0000" childLayout="center" visibleToMouse="true">
         
-        <panel id="panelFailed" height="100%" width="100%" padding="5px,5px,5px,5px" align="center" valign="top" backgroundColor="#2c48" childLayout="center" visibleToMouse="true" >
+        <panel id="panelComplete" height="100%" width="100%" padding="5px,5px,5px,5px" align="center" valign="top" backgroundColor="#eee8" childLayout="center" visibleToMouse="true" >
             <effect>
                 <onStartScreen name="fade" startColor="#0000" endColor="#ffff" length="1500" startDelay="1500" inherit="true" post="false" />
             </effect>
